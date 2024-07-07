@@ -13,19 +13,22 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ".nvmrc"
+          node-version-file: ".nvmrc"
       # 디자인 파일 변환 후 생성된 파일도 push해서 main 브랜치로 병합하는 PR을 생성
+      - name: install dependencies
+        run: npm ci
+
       - name: Run Token Transformer
         run: |
-          npx token-transformer tokens.json
+          node transformToken.js
           git config --global user.name "whdgur5717"
           git config --global user.email "whdgur5717@gmail.com"
           git add .
           git commit -m '피그마 디자인 파일 변환'
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN}}
       - name: Create Pull Request
         run: gh pr create -B main -H token --title '💄 디자인 토큰 업데이트' --body '디자인 토큰이 업데이트 후 변환작업을 수행했습니다.'
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
