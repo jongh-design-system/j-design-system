@@ -1,9 +1,1 @@
-{
-  "bg_main": { "value": "#121212", "type": "color" },
-  "bg_elevated": { "value": "#2E363A", "type": "color" },
-  "border_basic": { "value": "#2E363A", "type": "color" },
-  "border_basic2": { "value": "#", "type": "color" },
-  "text_primary": { "value": "#C5C8CE", "type": "color" },
-  "text_secondary": { "value": "#FDFDFD", "type": "color" },
-  "text_danger": { "value": "#FF6557", "type": "color" }
-}
+{"bg_main":{"value":"#121212","type":"color"},"bg_elevated":{"value":"#2E363A","type":"color"},"border_basic":{"value":"#2E363A","type":"color"},"border_basic2":{"value":"#","type":"color"},"text_primary":{"value":"#C5C8CE","type":"color"},"text_secondary":{"value":"#FDFDFD","type":"color"},"text_danger":{"value":"#FF6557","type":"color"}}
