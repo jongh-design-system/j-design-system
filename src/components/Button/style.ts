@@ -62,6 +62,7 @@ export const buttonCva = cva({
       text: {
         border: "1px solid",
         borderColor: "border_basic",
+        backgroundColor: "white",
       },
     },
   },
