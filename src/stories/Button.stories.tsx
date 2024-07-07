@@ -1,3 +1,4 @@
+import { expect, fn, userEvent, within } from "@storybook/test"
 import Button from "../components/Button/Button.tsx"
 import type { Meta, StoryObj } from "@storybook/react"
 export default {
@@ -5,6 +6,9 @@ export default {
   component: Button,
   parameters: {
     layout: "centered",
+  },
+  args: {
+    onClick: fn(),
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof Button>
@@ -18,7 +22,7 @@ export const Primary: Story = {
     children: "클릭하기",
     onClick: () => alert("button clicked"),
     disabled: false,
-    br: "rounded",
+    br: "normal",
   },
 }
 
@@ -27,8 +31,16 @@ export const Primary_Disabled: Story = {
     size: "large",
     variant: "primary",
     children: "disabled",
-    onClick: () => alert("button clicked"),
+    onClick: fn(),
     disabled: true,
+    id: "button",
+  },
+
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByTestId("button")
+    await userEvent.click(button)
+    await expect(args.onClick).not.toHaveBeenCalled()
   },
 }
 
@@ -37,6 +49,13 @@ export const Text: Story = {
     size: "large",
     variant: "text",
     children: "클릭하기",
-    onClick: () => alert("a"),
+    onClick: fn(),
+    id: "button",
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByTestId("button")
+    await userEvent.click(button)
+    await expect(args.onClick).toHaveBeenCalled()
   },
 }
