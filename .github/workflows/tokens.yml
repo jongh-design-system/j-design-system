@@ -17,7 +17,7 @@ jobs:
       # 디자인 파일 변환 후 생성된 파일도 push해서 main 브랜치로 병합하는 PR을 생성
       - name: Run Token Transformer
         run: |
-          npx token-transformer tokens.json
+          node transformToken.js
           git config --global user.name "whdgur5717"
           git config --global user.email "whdgur5717@gmail.com"
           git add .
