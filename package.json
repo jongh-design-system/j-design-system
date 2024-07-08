@@ -17,18 +17,15 @@
     "test-storybook": "test-storybook"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
     "@fontsource-variable/roboto-condensed": "^5.0.3",
     "@storybook/preview-api": "^8.1.5",
     "@types/prop-types": "^15.7.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "style-dictionary": "^3.9.2",
     "token-transformer": "^0.0.33"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.5.0",
-    "@emotion/babel-plugin": "^11.11.0",
     "@pandacss/dev": "^0.40.1",
     "@storybook/addon-a11y": "^8.1.11",
     "@storybook/addon-controls": "^8.1.6",
