@@ -1,6 +1,12 @@
 import light from "./light.json"
 import dark from "./dark.json"
 import core from "./core.json"
+import { transform } from "typescript"
+import {
+  defineSemanticTokens,
+  defineTextStyles,
+  defineTokens,
+} from "@pandacss/dev"
 // Extracting value properties from core.light and core.dark
 
 export type ObjectKeys<T extends Record<PropertyKey, unknown>> =
@@ -10,6 +16,21 @@ export function objectKeys<Type extends Record<PropertyKey, unknown>>(
   obj: Type,
 ): Array<ObjectKeys<Type>> {
   return Object.keys(obj) as Array<ObjectKeys<Type>>
+}
+
+type ObjValue = {
+  value: string | number
+  type?: string
+  description?: string
+}
+
+type Obj = Record<string, { value: string }>
+
+export const generateTokens = (input: Record<string, ObjValue>): Obj => {
+  return Object.entries(input).reduce<Obj>((acc, [key, value]) => {
+    acc[key] = { value: value.value.toString() }
+    return acc
+  }, {})
 }
 
 export const basicColorToken: Record<
@@ -39,9 +60,6 @@ export const basicColorToken: Record<
   {} as Record<string, { value: { base: string; _dark: string } }>,
 )
 
-// Example of semantic color token extraction
-// Assuming light and dark objects have a structure with 'value' property
-
 export const semanticColorToken = Object.keys(light).reduce(
   (acc, key) => {
     const colorKey = key as keyof typeof light
@@ -69,7 +87,7 @@ type Typography = {
   }
 }
 
-export const typography = Object.keys(core.typography).reduce((acc, key) => {
+const textStylesToken = Object.keys(core.typography).reduce((acc, key) => {
   const typoVariant = key as TypoVariant
   acc[typoVariant] = {
     value: Object.keys(core.typography[typoVariant]).reduce(
@@ -86,4 +104,12 @@ export const typography = Object.keys(core.typography).reduce((acc, key) => {
   return acc
 }, {} as Typography)
 
-export const { borderRadius, fontSize } = core
+export const textStyles = defineTextStyles(textStylesToken)
+
+export const colors = defineSemanticTokens.colors({
+  ...semanticColorToken,
+  ...basicColorToken,
+})
+export const radii = defineTokens.radii(generateTokens(core.borderRadius))
+
+export const fontSizes = defineTokens.fontSizes(generateTokens(core.fontSize))

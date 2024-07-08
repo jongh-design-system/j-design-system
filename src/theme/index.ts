@@ -1,5 +1,0 @@
-export * from "./color"
-export * from "./fontSize"
-export * from "./fontWeight"
-export * from "./zIndex"
-export * from "./typography"

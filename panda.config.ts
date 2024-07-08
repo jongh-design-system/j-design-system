@@ -1,12 +1,5 @@
-import { defineConfig, defineTextStyles } from "@pandacss/dev"
-import { transformObject } from "./src/theme/convert"
-import {
-  basicColorToken,
-  semanticColorToken,
-  borderRadius,
-  typography,
-  fontSize,
-} from "./src/theme/tokens/index"
+import { defineConfig } from "@pandacss/dev"
+import { colors, radii, fontSizes, textStyles } from "./src/theme/tokens/index"
 export default defineConfig({
   outExtension: "js",
   jsxFramework: "react",
@@ -19,67 +12,32 @@ export default defineConfig({
     light: "[data-color-mode=light] &",
     dark: "[data-color-mode=dark] &",
   },
-  presets: ["@pandacss/preset-base"],
   exclude: [],
   eject: true,
+  strictTokens: true,
+  strictPropertyValues: true,
   utilities: {
     color: {
       values: "colors",
     },
-    fontWeight: {
-      values: "fontWeights",
-    },
-    width: {
-      values: { type: "string" },
-    },
-    maxWidth: {
-      values: { type: "string" },
-    },
-    minWidth: {
-      values: { type: "string" },
-    },
-    height: {
-      values: { type: "string" },
-    },
-    maxHeight: {
-      values: { type: "string" },
-    },
-    minHeight: {
-      values: { type: "string" },
-    },
     borderRadius: {
       values: "radii",
     },
+    fontSize: {
+      values: "fontSizes",
+    },
   },
-  strictTokens: true,
-  strictPropertyValues: true,
   theme: {
-    extend: {
-      textStyles: typography,
-      keyframes: {
-        fadein: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-      },
+    semanticTokens: {
+      colors,
     },
     tokens: {
-      radii: transformObject(borderRadius),
-      fontSizes: transformObject(fontSize),
+      radii,
+      fontSizes,
     },
-    semanticTokens: {
-      colors: {
-        ...basicColorToken,
-        ...semanticColorToken,
-        white: {
-          value: {
-            base: "#FFFFFF",
-            _dark: "#FFFFFF",
-          },
-        },
-      },
-    },
+    textStyles,
   },
+
   // The output directory for your css system
   outdir: "styled-system",
 })
