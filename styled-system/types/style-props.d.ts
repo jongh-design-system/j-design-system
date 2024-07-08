@@ -2437,7 +2437,7 @@ fontVariationSettings?: ConditionalValue<WithEscapeHatch<CssProperties["fontVari
    *
    * @see https://developer.mozilla.org/docs/Web/CSS/font-size
    */
-fontSize?: ConditionalValue<WithEscapeHatch<CssProperties["fontSize"]>>
+fontSize?: ConditionalValue<WithEscapeHatch<UtilityValues["fontSize"] | CssVars>>
  /**
    * The **`font-size-adjust`** CSS property sets the size of lower-case letters relative to the current font size (which defines the size of upper-case letters).
    *

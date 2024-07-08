@@ -6,6 +6,7 @@ import type { Tokens } from '../tokens/index';
 export interface UtilityValues {
 	color: Tokens["colors"];
 	borderRadius: Tokens["radii"];
+	fontSize: Tokens["fontSizes"];
 	colorPalette: "bg_main" | "bg_elevated" | "border_basic" | "border_basic2" | "text_primary" | "text_secondary" | "text_danger" | "grey_100" | "grey_200" | "grey_300" | "grey_400" | "grey_500" | "red_100" | "red_200" | "red_300" | "blue_100" | "blue_200" | "blue_300";
 	textStyle: "header" | "subHeader" | "body" | "caption";
 }
