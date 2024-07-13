@@ -1,0 +1,98 @@
+@layer reset, base, tokens, recipes, utilities;
+
+@layer base{
+  :root {
+    --made-with-panda: '🐼';
+}
+
+  *,::before,::after,::backdrop {
+    --blur: /*-*/ /*-*/;
+    --brightness: /*-*/ /*-*/;
+    --contrast: /*-*/ /*-*/;
+    --grayscale: /*-*/ /*-*/;
+    --hue-rotate: /*-*/ /*-*/;
+    --invert: /*-*/ /*-*/;
+    --saturate: /*-*/ /*-*/;
+    --sepia: /*-*/ /*-*/;
+    --drop-shadow: /*-*/ /*-*/;
+    --backdrop-blur: /*-*/ /*-*/;
+    --backdrop-brightness: /*-*/ /*-*/;
+    --backdrop-contrast: /*-*/ /*-*/;
+    --backdrop-grayscale: /*-*/ /*-*/;
+    --backdrop-hue-rotate: /*-*/ /*-*/;
+    --backdrop-invert: /*-*/ /*-*/;
+    --backdrop-opacity: /*-*/ /*-*/;
+    --backdrop-saturate: /*-*/ /*-*/;
+    --backdrop-sepia: /*-*/ /*-*/;
+    --gradient-from-position: /*-*/ /*-*/;
+    --gradient-to-position: /*-*/ /*-*/;
+    --gradient-via-position: /*-*/ /*-*/;
+    --scroll-snap-strictness: proximity;
+    --border-spacing-x: 0;
+    --border-spacing-y: 0;
+    --translate-x: 0;
+    --translate-y: 0;
+    --rotate: 0;
+    --rotate-x: 0;
+    --rotate-y: 0;
+    --skew-x: 0;
+    --skew-y: 0;
+    --scale-x: 1;
+    --scale-y: 1;
+}
+}
+
+@layer tokens{
+  :where(:root, :host) {
+    --radii-sm: 3px;
+    --radii-lg: 5px;
+    --radii-rounded: 30px;
+    --font-sizes-xs: 0.75rem;
+    --font-sizes-sm: 1rem;
+    --font-sizes-lg: 1.5rem;
+    --font-sizes-xl: 1.75rem;
+    --font-sizes-2xl: 2rem;
+    --font-sizes-3xl: 3rem;
+    --colors-grey_100: #FEFEFE;
+    --colors-grey_200: #F7F8F9;
+    --colors-grey_300: #646F6C;
+    --colors-grey_400: #374553;
+    --colors-grey_500: #161D24;
+    --colors-red_100: #FFEEF1;
+    --colors-red_200: #FF6F61;
+    --colors-red_300: #E45141;
+    --colors-blue_100: #E1F5FF;
+    --colors-blue_200: #7DD5FF;
+    --colors-blue_300: #0C356A;
+    --colors-bg_main: #FFFFFF;
+    --colors-bg_elevated: #FFFFFF;
+    --colors-border_basic: #646F6C;
+    --colors-border_basic2: #646F6C;
+    --colors-text_primary: #374553;
+    --colors-text_secondary: #374553;
+    --colors-text_danger: #FF6F61;
+    --colors-white: #FFFFFF;
+}
+
+  [data-color-mode=dark] {
+    --colors-grey_100: #121212;
+    --colors-grey_200: #2E363A;
+    --colors-grey_300: #999FA4;
+    --colors-grey_400: #C5C8CE;
+    --colors-grey_500: #FDFDFD;
+    --colors-red_100: #D73F2E;
+    --colors-red_200: #FF6557;
+    --colors-red_300: #FFD3D6;
+    --colors-blue_100: #0077C8;
+    --colors-blue_200: #00A9FF;
+    --colors-blue_300: #0C356A;
+    --colors-bg_main: #121212;
+    --colors-bg_elevated: #2E363A;
+    --colors-border_basic: #2E363A;
+    --colors-border_basic2: #;
+    --colors-text_primary: #C5C8CE;
+    --colors-text_secondary: #FDFDFD;
+    --colors-text_danger: #FF6557;
+    --colors-white: #FFFFFF
+}
+}
