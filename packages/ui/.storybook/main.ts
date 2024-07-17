@@ -21,6 +21,7 @@ const config: StorybookConfig = {
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
       // 👇 Default prop filter, which excludes props from node_modules
+      shouldRemoveUndefinedFromOptional: true,
       propFilter: (prop) =>
         prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
     },

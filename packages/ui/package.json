@@ -3,27 +3,30 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "module": "./dist/index.js",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "exports": {
     "./lib.css": "./dist/lib.css",
-    "./Button": {
-      "types": "./dist/Button/Button.d.ts",
-      "require": "./dist/Button.cjs",
-      "import": "./dist/Button.js"
+    ".": {
+      "types": "./dist/src/components/index.d.ts",
+      "require": "./dist/index.umd.js",
+      "import": "./dist/index.es.js"
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-zero-on-changes",
     "test-storybook": "test-storybook",
-    "prepare": "pnpm panda codegen",
-    "build": "rollup -c",
-    "cssgen": "pnpm panda cssgen -o dist/lib.css",
-    "release": "pnpm panda prepare && pnpm build && pnpm cssgen"
+    "build": "vite build",
+    "dev": "pnpm panda --watch",
+    "codegen": "pnpm panda codegen",
+    "cssgen": "pnpm panda cssgen dist/lib.css",
+    "release": "pnpm build && pnpm prepare && pnpm dev",
+    "prepare": "pnpm codegen && pnpm cssgen"
   },
   "dependencies": {
     "@fontsource-variable/roboto-condensed": "^5.0.3",
@@ -34,18 +37,8 @@
     "token": "workspace:^"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.8",
-    "@babel/preset-env": "^7.24.8",
-    "@babel/preset-react": "^7.24.7",
-    "@babel/preset-typescript": "^7.24.7",
     "@chromatic-com/storybook": "^1.5.0",
     "@pandacss/dev": "^0.40.1",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^26.0.1",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
     "@storybook/addon-a11y": "^8.1.11",
     "@storybook/addon-controls": "^8.1.6",
     "@storybook/addon-docs": "^8.2.2",
@@ -60,19 +53,14 @@
     "@storybook/test-runner": "^0.19.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
     "axe-playwright": "^2.0.1",
     "chromatic": "^11.5.4",
     "react-docgen-typescript": "^2.2.2",
     "react-docgen-typescript-plugin": "^1.0.8",
-    "rollup": "^4.18.1",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.36.0",
     "storybook": "^8.1.5",
     "tslib": "^2.6.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vite-bundle-visualizer": "^1.2.1"
   },
   "keywords": [],
   "author": "",

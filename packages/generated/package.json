@@ -32,6 +32,9 @@
     "./types": {
       "types": "./types/index.d.ts"
     },
+    "./composition": {
+      "types": "./types/composition.d.ts"
+    },
     "./styles.css": "./styles.css"
   },
   "scripts": {

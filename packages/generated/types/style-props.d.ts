@@ -6882,6 +6882,20 @@ bgClip?: ConditionalValue<WithEscapeHatch<OnlyKnown<"backgroundClip", CssPropert
    */
 bg?: ConditionalValue<WithEscapeHatch<UtilityValues["background"] | CssVars>>
  /**
+   * The **`background-color`** CSS property sets the background color of an element.
+   *
+   * **Syntax**: `<color>`
+   *
+   * **Initial value**: `transparent`
+   *
+   * | Chrome | Firefox | Safari |  Edge  |  IE   |
+   * | :----: | :-----: | :----: | :----: | :---: |
+   * | **1**  |  **1**  | **1**  | **12** | **4** |
+   *
+   * @see https://developer.mozilla.org/docs/Web/CSS/background-color
+   */
+bgColor?: ConditionalValue<WithEscapeHatch<UtilityValues["backgroundColor"] | CssVars>>
+ /**
    * The **`background-origin`** CSS property sets the background's origin: from the border start, inside the border, or inside the padding.
    *
    * **Syntax**: `<box>#`
@@ -6953,6 +6967,19 @@ bgBlendMode?: ConditionalValue<WithEscapeHatch<CssProperties["backgroundBlendMod
    */
 bgSize?: ConditionalValue<WithEscapeHatch<CssProperties["backgroundSize"]>>
  bgGradient?: ConditionalValue<WithEscapeHatch<UtilityValues["backgroundGradient"] | CssVars>>
+ /**
+   * The **`border-radius`** CSS property rounds the corners of an element's outer border edge. You can set a single radius to make circular corners, or two radii to make elliptical corners.
+   *
+   * **Syntax**: `<length-percentage>{1,4} [ / <length-percentage>{1,4} ]?`
+   *
+   * | Chrome  | Firefox | Safari  |  Edge  |  IE   |
+   * | :-----: | :-----: | :-----: | :----: | :---: |
+   * |  **4**  |  **4**  |  **5**  | **12** | **9** |
+   * | 1 _-x-_ |         | 3 _-x-_ |        |       |
+   *
+   * @see https://developer.mozilla.org/docs/Web/CSS/border-radius
+   */
+rounded?: ConditionalValue<WithEscapeHatch<UtilityValues["borderRadius"] | CssVars>>
  /**
    * The **`border-top-left-radius`** CSS property rounds the top-left corner of an element by specifying the radius (or the radius of the semi-major and semi-minor axes) of the ellipse defining the curvature of the corner.
    *

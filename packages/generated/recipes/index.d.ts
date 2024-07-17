@@ -1,2 +1,3 @@
 /* eslint-disable */
-export * from './button-recipe';
+export * from './button';
+export * from './tag-button';
