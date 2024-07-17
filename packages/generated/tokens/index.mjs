@@ -35,50 +35,6 @@ const tokens = {
     "value": "3rem",
     "variable": "var(--font-sizes-3xl)"
   },
-  "colors.grey_100": {
-    "value": "var(--colors-grey_100)",
-    "variable": "var(--colors-grey_100)"
-  },
-  "colors.grey_200": {
-    "value": "var(--colors-grey_200)",
-    "variable": "var(--colors-grey_200)"
-  },
-  "colors.grey_300": {
-    "value": "var(--colors-grey_300)",
-    "variable": "var(--colors-grey_300)"
-  },
-  "colors.grey_400": {
-    "value": "var(--colors-grey_400)",
-    "variable": "var(--colors-grey_400)"
-  },
-  "colors.grey_500": {
-    "value": "var(--colors-grey_500)",
-    "variable": "var(--colors-grey_500)"
-  },
-  "colors.red_100": {
-    "value": "var(--colors-red_100)",
-    "variable": "var(--colors-red_100)"
-  },
-  "colors.red_200": {
-    "value": "var(--colors-red_200)",
-    "variable": "var(--colors-red_200)"
-  },
-  "colors.red_300": {
-    "value": "var(--colors-red_300)",
-    "variable": "var(--colors-red_300)"
-  },
-  "colors.blue_100": {
-    "value": "var(--colors-blue_100)",
-    "variable": "var(--colors-blue_100)"
-  },
-  "colors.blue_200": {
-    "value": "var(--colors-blue_200)",
-    "variable": "var(--colors-blue_200)"
-  },
-  "colors.blue_300": {
-    "value": "var(--colors-blue_300)",
-    "variable": "var(--colors-blue_300)"
-  },
   "colors.bg_main": {
     "value": "var(--colors-bg_main)",
     "variable": "var(--colors-bg_main)"
@@ -107,6 +63,42 @@ const tokens = {
     "value": "var(--colors-text_danger)",
     "variable": "var(--colors-text_danger)"
   },
+  "colors.grey_100": {
+    "value": "var(--colors-grey_100)",
+    "variable": "var(--colors-grey_100)"
+  },
+  "colors.grey_200": {
+    "value": "var(--colors-grey_200)",
+    "variable": "var(--colors-grey_200)"
+  },
+  "colors.grey_300": {
+    "value": "var(--colors-grey_300)",
+    "variable": "var(--colors-grey_300)"
+  },
+  "colors.grey_400": {
+    "value": "var(--colors-grey_400)",
+    "variable": "var(--colors-grey_400)"
+  },
+  "colors.grey_500": {
+    "value": "var(--colors-grey_500)",
+    "variable": "var(--colors-grey_500)"
+  },
+  "colors.white": {
+    "value": "var(--colors-white)",
+    "variable": "var(--colors-white)"
+  },
+  "colors.blue_100": {
+    "value": "var(--colors-blue_100)",
+    "variable": "var(--colors-blue_100)"
+  },
+  "colors.blue_200": {
+    "value": "var(--colors-blue_200)",
+    "variable": "var(--colors-blue_200)"
+  },
+  "colors.blue_300": {
+    "value": "var(--colors-blue_300)",
+    "variable": "var(--colors-blue_300)"
+  },
   "colors.blue_400": {
     "value": "var(--colors-blue_400)",
     "variable": "var(--colors-blue_400)"
@@ -115,6 +107,18 @@ const tokens = {
     "value": "var(--colors-blue_500)",
     "variable": "var(--colors-blue_500)"
   },
+  "colors.red_100": {
+    "value": "var(--colors-red_100)",
+    "variable": "var(--colors-red_100)"
+  },
+  "colors.red_200": {
+    "value": "var(--colors-red_200)",
+    "variable": "var(--colors-red_200)"
+  },
+  "colors.red_300": {
+    "value": "var(--colors-red_300)",
+    "variable": "var(--colors-red_300)"
+  },
   "colors.red_400": {
     "value": "var(--colors-red_400)",
     "variable": "var(--colors-red_400)"
@@ -122,10 +126,6 @@ const tokens = {
   "colors.red_500": {
     "value": "var(--colors-red_500)",
     "variable": "var(--colors-red_500)"
-  },
-  "colors.white": {
-    "value": "var(--colors-white)",
-    "variable": "var(--colors-white)"
   },
   "colors.colorPalette": {
     "value": "var(--colors-color-palette)",
