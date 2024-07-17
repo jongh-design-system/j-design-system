@@ -1,4 +1,4 @@
-import { define } from "dev"
+import { define } from "../../../dev"
 export const buttonRecipe = define.recipe({
   className: "button",
   base: {
@@ -20,10 +20,7 @@ export const buttonRecipe = define.recipe({
     },
     _disabled: {
       cursor: "not-allowed",
-      opacity: 0.5,
-      color: "text_secondary",
     },
-    color: "white",
   },
   variants: {
     size: {
@@ -56,15 +53,22 @@ export const buttonRecipe = define.recipe({
     },
     variant: {
       primary: {
-        backgroundColor: "blue_300",
+        backgroundColor: "blue_500",
         border: "none",
         color: "white",
+        _disabled: {
+          opacity: 0.5,
+          backgroundColor: "grey_400",
+        },
       },
       text: {
         border: "2px solid",
         borderColor: "border_basic",
         backgroundColor: "white",
         color: "text_secondary",
+        _disabled: {
+          opacity: 0.5,
+        },
       },
     },
   },

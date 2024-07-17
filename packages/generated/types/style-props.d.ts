@@ -2946,7 +2946,7 @@ hangingPunctuation?: ConditionalValue<WithEscapeHatch<CssProperties["hangingPunc
    *
    * @see https://developer.mozilla.org/docs/Web/CSS/height
    */
-height?: ConditionalValue<WithEscapeHatch<UtilityValues["height"] | CssVars>>
+height?: ConditionalValue<WithEscapeHatch<CssProperties["height"]>>
  /**
    * The **`hyphenate-character`** CSS property sets the character (or string) used at the end of a line before a hyphenation break.
    *
@@ -3904,7 +3904,7 @@ minBlockSize?: ConditionalValue<WithEscapeHatch<UtilityValues["minBlockSize"] | 
    *
    * @see https://developer.mozilla.org/docs/Web/CSS/min-height
    */
-minHeight?: ConditionalValue<WithEscapeHatch<UtilityValues["minHeight"] | CssVars>>
+minHeight?: ConditionalValue<WithEscapeHatch<CssProperties["minHeight"]>>
  /**
    * The **`min-inline-size`** CSS property defines the horizontal or vertical minimal size of an element's block, depending on its writing mode. It corresponds to either the `min-width` or the `min-height` property, depending on the value of `writing-mode`.
    *
@@ -3932,7 +3932,7 @@ minInlineSize?: ConditionalValue<WithEscapeHatch<UtilityValues["minInlineSize"] 
    *
    * @see https://developer.mozilla.org/docs/Web/CSS/min-width
    */
-minWidth?: ConditionalValue<WithEscapeHatch<UtilityValues["minWidth"] | CssVars>>
+minWidth?: ConditionalValue<WithEscapeHatch<CssProperties["minWidth"]>>
  /**
    * The **`mix-blend-mode`** CSS property sets how an element's content should blend with the content of the element's parent and the element's background.
    *
@@ -6070,7 +6070,7 @@ widows?: ConditionalValue<WithEscapeHatch<CssProperties["widows"]>>
    *
    * @see https://developer.mozilla.org/docs/Web/CSS/width
    */
-width?: ConditionalValue<WithEscapeHatch<UtilityValues["width"] | CssVars>>
+width?: ConditionalValue<WithEscapeHatch<CssProperties["width"]>>
  /**
    * The **`will-change`** CSS property hints to browsers how an element is expected to change. Browsers may set up optimizations before an element is actually changed. These kinds of optimizations can increase the responsiveness of a page by doing potentially expensive work before they are actually required.
    *
@@ -6714,34 +6714,6 @@ ring?: ConditionalValue<WithEscapeHatch<CssProperties["outline"]>>
    */
 ringOffset?: ConditionalValue<WithEscapeHatch<CssProperties["outlineOffset"]>>
  /**
-   * The **`width`** CSS property sets an element's width. By default, it sets the width of the content area, but if `box-sizing` is set to `border-box`, it sets the width of the border area.
-   *
-   * **Syntax**: `auto | <length> | <percentage> | min-content | max-content | fit-content | fit-content(<length-percentage>)`
-   *
-   * **Initial value**: `auto`
-   *
-   * | Chrome | Firefox | Safari |  Edge  |  IE   |
-   * | :----: | :-----: | :----: | :----: | :---: |
-   * | **1**  |  **1**  | **1**  | **12** | **4** |
-   *
-   * @see https://developer.mozilla.org/docs/Web/CSS/width
-   */
-w?: ConditionalValue<WithEscapeHatch<UtilityValues["width"] | CssVars>>
- /**
-   * The **`min-width`** CSS property sets the minimum width of an element. It prevents the used value of the `width` property from becoming smaller than the value specified for `min-width`.
-   *
-   * **Syntax**: `auto | <length> | <percentage> | min-content | max-content | fit-content | fit-content(<length-percentage>)`
-   *
-   * **Initial value**: `auto`
-   *
-   * | Chrome | Firefox | Safari |  Edge  |  IE   |
-   * | :----: | :-----: | :----: | :----: | :---: |
-   * | **1**  |  **1**  | **1**  | **12** | **7** |
-   *
-   * @see https://developer.mozilla.org/docs/Web/CSS/min-width
-   */
-minW?: ConditionalValue<WithEscapeHatch<UtilityValues["minWidth"] | CssVars>>
- /**
    * The **`max-width`** CSS property sets the maximum width of an element. It prevents the used value of the `width` property from becoming larger than the value specified by `max-width`.
    *
    * **Syntax**: `none | <length-percentage> | min-content | max-content | fit-content | fit-content(<length-percentage>)`
@@ -6755,34 +6727,6 @@ minW?: ConditionalValue<WithEscapeHatch<UtilityValues["minWidth"] | CssVars>>
    * @see https://developer.mozilla.org/docs/Web/CSS/max-width
    */
 maxW?: ConditionalValue<WithEscapeHatch<UtilityValues["maxWidth"] | CssVars>>
- /**
-   * The **`height`** CSS property specifies the height of an element. By default, the property defines the height of the content area. If `box-sizing` is set to `border-box`, however, it instead determines the height of the border area.
-   *
-   * **Syntax**: `auto | <length> | <percentage> | min-content | max-content | fit-content | fit-content(<length-percentage>)`
-   *
-   * **Initial value**: `auto`
-   *
-   * | Chrome | Firefox | Safari |  Edge  |  IE   |
-   * | :----: | :-----: | :----: | :----: | :---: |
-   * | **1**  |  **1**  | **1**  | **12** | **4** |
-   *
-   * @see https://developer.mozilla.org/docs/Web/CSS/height
-   */
-h?: ConditionalValue<WithEscapeHatch<UtilityValues["height"] | CssVars>>
- /**
-   * The **`min-height`** CSS property sets the minimum height of an element. It prevents the used value of the `height` property from becoming smaller than the value specified for `min-height`.
-   *
-   * **Syntax**: `auto | <length> | <percentage> | min-content | max-content | fit-content | fit-content(<length-percentage>)`
-   *
-   * **Initial value**: `auto`
-   *
-   * | Chrome | Firefox | Safari  |  Edge  |  IE   |
-   * | :----: | :-----: | :-----: | :----: | :---: |
-   * | **1**  |  **3**  | **1.3** | **12** | **7** |
-   *
-   * @see https://developer.mozilla.org/docs/Web/CSS/min-height
-   */
-minH?: ConditionalValue<WithEscapeHatch<UtilityValues["minHeight"] | CssVars>>
  /**
    * The **`max-height`** CSS property sets the maximum height of an element. It prevents the used value of the `height` property from becoming larger than the value specified for `max-height`.
    *

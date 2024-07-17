@@ -9,14 +9,13 @@ export const tagButtonRecipe = define.recipe({
     cursor: "pointer",
     border: "1px solid black",
     color: "text_primary",
-    boxShadow: "rgba(0, 0, 0, 0.25) 0px 3px 3px",
+    _hover: { boxShadow: "0px 0px 3px", boxShadowColor: "grey_300" },
     _invalid: {
       cursor: "not-allowed",
     },
     _pressed: {
-      borderWidth: "3px",
+      borderWidth: "2px",
       borderColor: "blue_300",
-      fontWeight: "bold",
     },
     maxWidth: "screen",
   },
