@@ -1,27 +1,29 @@
-import { cva, RecipeVariantProps } from "jh-generated/css"
-export const buttonCva = cva({
+import { define } from "dev"
+export const buttonRecipe = define.recipe({
+  className: "button",
   base: {
     textAlign: "center",
     lineHeight: "20",
     borderRadius: "rounded",
     cursor: "pointer",
     display: "inline-flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     fontWeight: "medium",
     width: "100%",
     minWidth: "44",
     minHeight: "44",
+    gap: "5px",
     _hover: {
-      boxShadow: "rgba(0, 0, 0, 0.25) 0px 5px 15px",
+      boxShadow: "rgba(0, 0, 0, 0.25) 0px 3px 3px",
     },
     _disabled: {
       cursor: "not-allowed",
       opacity: 0.5,
       color: "text_secondary",
     },
-    color: "text_primary",
+    color: "white",
   },
   variants: {
     size: {
@@ -34,8 +36,8 @@ export const buttonCva = cva({
       medium: {
         height: "44",
         fontSize: "lg",
-        paddingLeft: "16",
-        paddingRight: "16",
+        paddingLeft: "10",
+        paddingRight: "10",
       },
       large: {
         height: "48",
@@ -55,12 +57,14 @@ export const buttonCva = cva({
     variant: {
       primary: {
         backgroundColor: "blue_300",
-        color: "text_primary",
+        border: "none",
+        color: "white",
       },
       text: {
-        border: "1px solid",
+        border: "2px solid",
         borderColor: "border_basic",
         backgroundColor: "white",
+        color: "text_secondary",
       },
     },
   },
@@ -70,5 +74,3 @@ export const buttonCva = cva({
     br: "normal",
   },
 })
-
-export type ButtonVariants = RecipeVariantProps<typeof buttonCva>

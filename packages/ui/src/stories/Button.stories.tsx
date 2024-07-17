@@ -20,7 +20,7 @@ export const Primary: Story = {
     size: "large",
     variant: "primary",
     children: "클릭하기",
-    onClick: () => alert("button clicked"),
+    onClick: fn(),
     disabled: false,
     br: "normal",
   },
@@ -57,5 +57,14 @@ export const Text: Story = {
     const button = canvas.getByTestId("button")
     await userEvent.click(button)
     await expect(args.onClick).toHaveBeenCalled()
+  },
+}
+
+export const WithIcon: Story = {
+  args: {
+    ...Primary.args,
+    onClick: () => alert("가운데"),
+    leftIcon: <div onClick={() => () => alert("가운")}>+</div>,
+    rightIcon: <div>+</div>,
   },
 }
