@@ -23,8 +23,17 @@ export default defineConfig({
   strictTokens: true,
   strictPropertyValues: true,
   utilities: {
-    color: {
-      values: "colors",
+    width: {
+      values: "string",
+    },
+    height: {
+      values: "string",
+    },
+    minWidth: {
+      values: "string",
+    },
+    minHeight: {
+      values: "string",
     },
   },
   theme: {
