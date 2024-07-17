@@ -56,7 +56,6 @@ export const basicColorToken = objectKeys(light).reduce(
   },
   {} as Record<string, { value: { base: string; _dark: string } }>,
 )
-console.log(basicColorToken)
 export const semanticColorToken = Object.keys(light).reduce(
   (acc, key) => {
     const colorKey = key as keyof typeof light
