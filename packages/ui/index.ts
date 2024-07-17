@@ -32,17 +32,15 @@ export const generateTokens = (input: Record<string, ObjValue>): Obj => {
   }, {})
 }
 
-export const basicColorToken = objectKeys(core.light).reduce(
+export const basicColorToken = objectKeys(light).reduce(
   (acc, colorKey) => {
-    objectKeys(core.light[colorKey]).forEach((numberKey) => {
-      const num = numberKey as keyof (typeof core.light)[typeof colorKey]
+    objectKeys(light[colorKey]).forEach((numberKey) => {
+      const num = numberKey as keyof (typeof light)[typeof colorKey]
       // Use type assertion to access 'value' property
-      const lightValue = (
-        core.light[colorKey][num] as unknown as { value: string }
-      )?.value
-      const darkValue = (
-        core.dark[colorKey][num] as unknown as { value: string }
-      )?.value
+      const lightValue = (light[colorKey][num] as unknown as { value: string })
+        ?.value
+      const darkValue = (dark[colorKey][num] as unknown as { value: string })
+        ?.value
 
       if (lightValue && darkValue) {
         acc[`${colorKey}_${num}`] = {
