@@ -102,7 +102,7 @@ export interface UtilityValues {
 	stroke: Tokens["colors"];
 	srOnly: boolean;
 	debug: boolean;
-	colorPalette: "grey_100" | "grey_200" | "grey_300" | "grey_400" | "grey_500" | "red_100" | "red_200" | "red_300" | "blue_100" | "blue_200" | "blue_300" | "bg_main" | "bg_elevated" | "border_basic" | "border_basic2" | "text_primary" | "text_secondary" | "text_danger" | "white";
+	colorPalette: "grey_100" | "grey_200" | "grey_300" | "grey_400" | "grey_500" | "red_100" | "red_200" | "red_300" | "blue_100" | "blue_200" | "blue_300" | "bg_main" | "bg_elevated" | "border_basic" | "border_basic2" | "text_primary" | "text_secondary" | "text_danger" | "blue_400" | "blue_500" | "red_400" | "red_500" | "white";
 	textStyle: "header" | "subHeader" | "body" | "caption";
 }
 

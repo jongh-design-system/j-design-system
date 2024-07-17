@@ -107,6 +107,22 @@ const tokens = {
     "value": "var(--colors-text_danger)",
     "variable": "var(--colors-text_danger)"
   },
+  "colors.blue_400": {
+    "value": "var(--colors-blue_400)",
+    "variable": "var(--colors-blue_400)"
+  },
+  "colors.blue_500": {
+    "value": "var(--colors-blue_500)",
+    "variable": "var(--colors-blue_500)"
+  },
+  "colors.red_400": {
+    "value": "var(--colors-red_400)",
+    "variable": "var(--colors-red_400)"
+  },
+  "colors.red_500": {
+    "value": "var(--colors-red_500)",
+    "variable": "var(--colors-red_500)"
+  },
   "colors.white": {
     "value": "var(--colors-white)",
     "variable": "var(--colors-white)"

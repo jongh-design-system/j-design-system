@@ -35,6 +35,9 @@ importers:
       eslint-plugin-storybook:
         specifier: ^0.8.0
         version: 0.8.0(eslint@8.57.0)(typescript@5.4.5)
+      token-transformer:
+        specifier: ^0.0.33
+        version: 0.0.33
       typescript:
         specifier: ^5.2.2
         version: 5.4.5
@@ -87,11 +90,7 @@ importers:
 
   packages/generated: {}
 
-  packages/token:
-    dependencies:
-      token-transformer:
-        specifier: ^0.0.33
-        version: 0.0.33
+  packages/token: {}
 
   packages/ui:
     dependencies:
