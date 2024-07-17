@@ -9,8 +9,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "token-transformer": "^0.0.33"
-  }
+  "license": "ISC"
 }
