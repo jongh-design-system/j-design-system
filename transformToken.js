@@ -1,18 +1,20 @@
-import { readFile, writeFileSync } from "fs"
+import { existsSync, mkdirSync, readFile, writeFileSync } from "fs"
 
 import { transformTokens } from "token-transformer"
 import { fileURLToPath } from "url"
-import { dirname } from "path"
+import { dirname, join } from "path"
 
 // 현재 파일의 디렉토리 경로 가져오기
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // 추출 대상 파일 경로
-const filePath = "./packages/token/tokens"
+const filePath = "./packages/token"
+const dir = join(__dirname, filePath)
 
-// 만약 없다면 생성
-
+if (!existsSync(dir)) {
+  mkdirSync(dir, { recursive: true })
+}
 // 변환 옵션
 const transformerOptions = {
   expandTypography: true,
