@@ -24,7 +24,7 @@
     "build": "vite build",
     "dev": "pnpm panda --watch",
     "codegen": "pnpm panda codegen",
-    "cssgen": "pnpm panda cssgen dist/lib.css",
+    "cssgen": "pnpm panda cssgen -o dist/lib.css",
     "release": "pnpm build && pnpm prepare && pnpm dev",
     "prepare": "pnpm codegen && pnpm cssgen"
   },
