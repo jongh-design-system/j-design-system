@@ -201,19 +201,18 @@ export const AccordionTrigger = ({ children }: PropsWithChildren) => {
 }
 //AccordionContent
 export const AccordionContent = ({
-  duration = 200,
   children,
 }: PropsWithChildren<{ duration?: number }>) => {
   const { isOpen, value } = useAccordionItemProvider("accordionItem")
 
-  const contentRef = useAccordionHeight<HTMLDivElement>(isOpen, duration) //duration 초 뒤에 accordion을 열거나 닫아줌
+  const contentRef = useAccordionHeight<HTMLDivElement>(isOpen) //duration 초 뒤에 accordion을 열거나 닫아줌
 
   return (
     <div
       className={css({
         display: "none",
         overflow: "hidden",
-        transition: `all 0.2s cubic-bezier(.4,0,.2,1)`,
+        transition: `var(--all 0.2s cubic-bezier(.4,0,.2,1))`,
         border: "1px solid black",
         animation: isOpen
           ? `accordionDown 0.2s cubic-bezier(.4,0,.2,1)`
