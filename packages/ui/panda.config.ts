@@ -23,6 +23,9 @@ export default defineConfig({
   strictTokens: true,
   strictPropertyValues: true,
   utilities: {
+    color: {
+      values: "colors",
+    },
     width: {
       values: "string",
     },
@@ -37,15 +40,21 @@ export default defineConfig({
     },
   },
   theme: {
+    extend: {
+      keyframes: {
+        accordionDown: {
+          from: { height: 0 },
+          to: { height: "var(--accordion-height)" },
+        },
+        accordionUp: {
+          from: { height: "var(--accordion-height)" },
+          to: { height: 0 },
+        },
+      },
+    },
     semanticTokens: {
       colors: {
         ...colors,
-        white: {
-          value: {
-            base: "#FFFFFF",
-            _dark: "#FFFFFF",
-          },
-        },
       },
     },
     tokens: {
