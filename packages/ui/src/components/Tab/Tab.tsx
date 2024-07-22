@@ -2,7 +2,6 @@ import { forwardRef, type ReactNode } from "react"
 import { createContext } from "../../hooks/createContext"
 import { useControlledState } from "../../hooks/useControllableState"
 import Slot from "../Slot/Slot"
-//어떤 아이템이 선택되었는지?
 
 type Value = string
 
@@ -31,18 +30,14 @@ export const Tab = forwardRef<any, TabProps>(
       defaultProp: defaultValue,
     })
 
+    const onSelectItem = (value: string) => {
+      setValue(value)
+    }
+
     return (
-      <TabProvider selected={value} onSelect={setValue}>
+      <TabProvider selected={value} onSelect={onSelectItem}>
         <Element ref={ref}>{children}</Element>
       </TabProvider>
     )
   },
 )
-
-//여러개중에 하나만 선택할 수 있고, 선택하면 그 해당내용을 보여줌
-
-//TabList
-//TabPanels 로 나누어서 관리
-//데이터 타입을 미리 받으면 확장성이 좀 떨어질거같음
-
-//최상위에서 선택된 값 대신에 다른건 숨겨버리면 됨
