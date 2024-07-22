@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { KeyboardEvent, useCallback, useRef } from "react"
 
 type UseKeybaordEvent = {
@@ -41,7 +42,6 @@ export const useKeyboardEvent = ({
           break
         case "Tab":
           nextIndex = (currentIndex + 1) % length
-
           break
         case "Enter":
           callback?.()
