@@ -21,7 +21,7 @@
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-zero-on-changes",
     "test-storybook": "test-storybook",
-    "build": "vite build",
+    "build": "vite build && pnpm prepare",
     "dev": "pnpm panda --watch",
     "codegen": "pnpm panda codegen",
     "cssgen": "pnpm panda cssgen -o dist/lib.css",
@@ -60,7 +60,9 @@
     "storybook": "^8.1.5",
     "tslib": "^2.6.3",
     "typescript": "^5.2.2",
-    "vite-bundle-visualizer": "^1.2.1"
+    "vite-bundle-visualizer": "^1.2.1",
+    "vite": "^5.3.3",
+    "vite-plugin-dts": "^3.9.1"
   },
   "keywords": [],
   "author": "",
