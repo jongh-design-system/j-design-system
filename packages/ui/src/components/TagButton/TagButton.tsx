@@ -8,7 +8,7 @@ type TagButtonProps = Partial<TagButtonVariant> & {
   disabled?: boolean
   className?: string
   id?: string
-  onClick?: (e: boolean) => void
+  onClick?: (e?: boolean) => void
   isClicked?: boolean
   defaultClick?: boolean
 }
@@ -31,6 +31,7 @@ export const TagButton = forwardRef<HTMLSpanElement, TagButtonProps>(
       defaultProp: defaultClick,
       onChange: onClick,
     })
+    //
     return (
       <span
         role="button"
@@ -53,3 +54,5 @@ export const TagButton = forwardRef<HTMLSpanElement, TagButtonProps>(
     )
   },
 )
+
+TagButton.displayName = "TagButton"
