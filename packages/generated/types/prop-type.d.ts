@@ -4,6 +4,7 @@ import type { CssProperties } from './system-types';
 import type { Tokens } from '../tokens/index';
 
 export interface UtilityValues {
+	color: Tokens["colors"];
 	inset: "auto";
 	float: "start" | "end";
 	flexBasis: "1/2" | "1/3" | "2/3" | "1/4" | "2/4" | "3/4" | "1/5" | "2/5" | "3/5" | "4/5" | "1/6" | "2/6" | "3/6" | "4/6" | "5/6" | "1/12" | "2/12" | "3/12" | "4/12" | "5/12" | "6/12" | "7/12" | "8/12" | "9/12" | "10/12" | "11/12" | "full";
@@ -37,7 +38,6 @@ export interface UtilityValues {
 	minBlockSize: "auto" | "svh" | "lvh" | "dvh" | "screen" | "1/2" | "1/3" | "2/3" | "1/4" | "2/4" | "3/4" | "1/5" | "2/5" | "3/5" | "4/5" | "1/6" | "2/6" | "3/6" | "4/6" | "5/6";
 	maxHeight: "auto" | "svh" | "lvh" | "dvh" | "screen" | "1/2" | "1/3" | "2/3" | "1/4" | "2/4" | "3/4" | "1/5" | "2/5" | "3/5" | "4/5" | "1/6" | "2/6" | "3/6" | "4/6" | "5/6";
 	maxBlockSize: "auto" | "svh" | "lvh" | "dvh" | "screen" | "1/2" | "1/3" | "2/3" | "1/4" | "2/4" | "3/4" | "1/5" | "2/5" | "3/5" | "4/5" | "1/6" | "2/6" | "3/6" | "4/6" | "5/6";
-	color: Tokens["colors"];
 	fontSize: Tokens["fontSizes"];
 	fontSmoothing: "antialiased" | "subpixel-antialiased";
 	textDecorationColor: Tokens["colors"];
@@ -83,6 +83,7 @@ export interface UtilityValues {
 	backdropFilter: "auto";
 	borderSpacing: "auto";
 	transition: "all" | "common" | "background" | "colors" | "opacity" | "shadow" | "transform";
+	animationName: "accordionDown" | "accordionUp";
 	rotate: "auto" | "auto-3d";
 	scale: "auto";
 	translate: "auto" | "auto-3d";
