@@ -4,9 +4,6 @@ import type { Meta, StoryObj } from "@storybook/react"
 export default {
   title: "Button",
   component: Button,
-  parameters: {
-    layout: "centered",
-  },
   args: {
     onClick: fn(),
   },

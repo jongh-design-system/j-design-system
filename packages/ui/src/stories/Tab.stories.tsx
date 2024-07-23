@@ -4,9 +4,6 @@ import type { Meta, StoryObj } from "@storybook/react"
 export default {
   title: "Tab",
   component: Tab,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta<typeof Tab>
 
@@ -18,7 +15,7 @@ export const Primary: Story = {
       <>
         <TabList>
           <TabItem value="1" asChild>
-            <div className={css({ border: "1px solid black" })}>1</div>
+            <div>1</div>
           </TabItem>
           <TabItem value="2">2</TabItem>
         </TabList>

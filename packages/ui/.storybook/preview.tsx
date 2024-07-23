@@ -1,7 +1,7 @@
 import type { Preview } from "@storybook/react"
 import "../src/index.css"
 import "jh-generated/styles.css"
-
+import React from "react"
 const preview: Preview = {
   parameters: {
     controls: {
@@ -10,7 +10,23 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    layout: "centered",
   },
+  // decorators: [
+  //   (Story) => {
+  //     return (
+  //       <div
+  //         style={{
+  //           display: "flex",
+  //           justifyContent: "center",
+  //           alignItems: "center",
+  //         }}
+  //       >
+  //         {Story()}
+  //       </div>
+  //     )
+  //   },
+  // ],
 }
 
 export default preview
