@@ -3,7 +3,8 @@ import { createContext } from "../../hooks/createContext"
 import { useControlledState } from "../../hooks/useControllableState"
 import { useAccordionHeight } from "./useAccordionHeight"
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent"
-import { css } from "jh-generated/css"
+import { css, cx } from "jh-generated/css"
+import { accordion } from "jh-generated/recipes"
 
 const ACCORDION_KEYS = [
   "Home",
@@ -78,9 +79,8 @@ const SingleAccordion = ({
             node?.children || [],
           ) as HTMLElement[]
         }}
+        className={cx(accordion({}))}
         onKeyDown={(e) => {
-          console.log(e.key)
-          console.log(selected)
           handleKeyDown(e)
         }}
       >
@@ -137,9 +137,8 @@ const MultiAccordion = ({
             node?.children || [],
           ) as HTMLElement[]
         }}
-        onKeyDown={(e) => {
-          handleKeyDown(e)
-        }}
+        onKeyDown={handleKeyDown}
+        className={cx(accordion({}))}
       >
         {children}
       </div>
@@ -158,16 +157,24 @@ const [AccordionItemProvider, useAccordionItemProvider] =
 
 interface AccordionItemProps extends PropsWithChildren {
   value: string //unique value
+  disabled?: boolean
 }
 
-export const AccordionItem = ({ value, children }: AccordionItemProps) => {
+export const AccordionItem = ({
+  value,
+  disabled = false,
+  children,
+}: AccordionItemProps) => {
   const { selected, onItemOpen, onItemClose } = useAccordionContext("accordion")
 
-  const isOpen = selected?.includes(value)
+  const isOpen = selected?.includes(value) && !disabled
   const onToggle = () => {
+    if (disabled) {
+      return
+    }
     isOpen ? onItemClose(value) : onItemOpen(value)
   }
-
+  //disabled면 -> 무조건 닫혀있어야됨
   return (
     <AccordionItemProvider isOpen={!!isOpen} onToggle={onToggle} value={value}>
       <div
@@ -205,14 +212,13 @@ export const AccordionContent = ({
 }: PropsWithChildren<{ duration?: number }>) => {
   const { isOpen, value } = useAccordionItemProvider("accordionItem")
 
-  const contentRef = useAccordionHeight<HTMLDivElement>(isOpen) //duration 초 뒤에 accordion을 열거나 닫아줌
+  const contentRef = useAccordionHeight<HTMLDivElement>(isOpen, 150) //duration 초 뒤에 accordion을 열거나 닫아줌
 
   return (
     <div
       className={css({
         display: "none",
         overflow: "hidden",
-        transition: `var(--all 0.2s cubic-bezier(.4,0,.2,1))`,
         border: "1px solid black",
         animation: isOpen
           ? `accordionDown 0.2s cubic-bezier(.4,0,.2,1)`

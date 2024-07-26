@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react"
 
-export const useAccordionHeight = <T extends HTMLElement>(isOpen: boolean) => {
+export const useAccordionHeight = <T extends HTMLElement>(
+  isOpen: boolean,
+  duration = 150,
+) => {
   const contentRef = useRef<T>(null)
   useEffect(() => {
     const element = contentRef.current
@@ -26,7 +29,7 @@ export const useAccordionHeight = <T extends HTMLElement>(isOpen: boolean) => {
           "--accordion-height",
           `${element.clientHeight}px`,
         )
-      }, 150)
+      }, duration)
     }
   }, [isOpen])
 
