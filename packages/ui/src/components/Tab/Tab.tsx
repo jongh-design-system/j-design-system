@@ -2,7 +2,7 @@ import { forwardRef, type ReactNode } from "react"
 import { createContext } from "../../hooks/createContext"
 import { useControlledState } from "../../hooks/useControllableState"
 import Slot from "../Slot/Slot"
-
+import { css, cx } from "jh-generated/css"
 type Value = string
 
 export interface TabContext {

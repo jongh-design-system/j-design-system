@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import { useTabContext } from "./Tab"
 import Slot from "../Slot/Slot"
 import useKeyboardEvent from "../../hooks/useKeyboardEvent"
+import { css } from "jh-generated/css"
 
 interface TabListProps {
   children: ReactNode
@@ -19,6 +20,9 @@ export const TabList = ({ children }: TabListProps) => {
         refs.current = Array.from(node?.children || []) as HTMLElement[]
       }}
       onKeyDown={handleKeyDown}
+      className={css({
+        display: "flex",
+      })}
     >
       {children}
     </div>
@@ -47,6 +51,7 @@ export const TabItem = ({
     <Comp
       role="tab"
       tabIndex={0}
+      className={className}
       aria-selected={isSelected}
       onClick={() => onSelect?.(value)}
     >
