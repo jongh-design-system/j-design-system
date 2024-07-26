@@ -22,6 +22,11 @@ export default defineConfig({
   polyfill: true,
   strictTokens: true,
   strictPropertyValues: true,
+  globalCss: {
+    ":focus-visible": {
+      outlineColor: "{colors.blue_300}",
+    },
+  },
   utilities: {
     color: {
       values: "colors",
@@ -70,6 +75,7 @@ export default defineConfig({
     recipes: {
       button: ["*"],
       tagButton: ["*"],
+      accordion: ["*"],
     },
   },
 })
