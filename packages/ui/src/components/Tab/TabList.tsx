@@ -15,7 +15,7 @@ export const TabList = ({ children }: TabListProps) => {
   return (
     <div
       role="tablist"
-      tabIndex={0}
+      tabIndex={0} //고정
       ref={(node) => {
         refs.current = Array.from(node?.children || []) as HTMLElement[]
       }}
@@ -28,13 +28,13 @@ export const TabList = ({ children }: TabListProps) => {
     </div>
   )
 }
-//클릭된 아이템을 제외하고는 selected 제거해주기
 
 interface TabItemProps {
   children: ReactNode
   className?: string
   value: string
   asChild?: boolean
+  disabled?: boolean
 }
 
 export const TabItem = ({
@@ -42,20 +42,26 @@ export const TabItem = ({
   className,
   value,
   asChild,
+  disabled = false,
 }: TabItemProps) => {
-  const Comp = asChild ? Slot : "div"
+  const Comp = asChild ? Slot : "button"
   const { selected, onSelect } = useTabContext("tab")
   const isSelected = selected === value
 
   return (
     <Comp
       role="tab"
-      tabIndex={0}
+      tabIndex={isSelected ? 0 : -1}
       className={className}
+      disabled={disabled}
       aria-selected={isSelected}
+      onFocus={() => onSelect?.(value)}
       onClick={() => onSelect?.(value)}
     >
-      {children}
+      <span>
+        {children}
+        {isSelected ? "select" : "none"}
+      </span>
     </Comp>
   )
 }
