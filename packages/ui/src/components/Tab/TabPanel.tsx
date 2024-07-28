@@ -1,6 +1,5 @@
 import type { ReactNode } from "react"
 import { useTabContext } from "./Tab"
-import { css } from "jh-generated/css"
 
 interface TabPanelProps {
   children: ReactNode
@@ -18,14 +17,9 @@ export const TabContent = ({ children, value }: TabContentProps) => {
 
   const isSelected = selected === value
 
-  return (
-    <div
-      tabIndex={0}
-      className={css({
-        display: isSelected ? "block" : "none",
-      })}
-    >
-      {children}
-    </div>
-  )
+  if (!isSelected) {
+    return null
+  }
+
+  return <div tabIndex={0}>{children}</div>
 }
