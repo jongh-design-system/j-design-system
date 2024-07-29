@@ -17,9 +17,5 @@ export const TabContent = ({ children, value }: TabContentProps) => {
 
   const isSelected = selected === value
 
-  if (!isSelected) {
-    return null
-  }
-
-  return <div tabIndex={0}>{children}</div>
+  return <div tabIndex={0}>{isSelected && children}</div>
 }
