@@ -1,12 +1,12 @@
 import { type ReactNode } from "react"
-import { useTabContext } from "./Tab"
+import { useTabContext } from "./useTabContext"
 import Slot from "../Slot/Slot"
 import useKeyboardEvent from "../../hooks/useKeyboardEvent"
 import { css } from "jh-generated/css"
-
 interface TabListProps {
   children: ReactNode
 }
+
 export const TabList = ({ children }: TabListProps) => {
   const { refs, handleKeyDown } = useKeyboardEvent({
     keyList: ["Home", "End", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"],
