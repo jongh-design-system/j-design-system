@@ -6,12 +6,17 @@ interface TabContentProps {
   value: string
 }
 export const TabContent = ({ children, value }: TabContentProps) => {
-  const { selected } = useTabContext("tab")
+  const { selected, tabId } = useTabContext("tab")
 
   const isSelected = selected === value
 
   return (
-    <div tabIndex={0} data-state={isSelected ? "active" : "inactive"}>
+    <div
+      tabIndex={0}
+      data-state={isSelected ? "active" : "inactive"}
+      role="tabpanel"
+      aria-labelledby={tabId + "-tabpanel-" + value}
+    >
       {isSelected && children}
     </div>
   )
