@@ -1,4 +1,3 @@
-import { css } from "jh-generated/css"
 import {
   Accordion,
   AccordionContent,
@@ -10,9 +9,6 @@ import { useState } from "@storybook/preview-api"
 export default {
   title: "Accordion",
   component: Accordion,
-  // parameters: {
-  //   layout: "centered",
-  // },
   tags: ["autodocs"],
 } satisfies Meta<typeof Accordion>
 
