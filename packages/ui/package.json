@@ -25,7 +25,8 @@
     "dev": "pnpm panda --watch",
     "codegen": "pnpm panda codegen",
     "cssgen": "pnpm panda cssgen -o dist/lib.css",
-    "prepare": "pnpm codegen && pnpm cssgen"
+    "prepare": "pnpm codegen && pnpm cssgen",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@fontsource-variable/roboto-condensed": "^5.0.3",
