@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { type ReactNode } from "react"
 import { useTabContext } from "./Tab"
 import Slot from "../Slot/Slot"
 import useKeyboardEvent from "../../hooks/useKeyboardEvent"
@@ -12,12 +12,16 @@ export const TabList = ({ children }: TabListProps) => {
     keyList: ["Home", "End", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"],
   })
 
+  const { selected } = useTabContext("tab")
+
   return (
     <div
       role="tablist"
-      tabIndex={0} //고정
       ref={(node) => {
         refs.current = Array.from(node?.children || []) as HTMLElement[]
+        if (!selected && refs.current[0]) {
+          refs.current[0].tabIndex = 0
+        }
       }}
       onKeyDown={handleKeyDown}
       className={css({
@@ -42,10 +46,9 @@ export const TabItem = ({
   className,
   value,
   asChild,
-  disabled = false,
 }: TabItemProps) => {
   const Comp = asChild ? Slot : "button"
-  const { selected, onSelect } = useTabContext("tab")
+  const { selected, onSelect, tabId } = useTabContext("tab")
   const isSelected = selected === value
 
   return (
@@ -53,10 +56,10 @@ export const TabItem = ({
       role="tab"
       tabIndex={isSelected ? 0 : -1}
       className={className}
-      disabled={disabled}
       aria-selected={isSelected}
       onFocus={() => onSelect?.(value)}
       onClick={() => onSelect?.(value)}
+      aria-controls={tabId + "-tabpanel-" + value}
     >
       <span>
         {children}
