@@ -15,7 +15,7 @@
     "ui": "pnpm --filter ui",
     "script": "pnpm --filter script",
     "postinstall": "husky install",
-    "format": "prettier --cache --write ."
+    "format": "prettier --cache --write . --ignore-path .prettierignore ."
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.11.0",
