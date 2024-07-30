@@ -31,7 +31,7 @@ export const useAccordionHeight = <T extends HTMLElement>(
         )
       }, duration)
     }
-  }, [isOpen])
+  }, [isOpen, duration])
 
   return contentRef
 }
