@@ -2,10 +2,9 @@ name: "Chromatic UI Test"
 
 on:
   pull_request:
-    types:
-      - synchronize
+    types: [opened, reopened, synchronize]
     branches:
-      - main
+      - "*"
 
 jobs:
   a11y-test:
