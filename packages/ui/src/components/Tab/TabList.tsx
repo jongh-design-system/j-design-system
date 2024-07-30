@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { type ReactNode } from "react"
 import { useTabContext } from "./Tab"
 import Slot from "../Slot/Slot"
 import useKeyboardEvent from "../../hooks/useKeyboardEvent"
@@ -12,12 +12,16 @@ export const TabList = ({ children }: TabListProps) => {
     keyList: ["Home", "End", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"],
   })
 
+  const { selected } = useTabContext("tab")
+
   return (
     <div
       role="tablist"
-      tabIndex={0}
       ref={(node) => {
         refs.current = Array.from(node?.children || []) as HTMLElement[]
+        if (!selected && refs.current[0]) {
+          refs.current[0].tabIndex = 0
+        }
       }}
       onKeyDown={handleKeyDown}
       className={css({
@@ -28,13 +32,13 @@ export const TabList = ({ children }: TabListProps) => {
     </div>
   )
 }
-//클릭된 아이템을 제외하고는 selected 제거해주기
 
 interface TabItemProps {
   children: ReactNode
   className?: string
   value: string
   asChild?: boolean
+  disabled?: boolean
 }
 
 export const TabItem = ({
@@ -43,19 +47,24 @@ export const TabItem = ({
   value,
   asChild,
 }: TabItemProps) => {
-  const Comp = asChild ? Slot : "div"
-  const { selected, onSelect } = useTabContext("tab")
+  const Comp = asChild ? Slot : "button"
+  const { selected, onSelect, tabId } = useTabContext("tab")
   const isSelected = selected === value
 
   return (
     <Comp
       role="tab"
-      tabIndex={0}
+      tabIndex={isSelected ? 0 : -1}
       className={className}
       aria-selected={isSelected}
+      onFocus={() => onSelect?.(value)}
       onClick={() => onSelect?.(value)}
+      aria-controls={tabId + "-tabpanel-" + value}
     >
-      {children}
+      <span>
+        {children}
+        {isSelected ? "select" : "none"}
+      </span>
     </Comp>
   )
 }

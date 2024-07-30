@@ -1,13 +1,13 @@
-import { forwardRef, type ReactNode } from "react"
+import { forwardRef, useId, type ReactNode } from "react"
 import { createContext } from "../../hooks/createContext"
 import { useControlledState } from "../../hooks/useControllableState"
 import Slot from "../Slot/Slot"
-import { css, cx } from "jh-generated/css"
 type Value = string
 
 export interface TabContext {
   selected?: Value
   onSelect?: (index: Value) => void
+  tabId: string
 }
 
 export const [TabProvider, useTabContext] = createContext<TabContext>("tab")
@@ -35,7 +35,7 @@ export const Tab = forwardRef<any, TabProps>(
     }
 
     return (
-      <TabProvider selected={value} onSelect={onSelectItem}>
+      <TabProvider selected={value} onSelect={onSelectItem} tabId={useId()}>
         <Element ref={ref}>{children}</Element>
       </TabProvider>
     )
