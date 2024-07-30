@@ -1,25 +1,17 @@
 import { forwardRef, useId, type ReactNode } from "react"
-import { createContext } from "../../hooks/createContext"
 import { useControlledState } from "../../hooks/useControllableState"
 import Slot from "../Slot/Slot"
-type Value = string
-
-export interface TabContext {
-  selected?: Value
-  onSelect?: (index: Value) => void
-  tabId: string
-}
-
-export const [TabProvider, useTabContext] = createContext<TabContext>("tab")
+import { TabProvider } from "./useTabContext"
 
 export interface TabProps {
   children: ReactNode
-  selected?: Value
-  defaultValue?: Value
-  onSelect?: (index: Value) => void
+  selected?: string
+  defaultValue?: string
+  onSelect?: (value: string) => void
   asChild?: boolean
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Tab = forwardRef<any, TabProps>(
   ({ children, selected, defaultValue, onSelect, asChild }, ref) => {
     const Element = asChild ? Slot : "div"
