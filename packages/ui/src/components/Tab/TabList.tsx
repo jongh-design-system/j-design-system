@@ -1,70 +1,112 @@
-import { type ReactNode } from "react"
+import {
+  type ReactNode,
+  type ReactElement,
+  type ComponentPropsWithRef,
+  forwardRef,
+} from "react"
 import { useTabContext } from "./useTabContext"
-import Slot from "../Slot/Slot"
-import useKeyboardEvent from "../../hooks/useKeyboardEvent"
-import { css } from "jh-generated/css"
+
+import { css, cx } from "jh-generated/css"
+import { RovingTabIndexRoot, useRovingTabIndex } from "./useRovingTabIndex"
+import isHotkey from "is-hotkey"
+import { Slot } from "@radix-ui/react-slot"
+import {
+  getNextFocusableId,
+  getPrevFocusableId,
+} from "../../utils/getFocusableId"
+
 interface TabListProps {
   children: ReactNode
+  className?: string
 }
 
-export const TabList = ({ children }: TabListProps) => {
-  const { refs, handleKeyDown } = useKeyboardEvent({
-    keyList: ["Home", "End", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"],
-  })
+// const setIndicatorStyle = (target: HTMLElement) => {
+//   const targetRect = target.getBoundingClientRect()
+//   const parentRect = target.parentElement?.getBoundingClientRect()
+//   if (!targetRect || !parentRect) {
+//     return
+//   }
+//   document.documentElement.style.setProperty(
+//     "--indicator-left",
+//     `${Math.abs(parentRect.left - targetRect.left)}px`,
+//   )
+//   document.documentElement.style.setProperty(
+//     "--indicator-width",
+//     `${Math.abs(targetRect.width)}px`,
+//   )
+// }
 
+export const TabList = ({ children, className }: TabListProps) => {
   const { selected } = useTabContext("tab")
-
   return (
-    <div
-      role="tablist"
-      ref={(node) => {
-        refs.current = Array.from(node?.children || []) as HTMLElement[]
-        if (!selected && refs.current[0]) {
-          refs.current[0].tabIndex = 0
-        }
-      }}
-      onKeyDown={handleKeyDown}
-      className={css({
-        display: "flex",
+    <RovingTabIndexRoot as="div" role="tablist" active={selected}>
+      <div
+        role="tablist"
+        className={cx(
+          className,
+          css({ position: "relative", display: "flex" }),
+        )}
+      >
+        {children}
+      </div>
+    </RovingTabIndexRoot>
+  )
+}
+type TabItemProps = ComponentPropsWithRef<"button"> & {
+  value: string
+}
+
+export const RovingItem = ({
+  value,
+  children,
+}: {
+  value: string
+  children: ReactElement
+}) => {
+  const { getOrderedItems, getRovingProps } = useRovingTabIndex(value)
+  return (
+    <Slot
+      {...getRovingProps<"button">({
+        onKeyDown: (e) => {
+          const items = getOrderedItems()
+          let nextItem
+          if (isHotkey("right", e)) {
+            nextItem = getNextFocusableId(items, value)
+          } else if (isHotkey("left", e)) {
+            nextItem = getPrevFocusableId(items, value)
+          }
+          nextItem?.element.focus()
+        },
       })}
     >
       {children}
-    </div>
+    </Slot>
   )
 }
 
-interface TabItemProps {
-  children: ReactNode
-  className?: string
-  value: string
-  asChild?: boolean
-  disabled?: boolean
-}
+export const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(
+  ({ children, className, value, ...props }: TabItemProps, forwardRef) => {
+    const { selected, onSelect, tabId } = useTabContext("tab")
+    const isSelected = selected === value
 
-export const TabItem = ({
-  children,
-  className,
-  value,
-  asChild,
-}: TabItemProps) => {
-  const Comp = asChild ? Slot : "button"
-  const { selected, onSelect, tabId } = useTabContext("tab")
-  const isSelected = selected === value
+    const handleSelect = () => {
+      onSelect?.(value)
+    }
 
-  return (
-    <Comp
-      role="tab"
-      tabIndex={isSelected ? 0 : -1}
-      className={className}
-      aria-selected={isSelected}
-      onFocus={() => onSelect?.(value)}
-      onClick={() => onSelect?.(value)}
-      aria-controls={tabId + "-tabpanel-" + value}
-    >
-      <span>
-        {children}
-        {isSelected ? "select" : "none"}
-      </span>
-    </Comp>
-  )
-}
+    return (
+      <RovingItem value={value}>
+        <button
+          ref={forwardRef}
+          onClick={handleSelect}
+          onFocus={handleSelect}
+          role="tab"
+          aria-selected={isSelected}
+          aria-controls={tabId + "-tabpanel-" + value}
+          {...props}
+        >
+          {children}
+        </button>
+      </RovingItem>
+    )
+  },
+)
