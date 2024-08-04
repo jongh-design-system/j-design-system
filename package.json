@@ -20,8 +20,8 @@
     "turbo": "turbo check-types"
   },
   "lint-staged": {
-    "**/*.{tsx,ts,jsx,js}": [
-      "pnpm run lint",
+    "*.{tsx,ts,jsx,js}": [
+      "eslint --fix",
       "prettier --cache --write . --ignore-path .prettierignore .",
       "tsc-files --noEmit"
     ]
