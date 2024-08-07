@@ -3,6 +3,7 @@ import { buttonRecipe } from "./Button/style"
 import { tagButtonRecipe } from "./TagButton/style"
 import { accordionRecipe } from "./Accordion/style"
 import { tabRecipe } from "./Tab/style"
+import { sliderRecipe } from "./Slider/style"
 
 export const preset = definePreset({
   theme: {
@@ -11,6 +12,7 @@ export const preset = definePreset({
       tagButton: tagButtonRecipe,
       accordion: accordionRecipe,
       tab: tabRecipe,
+      slider: sliderRecipe,
     },
   },
 })
