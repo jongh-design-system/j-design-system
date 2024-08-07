@@ -1,6 +1,6 @@
 import { forwardRef, useId, type ReactNode } from "react"
 import { useControlledState } from "../../hooks/useControllableState"
-import Slot from "../Slot/Slot"
+import { Slot } from "@radix-ui/react-slot"
 import { TabProvider } from "./useTabContext"
 
 export interface TabProps {
