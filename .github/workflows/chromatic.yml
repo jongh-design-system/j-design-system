@@ -25,6 +25,9 @@ jobs:
 
       - name: Install Playwright
         run: pnpm dlx playwright install --with-deps
+
+      - run: pnpm ui exec playwright install
+
       - name: Build Storybook
         run: pnpm ui build-storybook
       - name: Serve Storybook and run tests
