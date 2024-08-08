@@ -39,7 +39,7 @@ interface TabListProps {
 export const TabList = ({ children, className }: TabListProps) => {
   const { selected } = useTabContext("tab")
   return (
-    <RovingTabIndexRoot as="div" role="tablist" active={selected}>
+    <RovingTabIndexRoot as="div" active={selected}>
       <div
         role="tablist"
         className={cx(
