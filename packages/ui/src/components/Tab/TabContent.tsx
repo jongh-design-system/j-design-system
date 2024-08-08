@@ -44,8 +44,9 @@ export const TabContent = ({ children, value }: TabContentProps) => {
     <motion.div
       role="tabpanel"
       tabIndex={0}
+      id={tabId + "-tabpanel-" + value}
       data-state={isSelected ? "active" : "inactive"}
-      aria-labelledby={tabId + "-tabpanel-" + value}
+      aria-labelledby={tabId + "-tabitem-" + value}
       key={tabId + "-tabpanel-" + value}
       variants={tabContentVariant}
       animate={isSelected ? "active" : "inactive"}
