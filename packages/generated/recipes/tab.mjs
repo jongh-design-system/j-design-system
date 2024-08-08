@@ -3,12 +3,7 @@ import { createRecipe, mergeRecipes } from './create-recipe.mjs';
 
 const tabFn = /* @__PURE__ */ createRecipe('tab', {}, [])
 
-const tabVariantMap = {
-  "type": [
-    "underline",
-    "pills"
-  ]
-}
+const tabVariantMap = {}
 
 const tabVariantKeys = Object.keys(tabVariantMap)
 
