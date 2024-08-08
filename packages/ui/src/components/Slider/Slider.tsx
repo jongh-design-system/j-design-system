@@ -1,4 +1,4 @@
-import { forwardRef } from "react"
+import { forwardRef, type ComponentPropsWithoutRef } from "react"
 import { useControlledState } from "../../hooks/useControllableState"
 import { cx } from "jh-generated/cx"
 import { slider, type SliderVariant } from "jh-generated/recipes"
@@ -11,11 +11,13 @@ type SliderProps = {
   value?: number
   setValue?: (value: number) => void
   defaultValue?: number
-} & Partial<SliderVariant>
+  "aria-label": string
+} & Partial<SliderVariant> &
+  ComponentPropsWithoutRef<"input">
 
 const RANGE_WIDTH: string = "--range-size" //style prop 타입에러로 인해 string타입으로 사용
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(
-  (props, ref) => {
+  (props, forwardRef) => {
     const {
       value,
       setValue,
@@ -33,22 +35,20 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
     })
 
     return (
-      <>
-        <input
-          type="range"
-          tabIndex={0} //safari에서 focus 잡히지 않아서 추가
-          className={cx(slider({ orientation }), className)}
-          value={slideValue}
-          ref={ref}
-          max={max}
-          min={min}
-          {...restProps}
-          style={{
-            [RANGE_WIDTH]: `${((slideValue - min) / (max - min)) * 100}% 100%`,
-          }}
-          onChange={(e) => setSlideValue(Number(e.target.value))}
-        />
-      </>
+      <input
+        type="range"
+        tabIndex={0} //safari에서 focus 잡히지 않아서 추가
+        className={cx(slider({ orientation: "horizontal" }), className)}
+        value={slideValue}
+        ref={forwardRef}
+        max={max}
+        min={min}
+        {...restProps}
+        style={{
+          [RANGE_WIDTH]: `${((slideValue - min) / (max - min)) * 100}% 100%`,
+        }}
+        onChange={(e) => setSlideValue(Number(e.target.value))}
+      />
     )
   },
 )

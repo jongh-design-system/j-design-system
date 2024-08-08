@@ -19,6 +19,13 @@ export const Controlled: Story = {
   args: {},
   render: () => {
     const [value, setValue] = useState(40)
-    return <Slider value={value} setValue={setValue}></Slider>
+    return (
+      <Slider
+        value={value}
+        setValue={setValue}
+        aria-label="test"
+        className="왜안돼"
+      ></Slider>
+    )
   },
 }
