@@ -24,9 +24,7 @@ jobs:
             - recursive : true
 
       - name: Install Playwright
-        run: pnpm dlx playwright install --with-deps
-
-      - run: pnpm ui exec playwright install
+        run: pnpm ui install playwright --with-deps
 
       - name: Build Storybook
         run: pnpm ui build-storybook
