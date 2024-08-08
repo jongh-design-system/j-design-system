@@ -7,7 +7,7 @@ import {
   type MouseEventHandler,
 } from "react"
 import { button, type ButtonVariant } from "jh-generated/recipes"
-import Slot from "../Slot/Slot"
+import { Slot } from "@radix-ui/react-slot"
 import { cx } from "jh-generated/cx"
 
 type ButtonProps = Partial<ButtonVariant> &

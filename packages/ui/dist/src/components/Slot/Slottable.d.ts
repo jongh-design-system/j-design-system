@@ -3,9 +3,7 @@ import { ReactNode } from "react"
 interface SlottableProps {
   children: ReactNode
 }
-
-const Slottable = ({ children }: SlottableProps) => {
-  return <>{children}</>
-}
-
+declare const Slottable: ({
+  children,
+}: SlottableProps) => import("react/jsx-runtime").JSX.Element
 export default Slottable
