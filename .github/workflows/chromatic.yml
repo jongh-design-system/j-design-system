@@ -12,20 +12,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
-      - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+          run_install: |
+            - recursive : true
+
       - name: Install Playwright
-        run: npx playwright install --with-deps
+        run: pnpm ui install playwright --save-dev
+
+      - run: pnpm ui exec playwright install
+
       - name: Build Storybook
-        run: yarn build-storybook --quiet
+        run: pnpm ui build-storybook
       - name: Serve Storybook and run tests
         run: |
           pnpx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-            "pnpx http-server storybook-static --port 6006 --silent" \
-            "pnpx wait-on tcp:6006 && yarn test-storybook"
+            "pnpx http-server ./packages/ui/storybook-static --port 6006" \
+            "pnpx wait-on http://127.0.0.1:6006 && pnpm ui test-storybook"
+
   chromatic:
     name: Run Chromatic
     needs: a11y-test

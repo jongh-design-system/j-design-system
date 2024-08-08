@@ -22,7 +22,6 @@ export type RovingTabIndexItem = {
 
 function onFocusFirst(candidates: HTMLElement[]) {
   const previousFocus = document.activeElement
-  console.log(document.activeElement)
   while (document.activeElement === previousFocus && candidates.length > 0) {
     candidates.shift()?.focus()
   }
@@ -100,8 +99,9 @@ export const RovingTabIndexRoot = <T extends ElementType>({
     >
       <Component
         {...{ [ROOT_SELECTOR]: true }}
-        tabIndex={isShiftTabbing ? -1 : 0}
+        // tabIndex={isShiftTabbing ? -1 : 0}
         onFocus={(e) => {
+          console.log("parent focus")
           if (e.target !== e.currentTarget) return
           if (isShiftTabbing) return
           const orderedItems = getOrderedItems()
