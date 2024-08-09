@@ -21,21 +21,19 @@
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-zero-on-changes",
     "test-storybook": "test-storybook",
-    "build": "vite build && pnpm prepare",
+    "build": "vite build",
     "dev": "pnpm panda --watch",
-    "codegen": "pnpm panda codegen",
+    "codegen": "pnpm panda codegen --clean",
     "cssgen": "pnpm panda cssgen -o dist/lib.css",
-    "prepare": "pnpm codegen && pnpm cssgen",
+    "release": "pnpm panda codegen --clean && vite build && pnpm panda cssgen -o dist/lib.css",
     "check-types": "tsc --noEmit",
     "local": "vite"
   },
   "dependencies": {
     "@fontsource-variable/roboto-condensed": "^5.0.3",
     "@radix-ui/react-slot": "^1.1.0",
-    "@types/prop-types": "^15.7.12",
     "framer-motion": "^11.3.19",
     "is-hotkey": "^0.2.0",
-    "jh-generated": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "token": "workspace:^"
@@ -69,7 +67,8 @@
     "typescript": "^5.2.2",
     "vite": "^5.3.3",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^3.9.1"
+    "vite-plugin-dts": "^3.9.1",
+    "vite-tsconfig-paths": "^5.0.1"
   },
   "keywords": [],
   "author": "",

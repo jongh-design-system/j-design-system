@@ -60,7 +60,6 @@ export const Controlled: Story = {
             <div>2의 내용</div>
           </TabContent>
         </Tab>
-        <div>sdfsdf</div>
       </>
     )
   },

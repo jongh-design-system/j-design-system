@@ -10,6 +10,7 @@ import { css, cx } from "jh-generated/css"
 import { RovingTabIndexRoot, useRovingTabIndex } from "./useRovingTabIndex"
 import isHotkey from "is-hotkey"
 import { Slot } from "@radix-ui/react-slot"
+import { composeRefs } from "../../hooks/useComposedRefs"
 import {
   getNextFocusableId,
   getPrevFocusableId,
@@ -20,26 +21,26 @@ interface TabListProps {
   className?: string
 }
 
-// const setIndicatorStyle = (target: HTMLElement) => {
-//   const targetRect = target.getBoundingClientRect()
-//   const parentRect = target.parentElement?.getBoundingClientRect()
-//   if (!targetRect || !parentRect) {
-//     return
-//   }
-//   document.documentElement.style.setProperty(
-//     "--indicator-left",
-//     `${Math.abs(parentRect.left - targetRect.left)}px`,
-//   )
-//   document.documentElement.style.setProperty(
-//     "--indicator-width",
-//     `${Math.abs(targetRect.width)}px`,
-//   )
-// }
+const setIndicatorStyle = (target: HTMLElement) => {
+  const targetRect = target.getBoundingClientRect()
+  const parentRect = target.parentElement?.getBoundingClientRect()
+  if (!targetRect || !parentRect) {
+    return
+  }
+  document.documentElement.style.setProperty(
+    "--indicator-left",
+    `${Math.abs(parentRect.left - targetRect.left)}px`,
+  )
+  document.documentElement.style.setProperty(
+    "--indicator-width",
+    `${Math.abs(targetRect.width)}px`,
+  )
+}
 
 export const TabList = ({ children, className }: TabListProps) => {
   const { selected } = useTabContext("tab")
   return (
-    <RovingTabIndexRoot as="div" role="tablist" active={selected}>
+    <RovingTabIndexRoot as="div" active={selected}>
       <div
         role="tablist"
         className={cx(
@@ -96,11 +97,16 @@ export const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(
     return (
       <RovingItem value={value}>
         <button
-          ref={forwardRef}
+          ref={composeRefs((node) => {
+            if (isSelected && node) {
+              setIndicatorStyle(node as HTMLElement)
+            }
+          }, forwardRef)}
           onClick={handleSelect}
           onFocus={handleSelect}
           role="tab"
           aria-selected={isSelected}
+          id={tabId + "-tabitem-" + value}
           aria-controls={tabId + "-tabpanel-" + value}
           {...props}
         >

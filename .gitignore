@@ -6,7 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
 node_modules
 dist-ssr
 *.local
@@ -24,4 +23,6 @@ dist-ssr
 
 *storybook.log
 .turbo
-.env*
+packages/ui/styled-system/*
+**/dist/
+.env

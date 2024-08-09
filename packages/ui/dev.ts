@@ -11,7 +11,7 @@ import {
   SlotRecipeVariantRecord,
   SystemStyleObject as CodegenSystemStyleObject,
 } from "jh-generated/types"
-import { TextStyle } from "jh-generated/composition"
+import { TextStyle } from "jh-generated/types/composition"
 
 function defineSafeRecipe<T extends RecipeVariantRecord>(
   config: CodegenRecipeConfig<T>,
