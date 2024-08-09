@@ -23,7 +23,6 @@ dist-ssr
 
 *storybook.log
 .turbo
-.env*
-
-packages/generated/**
+packages/ui/styled-system/*
 **/dist/
+.env
