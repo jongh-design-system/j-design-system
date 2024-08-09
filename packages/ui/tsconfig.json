@@ -2,7 +2,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "baseUrl": ".",
+    "paths": {
+      "jh-generated/*": ["styled-system/*"],
+      "jh-generated/cx": ["styled-system/css/cx"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["stories", "node_modules"]
