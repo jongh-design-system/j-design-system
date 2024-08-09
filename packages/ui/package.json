@@ -23,7 +23,7 @@
     "test-storybook": "test-storybook",
     "build": "vite build && pnpm prepare",
     "dev": "pnpm panda --watch",
-    "codegen": "pnpm panda codegen",
+    "codegen": "pnpm panda codegen --clean",
     "cssgen": "pnpm panda cssgen -o dist/lib.css",
     "prepare": "pnpm codegen && pnpm cssgen",
     "check-types": "tsc --noEmit",
