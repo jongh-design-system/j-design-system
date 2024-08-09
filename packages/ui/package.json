@@ -25,7 +25,7 @@
     "dev": "pnpm panda --watch",
     "codegen": "pnpm panda codegen --clean",
     "cssgen": "pnpm panda cssgen -o dist/lib.css",
-    "prepare": "pnpm codegen && pnpm cssgen",
+    "prepare": "pnpm codegen && vite build && pnpm cssgen",
     "check-types": "tsc --noEmit",
     "local": "vite"
   },
