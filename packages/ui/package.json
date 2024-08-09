@@ -21,11 +21,11 @@
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-zero-on-changes",
     "test-storybook": "test-storybook",
-    "build": "vite build && pnpm prepare",
+    "build": "vite build",
     "dev": "pnpm panda --watch",
     "codegen": "pnpm panda codegen --clean",
     "cssgen": "pnpm panda cssgen -o dist/lib.css",
-    "prepare": "pnpm panda codegen --clean && vite build && pnpm panda cssgen -o dist/lib.css",
+    "release": "pnpm panda codegen --clean && vite build && pnpm panda cssgen -o dist/lib.css",
     "check-types": "tsc --noEmit",
     "local": "vite"
   },

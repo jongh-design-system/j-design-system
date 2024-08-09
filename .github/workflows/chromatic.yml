@@ -23,6 +23,8 @@ jobs:
           run_install: |
             - recursive : true
 
+      - run: pnpm ui release
+
       - name: Install Playwright
         run: pnpm ui install playwright --save-dev
 
