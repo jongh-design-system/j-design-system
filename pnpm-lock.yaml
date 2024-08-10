@@ -65,6 +65,9 @@ importers:
 
   packages/app:
     dependencies:
+      jh-generated:
+        specifier: workspace:^
+        version: link:../generated
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -100,6 +103,8 @@ importers:
         specifier: ^5.2.2
         version: 5.5.3
 
+  packages/generated: {}
+
   packages/script:
     devDependencies:
       plop:
@@ -122,6 +127,9 @@ importers:
       is-hotkey:
         specifier: ^0.2.0
         version: 0.2.0
+      jh-generated:
+        specifier: workspace:^
+        version: link:../generated
       react:
         specifier: ^18.2.0
         version: 18.3.1
