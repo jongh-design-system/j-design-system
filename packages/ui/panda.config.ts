@@ -69,7 +69,7 @@ export default defineConfig({
     textStyles,
   },
   // The output directory for your css system
-  outdir: "./styled-system",
+  outdir: "../generated/styled-system",
   importMap: "jh-generated",
   staticCss: {
     recipes: {

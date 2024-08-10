@@ -1,25 +1,33 @@
 {
-  "name": "generated",
+  "name": "jh-generated",
   "type": "module",
   "exports": {
+    "./css" : {
+      "types": "./styled-system/css/index.d.ts",
+      "require": "./styled-system/css/index.mjs",
+      "import": "./styled-system/css/index.mjs"
+    },
     "./cx": {
-      "types": "./css/cx.d.ts",
-      "require": "./css/cx.mjs",
-      "import": "./css/cx.mjs"
+      "types": "./styled-system/css/cx.d.ts",
+      "require": "./styled-system/css/cx.mjs",
+      "import": "./styled-system/css/cx.mjs"
     },
     "./recipes": {
-      "types": "./recipes/index.d.ts",
-      "require": "./recipes/index.mjs",
-      "import": "./recipes/index.mjs"
+      "types": "./styled-system/recipes/index.d.ts",
+      "require": "./styled-system/recipes/index.mjs",
+      "import": "./styled-system/recipes/index.mjs"
     },
     "./tokens": {
-      "types": "./tokens/index.d.ts",
-      "require": "./tokens/index.mjs",
-      "import": "./tokens/index.mjs"
+      "types": "./styled-system/tokens/index.d.ts",
+      "require": "./styled-system/tokens/index.mjs",
+      "import": "./styled-system/tokens/index.mjs"
     },
     "./types": {
-      "types": "./types/index.d.ts"
+      "types": "./styled-system/types/index.d.ts"
     },
-    "./styles.css": "./styles.css"
+    "./types/composition" : {
+      "types": "./styled-system/types/composition.d.ts"
+    },
+    "./styles.css": "./styled-system/styles.css"
   }
 }
