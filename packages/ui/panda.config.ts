@@ -18,7 +18,6 @@ export default defineConfig({
   exclude: [],
   dependencies: ["./src/components/**/*.{js,jsx,ts,tsx}"],
   preflight: true,
-  minify: true,
   polyfill: true,
   strictTokens: true,
   strictPropertyValues: true,

@@ -197,9 +197,8 @@ export const AccordionTrigger = ({ children }: PropsWithChildren) => {
     <h3 data-state={isOpen ? "open" : "close"}>
       <button
         onClick={onToggle}
-        aria-expanded={isOpen ? true : false}
-        aria-controls={value}
-        tabIndex={-1}
+        aria-expanded={isOpen ? "true" : "false"}
+        aria-controls={`content-${value}`}
       >
         <span>{children}</span>
       </button>
@@ -225,7 +224,7 @@ export const AccordionContent = ({
           : `accordionUp 0.2s cubic-bezier(.4,0,.2,1)`,
       })}
       data-state={isOpen ? "open" : "close"}
-      aria-controls={value}
+      id={`content-${value}`}
     >
       <div ref={contentRef}>{children}</div>
     </div>

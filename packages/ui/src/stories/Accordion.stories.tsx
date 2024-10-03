@@ -6,6 +6,7 @@ import {
 } from "../components/Accordion/Accordion.tsx"
 import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "@storybook/preview-api"
+import { expect, userEvent, within } from "@storybook/test"
 export default {
   title: "Accordion",
   component: Accordion,
@@ -64,5 +65,15 @@ export const Controlled: Story = {
         </Accordion>
       </>
     )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const accordionItem = canvas.getByText("1번")
+    await userEvent.click(accordionItem)
+    expect(accordionItem.parentElement?.ariaExpanded).toBeTruthy()
+    const accordionContent = canvas.getByText("내용1")
+    expect(accordionContent.parentNode).toBeInTheDocument()
+    await userEvent.click(accordionItem)
+    expect(accordionContent).not.toBeInTheDocument()
   },
 }

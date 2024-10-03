@@ -1,9 +1,5 @@
 function App() {
-  return (
-    <>
-      <div>ㄴㅇㄹㄴㅇㄹ</div>
-    </>
-  )
+  return <></>
 }
 
 export default App

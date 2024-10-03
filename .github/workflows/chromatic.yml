@@ -3,9 +3,9 @@ name: "Chromatic UI Test"
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-    branches:
-      - "*"
-
+    branches: [main]
+    paths:
+      - packages/ui/src/stories/**
 jobs:
   a11y-test:
     timeout-minutes: 60
@@ -55,6 +55,8 @@ jobs:
         run: pnpm install
       - name: Run Chromatic
         uses: chromaui/action@latest
+
         with:
           # ⚠️ Make sure to configure a `CHROMATIC_PROJECT_TOKEN` repository secret
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: packages/ui
