@@ -6,7 +6,7 @@ import {
 } from "../components/Accordion/Accordion.tsx"
 import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "@storybook/preview-api"
-import { expect, userEvent, within } from "@storybook/test"
+import { expect, userEvent, waitFor, within } from "@storybook/test"
 export default {
   title: "Accordion",
   component: Accordion,
@@ -69,11 +69,25 @@ export const Controlled: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const accordionItem = canvas.getByText("1번")
-    await userEvent.click(accordionItem)
-    expect(accordionItem.parentElement?.ariaExpanded).toBeTruthy()
-    const accordionContent = canvas.getByText("내용1")
-    expect(accordionContent.parentNode).toBeInTheDocument()
-    await userEvent.click(accordionItem)
-    expect(accordionContent).not.toBeInTheDocument()
+
+    // 첫 번째 클릭으로 "aria-expanded"가 "true"인지 확인하고, content가 렌더링되었는지 확인
+    await userEvent.click(accordionItem.parentElement!)
+    await waitFor(async () => {
+      expect(accordionItem.parentElement?.getAttribute("aria-expanded")).toBe(
+        "true",
+      )
+      const accordionContent = canvas.queryByText("내용1")
+      expect(accordionContent).toBeTruthy()
+    })
+
+    // 두 번째 클릭으로 "aria-expanded"가 "false"인지 확인하고, content가 렌더링 안되었는지 확인
+    await userEvent.click(accordionItem.parentElement!)
+    await waitFor(() => {
+      expect(accordionItem.parentElement?.getAttribute("aria-expanded")).toBe(
+        "false",
+      )
+      const accordionContent = canvas.queryByText("내용1")
+      expect(accordionContent).toBeFalsy()
+    })
   },
 }

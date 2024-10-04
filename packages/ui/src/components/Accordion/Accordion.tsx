@@ -213,6 +213,10 @@ export const AccordionContent = ({
 
   const contentRef = useAccordionHeight<HTMLDivElement>(isOpen, 150) //duration 초 뒤에 accordion을 열거나 닫아줌
 
+  if (!isOpen) {
+    return null
+  }
+
   return (
     <div
       className={css({

@@ -16,11 +16,10 @@
   },
   "scripts": {
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+    "local": "vite",
     "storybook": "storybook dev -p 6006",
     "build": "pnpm prepare && vite build",
     "build-storybook": "storybook build",
-    "chromatic": "chromatic --exit-zero-on-changes",
     "test-storybook": "test-storybook",
     "dev": "pnpm panda --watch",
     "codegen": "pnpm panda codegen --clean",
@@ -28,7 +27,6 @@
     "release": "pnpm panda prepare && vite build && pnpm panda cssgen && pnpm build-storybook",
     "prepare": "pnpm panda codegen --clean && pnpm panda cssgen -o ./dist/styles.css && pnpm panda cssgen -o ../generated/styled-system/styles.css",
     "check-types": "tsc --noEmit",
-    "local": "vite",
     "studio": "pnpm panda studio"
   },
   "dependencies": {
