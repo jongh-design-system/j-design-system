@@ -16,18 +16,15 @@
   },
   "scripts": {
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+    "local": "vite",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "chromatic --exit-zero-on-changes",
     "test-storybook": "test-storybook",
-    "build": "vite build",
     "dev": "pnpm panda --watch",
     "codegen": "pnpm panda codegen --clean",
     "cssgen": "pnpm panda cssgen -o dist/lib.css",
-    "release": "pnpm panda prepare && vite build && pnpm panda cssgen -o dist/lib.css",
+    "release": "pnpm panda prepare && vite build && pnpm panda cssgen && pnpm build-storybook",
     "check-types": "tsc --noEmit",
-    "local": "vite",
     "studio": "pnpm panda studio"
   },
   "dependencies": {

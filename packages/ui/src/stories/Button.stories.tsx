@@ -60,8 +60,7 @@ export const Text: Story = {
 export const WithIcon: Story = {
   args: {
     ...Primary.args,
-    onClick: () => alert("가운데"),
-    leftIcon: <div onClick={() => () => alert("가운")}>+</div>,
+    leftIcon: <div onClick={() => () => alert("left")}>+</div>,
     rightIcon: <div>+</div>,
   },
 }
