@@ -1,6 +1,7 @@
 import { definePreset } from "@pandacss/dev"
-import { colors, radii, fontSizes, textStyles } from "./tokens/helpers"
+import { colors, radii, fontSizes, textStyles } from "./tokens/tokens"
 import { recipes, slotRecipes } from "./recipes"
+import { keyframes } from "./tokens/keyframes"
 
 export const preset = definePreset({
   theme: {
@@ -15,6 +16,7 @@ export const preset = definePreset({
       textStyles,
       recipes,
       slotRecipes,
+      keyframes,
     },
   },
 })
