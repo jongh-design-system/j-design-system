@@ -3,8 +3,7 @@ import { createContext } from "../../hooks/createContext"
 import { useControlledState } from "../../hooks/useControllableState"
 import { useAccordionHeight } from "./useAccordionHeight"
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent"
-import { css, cx } from "jh-generated/css"
-import { accordion } from "jh-generated/recipes"
+import { css } from "@styled-system/css"
 
 const ACCORDION_KEYS = [
   "Home",
@@ -79,12 +78,11 @@ const SingleAccordion = ({
             node?.children || [],
           ) as HTMLElement[]
         }}
-        className={cx(accordion({}))}
         onKeyDown={(e) => {
           handleKeyDown(e)
         }}
       >
-        {children}
+        <div>{children}</div>
       </div>
     </AccordionProvider>
   )
@@ -138,7 +136,6 @@ const MultiAccordion = ({
           ) as HTMLElement[]
         }}
         onKeyDown={handleKeyDown}
-        className={cx(accordion({}))}
       >
         {children}
       </div>
@@ -195,13 +192,13 @@ export const AccordionTrigger = ({ children }: PropsWithChildren) => {
   const { onToggle, isOpen, value } = useAccordionItemProvider("accordionItem")
   return (
     <h3 data-state={isOpen ? "open" : "close"}>
-      <button
+      <span
         onClick={onToggle}
         aria-expanded={isOpen ? "true" : "false"}
         aria-controls={`content-${value}`}
       >
         <span>{children}</span>
-      </button>
+      </span>
     </h3>
   )
 }

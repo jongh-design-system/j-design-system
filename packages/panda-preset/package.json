@@ -1,0 +1,45 @@
+{
+  "name": "@jongh/panda-preset",
+  "version": "0.0.2",
+  "description": "pandacss preset",
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "main": "./dist/preset.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/preset.d.ts",
+      "require": "./dist/preset.cjs",
+      "import": "./dist/preset.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup",
+    "publish-npm": "pnpm publish --no-git-checks"
+  },
+  "tsup": {
+    "entry": [
+      "src/preset.ts"
+    ],
+    "clean": true,
+    "dts": true,
+    "sourcemap": true,
+    "format": [
+      "esm",
+      "cjs"
+    ]
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^0.40.1",
+    "tsup": "^8.3.0"
+  }
+}

@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // 추출 대상 파일 경로
-const filePath = "./packages/token"
+const filePath = "./packages/panda-preset/src/tokens/json"
 const dir = join(__dirname, filePath)
 
 if (!existsSync(dir)) {

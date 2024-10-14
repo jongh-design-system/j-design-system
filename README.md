@@ -1,30 +1,22 @@
-# React + TypeScript + Vite
+# 디자인 시스템
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+pandacss를 사용한 React Headless UI 라이브러리입니다.
+디자인 시스템의 시스템을 구축하고, 유저와 개발자 모두가 사용하기 편한 라이브러리를 만들기 위한 공부용 프로젝트입니다.
+[velog 링크
+](https://velog.io/@jh5717/series/%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C)해당 블로그에서 관련된 포스트를 확인할 수 있습니다
 
-Currently, two official plugins are available:
+## 사용 기술
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React(>=18)
+- Pandacss
+- radix UI의 일부 custom hook
+- float UI
 
-## Expanding the ESLint configuration
+## UI List
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json", "./tsconfig.node.json"],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Accordion
+- Button, TagButton
+- Tab
+- Avatar
+- Select
+- Slider

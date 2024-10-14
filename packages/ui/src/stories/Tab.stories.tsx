@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { Tab, TabList, TabItem, TabContent } from "../components/Tab/index"
 import type { Meta, StoryObj } from "@storybook/react"
-import { cx } from "jh-generated/cx"
-import { tab } from "jh-generated/recipes"
+import { cx } from "@styled-system/css"
+import { tab } from "@styled-system/recipes"
 import { TabIndicator } from "../components/Tab/TabIndicator"
 export default {
   title: "Tab",

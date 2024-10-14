@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { core, light, dark } from "token"
+import { core, light, dark } from "./json"
 import {
   defineSemanticTokens,
   defineTextStyles,

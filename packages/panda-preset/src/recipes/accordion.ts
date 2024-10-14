@@ -1,30 +1,33 @@
-import { define } from "../../../dev"
+import { defineSlotRecipe } from "@pandacss/dev"
 
-export const accordion = define.slotRecipe({
+export const accordionRecipe = defineSlotRecipe({
   className: "accordion",
   slots: ["root", "content", "indicator", "trigger"],
   base: {
     root: {
       divideY: "1px",
-      width: "auto",
+      width: "full",
       borderTopWidth: "1px",
       borderBottomWidth: "1px",
     },
     trigger: {
       alignItems: "center",
+      color: "",
       cursor: "pointer",
       display: "flex",
       fontWeight: "semibold",
       gap: "3",
       justifyContent: "space-between",
+      textStyle: "lg",
       textAlign: "left",
+      width: "full",
       _disabled: {
-        color: "grey_200",
+        color: "fg.disabled",
         cursor: "not-allowed",
       },
     },
     indicator: {
-      color: "blue_200",
+      color: "fg.muted",
       transformOrigin: "center",
       transitionDuration: "normal",
       transitionProperty: "transform",
@@ -34,7 +37,7 @@ export const accordion = define.slotRecipe({
       },
     },
     content: {
-      color: "white",
+      color: "fg.muted",
       overflow: "hidden",
       transitionProperty: "padding-bottom",
       transitionDuration: "normal",
