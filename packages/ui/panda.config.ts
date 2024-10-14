@@ -1,6 +1,5 @@
 import { defineConfig } from "@pandacss/dev"
-import { colors, radii, fontSizes, textStyles } from "./index"
-import { preset } from "./src/components/preset"
+import { preset } from "@jongh/panda-preset"
 export default defineConfig({
   outExtension: "mjs",
   jsxFramework: "react",
@@ -26,56 +25,55 @@ export default defineConfig({
       outlineColor: "{colors.blue_300}",
     },
   },
-  utilities: {
-    color: {
-      values: "colors",
-    },
-    width: {
-      values: "string",
-    },
-    height: {
-      values: "string",
-    },
-    minWidth: {
-      values: "string",
-    },
-    minHeight: {
-      values: "string",
-    },
-  },
-  theme: {
-    extend: {
-      keyframes: {
-        accordionDown: {
-          from: { height: 0 },
-          to: { height: "var(--accordion-height)" },
-        },
-        accordionUp: {
-          from: { height: "var(--accordion-height)" },
-          to: { height: 0 },
-        },
-      },
-    },
-    semanticTokens: {
-      colors: {
-        ...colors,
-      },
-    },
-    tokens: {
-      radii,
-      fontSizes,
-    },
-    textStyles,
-  },
-  // The output directory for your css system
-  outdir: "../generated/styled-system",
-  importMap: "jh-generated",
-  staticCss: {
-    recipes: {
-      button: ["*"],
-      tagButton: ["*"],
-      accordion: ["*"],
-      slider: ["*"],
-    },
-  },
+  // utilities: {
+  //   color: {
+  //     values: "colors",
+  //   },
+  //   width: {
+  //     values: "string",
+  //   },
+  //   height: {
+  //     values: "string",
+  //   },
+  //   minWidth: {
+  //     values: "string",
+  //   },
+  //   minHeight: {
+  //     values: "string",
+  //   },
+  // },
+  // theme: {
+  //   extend: {
+  //     keyframes: {
+  //       accordionDown: {
+  //         from: { height: 0 },
+  //         to: { height: "var(--accordion-height)" },
+  //       },
+  //       accordionUp: {
+  //         from: { height: "var(--accordion-height)" },
+  //         to: { height: 0 },
+  //       },
+  //     },
+  //   },
+  //   semanticTokens: {
+  //     colors: {
+  //       ...colors,
+  //     },
+  //   },
+  //   tokens: {
+  //     radii,
+  //     fontSizes,
+  //   },
+  //   textStyles,
+  // },
+  // // The output directory for your css system
+  outdir: "./src/styled-system",
+  // staticCss: {
+  //   recipes: {
+  //     button: ["*"],
+  //     tagButton: ["*"],
+  //     accordion: ["*"],
+  //     slider: ["*"],
+  //   },
+  // },
 })

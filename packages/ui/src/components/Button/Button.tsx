@@ -6,9 +6,8 @@ import {
   type ReactElement,
   type MouseEventHandler,
 } from "react"
-import { button, type ButtonVariant } from "jh-generated/recipes"
+import { type ButtonVariant } from "@styled-system/recipes"
 import { Slot } from "@radix-ui/react-slot"
-import { cx } from "jh-generated/cx"
 
 type ButtonProps = Partial<ButtonVariant> &
   ComponentPropsWithoutRef<"button"> & { as?: string } & {
@@ -49,7 +48,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         role="button"
         ref={ref}
-        className={cx(button({ ...rest }))}
         disabled={disabled}
         id={id}
         data-testid={id}

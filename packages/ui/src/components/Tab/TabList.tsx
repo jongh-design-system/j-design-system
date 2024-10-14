@@ -6,7 +6,7 @@ import {
 } from "react"
 import { useTabContext } from "./useTabContext"
 
-import { css, cx } from "jh-generated/css"
+import { css, cx } from "@styled-system/css"
 import { RovingTabIndexRoot, useRovingTabIndex } from "./useRovingTabIndex"
 import isHotkey from "is-hotkey"
 import { Slot } from "@radix-ui/react-slot"

@@ -1,4 +1,4 @@
-import { css } from "jh-generated/css"
+import { css } from "@styled-system/css"
 import { motion } from "framer-motion"
 
 export const TabIndicator = () => {
