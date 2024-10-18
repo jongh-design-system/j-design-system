@@ -2,51 +2,49 @@ import { defineSlotRecipe } from "@pandacss/dev"
 
 export const accordionRecipe = defineSlotRecipe({
   className: "accordion",
-  slots: ["root", "content", "indicator", "trigger"],
+  slots: ["root", "content", "item", "trigger"],
   base: {
     root: {
       divideY: "1px",
-      width: "full",
+      width: "100%",
       borderTopWidth: "1px",
       borderBottomWidth: "1px",
     },
     trigger: {
       alignItems: "center",
-      color: "",
+      color: "grey_300",
+      borderColor: "border_basic",
       cursor: "pointer",
       display: "flex",
-      fontWeight: "semibold",
-      gap: "3",
+      fontWeight: "bold",
       justifyContent: "space-between",
-      textStyle: "lg",
+      textStyle: "body",
       textAlign: "left",
-      width: "full",
+      width: "100%",
       _disabled: {
-        color: "fg.disabled",
         cursor: "not-allowed",
       },
     },
-    indicator: {
-      color: "fg.muted",
-      transformOrigin: "center",
-      transitionDuration: "normal",
-      transitionProperty: "transform",
-      transitionTimingFunction: "default",
-      _open: {
-        transform: "rotate(-180deg)",
-      },
-    },
+    //   indicator: {
+    //     color: "fg.muted",
+    //     transformOrigin: "center",
+    //     transitionDuration: "normal",
+    //     transitionProperty: "transform",
+    //     transitionTimingFunction: "default",
+    //     _open: {
+    //       transform: "rotate(-180deg)",
+    //     },
+    //   },
     content: {
-      color: "fg.muted",
+      display: "none",
       overflow: "hidden",
-      transitionProperty: "padding-bottom",
-      transitionDuration: "normal",
-      transitionTimingFunction: "default",
       _open: {
-        animation: "collapse-in",
+        display: "block",
+        animation: `accordionDown 0.2s cubic-bezier(.4,0,.2,1)`,
       },
       _closed: {
-        animation: "collapse-out",
+        display: "none",
+        animation: `accordionUp 0.2s cubic-bezier(.4,0,.2,1)`,
       },
     },
   },
@@ -58,6 +56,7 @@ export const accordionRecipe = defineSlotRecipe({
       md: {
         trigger: {
           py: "4",
+          pl: "4",
         },
         content: {
           pb: "6",

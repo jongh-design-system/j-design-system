@@ -1,9 +1,9 @@
-import { PropsWithChildren, forwardRef, useCallback } from "react"
+import * as React from "react"
 import { createContext } from "../../hooks/createContext"
 import { useControlledState } from "../../hooks/useControllableState"
 import { useAccordionHeight } from "./useAccordionHeight"
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent"
-import { css } from "@styled-system/css"
+import { Slot } from "@radix-ui/react-slot"
 
 const ACCORDION_KEYS = [
   "Home",
@@ -23,125 +23,157 @@ export type TAccordionContext = {
 const [AccordionProvider, useAccordionContext] =
   createContext<TAccordionContext>("accordion")
 
-export interface AccordionProps extends PropsWithChildren {
+export interface AccordionProps {
   value?: string[]
   defaultValue?: string[]
   onValueChange?: (value: string[]) => void
+  asChild?: boolean
   type?: "single" | "multi"
 }
 //ref 관련 문제 해결 필요
-export const Accordion = forwardRef<HTMLElement, AccordionProps>((props, _) => {
-  const { type = "single", ...accordionProps } = props
-  if (type === "single") {
-    return <SingleAccordion {...accordionProps} />
-  }
-  if (type === "multi") {
-    return <MultiAccordion {...accordionProps} />
-  }
-})
+export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
+  (props, ref) => {
+    const { type = "single", ...accordionProps } = props
+    if (type === "single") {
+      return <SingleAccordion {...accordionProps} ref={ref} />
+    }
+    if (type === "multi") {
+      return <MultiAccordion {...accordionProps} />
+    }
+  },
+)
 
 Accordion.displayName = "Accordion"
 
-interface AccordionImplSingleProps extends PropsWithChildren {
-  value?: string[] //value -> selected는 현재 선택되어있는 item들을 담아놓는용도
-
+interface AccordionImplSingleProps {
+  value?: string[] // 현재 선택되어있는 item들을 담아놓는 용도
   defaultValue?: string[]
   onValueChange?: (value: string[]) => void
+  asChild?: boolean
+  children?: React.ReactNode
 }
 
-const SingleAccordion = ({
-  value,
-  defaultValue = [],
-  onValueChange,
-  children,
-}: AccordionImplSingleProps) => {
-  const [selected = [], setSelected] = useControlledState({
-    prop: value,
-    defaultProp: defaultValue,
-    onChange: onValueChange,
-  })
+const SingleAccordion = React.forwardRef<
+  HTMLDivElement,
+  AccordionImplSingleProps
+>(
+  (
+    { value, defaultValue = [], onValueChange, children, asChild, ...props },
+    forwardedRef,
+  ) => {
+    const [selected = [], setSelected] = useControlledState({
+      prop: value,
+      defaultProp: defaultValue,
+      onChange: onValueChange,
+    })
 
-  const { refs: accordionRefs, handleKeyDown } = useKeyboardEvent({
-    keyList: ACCORDION_KEYS,
-  })
+    const { refs: accordionRefs, handleKeyDown } = useKeyboardEvent({
+      keyList: ACCORDION_KEYS,
+    })
 
-  return (
-    <AccordionProvider
-      selected={selected}
-      onItemOpen={(value) => setSelected((_) => [value])}
-      onItemClose={() => setSelected((_) => [])}
-      refs={accordionRefs.current || []}
-    >
-      <div
-        ref={(node) => {
-          accordionRefs.current = Array.from(
-            node?.children || [],
-          ) as HTMLElement[]
-        }}
-        onKeyDown={(e) => {
-          handleKeyDown(e)
-        }}
+    const Comp = asChild ? Slot : "div"
+
+    return (
+      <AccordionProvider
+        selected={selected}
+        onItemOpen={(value) => setSelected((_) => [value])}
+        onItemClose={() => setSelected((_) => [])}
+        refs={accordionRefs.current || []}
       >
-        <div>{children}</div>
-      </div>
-    </AccordionProvider>
-  )
-}
+        <Comp
+          ref={(node) => {
+            accordionRefs.current = Array.from(
+              node?.children || [],
+            ) as HTMLElement[]
+            if (typeof forwardedRef === "function") {
+              forwardedRef(node)
+            } else if (forwardedRef) {
+              ;(
+                forwardedRef as React.MutableRefObject<HTMLDivElement | null>
+              ).current = node
+            }
+          }}
+          onKeyDown={(e) => {
+            handleKeyDown(e)
+          }}
+          {...props}
+        >
+          {children}
+        </Comp>
+      </AccordionProvider>
+    )
+  },
+)
 
-interface AccordionImplMultiProps extends PropsWithChildren {
-  value?: string[]
+interface AccordionImplMultiProps {
+  value?: string[] // 현재 선택되어있는 item들을 담아놓는 용도
   defaultValue?: string[]
   onValueChange?: (value: string[]) => void
+  asChild?: boolean
+  children?: React.ReactNode
 }
 
-const MultiAccordion = ({
-  value,
-  defaultValue,
-  onValueChange,
-  children,
-}: AccordionImplMultiProps) => {
-  const [selected, setSelected] = useControlledState({
-    prop: value,
-    defaultProp: defaultValue,
-    onChange: onValueChange,
-  })
+const MultiAccordion = React.forwardRef<
+  HTMLDivElement,
+  AccordionImplMultiProps
+>(
+  (
+    { value, defaultValue, onValueChange, children, asChild, ...props },
+    forwardedRef,
+  ) => {
+    const [selected, setSelected] = useControlledState({
+      prop: value,
+      defaultProp: defaultValue,
+      onChange: onValueChange,
+    })
 
-  const handleItemOpen = useCallback(
-    (item: string) => {
-      setSelected((prev = []) => [...prev, item])
-    },
-    [setSelected],
-  )
+    const handleItemOpen = React.useCallback(
+      (item: string) => {
+        setSelected((prev = []) => [...prev, item])
+      },
+      [setSelected],
+    )
 
-  const handleItemClose = useCallback(
-    (item: string) =>
-      setSelected((prev = []) => prev.filter((value) => value !== item)),
-    [setSelected],
-  )
+    const handleItemClose = React.useCallback(
+      (item: string) =>
+        setSelected((prev = []) => prev.filter((value) => value !== item)),
+      [setSelected],
+    )
 
-  const { refs: accordionRefs, handleKeyDown } = useKeyboardEvent({
-    keyList: ACCORDION_KEYS,
-  })
+    const { refs: accordionRefs, handleKeyDown } = useKeyboardEvent({
+      keyList: ACCORDION_KEYS,
+    })
 
-  return (
-    <AccordionProvider
-      selected={selected}
-      onItemOpen={handleItemOpen}
-      onItemClose={handleItemClose}
-    >
-      <div
-        ref={(node) => {
-          accordionRefs.current = Array.from(
-            node?.children || [],
-          ) as HTMLElement[]
-        }}
-        onKeyDown={handleKeyDown}
+    const Comp = asChild ? Slot : "div"
+
+    return (
+      <AccordionProvider
+        selected={selected}
+        onItemOpen={handleItemOpen}
+        onItemClose={handleItemClose}
       >
-        {children}
-      </div>
-    </AccordionProvider>
-  )
-}
+        <Comp
+          ref={(node) => {
+            accordionRefs.current = Array.from(
+              node?.children || [],
+            ) as HTMLElement[]
+            if (typeof forwardedRef === "function") {
+              forwardedRef(node)
+            } else if (forwardedRef) {
+              ;(
+                forwardedRef as React.MutableRefObject<HTMLDivElement | null>
+              ).current = node
+            }
+          }}
+          onKeyDown={handleKeyDown}
+          {...props}
+        >
+          {children}
+        </Comp>
+      </AccordionProvider>
+    )
+  },
+)
 //AccordionItem
 interface TAccordionItemContext {
   isOpen: boolean
@@ -151,30 +183,34 @@ interface TAccordionItemContext {
 
 const [AccordionItemProvider, useAccordionItemProvider] =
   createContext<TAccordionItemContext>("accordionItem")
-
-interface AccordionItemProps extends PropsWithChildren {
+export interface AccordionItemProps {
   value: string //unique value
   disabled?: boolean
+  children: React.ReactNode
+  asChild?: boolean
 }
 
-export const AccordionItem = ({
-  value,
-  disabled = false,
-  children,
-}: AccordionItemProps) => {
+export const AccordionItem = React.forwardRef<
+  HTMLDivElement,
+  AccordionItemProps
+>(({ value, disabled = false, children, asChild, ...props }, forwardedRef) => {
   const { selected, onItemOpen, onItemClose } = useAccordionContext("accordion")
 
   const isOpen = selected?.includes(value) && !disabled
+
   const onToggle = () => {
     if (disabled) {
       return
     }
     isOpen ? onItemClose(value) : onItemOpen(value)
   }
-  //disabled면 -> 무조건 닫혀있어야됨
+
+  const Comp = asChild ? Slot : "div"
+
   return (
     <AccordionItemProvider isOpen={!!isOpen} onToggle={onToggle} value={value}>
-      <div
+      <Comp
+        ref={forwardedRef}
         data-state={isOpen ? "open" : "close"}
         tabIndex={0}
         onKeyDown={(e) => {
@@ -182,20 +218,27 @@ export const AccordionItem = ({
             onToggle()
           }
         }}
+        {...props}
       >
         {children}
-      </div>
+      </Comp>
     </AccordionItemProvider>
   )
-}
-export const AccordionTrigger = ({ children }: PropsWithChildren) => {
+})
+
+export interface AccordionTriggerProps extends React.PropsWithChildren {}
+export const AccordionTrigger = ({
+  children,
+  ...props
+}: AccordionTriggerProps) => {
   const { onToggle, isOpen, value } = useAccordionItemProvider("accordionItem")
   return (
-    <h3 data-state={isOpen ? "open" : "close"}>
+    <h3 data-state={isOpen ? "open" : "close"} {...props}>
       <span
         onClick={onToggle}
         aria-expanded={isOpen ? "true" : "false"}
         aria-controls={`content-${value}`}
+        id={`trigger-${value}`}
       >
         <span>{children}</span>
       </span>
@@ -203,31 +246,35 @@ export const AccordionTrigger = ({ children }: PropsWithChildren) => {
   )
 }
 //AccordionContent
+export interface AccordionContentProps extends React.PropsWithChildren {
+  duration?: number
+  asChild?: boolean
+}
 export const AccordionContent = ({
   children,
-}: PropsWithChildren<{ duration?: number }>) => {
+  duration = 150,
+  asChild,
+  ...props
+}: AccordionContentProps) => {
+  const Comp = asChild ? Slot : "div"
   const { isOpen, value } = useAccordionItemProvider("accordionItem")
 
-  const contentRef = useAccordionHeight<HTMLDivElement>(isOpen, 150) //duration 초 뒤에 accordion을 열거나 닫아줌
+  const contentRef = useAccordionHeight<HTMLDivElement>(isOpen, duration) //duration 초 뒤에 accordion을 열거나 닫아줌
 
   if (!isOpen) {
     return null
   }
 
   return (
-    <div
-      className={css({
-        display: "none",
-        overflow: "hidden",
-        border: "1px solid black",
-        animation: isOpen
-          ? `accordionDown 0.2s cubic-bezier(.4,0,.2,1)`
-          : `accordionUp 0.2s cubic-bezier(.4,0,.2,1)`,
-      })}
+    <Comp
       data-state={isOpen ? "open" : "close"}
       id={`content-${value}`}
+      aria-labelledby={`trigger-${value}`}
+      role="region"
+      ref={contentRef}
+      {...props}
     >
-      <div ref={contentRef}>{children}</div>
-    </div>
+      {children}
+    </Comp>
   )
 }

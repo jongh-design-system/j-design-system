@@ -1,37 +1,28 @@
 import { useEffect, useRef } from "react"
-
+const ACCORDION_HEIGHT = "--accordion-height" //CSS 변수명- accordion의 높이를 제어하여 animation과 sync 맞춤
 export const useAccordionHeight = <T extends HTMLElement>(
   isOpen: boolean,
   duration = 150,
 ) => {
-  const contentRef = useRef<T>(null)
+  const ref = useRef<T>(null)
+
   useEffect(() => {
-    const element = contentRef.current
-    if (element === null || !element.parentElement) {
+    const element = ref.current
+    if (element === null) {
       return
     }
-    const { parentElement } = element
+
     if (isOpen) {
-      parentElement.style.display = "block"
-
-      const height = element.style.getPropertyValue("--accordion-height")
-
+      const height = element.style.getPropertyValue(ACCORDION_HEIGHT)
       if (height === "0" || !height) {
-        element.parentElement!.style.setProperty(
-          "--accordion-height",
-          `${element.clientHeight}px`,
-        )
+        element.style.setProperty(ACCORDION_HEIGHT, `${element.scrollHeight}px`)
       }
     } else {
       setTimeout(() => {
-        parentElement.style.display = "none"
-        parentElement.style.setProperty(
-          "--accordion-height",
-          `${element.clientHeight}px`,
-        )
+        element.style.setProperty(ACCORDION_HEIGHT, `${element.scrollHeight}px`)
       }, duration)
     }
   }, [isOpen, duration])
 
-  return contentRef
+  return ref
 }
