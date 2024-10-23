@@ -1,4 +1,4 @@
-import { accordion, AccordionVariantProps } from "@styled-system/recipes"
+import { accordion, type AccordionVariantProps } from "@styled-system/recipes"
 import { createStyleContext } from "../../utils/createStyleContext"
 import type { ComponentProps, HTMLStyledProps } from "@styled-system/types"
 import type { Assign } from "../../types"
