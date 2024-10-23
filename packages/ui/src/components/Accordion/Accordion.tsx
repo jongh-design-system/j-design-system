@@ -4,6 +4,7 @@ import { useControlledState } from "../../hooks/useControllableState"
 import { useAccordionHeight } from "./useAccordionHeight"
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent"
 import { Slot } from "@radix-ui/react-slot"
+import { composeRefs } from "src/hooks/useComposedRefs"
 
 const ACCORDION_KEYS = [
   "Home",
@@ -30,7 +31,7 @@ export interface AccordionProps {
   asChild?: boolean
   type?: "single" | "multi"
 }
-//ref 관련 문제 해결 필요
+
 export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
   (props, ref) => {
     const { type = "single", ...accordionProps } = props
@@ -81,18 +82,11 @@ const SingleAccordion = React.forwardRef<
         refs={accordionRefs.current || []}
       >
         <Comp
-          ref={(node) => {
+          ref={composeRefs((node) => {
             accordionRefs.current = Array.from(
               node?.children || [],
             ) as HTMLElement[]
-            if (typeof forwardedRef === "function") {
-              forwardedRef(node)
-            } else if (forwardedRef) {
-              ;(
-                forwardedRef as React.MutableRefObject<HTMLDivElement | null>
-              ).current = node
-            }
-          }}
+          }, forwardedRef)}
           onKeyDown={(e) => {
             handleKeyDown(e)
           }}
