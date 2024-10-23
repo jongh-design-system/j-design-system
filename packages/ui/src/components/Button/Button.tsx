@@ -6,12 +6,14 @@ import {
   type ReactElement,
   type MouseEventHandler,
 } from "react"
-import { type ButtonVariant } from "@styled-system/recipes"
+import { button, type ButtonVariant } from "@styled-system/recipes"
 import { Slot } from "@radix-ui/react-slot"
 
 type ButtonProps = Partial<ButtonVariant> &
   ComponentPropsWithoutRef<"button"> & { as?: string } & {
+    /**왼쪽에 올 아이콘 */
     leftIcon?: ReactElement
+    /**오른쪽에 위치할 아이콘 */
     rightIcon?: ReactElement
   }
 
@@ -53,6 +55,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         data-testid={id}
         onClick={onClick}
         {...rest}
+        className={button({})}
       >
         {leftIcon && <span>{wrapIcon(leftIcon)}</span>}
         {children}
