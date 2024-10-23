@@ -1,6 +1,6 @@
 {
   "name": "@jongh/ui",
-  "version": "1.5.2",
+  "version": "1.5.21",
   "description": "",
   "type": "module",
   "main": "dist/index.umd.js",
@@ -21,26 +21,28 @@
   "scripts": {
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "local": "vite",
+    "type": "tsc -p tsconfig.json --skipLibCheck && tsc-alias -p tsconfig.json",
     "storybook": "storybook dev -p 6006",
     "build": "pnpm prepare && vite build",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
     "dev": "pnpm panda --watch",
     "codegen": "pnpm panda codegen --clean",
-    "cssgen": "pnpm panda cssgen -o dist/lib.css",
+    "cssgen": "pnpm panda cssgen",
     "release": "pnpm panda prepare && vite build && pnpm panda cssgen && pnpm build-storybook",
-    "prepare": "pnpm panda codegen --clean && pnpm panda cssgen -o ./dist/styles.css && pnpm panda cssgen -o ./src/styled-system/styles.css",
+    "prepare": "pnpm panda codegen --clean",
     "check-types": "tsc --noEmit",
-    "studio": "pnpm panda studio"
+    "studio": "pnpm panda studio",
+    "pub": "pnpm publish --no-git-checks"
   },
   "dependencies": {
     "@fontsource-variable/roboto-condensed": "^5.0.3",
+    "@jongh/panda-preset": "workspace:^",
     "@radix-ui/react-slot": "^1.1.0",
     "framer-motion": "^11.3.19",
     "is-hotkey": "^0.2.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@jongh/panda-preset": "workspace:^"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.5.0",
@@ -66,6 +68,7 @@
     "axe-playwright": "^2.0.1",
     "chromatic": "^11.5.4",
     "storybook": "^8.1.5",
+    "tsc-alias": "^1.8.10",
     "tslib": "^2.6.3",
     "typescript": "^5.2.2",
     "vite": "^5.3.3",
