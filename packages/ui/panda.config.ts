@@ -15,10 +15,7 @@ export default defineConfig({
   strictPropertyValues: true,
   strictTokens: true,
   presets: ["@pandacss/preset-base", preset],
-
   dependencies: ["./src/components/**/*.{js,jsx,ts,tsx}"],
   preflight: true,
   polyfill: true,
-
-  outdir: "./src/styled-system",
 })
