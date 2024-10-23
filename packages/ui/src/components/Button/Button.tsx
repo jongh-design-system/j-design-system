@@ -6,7 +6,7 @@ import {
   type ReactElement,
   type MouseEventHandler,
 } from "react"
-import { button, type ButtonVariant } from "@styled-system/recipes"
+import { type ButtonVariant } from "@styled-system/recipes"
 import { Slot } from "@radix-ui/react-slot"
 
 type ButtonProps = Partial<ButtonVariant> &
@@ -55,7 +55,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         data-testid={id}
         onClick={onClick}
         {...rest}
-        className={button({})}
       >
         {leftIcon && <span>{wrapIcon(leftIcon)}</span>}
         {children}
