@@ -1,6 +1,6 @@
 {
   "name": "@jongh/panda-preset",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "pandacss preset",
   "type": "module",
   "keywords": [],
@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsup",
+    "build": "tsup && pnpm panda codegen && pnpm panda cssgen",
     "publish-npm": "pnpm publish --no-git-checks"
   },
   "tsup": {

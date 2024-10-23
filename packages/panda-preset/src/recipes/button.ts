@@ -1,5 +1,5 @@
-import { defineRecipe } from "@pandacss/dev"
-export const buttonRecipe = defineRecipe({
+import { define } from "../define"
+export const buttonRecipe = define.recipe({
   className: "button",
   base: {
     textAlign: "center",
@@ -11,7 +11,6 @@ export const buttonRecipe = defineRecipe({
     alignItems: "center",
     justifyContent: "center",
     fontWeight: "medium",
-    width: "100%",
     minWidth: "44",
     minHeight: "44",
     gap: "5px",
