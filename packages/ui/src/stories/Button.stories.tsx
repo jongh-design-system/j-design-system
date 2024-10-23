@@ -1,5 +1,5 @@
 import { expect, fn, userEvent, within } from "@storybook/test"
-import { Button } from "../components/Button/Button.tsx"
+import { Button } from "../components"
 import type { Meta, StoryObj } from "@storybook/react"
 export default {
   title: "Button",
