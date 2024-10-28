@@ -1,7 +1,6 @@
 import * as React from "react"
 import { createContext } from "../../hooks/createContext"
 import { useControlledState } from "../../hooks/useControllableState"
-import { useAccordionHeight } from "./useAccordionHeight"
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent"
 import { Slot } from "@radix-ui/react-slot"
 import { composeRefs } from "src/hooks/useComposedRefs"
@@ -227,9 +226,8 @@ export const AccordionTrigger = ({
 }: AccordionTriggerProps) => {
   const { onToggle, isOpen, value } = useAccordionItemProvider("accordionItem")
   return (
-    <h3 data-state={isOpen ? "open" : "close"} {...props}>
+    <h3 data-state={isOpen ? "open" : "close"} onClick={onToggle} {...props}>
       <span
-        onClick={onToggle}
         aria-expanded={isOpen ? "true" : "false"}
         aria-controls={`content-${value}`}
         id={`trigger-${value}`}
@@ -244,31 +242,40 @@ export interface AccordionContentProps extends React.PropsWithChildren {
   duration?: number
   asChild?: boolean
 }
+
 export const AccordionContent = ({
   children,
-  duration = 150,
   asChild,
   ...props
 }: AccordionContentProps) => {
   const Comp = asChild ? Slot : "div"
   const { isOpen, value } = useAccordionItemProvider("accordionItem")
+  const contentRef = React.useRef<HTMLDivElement>(null)
 
-  const contentRef = useAccordionHeight<HTMLDivElement>(isOpen, duration) //duration 초 뒤에 accordion을 열거나 닫아줌
-
-  if (!isOpen) {
-    return null
-  }
+  React.useEffect(() => {
+    if (contentRef.current) {
+      const element = contentRef.current
+      if (isOpen) {
+        element.style.setProperty(
+          "--accordion-height",
+          `${element.scrollHeight}px`,
+        )
+      } else {
+        element.style.setProperty("--accordion-height", "0px")
+      }
+    }
+  }, [isOpen])
 
   return (
     <Comp
+      ref={contentRef}
       data-state={isOpen ? "open" : "close"}
       id={`content-${value}`}
       aria-labelledby={`trigger-${value}`}
       role="region"
-      ref={contentRef}
       {...props}
     >
-      {children}
+      <div>{children}</div>
     </Comp>
   )
 }
