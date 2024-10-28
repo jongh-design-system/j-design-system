@@ -1,5 +1,5 @@
 import { expect, fn, userEvent, within } from "@storybook/test"
-import { Button } from "../components"
+import { Button } from "../components/Button"
 import type { Meta, StoryObj } from "@storybook/react"
 export default {
   title: "Button",
@@ -14,12 +14,7 @@ type Story = StoryObj<typeof Button>
 
 export const Primary: Story = {
   args: {
-    size: "large",
-    variant: "primary",
-    children: "클릭하기",
-    onClick: fn(),
-    disabled: false,
-    br: "normal",
+    children: "버튼",
   },
 }
 

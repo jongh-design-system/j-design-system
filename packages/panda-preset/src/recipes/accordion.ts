@@ -1,5 +1,5 @@
-import { define } from "../define"
-export const accordionRecipe = define.slotRecipe({
+import { defineSlotRecipe } from "@pandacss/dev"
+export const accordionRecipe = defineSlotRecipe({
   className: "accordion",
   slots: ["root", "content", "item", "trigger"],
   base: {
@@ -13,7 +13,7 @@ export const accordionRecipe = define.slotRecipe({
       cursor: "pointer",
       display: "flex",
       fontWeight: "semibold",
-      gap: "3",
+      gap: "10",
       justifyContent: "space-between",
       textStyle: "body",
       textAlign: "left",

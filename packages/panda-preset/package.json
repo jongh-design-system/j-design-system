@@ -1,30 +1,40 @@
 {
   "name": "@jongh/panda-preset",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "pandacss preset",
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "main": "./dist/preset.js",
+  "main": "./src/preset.ts",
   "publishConfig": {
     "access": "public"
   },
-  "exports": {
-    ".": {
-      "types": "./dist/preset.d.ts",
-      "require": "./dist/preset.cjs",
-      "import": "./dist/preset.js"
-    }
-  },
   "files": [
     "dist",
-    "src"
+    "src",
+    "package.json"
   ],
+  "clean-package": {
+    "replace": {
+      "main": "dist/preset.cjs",
+      "module": "dist/preset.js",
+      "types": "dist/preset.d.cts",
+      "exports": {
+        ".": {
+          "types": "./dist/preset.d.ts",
+          "require": "./dist/preset.cjs",
+          "import": "./dist/preset.js"
+        }
+      }
+    }
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsup && pnpm panda codegen && pnpm panda cssgen",
-    "publish-npm": "pnpm publish --no-git-checks"
+    "build": "tsup",
+    "release": "pnpm build && pnpm publish --no-git-checks",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore"
   },
   "tsup": {
     "entry": [
@@ -40,6 +50,7 @@
   },
   "devDependencies": {
     "@pandacss/dev": "^0.40.1",
+    "clean-package": "^2.2.0",
     "tsup": "^8.3.0"
   }
 }

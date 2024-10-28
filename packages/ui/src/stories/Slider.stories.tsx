@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { Slider } from "../components/Slider/Slider.tsx"
+import { Slider } from "../temp/Slider/Slider.tsx"
 
 export default {
   title: "Slider",
