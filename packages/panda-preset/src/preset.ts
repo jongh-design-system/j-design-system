@@ -20,4 +20,7 @@ export const preset = () =>
         keyframes,
       },
     },
+    staticCss: {
+      recipes: "*",
+    },
   })
