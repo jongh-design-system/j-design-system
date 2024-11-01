@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "@storybook/preview-api"
 import { expect, userEvent, waitFor, within } from "@storybook/test"
 export default {
-  title: "",
+  title: "Accordion",
   component: Accordion,
   tags: ["autodocs"],
 } satisfies Meta<typeof Accordion>
@@ -19,7 +19,7 @@ export const Controlled: Story = {
       setSelectedItems(newSelectedItems)
     }
     return (
-      <>
+      <div style={{ width: "500px" }}>
         <Accordion
           value={selectedItems}
           onValueChange={(v) => handleValueChange(v)}
@@ -37,7 +37,7 @@ export const Controlled: Story = {
             <Content>내용2</Content>
           </Item>
         </Accordion>
-      </>
+      </div>
     )
   },
   play: async ({ canvasElement }) => {
@@ -45,19 +45,19 @@ export const Controlled: Story = {
     const Item = canvas.getByText("1번")
 
     // 첫 번째 클릭으로 "aria-expanded"가 "true"인지 확인하고, content가 렌더링되었는지 확인
-    await userEvent.click(Item.parentElement!)
+    await userEvent.click(Item)
     await waitFor(async () => {
       expect(Item.parentElement?.getAttribute("aria-expanded")).toBe("true")
       const Content = canvas.queryByText("내용1")
-      expect(Content).toBeTruthy()
+      expect(Content).toBeInTheDocument()
     })
 
-    // 두 번째 클릭으로 "aria-expanded"가 "false"인지 확인하고, content가 렌더링 안되었는지 확인
-    await userEvent.click(Item.parentElement!)
-    await waitFor(() => {
+    await userEvent.click(Item)
+
+    await waitFor(async () => {
       expect(Item.parentElement?.getAttribute("aria-expanded")).toBe("false")
       const Content = canvas.queryByText("내용1")
-      expect(Content).toBeFalsy()
+      expect(Content).toBeNull()
     })
   },
 }
