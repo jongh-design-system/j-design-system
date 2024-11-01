@@ -275,7 +275,7 @@ export const AccordionContent = ({
       role="region"
       {...props}
     >
-      <div>{children}</div>
+      {isOpen && children}
     </Comp>
   )
 }
