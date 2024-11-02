@@ -1,0 +1,35 @@
+{
+  "name": "@jongh/cli",
+  "version": "1.0.11",
+  "description": "",
+  "main": "index.js",
+  "bin": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "release": "pnpm publish -no-git-checks"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "@effect/platform": "^0.69.13",
+    "@effect/schema": "^0.75.5",
+    "effect": "^3.10.8",
+    "fs-extra": "^11.2.0",
+    "pkg-dir": "^8.0.0",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.8.6",
+    "@types/yargs": "^17.0.33",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.3.0",
+    "tsx": "^4.19.2"
+  }
+}
