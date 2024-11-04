@@ -19,7 +19,7 @@ export function createContext<ContextValueType extends object | null>(
     return <C.Provider value={value}>{children}</C.Provider>
   }
 
-  function useContext(consumerName: string) {
+  function useContext(consumerName?: string) {
     const context = React.useContext(C)
     if (context) return context
     if (defaultContext !== undefined) return defaultContext
