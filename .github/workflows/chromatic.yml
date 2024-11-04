@@ -1,4 +1,4 @@
-name: "Chromatic UI Test"
+name: "ci"
 
 on:
   pull_request:
@@ -23,39 +23,4 @@ jobs:
           run_install: |
             - recursive : true
 
-      - run: pnpm ui release
-
-      - name: Install Playwright
-        run: pnpm ui install playwright --save-dev
-
-      - run: pnpm ui exec playwright install
-
-      - name: Build Storybook
-        run: pnpm ui build-storybook
-      - name: Serve Storybook and run tests
-        run: |
-          pnpx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-            "pnpx http-server ./packages/ui/storybook-static --port 6006" \
-            "pnpx wait-on http://127.0.0.1:6006 && pnpm ui test-storybook"
-
-  chromatic:
-    name: Run Chromatic
-    needs: a11y-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v4
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - run: pnpm ui release
-
-      - name: Run Chromatic
-        uses: chromaui/action@latest
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          workingDir: packages/ui
+      - run: pnpm ui test
