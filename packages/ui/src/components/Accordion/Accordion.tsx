@@ -227,13 +227,13 @@ export const AccordionTrigger = ({
   const { onToggle, isOpen, value } = useAccordionItemProvider("accordionItem")
   return (
     <h3 data-state={isOpen ? "open" : "close"} onClick={onToggle} {...props}>
-      <span
+      <button
         aria-expanded={isOpen ? "true" : "false"}
         aria-controls={`content-${value}`}
         id={`trigger-${value}`}
       >
-        <span>{children}</span>
-      </span>
+        {children}
+      </button>
     </h3>
   )
 }
