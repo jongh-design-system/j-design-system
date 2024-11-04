@@ -1,23 +1,39 @@
-import { useState } from "react"
+import { useState, type ComponentPropsWithoutRef } from "react"
 import { useControlledState } from "../../hooks/useControllableState"
-type Props = {
+import { createContext } from "../../hooks/createContext"
+//TODO: props type 관련 정리 및 event composing 필요
+const [SliderProvider, useSliderContext] = createContext<{
+  min: number
+  max: number
+  value: number
+  onChange: (value: number) => void
+  isDragging: boolean
+  onPointerDown: (e: React.PointerEvent) => void
+  onPointerMove: (e: React.PointerEvent) => void
+  onPointerUp: (e: React.PointerEvent) => void
+}>("Slider")
+
+type SliderRootProps = {
   min: number
   max: number
   value: number
   defaultValue?: number
   onChange: (value: number) => void
+  children: React.ReactNode
 }
 
 const getPercentage = (value: number, min: number, max: number) =>
   ((value - min) / (max - min)) * 100
 
-export const Slider = ({
+const SliderRoot = ({
   min = 0,
   max = 100,
   value,
   onChange,
   defaultValue,
-}: Props) => {
+  children,
+  ...props
+}: SliderRootProps) => {
   const [isDragging, setIsDragging] = useState(false)
 
   const [innerValue = 0, setValue] = useControlledState({
@@ -26,15 +42,13 @@ export const Slider = ({
     onChange,
   })
 
-  const percentage = getPercentage(innerValue, min, max)
-
   const handlePointerDown = (e: React.PointerEvent) => {
     e.preventDefault()
     setIsDragging(true)
-    e.currentTarget.setPointerCapture(e.pointerId) //포인터 고정
+    e.currentTarget.setPointerCapture(e.pointerId)
   }
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLElement>) => {
+  const handlePointerUp = (e: React.PointerEvent) => {
     e.preventDefault()
     setIsDragging(false)
     e.currentTarget.releasePointerCapture(e.pointerId)
@@ -46,73 +60,82 @@ export const Slider = ({
     setValue(newValue)
   }
 
-  const handleMouseMove = (e: React.PointerEvent<HTMLElement>) => {
+  const handlePointerMove = (e: React.PointerEvent) => {
     e.preventDefault()
     if (!isDragging) return
 
     const { left, width } = e.currentTarget.getBoundingClientRect()
     let percentage = (e.clientX - left) / width
     percentage = Math.min(Math.max(percentage, 0), 1)
-
     const newValue = min + percentage * (max - min)
     setValue(newValue)
   }
-  //pointerdown -> pointermove -> up/cancel
+
   return (
-    <span
-      className="slider-wrapper"
-      style={{
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        width: "200px",
-        height: "50px",
-      }}
+    <SliderProvider
+      min={min}
+      max={max}
+      value={innerValue}
+      onChange={setValue}
+      isDragging={isDragging}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
     >
-      <span
-        className="slider-track"
+      <div
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
-        onPointerMove={handleMouseMove}
-        style={{
-          position: "relative",
-          backgroundColor: "black",
-          flexGrow: 1,
-          borderRadius: "9999px",
-          height: "15px",
-        }}
+        onPointerMove={handlePointerMove}
+        {...props}
       >
-        <span
-          className="slider-value"
-          style={{
-            backgroundColor: "white",
-            borderRadius: "9999px",
-            height: "100%",
-            position: "absolute",
-            width: `${percentage}%`,
-          }}
-        ></span>
-        <span
-          className="slider-thumb"
-          style={{
-            position: "absolute",
-            left: `${percentage}%`,
-            transform: "translateX(-50%)",
-            touchAction: "none",
-          }}
-        >
-          <span
-            style={{
-              width: "10px",
-              height: "15px",
-              borderRadius: "100px",
-              backgroundColor: "pink",
-              opacity: "0.5",
-              display: "block",
-            }}
-          ></span>
-        </span>
-      </span>
-    </span>
+        {children}
+      </div>
+    </SliderProvider>
   )
 }
+
+const SliderTrack = ({
+  children,
+  ...props
+}: {
+  children?: React.ReactNode
+}) => {
+  return <span {...props}>{children}</span>
+}
+
+const SliderRange = ({ ...props }: ComponentPropsWithoutRef<"span">) => {
+  const { min, max, value } = useSliderContext()
+  const percentage = getPercentage(value, min, max)
+
+  return (
+    <span
+      {...props}
+      style={{
+        width: `${percentage}%`,
+      }}
+    />
+  )
+}
+
+const SliderThumb = ({ ...props }: ComponentPropsWithoutRef<"span">) => {
+  const { min, max, value } = useSliderContext()
+  const percentage = getPercentage(value, min, max)
+
+  return (
+    <span
+      {...props}
+      style={{
+        position: "absolute",
+        left: `${percentage}%`,
+        transform: "translateX(-50%)",
+      }}
+    />
+  )
+}
+
+export const Slider = Object.assign(SliderRoot, {
+  Root: SliderRoot,
+  Track: SliderTrack,
+  Range: SliderRange,
+  Thumb: SliderThumb,
+})
