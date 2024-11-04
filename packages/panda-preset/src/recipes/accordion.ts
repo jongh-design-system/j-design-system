@@ -12,6 +12,7 @@ export const accordionRecipe = defineSlotRecipe({
       display: "flex",
       fontWeight: "semibold",
       gap: "10",
+      padding: "5",
       justifyContent: "space-between",
       textStyle: "body",
       textAlign: "left",
@@ -20,7 +21,8 @@ export const accordionRecipe = defineSlotRecipe({
       },
     },
     item: {
-      borderBottom: "1px solid black",
+      borderBottom: "1px solid",
+      borderColor: "grey_300",
     },
     content: {
       overflow: "hidden",
