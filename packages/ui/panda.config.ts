@@ -6,5 +6,4 @@ export default defineConfig({
   jsxFramework: "react",
   include: ["./src/**/*.{js,jsx,ts,tsx}", "./src/stories/*.{js,jsx,ts,tsx}"],
   outdir: "styled-system",
-  watch: true,
 })

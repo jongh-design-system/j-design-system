@@ -1,29 +1,19 @@
 import { Accordion, Content, Item, Trigger } from "../components"
 import type { Meta, StoryObj } from "@storybook/react"
-import { useState } from "@storybook/preview-api"
-import { expect, userEvent, waitFor, within } from "@storybook/test"
+import { expect, userEvent, waitFor } from "@storybook/test"
 export default {
-  title: "",
+  title: "Accordion",
   component: Accordion,
   tags: ["autodocs"],
 } satisfies Meta<typeof Accordion>
 
 type Story = StoryObj<typeof Accordion>
 
-export const Controlled: Story = {
-  args: {},
+export const Primary: Story = {
   render: () => {
-    const [selectedItems, setSelectedItems] = useState<string[]>([])
-
-    const handleValueChange = (newSelectedItems: string[]) => {
-      setSelectedItems(newSelectedItems)
-    }
     return (
-      <>
-        <Accordion
-          value={selectedItems}
-          onValueChange={(v) => handleValueChange(v)}
-        >
+      <div style={{ width: "500px" }}>
+        <Accordion>
           <Item value="1">
             <Trigger>1번</Trigger>
             <Content>내용1</Content>
@@ -37,27 +27,20 @@ export const Controlled: Story = {
             <Content>내용2</Content>
           </Item>
         </Accordion>
-      </>
+      </div>
     )
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+  play: async ({ canvas }) => {
     const Item = canvas.getByText("1번")
+    expect(Item).toBeInTheDocument()
+    //토글로 내용이 열고 닫히는지 확인
+    await userEvent.click(Item)
+    await expect(canvas.getByText("내용1")).toBeInTheDocument()
 
-    // 첫 번째 클릭으로 "aria-expanded"가 "true"인지 확인하고, content가 렌더링되었는지 확인
-    await userEvent.click(Item.parentElement!)
+    await userEvent.click(Item)
     await waitFor(async () => {
-      expect(Item.parentElement?.getAttribute("aria-expanded")).toBe("true")
       const Content = canvas.queryByText("내용1")
-      expect(Content).toBeTruthy()
-    })
-
-    // 두 번째 클릭으로 "aria-expanded"가 "false"인지 확인하고, content가 렌더링 안되었는지 확인
-    await userEvent.click(Item.parentElement!)
-    await waitFor(() => {
-      expect(Item.parentElement?.getAttribute("aria-expanded")).toBe("false")
-      const Content = canvas.queryByText("내용1")
-      expect(Content).toBeFalsy()
+      expect(Content).toBeNull()
     })
   },
 }

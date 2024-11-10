@@ -4,9 +4,7 @@ export const accordionRecipe = defineSlotRecipe({
   slots: ["root", "content", "item", "trigger"],
   base: {
     root: {
-      divideY: "1px",
-      borderTopWidth: "1px",
-      borderBottomWidth: "1px",
+      width: "100%",
     },
     trigger: {
       alignItems: "center",
@@ -14,6 +12,7 @@ export const accordionRecipe = defineSlotRecipe({
       display: "flex",
       fontWeight: "semibold",
       gap: "10",
+      padding: "5",
       justifyContent: "space-between",
       textStyle: "body",
       textAlign: "left",
@@ -21,21 +20,17 @@ export const accordionRecipe = defineSlotRecipe({
         cursor: "not-allowed",
       },
     },
+    item: {
+      borderBottom: "1px solid",
+      borderColor: "grey_300",
+    },
     content: {
       overflow: "hidden",
-      transitionProperty: "padding-bottom",
-      transitionDuration: "normal",
-      transitionTimingFunction: "default",
-      _open: {
-        animation: "collapse-in",
-      },
-      _closed: {
-        animation: "collapse-out",
-      },
+
+      transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+      transitionDuration: "150ms",
+      height: "var(--accordion-height)",
     },
-  },
-  defaultVariants: {
-    size: "md",
   },
   variants: {
     size: {
