@@ -6,7 +6,6 @@ import {
 } from "react"
 import { useTabContext } from "./useTabContext"
 
-import { css, cx } from "@styled-system/css"
 import { RovingTabIndexRoot, useRovingTabIndex } from "./useRovingTabIndex"
 import isHotkey from "is-hotkey"
 import { Slot } from "@radix-ui/react-slot"
@@ -37,17 +36,11 @@ const setIndicatorStyle = (target: HTMLElement) => {
   )
 }
 
-export const TabList = ({ children, className }: TabListProps) => {
+export const TabList = ({ children, ...props }: TabListProps) => {
   const { selected } = useTabContext("tab")
   return (
     <RovingTabIndexRoot as="div" active={selected}>
-      <div
-        role="tablist"
-        className={cx(
-          className,
-          css({ position: "relative", display: "flex" }),
-        )}
-      >
+      <div role="tablist" {...props}>
         {children}
       </div>
     </RovingTabIndexRoot>
