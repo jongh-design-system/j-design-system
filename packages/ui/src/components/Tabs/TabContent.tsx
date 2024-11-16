@@ -2,7 +2,7 @@ import { type ReactNode } from "react"
 import { useTabContext } from "./useTabContext"
 import { motion } from "framer-motion"
 
-interface TabContentProps {
+export interface TabContentProps {
   children: ReactNode
   value: string
 }
@@ -35,7 +35,8 @@ const cardVariant = {
     },
   },
 }
-export const TabContent = ({ children, value }: TabContentProps) => {
+
+export const TabContent = ({ children, value, ...props }: TabContentProps) => {
   const { selected, tabId } = useTabContext("tab")
 
   const isSelected = selected === value
@@ -51,6 +52,7 @@ export const TabContent = ({ children, value }: TabContentProps) => {
       variants={tabContentVariant}
       animate={isSelected ? "active" : "inactive"}
       initial="inactive"
+      {...props}
     >
       <motion.div key={value} variants={cardVariant}>
         {isSelected && children}

@@ -16,7 +16,7 @@ import {
   getPrevFocusableId,
 } from "../../utils/getFocusableId"
 
-interface TabListProps {
+export interface TabListProps {
   children: ReactNode
   className?: string
 }
@@ -53,7 +53,7 @@ export const TabList = ({ children, className }: TabListProps) => {
     </RovingTabIndexRoot>
   )
 }
-type TabItemProps = ComponentPropsWithRef<"button"> & {
+export interface TabItemProps extends ComponentPropsWithRef<"button"> {
   value: string
 }
 
@@ -86,7 +86,7 @@ export const RovingItem = ({
 }
 
 export const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(
-  ({ children, className, value, ...props }: TabItemProps, forwardRef) => {
+  ({ children, value, ...props }: TabItemProps, forwardRef) => {
     const { selected, onSelect, tabId } = useTabContext("tab")
     const isSelected = selected === value
 
