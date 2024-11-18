@@ -17,14 +17,16 @@
   ],
   "clean-package": {
     "replace": {
-      "main": "dist/preset.cjs",
-      "module": "dist/preset.js",
-      "types": "dist/preset.d.cts",
       "exports": {
         ".": {
-          "types": "./dist/preset.d.ts",
-          "require": "./dist/preset.cjs",
-          "import": "./dist/preset.js"
+          "import": {
+            "types": "./dist/preset.d.ts",
+            "default": "./dist/preset.js"
+          },
+          "require": {
+            "types": "./dist/preset.d.cts",
+            "default": "./dist/preset.cjs"
+          }
         }
       }
     }
