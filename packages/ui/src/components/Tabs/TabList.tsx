@@ -7,7 +7,6 @@ import {
 import { useTabContext } from "./useTabContext"
 
 import { RovingTabIndexRoot, useRovingTabIndex } from "./useRovingTabIndex"
-import isHotkey from "is-hotkey"
 import { Slot } from "@radix-ui/react-slot"
 import { composeRefs } from "../../hooks/useComposedRefs"
 import {
@@ -22,17 +21,23 @@ export interface TabListProps {
 
 const setIndicatorStyle = (target: HTMLElement) => {
   const targetRect = target.getBoundingClientRect()
-  const parentRect = target.parentElement?.getBoundingClientRect()
-  if (!targetRect || !parentRect) {
+  const parent = target.parentElement //TabList
+  const parentRect = parent?.getBoundingClientRect()
+
+  if (!targetRect || !parentRect || !parent) {
     return
   }
+  const scrollLeft = parent.scrollLeft //overflow일때 고려
+
+  const indicatorLeft = targetRect.left - parentRect.left + scrollLeft
+
   document.documentElement.style.setProperty(
     "--indicator-left",
-    `${Math.abs(parentRect.left - targetRect.left)}px`,
+    `${indicatorLeft}px`,
   )
   document.documentElement.style.setProperty(
     "--indicator-width",
-    `${Math.abs(targetRect.width)}px`,
+    `${targetRect.width}px`,
   )
 }
 
@@ -64,9 +69,9 @@ export const RovingItem = ({
         onKeyDown: (e) => {
           const items = getOrderedItems()
           let nextItem
-          if (isHotkey("right", e)) {
+          if (e.key === "ArrowRight") {
             nextItem = getNextFocusableId(items, value)
-          } else if (isHotkey("left", e)) {
+          } else if (e.key === "ArrowLeft") {
             nextItem = getPrevFocusableId(items, value)
           }
           nextItem?.element.focus()
