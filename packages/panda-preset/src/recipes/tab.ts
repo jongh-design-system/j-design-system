@@ -27,6 +27,22 @@ export const tabRecipe = defineSlotRecipe({
       left: `var(--indicator-left)`,
       background: "{colors.grey_500}",
     },
-    item: {},
+    item: {
+      whiteSpace: "nowrap",
+    },
+  },
+  variants: {
+    layout: {
+      scroll: {
+        item: {
+          flex: "0 0 50px",
+        },
+      },
+      stretch: {
+        item: {
+          flex: 1,
+        },
+      },
+    },
   },
 })
