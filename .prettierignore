@@ -1,3 +1,4 @@
 generated/
 *.hbs
 pnpm-lock.yaml
+*.json
