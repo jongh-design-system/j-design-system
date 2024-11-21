@@ -1,7 +1,7 @@
 {
   "name": "@jongh/ui",
   "version": "1.5.21",
-  "description": "",
+  "description": "Headless UI components for React",
   "type": "module",
   "scripts": {
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -15,12 +15,7 @@
     "studio": "pnpm panda studio",
     "pub": "pnpm publish --no-git-checks"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "bash -c tsc --noEmit"
-    ]
-  },
+
   "dependencies": {
     "@fontsource-variable/roboto-condensed": "^5.0.3",
     "@jongh/panda-preset": "workspace:^",
