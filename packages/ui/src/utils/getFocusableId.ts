@@ -1,4 +1,4 @@
-import type { RovingTabIndexItem } from "../components/Tab/useRovingTabIndex"
+import type { RovingTabIndexItem } from "../components/Tabs/useRovingTabIndex"
 
 export function getNextFocusableId(
   orderedItems: RovingTabIndexItem[],

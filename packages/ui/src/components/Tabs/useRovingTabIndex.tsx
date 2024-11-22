@@ -101,7 +101,6 @@ export const RovingTabIndexRoot = <T extends ElementType>({
         {...{ [ROOT_SELECTOR]: true }}
         // tabIndex={isShiftTabbing ? -1 : 0}
         onFocus={(e) => {
-          console.log("parent focus")
           if (e.target !== e.currentTarget) return
           if (isShiftTabbing) return
           const orderedItems = getOrderedItems()
