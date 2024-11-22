@@ -13,7 +13,7 @@ export default mergeConfig(
       // Glob pattern to find story files
       include: [
         "src/**/*.stories.?(m)[jt]s?(x)",
-        "src/stories/Accordion.test.tsx",
+        "src/test/*.test.?(m)[jt]s?(x)",
       ],
       // Enable browser mode
       browser: {
