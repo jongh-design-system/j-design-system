@@ -34,25 +34,32 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const data = [
+  { value: "1", label: "Tab 1", content: "1번" },
+  { value: "2", label: "Tab 2", content: "2번" },
+  { value: "3", label: "Tab 3", content: "3번" },
+]
+
 export const Primary: Story = {
   args: {
-    defaultValue: "3",
+    defaultValue: "1",
   },
   render: (args) => {
     return (
       <Tabs {...args}>
         <Tabs.List width="1000px">
           <Tabs.Indicator />
-          <Tabs.Item value="1">Tab 1</Tabs.Item>
-          <Tabs.Item value="2">Tab 2</Tabs.Item>
-          <Tabs.Item value="3">Tab 3</Tabs.Item>
-          <Tabs.Item value="4">Tab 1</Tabs.Item>
-          <Tabs.Item value="5">Tab 2</Tabs.Item>
-          <Tabs.Item value="6">Tab 3</Tabs.Item>
+          {data.map((item) => (
+            <Tabs.Item key={item.value} value={item.value}>
+              {item.label}
+            </Tabs.Item>
+          ))}
         </Tabs.List>
-        <Tabs.Content value="1">1번</Tabs.Content>
-        <Tabs.Content value="2">2번</Tabs.Content>
-        <Tabs.Content value="3">3번</Tabs.Content>
+        {data.map((item) => (
+          <Tabs.Content key={item.value} value={item.value}>
+            {item.content}
+          </Tabs.Content>
+        ))}
       </Tabs>
     )
   },
