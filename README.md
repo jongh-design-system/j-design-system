@@ -1,27 +1,50 @@
-# 디자인 시스템
+# React UI Design System 🎨
 
-pandacss를 사용한 React Headless UI 라이브러리입니다.
-디자인 시스템의 시스템을 구축하고, 유저와 개발자 모두가 사용하기 편한 라이브러리를 만들기 위한 공부용 프로젝트입니다.
+개인 사이드 프로젝트에서 사용하는 디자인 시스템입니다
+개인용으로 제작되었으나, 다른 사용자가 사용하기에 제약이 없도록 headless 패턴을 적용했습니다
 
-[velog 링크
-](https://velog.io/@jh5717/series/%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C)해당 블로그에서 관련된 포스트를 확인할 수 있습니다
+## Demo
 
-[storybook](https://6683c8acf34b923f7227be4a-pquafxlguw.chromatic.com/)
+storybook을 통해 결과물을 확인할 수 있습니다 [링크](https://6683c8acf34b923f7227be4a-etvwiuojnp.chromatic.com/?path=/story/accordion--primary)
 
-- 로딩이 느릴 시 새로고침을 눌러주세요
-- 현재 문서화 작업 진행중입니다
+## Tech Stack ⚛️
 
-## 사용 기술
+[![My Skills](https://skillicons.dev/icons?i=react&perline=3)](https://skillicons.dev) ![React Version](https://img.shields.io/badge/React-18+-blue)
 
-- React(>=18)
-- Pandacss
-- radix UI의 일부 custom hook
-- float UI
-- framer-motion
+PandaCSS
 
-## UI List
+## Features ✨
 
-- Accordion
-- Button
-- Tab
-- Slider
+- PandaCSS를 활용한 스타일 관리
+- 독립적인 UI 로직과 스타일 분리
+- Figma 디자인 토큰 기반 SSOT 원칙 준수
+- CLI를 통한 손쉬운 컴포넌트 설치 (실험적)
+
+## Usage 📦
+
+1. PandaCSS 설치
+2. 스타일 preset 설치 [@jongh/panda-preset](https://www.npmjs.com/package/@jongh/panda-preset)
+3. PandaCSS config에 preset 등록
+4. CLI 또는 직접 코드를 복사하여 컴포넌트 사용
+
+## Architecture 🏗️
+
+pnpm workspace를 통한 monorepo 구조:
+
+### @jongh/panda-preset
+
+스타일 시스템 관리
+
+- Figma 디자인 토큰 가공
+- 컴포넌트 스타일 레시피 제공
+- clean-package를 통한 로컬/배포 환경 분기
+
+### @jongh/cli
+
+컴포넌트 설치 CLI 제공
+
+### UI
+
+- 컴포넌트 UI 로직 구현
+- Storybook을 통한 컴포넌트와 관련된 모든 테스트 진행
+- Chromatic을 통한 배포
