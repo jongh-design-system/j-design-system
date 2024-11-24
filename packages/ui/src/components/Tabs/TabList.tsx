@@ -6,7 +6,9 @@ import {
 } from "react"
 import { useTabContext } from "./useTabContext"
 
-import { RovingTabIndexRoot, useRovingTabIndex } from "../RovingIndex"
+
+import { RovingTabIndexRoot, useRovingTabIndex } from "../RovingInde
+
 import { Slot } from "@radix-ui/react-slot"
 import { composeRefs } from "../../hooks/useComposedRefs"
 import {
