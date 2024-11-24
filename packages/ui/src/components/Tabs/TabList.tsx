@@ -6,7 +6,9 @@ import {
 } from "react"
 import { useTabContext } from "./useTabContext"
 
-import { RovingTabIndexRoot, useRovingTabIndex } from "./useRovingTabIndex"
+
+import { RovingTabIndexRoot, useRovingTabIndex } from "../RovingInde
+
 import { Slot } from "@radix-ui/react-slot"
 import { composeRefs } from "../../hooks/useComposedRefs"
 import {
@@ -44,7 +46,7 @@ const setIndicatorStyle = (target: HTMLElement) => {
 export const TabList = ({ children, ...props }: TabListProps) => {
   const { selected } = useTabContext("tab")
   return (
-    <RovingTabIndexRoot as="div" active={selected}>
+    <RovingTabIndexRoot active={selected}>
       <div role="tablist" {...props}>
         {children}
       </div>
