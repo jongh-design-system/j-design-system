@@ -1,5 +1,5 @@
 export * from "./Button"
-// export * from "./TagButton/TagButton"
 export * from "./Accordion"
-// export * from "./Tab/index"
-// export * from "./Slider/Slider"
+export * from "./Tabs"
+export * from "./Slider"
+export * from "./Select"
