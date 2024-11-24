@@ -16,6 +16,7 @@
     "pub": "pnpm publish --no-git-checks"
   },
   "dependencies": {
+    "@floating-ui/react-dom": "^2.1.2",
     "@fontsource-variable/roboto-condensed": "^5.0.3",
     "@jongh/panda-preset": "workspace:^",
     "@radix-ui/react-slot": "^1.1.0",
