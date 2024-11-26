@@ -9,4 +9,8 @@ export const keyframes = defineKeyframes({
     from: { height: "var(--accordion-height)" },
     to: { height: 0 },
   },
+  fadeIn: {
+    "0%": { opacity: 0 },
+    "100%": { opacity: 1 },
+  },
 })
