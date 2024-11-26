@@ -1,8 +1,0 @@
-import { TestContext, TaskContext } from 'vitest';
-import { ComposedStoryFn, ComponentAnnotations } from 'storybook/internal/types';
-
-declare const testStory: (exportName: string, story: ComposedStoryFn, meta: ComponentAnnotations, skipTags: string[]) => (context: TestContext & TaskContext & {
-    story: ComposedStoryFn;
-}) => Promise<void>;
-
-export { testStory };

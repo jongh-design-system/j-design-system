@@ -1,9 +1,0 @@
-import { Channel } from 'storybook/internal/channels';
-import { Options, PresetProperty } from 'storybook/internal/types';
-
-declare const checkActionsLoaded: (configDir: string) => void;
-declare const experimental_serverChannel: (channel: Channel, options: Options) => Promise<Channel>;
-declare const previewAnnotations: PresetProperty<'previewAnnotations'>;
-declare const managerEntries: PresetProperty<'managerEntries'>;
-
-export { checkActionsLoaded, experimental_serverChannel, managerEntries, previewAnnotations };

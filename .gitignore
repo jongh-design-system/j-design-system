@@ -1,3 +1,19 @@
+# Build Output
+dist-ssr
+**/dist/
+.turbo
+packages/ui/styled-system/*
+styled-system
+styled-system-static
+panda
+panda-static
+outdir
+ts-import-map-outdir
+
+# Dependencies
+node_modules
+.pnpm-store/
+
 # Logs
 logs
 *.log
@@ -6,11 +22,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-node_modules
-dist-ssr
-*.local
+*storybook.log
 
-# Editor directories and files
+# Environment
+*.local
+*.env
+
+# IDE and Editor
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -20,16 +38,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-*storybook.log
-.turbo
-packages/ui/styled-system/*
-**/dist/
-*.env
-
-styled-system
-styled-system-static
-panda
-panda-static
-outdir
-ts-import-map-outdir
