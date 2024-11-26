@@ -19,7 +19,9 @@
     "format": "prettier --cache --write . --ignore-path .prettierignore .",
     "lint-staged": "lint-staged",
     "turbo": "turbo check-types",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "ci:version": "changeset version",
+    "ci:publish": "changeset publish -r"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
