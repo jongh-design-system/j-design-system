@@ -1,0 +1,13 @@
+import ESM_COMPAT_Module from 'node:module';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import '../chunk-HVK6626C.mjs';
+import { spawn } from 'node:child_process';
+import { logger } from 'storybook/internal/node-logger';
+
+const __filename = fileURLToPath(import.meta.url);
+dirname(__filename);
+ESM_COMPAT_Module.createRequire(import.meta.url);
+var storybookProcess=null,checkStorybookRunning=async storybookUrl=>{try{return (await fetch(`${storybookUrl}/iframe.html`,{method:"HEAD"})).ok}catch{return !1}},startStorybookIfNotRunning=async()=>{let storybookScript=process.env.__STORYBOOK_SCRIPT__,storybookUrl=process.env.__STORYBOOK_URL__;if(await checkStorybookRunning(storybookUrl)){logger.verbose("Storybook is already running");return}logger.verbose(`Starting Storybook with command: ${storybookScript}`);try{storybookProcess=spawn(storybookScript,[],{stdio:process.env.DEBUG==="storybook"?"pipe":"ignore",cwd:process.cwd(),shell:!0}),storybookProcess.on("error",error=>{throw logger.verbose("Failed to start Storybook:"+error.message),error});}catch(error){throw logger.verbose("Failed to start Storybook:"+error.message),error}},killProcess=process2=>new Promise((resolve,reject)=>{process2.on("close",resolve),process2.on("error",reject),process2.kill();}),setup=async({config})=>{config.watch&&await startStorybookIfNotRunning();},teardown=async()=>{storybookProcess&&(logger.verbose("Stopping Storybook process"),await killProcess(storybookProcess));};
+
+export { setup, teardown };

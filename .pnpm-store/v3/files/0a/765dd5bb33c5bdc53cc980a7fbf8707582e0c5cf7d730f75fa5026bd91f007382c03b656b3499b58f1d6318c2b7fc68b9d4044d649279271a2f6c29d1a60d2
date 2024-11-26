@@ -1,0 +1,6 @@
+import { GlobalSetupContext } from 'vitest/node';
+
+declare const setup: ({ config }: GlobalSetupContext) => Promise<void>;
+declare const teardown: () => Promise<void>;
+
+export { setup, teardown };

@@ -1,0 +1,17 @@
+interface BuildOpts {
+    outDir: string;
+    configPath: string;
+    port?: string;
+    host?: boolean;
+    base?: string;
+}
+declare function buildStudio({ outDir, configPath, base }: BuildOpts): Promise<void>;
+declare function serveStudio({ configPath, port, host, outDir, base }: BuildOpts): Promise<void>;
+declare function previewStudio({ outDir, base }: BuildOpts): Promise<void>;
+declare function printUrls(options: {
+    host: string;
+    port: number;
+    https: boolean;
+}): void;
+
+export { type BuildOpts, buildStudio, previewStudio, printUrls, serveStudio };

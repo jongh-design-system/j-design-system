@@ -1,0 +1,76 @@
+// ../../node_modules/.pnpm/tsup@8.0.2_@swc+core@1.7.6_@swc+helpers@0.4.36__postcss@8.4.47_typescript@5.3.3/node_modules/tsup/assets/esm_shims.js
+import { fileURLToPath } from "url";
+import path from "path";
+var getFilename = () => fileURLToPath(import.meta.url);
+var getDirname = () => path.dirname(getFilename());
+var __dirname = /* @__PURE__ */ getDirname();
+
+// scripts/studio.ts
+import { colors, logger } from "@pandacss/logger";
+import { join } from "node:path";
+var appPath = join(__dirname, "..");
+async function buildStudio({ outDir, configPath, base }) {
+  const astro = await import("astro");
+  const { default: react } = await import("@astrojs/react");
+  const { default: studio } = await import("@pandacss/astro-plugin-studio");
+  try {
+    process.env.PUBLIC_CONFIG_PATH = configPath;
+    await astro.build({
+      outDir,
+      root: appPath,
+      integrations: [react(), studio()],
+      devToolbar: { enabled: false },
+      base
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function serveStudio({ configPath, port, host, outDir, base }) {
+  const astro = await import("astro");
+  const { default: react } = await import("@astrojs/react");
+  const { default: studio } = await import("@pandacss/astro-plugin-studio");
+  try {
+    process.env.PUBLIC_CONFIG_PATH = configPath;
+    await astro.dev({
+      outDir,
+      root: appPath,
+      integrations: [react(), studio()],
+      server: {
+        port: port ? Number(port) : void 0,
+        host
+      },
+      base,
+      devToolbar: { enabled: false }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function previewStudio({ outDir, base }) {
+  const astro = await import("astro");
+  const { default: react } = await import("@astrojs/react");
+  const { default: studio } = await import("@pandacss/astro-plugin-studio");
+  try {
+    await astro.preview({
+      outDir,
+      root: appPath,
+      integrations: [react(), studio()],
+      devToolbar: { enabled: false },
+      base
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+function printUrls(options) {
+  const protocol = options.https ? "https" : "http";
+  const localUrl = `${protocol}://${options.host}:${options.port}`;
+  logger.log(`  ${colors.cyan("\u279C")}  ${colors.bold("Previewed at")}: ${colors.reset(colors.green(localUrl))} `);
+}
+export {
+  buildStudio,
+  previewStudio,
+  printUrls,
+  serveStudio
+};

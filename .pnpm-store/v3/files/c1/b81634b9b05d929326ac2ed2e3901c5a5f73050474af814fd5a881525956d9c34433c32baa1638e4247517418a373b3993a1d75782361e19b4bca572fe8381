@@ -1,0 +1,11 @@
+import { PackageManagerName } from 'storybook/internal/common';
+
+interface PostinstallOptions {
+    packageManager: PackageManagerName;
+    configDir: string;
+    yes?: boolean;
+}
+
+declare function postInstall(options: PostinstallOptions): Promise<void>;
+
+export { postInstall as default };
