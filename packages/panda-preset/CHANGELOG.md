@@ -1,5 +1,11 @@
 # @jongh/panda-preset
 
+## 1.3.0
+
+### Minor Changes
+
+- cb4aefa: test changeset ci build issue
+
 ## 1.2.0
 
 ### Minor Changes
