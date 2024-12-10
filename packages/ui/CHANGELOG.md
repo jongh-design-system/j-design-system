@@ -1,5 +1,12 @@
 # @jongh/ui
 
+## 1.6.1
+
+### Patch Changes
+
+- Updated dependencies [fc499b8]
+  - @jongh/panda-preset@1.2.0
+
 ## 1.6.0
 
 ### Minor Changes
