@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@styled-system/*": ["styled-system/*"]
+    }
+  },
+
+  "include": ["src"]
+}

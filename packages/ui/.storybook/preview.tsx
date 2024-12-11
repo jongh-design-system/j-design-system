@@ -1,6 +1,5 @@
 import type { Preview } from "@storybook/react"
-import "../src/index.css"
-import "jh-generated/styles.css"
+import "./index.css"
 import React from "react"
 const preview: Preview = {
   parameters: {

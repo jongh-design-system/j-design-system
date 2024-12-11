@@ -10,10 +10,11 @@
     "lint": "eslint . --ignore-pattern 'styled-system/'",
     "preview": "vite preview",
     "preinstall": "npx only-allow pnpm",
-    "token": "pnpm --filter token",
+    "tokens": "pnpm --filter token",
     "app": "pnpm --filter app",
     "ui": "pnpm --filter ui",
     "script": "pnpm --filter script",
+    "preset": "pnpm --filter panda-preset",
     "prepare": "husky",
     "format": "prettier --cache --write . --ignore-path .prettierignore .",
     "lint-staged": "lint-staged",
@@ -40,11 +41,10 @@
     "lint-staged": "^15.2.7",
     "plop": "^4.0.1",
     "token-transformer": "^0.0.33",
+    "tsc-alias": "^1.8.10",
     "tsc-files": "^1.1.4",
     "turbo": "^2.0.9",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.3",
-    "vite-plugin-dts": "^3.9.1"
+    "typescript": "^5.2.2"
   },
   "workspaces": [
     "packages/*"

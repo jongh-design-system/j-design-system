@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { Slider } from "../components/Slider/Slider.tsx"
+import { Slider } from "../components/Slider"
+import { useState } from "@storybook/preview-api"
+import { StyledSlider } from "src/components/Slider/style"
 
 export default {
   title: "Slider",
@@ -11,5 +13,18 @@ export default {
 type Story = StoryObj<typeof Slider>
 
 export const Primary: Story = {
-  args: {},
+  render: () => {
+    const [value, setValue] = useState(50)
+
+    return (
+      <div>
+        <StyledSlider min={0} max={100} value={value} onChange={setValue}>
+          <StyledSlider.Track id="4" bgColor="red_300">
+            <StyledSlider.Range />
+          </StyledSlider.Track>
+          <StyledSlider.Thumb />
+        </StyledSlider>
+      </div>
+    )
+  },
 }

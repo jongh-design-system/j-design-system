@@ -1,42 +1,29 @@
-import { define } from "../../../dev"
+import type { Assign } from "../../types"
+import { slider } from "@styled-system/recipes"
+import type { ComponentProps, HTMLStyledProps } from "styled-system/types"
+import { createStyleContext } from "../../utils/createStyleContext"
+import { Slider } from "."
 
-export const sliderRecipe = define.recipe({
-  className: "slider",
-  base: {
-    WebkitAppearance: "none",
-    height: "4px",
-    borderRadius: "lg",
-    backgroundColor: "grey_300",
-    backgroundImage: "linear-gradient(#7DD3FC, #7DD3FC)",
-    backgroundSize: "var(--range-size)",
-    backgroundRepeat: "no-repeat",
-    "&::-webkit-slider-thumb": {
-      WebkitAppearance: "none",
-      width: "20px",
-      height: "20px",
-      backgroundColor: "grey_300",
-      borderRadius: "rounded",
-      border: "none",
-      cursor: "pointer",
-    },
-    "&::-moz-range-thumb": {
-      WebkitAppearance: "none",
-      width: "20px",
-      height: "20px",
-      backgroundColor: "grey_300",
-      borderRadius: "rounded",
-      border: "none",
-      cursor: "pointer",
-    },
-  },
-  variants: {
-    orientation: {
-      horizontal: {
-        writingMode: "horizontal-tb",
-      },
-      vertical: {
-        writingMode: "vertical-rl",
-      },
-    },
-  },
-})
+const { withProvider, withContext } = createStyleContext(slider)
+
+export const Root = withProvider<
+  HTMLDivElement,
+  Assign<HTMLStyledProps<"div">, ComponentProps<typeof Slider.Root>>
+>(Slider.Root, "root")
+
+export const Track = withContext<
+  HTMLSpanElement,
+  Assign<HTMLStyledProps<"span">, ComponentProps<typeof Slider.Track>>
+>(Slider.Track, "track")
+
+export const Range = withContext<
+  HTMLSpanElement,
+  Assign<HTMLStyledProps<"span">, ComponentProps<typeof Slider.Range>>
+>(Slider.Range, "range")
+
+export const Thumb = withContext<
+  HTMLSpanElement,
+  Assign<HTMLStyledProps<"span">, ComponentProps<typeof Slider.Thumb>>
+>(Slider.Thumb, "thumb")
+
+export const StyledSlider = Object.assign(Root, { Track, Range, Thumb })
