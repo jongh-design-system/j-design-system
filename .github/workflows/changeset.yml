@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - dev
+    paths:
+      - ".changeset/**" # .changeset 폴더에 변경이 있을 때만 실행
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
