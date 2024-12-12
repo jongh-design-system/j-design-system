@@ -1,5 +1,11 @@
 # @jongh/panda-preset
 
+## 1.4.0
+
+### Minor Changes
+
+- 412a4ca: add new token system
+
 ## 1.3.0
 
 ### Minor Changes
