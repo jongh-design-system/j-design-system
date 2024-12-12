@@ -4,32 +4,40 @@ export const accordionRecipe = defineSlotRecipe({
   slots: ["root", "content", "item", "trigger"],
   base: {
     root: {
-      width: "100%",
+      divideY: "1px",
+      width: "full",
+      borderTopWidth: "1px",
+      borderBottomWidth: "1px",
+      borderColor: "border",
     },
     trigger: {
-      alignItems: "center",
-      cursor: "pointer",
-      display: "flex",
-      fontWeight: "semibold",
-      gap: "10",
+      fontWeight: "bold",
+      fontSize: "lg",
+      color: "foreground",
+      textStyle: "body",
+      textAlign: "left",
+      borderColor: "border",
+    },
+    item: {
       padding: "5",
-      justifyContent: "space-between",
+      gap: "5",
+      display: "flex",
       textStyle: "body",
       textAlign: "left",
       _disabled: {
         cursor: "not-allowed",
       },
-    },
-    item: {
-      borderBottom: "1px solid",
-      borderColor: "grey_300",
+      flexDirection: "column",
+      borderColor: "border",
     },
     content: {
       overflow: "hidden",
-
       transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
       transitionDuration: "150ms",
       height: "var(--accordion-height)",
+      color: "foreground",
+      fontWeight: "normal",
+      fontSize: "sm",
     },
   },
   variants: {

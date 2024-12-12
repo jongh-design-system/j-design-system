@@ -55,14 +55,14 @@ export const buttonRecipe = defineRecipe({
     },
     variant: {
       primary: {
-        backgroundColor: "blue_500",
+        backgroundColor: "primary",
         border: "none",
         color: "white",
         _hover: {
           filter: "brightness(0.95)",
         },
         _disabled: {
-          backgroundColor: "grey_300",
+          backgroundColor: "muted",
           _hover: {
             filter: "brightness(0.9)",
           },
@@ -73,14 +73,14 @@ export const buttonRecipe = defineRecipe({
       },
       text: {
         border: "2px solid",
-        borderColor: "border_basic",
+        borderColor: "border",
         backgroundColor: "white",
-        color: "text_secondary",
+        color: "foreground",
         _hover: {
           filter: "brightness(0.95)",
         },
         _disabled: {
-          backgroundColor: "grey_200",
+          backgroundColor: "muted",
           cursor: "not-allowed",
         },
       },
