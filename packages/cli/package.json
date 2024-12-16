@@ -2,7 +2,6 @@
   "name": "@jongh/cli",
   "version": "1.1.0",
   "description": "",
-  "main": "index.js",
   "bin": "./dist/index.js",
   "type": "module",
   "scripts": {
@@ -16,6 +15,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "@effect/platform": "^0.69.13",
