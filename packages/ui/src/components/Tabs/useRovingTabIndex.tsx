@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import isHotkey from "is-hotkey"
 import {
   ReactNode,
