@@ -7,14 +7,17 @@
     "dev": "vite",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "yalc:update" : "yalc update && pnpm install --filter app"
   },
   "dependencies": {
+    "@jongh/cli": "file:.yalc/@jongh/cli",
+    "@jongh/ui": "workspace:^",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "@jongh/ui": "workspace:^"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@pandacss/dev": "^0.40.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
