@@ -39,6 +39,7 @@
     "husky": "^9.1.4",
     "inquirer": "9",
     "lint-staged": "^15.2.7",
+    "playwright": "^1.48.2",
     "plop": "^4.0.1",
     "token-transformer": "^0.0.33",
     "tsc-alias": "^1.8.10",
