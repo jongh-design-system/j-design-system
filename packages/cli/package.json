@@ -8,7 +8,9 @@
   "scripts": {
     "build": "tsup",
     "release": "pnpm publish -no-git-checks",
-    "prepare": "pnpm build"
+    "prepare": "pnpm build",
+    "lint": "eslint . --max-warnings 0",
+    "check-type": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",

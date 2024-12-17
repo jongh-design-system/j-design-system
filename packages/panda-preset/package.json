@@ -32,12 +32,13 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsup",
     "release": "pnpm build && pnpm publish --no-git-checks",
     "prepack": "clean-package",
     "postpack": "clean-package restore",
-    "prepare": "pnpm build"
+    "prepare": "pnpm build",
+    "check-type": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0"
   },
   "tsup": {
     "entry": [
