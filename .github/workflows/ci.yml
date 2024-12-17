@@ -8,7 +8,10 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: ci setup
-        uses: ./.github/actions/setup.yml
+        uses: ./.github/actions/setup
+
         with:
           node-version: 20
