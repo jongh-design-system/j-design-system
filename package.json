@@ -6,9 +6,7 @@
   "packageManager": "pnpm@9.5.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
     "lint": "eslint . --ignore-pattern 'styled-system/'",
-    "preview": "vite preview",
     "preinstall": "npx only-allow pnpm",
     "tokens": "pnpm --filter token",
     "app": "pnpm --filter app",
@@ -16,12 +14,11 @@
     "script": "pnpm --filter script",
     "preset": "pnpm --filter panda-preset",
     "prepare": "husky",
-    "format": "prettier --cache --write . --ignore-path .prettierignore .",
     "lint-staged": "lint-staged",
-    "turbo": "turbo check-types",
     "commit": "git-cz",
     "ci:version": "changeset version",
-    "ci:publish": "changeset publish -r"
+    "ci:publish": "changeset publish -r",
+    "ci": "turbo run lint check-type test build"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
@@ -42,6 +39,7 @@
     "husky": "^9.1.4",
     "inquirer": "9",
     "lint-staged": "^15.2.7",
+    "playwright": "^1.48.2",
     "plop": "^4.0.1",
     "token-transformer": "^0.0.33",
     "tsc-alias": "^1.8.10",
