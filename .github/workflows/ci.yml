@@ -1,0 +1,14 @@
+name: ci
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  version:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: ci setup
+        uses: ./.github/actions/setup.yml
+        with:
+          node-version: 20
