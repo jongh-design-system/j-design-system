@@ -1,6 +1,4 @@
-export const template = `import { defineSemanticTokens } from "@pandacss/dev"
-
-export const semanticColors = defineSemanticTokens.colors({
+export const template = `export const semanticColors = defineSemanticTokens.colors({
   colors: {
     background: {
       value: {
@@ -101,6 +99,15 @@ export const semanticColors = defineSemanticTokens.colors({
         base: "hsl(222.2 84% 4.9%)",
         _dark: "hsl(212.7 26.8% 83.9%)",
       },
+    },
+  },
+})
+
+export const defaultPreset = definePreset({
+  name: "default",
+  theme: {
+    semanticTokens: {
+      colors: semanticColors,
     },
   },
 })`
