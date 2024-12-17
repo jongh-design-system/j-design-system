@@ -8,8 +8,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v4
-
     - name: Cache turbo build setup
       uses: actions/cache@v4
       with:
@@ -20,15 +18,33 @@ runs:
 
     - name: Install pnpm
       uses: pnpm/action-setup@v4
-      with:
-        version: 9
+
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
         cache: "pnpm"
+
     - name: Install dependencies
       run: pnpm install
+      shell: bash
+
+    - name: Check if Playwright browser is cached
+      uses: actions/cache@v3
+      id: playwright-cache
+      with:
+        path: |
+          ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-1.28.0
+
+    - run: npx playwright install --with-deps
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      shell: bash
+
+    - run: npx playwright install-deps
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      shell: bash
 
     - name: Run CI
       run: pnpm run ci
+      shell: bash
