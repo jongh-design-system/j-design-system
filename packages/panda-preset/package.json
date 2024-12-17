@@ -36,7 +36,6 @@
     "release": "pnpm build && pnpm publish --no-git-checks",
     "prepack": "clean-package",
     "postpack": "clean-package restore",
-    "prepare": "pnpm build",
     "check-type": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0"
   },
