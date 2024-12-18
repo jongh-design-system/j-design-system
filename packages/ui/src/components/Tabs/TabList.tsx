@@ -5,11 +5,9 @@ import {
   forwardRef,
 } from "react"
 import { useTabContext } from "./useTabContext"
-
 import { RovingTabIndexRoot, useRovingTabIndex } from "../RovingIndex"
-
 import { Slot } from "@radix-ui/react-slot"
-import { composeRefs } from "../../hooks/useComposedRefs"
+import { composeRefs } from "@radix-ui/react-compose-refs"
 import {
   getNextFocusableId,
   getPrevFocusableId,

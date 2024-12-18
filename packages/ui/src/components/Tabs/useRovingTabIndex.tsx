@@ -12,9 +12,9 @@ import {
   ElementType,
   MutableRefObject,
 } from "react"
-import { useControlledState } from "../../hooks/useControllableState"
-import { createContext } from "../../hooks/createContext"
-import { composeRefs } from "../../hooks/useComposedRefs"
+import { useControllableState } from "@radix-ui/react-use-controllable-state"
+import { createContext } from "@radix-ui/react-context"
+import { composeRefs } from "@radix-ui/react-compose-refs"
 
 export type RovingTabIndexItem = {
   value: string
@@ -66,7 +66,7 @@ export const RovingTabIndexRoot = <T extends ElementType>({
   const Component = as || "div"
   const [isShiftTabbing, setIsShiftTabbing] = useState(false)
 
-  const [value = null, setValue] = useControlledState({
+  const [value = null, setValue] = useControllableState({
     prop: active,
     onChange: setActive,
   })

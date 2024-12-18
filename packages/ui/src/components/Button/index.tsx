@@ -10,7 +10,7 @@ export type ButtonProps = ComponentPropsWithoutRef<"button"> & {
 } & Partial<ButtonVariant>
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ as, disabled, id, onClick, children, ...rest }, ref) => {
+  ({ as, disabled, id, onClick, children, className, ...rest }, ref) => {
     const [buttonProps] = button.splitVariantProps(rest)
 
     const Comp = as ? Slot : "button"
@@ -22,7 +22,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled}
         id={id}
         onClick={onClick}
-        className={cx(button(buttonProps))}
+        className={cx(button(buttonProps), className)}
         {...rest}
       >
         {children}
