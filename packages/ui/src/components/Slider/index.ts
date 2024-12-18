@@ -2,7 +2,7 @@ import type { Assign } from "../../types"
 import { slider } from "@styled-system/recipes"
 import type { ComponentProps, HTMLStyledProps } from "styled-system/types"
 import { createStyleContext } from "../../utils/createStyleContext"
-import { Slider } from "."
+import { Slider } from "./Slider"
 
 const { withProvider, withContext } = createStyleContext(slider)
 
