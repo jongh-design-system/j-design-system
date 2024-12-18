@@ -2,7 +2,6 @@
   "name": "@jongh/cli",
   "version": "1.1.0",
   "description": "",
-  "main": "index.js",
   "bin": "./dist/index.js",
   "type": "module",
   "scripts": {
@@ -17,16 +16,25 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "dependencies": {
+    "@babel/generator": "^7.26.3",
+    "@babel/parser": "^7.26.3",
+    "@babel/traverse": "^7.26.4",
     "@clack/prompts": "^0.7.0",
     "@effect/platform": "^0.69.13",
     "@effect/schema": "^0.75.5",
+    "@types/babel__traverse": "^7.20.6",
     "effect": "^3.10.8",
     "fs-extra": "^11.2.0",
     "pkg-dir": "^8.0.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
+    "@types/babel__generator": "^7.6.8",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.8.6",
     "@types/yargs": "^17.0.33",

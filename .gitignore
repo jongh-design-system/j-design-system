@@ -13,6 +13,10 @@ ts-import-map-outdir
 # Dependencies
 node_modules
 .pnpm-store/
+.yalc/*
+
+packages/app/
+
 
 # Logs
 logs
