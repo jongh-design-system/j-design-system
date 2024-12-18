@@ -1,19 +1,16 @@
 {
   "name": "@jongh/ui",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Headless UI components for React",
   "type": "module",
   "scripts": {
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
     "prepare": "panda codegen",
-    "test": "vitest",
+    "test": "vitest run",
     "test-storybook": "vitest",
     "storybook": "storybook dev -p 6006",
-    "build": "pnpm prepare && vite build",
     "build-storybook": "storybook build",
-    "check-types": "tsc --noEmit",
-    "studio": "pnpm panda studio",
-    "pub": "pnpm publish --no-git-checks"
+    "check-type": "tsc --noEmit"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.2",

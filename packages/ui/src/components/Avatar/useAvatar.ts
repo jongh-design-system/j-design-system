@@ -41,7 +41,7 @@ export const useAvatarStatus = ({
     return () => {
       isMounted = false
     }
-  }, [src])
+  }, [src, onStatusChange])
 
   return status
 }
