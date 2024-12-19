@@ -19,10 +19,7 @@ import {
   useRovingTabIndex,
   useRovingTabIndexContext,
 } from "../RovingIndex/useRovingTabIndex"
-import {
-  getNextFocusableId,
-  getPrevFocusableId,
-} from "../../utils/getFocusableId"
+import { getNextFocusableId, getPrevFocusableId } from "@utils/getFocusableId"
 import { composeRefs } from "@radix-ui/react-compose-refs"
 import { Primitive } from "src/components/Primitive"
 

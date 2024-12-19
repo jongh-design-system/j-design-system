@@ -1,5 +1,5 @@
-import { define } from "dev"
-export const buttonRecipe = define.recipe({
+import { defineSafe } from "@utils/defineSafe"
+export const buttonRecipe = defineSafe.recipe({
   className: "button",
   base: {
     textAlign: "center",

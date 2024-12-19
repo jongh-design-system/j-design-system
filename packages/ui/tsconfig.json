@@ -14,7 +14,8 @@
     "outDir": "dist",
     "baseUrl": "./",
     "paths": {
-      "@styled-system/*": ["styled-system/*"]
+      "@styled-system/*": ["styled-system/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": ["src/**/*", "postcss.config.cjs"],

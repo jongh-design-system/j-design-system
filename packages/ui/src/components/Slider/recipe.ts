@@ -1,6 +1,6 @@
-import { define } from "dev"
+import { defineSafe } from "@utils/defineSafe"
 
-export const sliderRecipe = define.slotRecipe({
+export const sliderRecipe = defineSafe.slotRecipe({
   className: "slider",
   description: "Styles for the Slider component",
   slots: ["root", "track", "range", "thumb"],

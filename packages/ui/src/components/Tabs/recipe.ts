@@ -1,6 +1,6 @@
-import { define } from "dev"
+import { defineSafe } from "@utils/defineSafe"
 
-export const tabRecipe = define.slotRecipe({
+export const tabRecipe = defineSafe.slotRecipe({
   className: "tabs",
   slots: ["root", "list", "item", "content", "indicator"],
   base: {

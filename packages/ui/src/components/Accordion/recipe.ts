@@ -1,6 +1,6 @@
-import { define } from "dev"
+import { defineSafe } from "@utils/defineSafe"
 
-export const accordionRecipe = define.slotRecipe({
+export const accordionRecipe = defineSafe.slotRecipe({
   className: "accordion",
   slots: ["root", "content", "item", "trigger"],
   base: {
