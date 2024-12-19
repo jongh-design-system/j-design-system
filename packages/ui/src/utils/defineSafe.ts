@@ -37,7 +37,7 @@ interface Recursive<T> {
   [key: string]: Recursive<T> | T
 }
 
-export const define = {
+export const defineSafe = {
   recipe: defineSafeRecipe,
   slotRecipe: defineSafeSlotRecipe,
   textStyle: (definition: TextStyle) => definition,

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { Slider } from "../components/Slider"
+import { Slider } from "../components/Slider/Slider"
 import { useState } from "@storybook/preview-api"
-import { StyledSlider } from "src/components/Slider/style"
+import { StyledSlider } from "src/components/Slider"
 
 export default {
   title: "Slider",

@@ -1,7 +1,10 @@
 import { useState, type ComponentPropsWithoutRef } from "react"
-import { useControlledState } from "../../hooks/useControllableState"
-import { createContext } from "../../hooks/createContext"
+import { useControllableState } from "@radix-ui/react-use-controllable-state"
+import { createContext } from "@radix-ui/react-context"
 //TODO: props type 관련 정리 및 event composing 필요
+
+const CONTEXT_NAME = "Slider"
+
 const [SliderProvider, useSliderContext] = createContext<{
   min: number
   max: number
@@ -11,7 +14,7 @@ const [SliderProvider, useSliderContext] = createContext<{
   onPointerDown: (e: React.PointerEvent) => void
   onPointerMove: (e: React.PointerEvent) => void
   onPointerUp: (e: React.PointerEvent) => void
-}>("Slider")
+}>(CONTEXT_NAME)
 
 type SliderRootProps = {
   min: number
@@ -36,7 +39,7 @@ const SliderRoot = ({
 }: SliderRootProps) => {
   const [isDragging, setIsDragging] = useState(false)
 
-  const [innerValue = 0, setValue] = useControlledState({
+  const [innerValue = 0, setValue] = useControllableState({
     prop: value,
     defaultProp: defaultValue || min,
     onChange,
@@ -104,7 +107,7 @@ const SliderTrack = ({
 }
 
 const SliderRange = ({ ...props }: ComponentPropsWithoutRef<"span">) => {
-  const { min, max, value } = useSliderContext()
+  const { min, max, value } = useSliderContext(CONTEXT_NAME)
   const percentage = getPercentage(value, min, max)
 
   return (
@@ -118,7 +121,7 @@ const SliderRange = ({ ...props }: ComponentPropsWithoutRef<"span">) => {
 }
 
 const SliderThumb = ({ ...props }: ComponentPropsWithoutRef<"span">) => {
-  const { min, max, value } = useSliderContext()
+  const { min, max, value } = useSliderContext(CONTEXT_NAME)
   const percentage = getPercentage(value, min, max)
 
   return (

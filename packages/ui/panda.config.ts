@@ -1,9 +1,10 @@
 import { defineConfig } from "@pandacss/dev"
-import { preset } from "@jongh/panda-preset"
+import { defaultPreset } from "./preset"
 export default defineConfig({
   preflight: true,
-  presets: ["@pandacss/preset-base", preset()],
+  presets: ["@pandacss/preset-panda", defaultPreset],
   jsxFramework: "react",
   include: ["./src/**/*.{js,jsx,ts,tsx}", "./src/stories/*.{js,jsx,ts,tsx}"],
   outdir: "styled-system",
+  strictTokens: true,
 })

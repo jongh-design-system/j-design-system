@@ -1,9 +1,9 @@
 import * as React from "react"
-import { createContext } from "../../hooks/createContext"
-import { useControlledState } from "../../hooks/useControllableState"
+import { createContext } from "@radix-ui/react-context"
+import { useControllableState } from "@radix-ui/react-use-controllable-state"
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent"
 import { Slot } from "@radix-ui/react-slot"
-import { composeRefs } from "src/hooks/useComposedRefs"
+import { composeRefs } from "@radix-ui/react-compose-refs"
 
 const ACCORDION_KEYS = [
   "Home",
@@ -61,7 +61,7 @@ const SingleAccordion = React.forwardRef<
     { value, defaultValue = [], onValueChange, children, asChild, ...props },
     forwardedRef,
   ) => {
-    const [selected = [], setSelected] = useControlledState({
+    const [selected = [], setSelected] = useControllableState({
       prop: value,
       defaultProp: defaultValue,
       onChange: onValueChange,
@@ -114,7 +114,7 @@ const MultiAccordion = React.forwardRef<
     { value, defaultValue, onValueChange, children, asChild, ...props },
     forwardedRef,
   ) => {
-    const [selected, setSelected] = useControlledState({
+    const [selected, setSelected] = useControllableState({
       prop: value,
       defaultProp: defaultValue,
       onChange: onValueChange,

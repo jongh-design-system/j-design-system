@@ -6,7 +6,7 @@ import {
   ElementType,
   MutableRefObject,
 } from "react"
-import { createContext } from "../../hooks/createContext"
+import { createContext } from "@radix-ui/react-context"
 import { NODE_SELECTOR } from "./RovingTabIndexRoot"
 
 export type RovingTabIndexItem = {

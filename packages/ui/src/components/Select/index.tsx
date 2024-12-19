@@ -4,8 +4,8 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react"
-import { createContext } from "../../hooks/createContext"
-import { useControlledState } from "../../hooks/useControllableState"
+import { createContext } from "@radix-ui/react-context"
+import { useControllableState } from "@radix-ui/react-use-controllable-state"
 import { Slot } from "@radix-ui/react-slot"
 import { RovingTabIndexRoot } from "../RovingIndex/RovingTabIndexRoot"
 import {
@@ -19,11 +19,8 @@ import {
   useRovingTabIndex,
   useRovingTabIndexContext,
 } from "../RovingIndex/useRovingTabIndex"
-import {
-  getNextFocusableId,
-  getPrevFocusableId,
-} from "../../utils/getFocusableId"
-import { composeRefs } from "../../hooks/useComposedRefs"
+import { getNextFocusableId, getPrevFocusableId } from "@utils/getFocusableId"
+import { composeRefs } from "@radix-ui/react-compose-refs"
 import { Primitive } from "src/components/Primitive"
 
 const CONTEXT_NAME = "select"
@@ -64,13 +61,13 @@ export const SelectRoot = ({
   children,
   ...props
 }: SelectProps) => {
-  const [open = false, setIsOpen] = useControlledState({
+  const [open = false, setIsOpen] = useControllableState({
     prop: isOpen,
     defaultProp: defaultOpen,
     onChange: onOpenChange,
   })
 
-  const [selectedValue, setSelectedValue] = useControlledState({
+  const [selectedValue, setSelectedValue] = useControllableState({
     prop: selected,
     defaultProp: defaultValue,
     onChange: onSelectChange,

@@ -1,5 +1,5 @@
 import { forwardRef, useId, type ReactNode, type ForwardedRef } from "react"
-import { useControlledState } from "../../hooks/useControllableState"
+import { useControllableState } from "@radix-ui/react-use-controllable-state"
 import { Slot } from "@radix-ui/react-slot"
 import { TabProvider } from "./useTabContext"
 
@@ -18,7 +18,7 @@ export const Tab = forwardRef(
   ) => {
     const Element = asChild ? Slot : "div"
 
-    const [value, setValue] = useControlledState({
+    const [value, setValue] = useControllableState({
       prop: selected,
       onChange: onSelect,
       defaultProp: defaultValue,

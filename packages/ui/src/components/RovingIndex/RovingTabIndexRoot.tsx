@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useRef, useState } from "react"
-import { useControlledState } from "../../hooks/useControllableState"
+import { useControllableState } from "@radix-ui/react-use-controllable-state"
 import { RovingTabIndexProvider } from "./useRovingTabIndex"
 import { Slot } from "@radix-ui/react-slot"
 
@@ -35,7 +35,7 @@ export const RovingTabIndexRoot = ({
 }: RovingTabIndexRootProps) => {
   const [isShiftTabbing, setIsShiftTabbing] = useState(false)
 
-  const [value = null, setValue] = useControlledState({
+  const [value = null, setValue] = useControllableState({
     prop: active,
     onChange: setActive,
   })
