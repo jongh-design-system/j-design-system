@@ -2,10 +2,10 @@
 
 import yargs from "yargs"
 import { hideBin } from "yargs/helpers"
-import { getConfig } from "./getConfig"
+import { getConfig } from "./utils/getConfig"
 import * as p from "@clack/prompts"
-import { copyComponent } from "./copyComponent"
-import { init } from "./init"
+import { copyComponent } from "./utils/copyComponent"
+import { init } from "../init"
 
 const main = async () => {
   try {
