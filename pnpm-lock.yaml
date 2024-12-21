@@ -83,6 +83,12 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.6.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.10(@types/node@22.8.6)(lightningcss@1.25.1)
+      vitest:
+        specifier: ^2.1.4
+        version: 2.1.4(@types/node@22.8.6)(@vitest/browser@2.1.4)(lightningcss@1.25.1)(msw@2.6.0(@types/node@22.8.6)(typescript@5.6.3))
 
   packages/app:
     dependencies:
@@ -153,12 +159,18 @@ importers:
       effect:
         specifier: ^3.10.8
         version: 3.10.8
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
       pkg-dir:
         specifier: ^8.0.0
         version: 8.0.0
+      tsconfig-paths:
+        specifier: ^4.2.0
+        version: 4.2.0
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -195,7 +207,7 @@ importers:
         version: 2.2.0
       tsup:
         specifier: ^8.3.0
-        version: 8.3.5(@microsoft/api-extractor@7.43.0(@types/node@22.8.6))(@swc/core@1.7.40)(jiti@1.21.6)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.6.3)(yaml@2.5.1)
+        version: 8.3.5(@microsoft/api-extractor@7.43.0(@types/node@22.8.6))(@swc/core@1.7.40)(jiti@1.21.6)(postcss@8.4.38)(tsx@4.19.2)(typescript@5.6.3)(yaml@2.5.1)
 
   packages/script:
     devDependencies:
@@ -332,9 +344,6 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.6.3
-      vite:
-        specifier: ^5.4.10
-        version: 5.4.10(@types/node@22.8.6)(lightningcss@1.25.1)
       vite-bundle-visualizer:
         specifier: ^1.2.1
         version: 1.2.1(rollup@4.24.2)
@@ -344,9 +353,6 @@ importers:
       vite-tsconfig-paths:
         specifier: ^5.0.1
         version: 5.0.1(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.25.1))
-      vitest:
-        specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.6)(@vitest/browser@2.1.4)(lightningcss@1.25.1)(msw@2.6.0(@types/node@22.8.6)(typescript@5.6.3))
 
 packages:
 
@@ -11583,6 +11589,15 @@ snapshots:
     dependencies:
       postcss: 8.4.47
 
+  postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.38)(tsx@4.19.2)(yaml@2.5.1):
+    dependencies:
+      lilconfig: 3.1.2
+    optionalDependencies:
+      jiti: 1.21.6
+      postcss: 8.4.38
+      tsx: 4.19.2
+      yaml: 2.5.1
+
   postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.47)(tsx@4.19.2)(yaml@2.5.1):
     dependencies:
       lilconfig: 3.1.2
@@ -12460,6 +12475,35 @@ snapshots:
   tslib@1.14.1: {}
 
   tslib@2.8.0: {}
+
+  tsup@8.3.5(@microsoft/api-extractor@7.43.0(@types/node@22.8.6))(@swc/core@1.7.40)(jiti@1.21.6)(postcss@8.4.38)(tsx@4.19.2)(typescript@5.6.3)(yaml@2.5.1):
+    dependencies:
+      bundle-require: 5.0.0(esbuild@0.24.0)
+      cac: 6.7.14
+      chokidar: 4.0.1
+      consola: 3.2.3
+      debug: 4.3.7
+      esbuild: 0.24.0
+      joycon: 3.1.1
+      picocolors: 1.1.1
+      postcss-load-config: 6.0.1(jiti@1.21.6)(postcss@8.4.38)(tsx@4.19.2)(yaml@2.5.1)
+      resolve-from: 5.0.0
+      rollup: 4.24.2
+      source-map: 0.8.0-beta.0
+      sucrase: 3.35.0
+      tinyexec: 0.3.1
+      tinyglobby: 0.2.10
+      tree-kill: 1.2.2
+    optionalDependencies:
+      '@microsoft/api-extractor': 7.43.0(@types/node@22.8.6)
+      '@swc/core': 1.7.40
+      postcss: 8.4.38
+      typescript: 5.6.3
+    transitivePeerDependencies:
+      - jiti
+      - supports-color
+      - tsx
+      - yaml
 
   tsup@8.3.5(@microsoft/api-extractor@7.43.0(@types/node@22.8.6))(@swc/core@1.7.40)(jiti@1.21.6)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.6.3)(yaml@2.5.1):
     dependencies:
