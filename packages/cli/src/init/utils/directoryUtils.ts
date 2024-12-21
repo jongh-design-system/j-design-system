@@ -20,7 +20,6 @@ export function getTsConfigAlias(cwd: string) {
   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
     // styled-system alias 찾기
     if (paths.includes("./styled-system/*")) {
-      console.log(alias)
       styledSystemAlias = alias.replace(/\/\*$/, "")
     }
 
