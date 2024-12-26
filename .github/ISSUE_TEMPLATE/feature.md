@@ -1,6 +1,6 @@
 ---
 name: Feature
-about: "Feature"
+about: "Feature"
 title: "[Feat]: "
 labels: "Feat"
 assignees: ""
