@@ -16,5 +16,8 @@ jobs:
       - name: ci setup
         uses: ./.github/actions/setup
 
-        with:
-          node-version: 20
+      - name: playwright setup
+        uses: ./.github/actions/playwright
+
+      - name: run ci
+        run: pnpm run ci

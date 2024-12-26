@@ -37,18 +37,18 @@ runs:
       run: pnpm install
       shell: bash
 
-    - name: Check if Playwright browser is cached
-      uses: actions/cache@v3
-      id: playwright-cache
-      with:
-        path: |
-          ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-1.28.0
+    # - name: Check if Playwright browser is cached
+    #   uses: actions/cache@v3
+    #   id: playwright-cache
+    #   with:
+    #     path: |
+    #       ~/.cache/ms-playwright
+    #     key: ${{ runner.os }}-playwright-1.28.0
 
-    - run: npx playwright install --with-deps
-      if: steps.playwright-cache.outputs.cache-hit != 'true'
-      shell: bash
+    # - run: npx playwright install --with-deps
+    #   if: steps.playwright-cache.outputs.cache-hit != 'true'
+    #   shell: bash
 
-    - run: npx playwright install-deps
-      if: steps.playwright-cache.outputs.cache-hit == 'true'
-      shell: bash
+    # - run: npx playwright install-deps
+    #   if: steps.playwright-cache.outputs.cache-hit == 'true'
+    #   shell: bash
