@@ -8,7 +8,7 @@ runs:
     - name: Get playwright version
       shell: bash
       run: |
-        echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('@playwright/test/package.json').version)")" >> $GITHUB_OUTPUT
+        echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('playwright/package.json').version)")" >> $GITHUB_OUTPUT
       id: playwright-version
 
     - name: Cache Playwright Browsers for Playwright's Version
