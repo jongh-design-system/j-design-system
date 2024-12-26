@@ -37,6 +37,7 @@ runs:
 
     - name: Install dependencies
       run: pnpm install
+      shell: bash
 
     - name: Check if Playwright browser is cached
       uses: actions/cache@v3
