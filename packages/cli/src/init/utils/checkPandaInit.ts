@@ -11,9 +11,11 @@ export async function checkPandaInit(cwd: string) {
     fs.readFileSync(path.join(cwd, "package.json"), "utf-8"),
   )
 
+  const devDeps = pkg?.devDependencies || {}
+  const deps = pkg?.dependencies || {}
+
   const isInstalled =
-    Object.keys(pkg.devDependencies).includes(panda) ||
-    Object.keys(pkg.dependencies).includes(panda) //panda가 devDependencies나 dependencies에 있는지 확인
+    Object.keys(devDeps).includes(panda) || Object.keys(deps).includes(panda) //panda가 devDependencies나 dependencies에 있는지 확인
 
   const pandaConfig = await getPandacssConfigFile(cwd)
 
