@@ -1,10 +1,6 @@
 name: pnpm setup
 description: pnpm setup
-inputs:
-  node-version:
-    description: "Node.js version"
-    required: true
-    default: "20"
+
 runs:
   using: composite
   steps:
@@ -16,35 +12,43 @@ runs:
         restore-keys: |
           ${{ runner.os }}-turbo-
 
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+
     - name: Install pnpm
       uses: pnpm/action-setup@v4
 
-    - name: Use Node.js ${{ inputs.node-version }}
-      uses: actions/setup-node@v4
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - uses: actions/cache@v4
+      name: Setup pnpm cache
       with:
-        node-version: ${{ inputs.node-version }}
-        cache: "pnpm"
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
 
     - name: Install dependencies
       run: pnpm install
       shell: bash
 
-    - name: Check if Playwright browser is cached
-      uses: actions/cache@v3
-      id: playwright-cache
-      with:
-        path: |
-          ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-1.28.0
+    # - name: Check if Playwright browser is cached
+    #   uses: actions/cache@v3
+    #   id: playwright-cache
+    #   with:
+    #     path: |
+    #       ~/.cache/ms-playwright
+    #     key: ${{ runner.os }}-playwright-1.28.0
 
-    - run: npx playwright install --with-deps
-      if: steps.playwright-cache.outputs.cache-hit != 'true'
-      shell: bash
+    # - run: npx playwright install --with-deps
+    #   if: steps.playwright-cache.outputs.cache-hit != 'true'
+    #   shell: bash
 
-    - run: npx playwright install-deps
-      if: steps.playwright-cache.outputs.cache-hit == 'true'
-      shell: bash
-
-    - name: Run CI
-      run: pnpm run ci
-      shell: bash
+    # - run: npx playwright install-deps
+    #   if: steps.playwright-cache.outputs.cache-hit == 'true'
+    #   shell: bash
