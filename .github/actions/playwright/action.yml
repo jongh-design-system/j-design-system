@@ -4,7 +4,6 @@ runs:
   using: composite
 
   steps:
-    # https://github.com/microsoft/playwright/issues/7249#issuecomment-1373375487
     - name: Get playwright version
       shell: bash
       run: |
