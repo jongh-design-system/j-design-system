@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import { useState } from "react"
 import { describe, expect, it, vi } from "vitest"
-import { Accordion, Content, Item, Trigger } from "../components"
+import Accordion from "../component/Accordion"
 
 // 예시 컴포넌트
 const AccordionExample = () => {
@@ -9,13 +9,16 @@ const AccordionExample = () => {
 
   return (
     <Accordion
+      type="multiple"
       value={selectedItems}
       onValueChange={(items) => setSelectedItems(items)}
     >
-      <Item value="1">
-        <Trigger>1번</Trigger>
-        <Content>내용1</Content>
-      </Item>
+      <Accordion.Item value="1">
+        <Accordion.Header>
+          <Accordion.Trigger data-testid="1">1번</Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Content>내용1</Accordion.Content>
+      </Accordion.Item>
     </Accordion>
   )
 }
@@ -29,7 +32,7 @@ describe("Accordion with useState", () => {
     expect(screen.queryByText("내용1")).toBeDefined()
 
     // 트리거 클릭
-    const trigger = screen.getByText("1번")
+    const trigger = screen.getByTestId("1")
     await fireEvent.click(trigger)
 
     // 상태 변경 후 내용 표시 확인
@@ -41,11 +44,11 @@ describe("Accordion with useState", () => {
     const onValueChange = vi.fn()
 
     render(
-      <Accordion value={["1"]} onValueChange={onValueChange}>
-        <Item value="1">
-          <Trigger data-testid="trigger-1">1번</Trigger>
-          <Content>내용1</Content>
-        </Item>
+      <Accordion type="multiple" value={["1"]} onValueChange={onValueChange}>
+        <Accordion.Item value="1">
+          <Accordion.Trigger data-testid="trigger-1">1번</Accordion.Trigger>
+          <Accordion.Content>내용1</Accordion.Content>
+        </Accordion.Item>
       </Accordion>,
     )
     //Fix: getByText로 찾을 시 multiple error 발생

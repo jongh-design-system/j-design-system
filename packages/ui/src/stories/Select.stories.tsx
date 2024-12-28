@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { Select } from "../components/Select"
-import { css } from "@styled-system/css"
+import Select from "../component/Select"
 
 export default {
   title: "Select",
@@ -11,25 +10,27 @@ export default {
 
 type Story = StoryObj<typeof Select>
 
+const arr = Array.from({ length: 100 }, (_, i) => i)
+
 export const Primary: Story = {
   render: () => {
     return (
       <Select>
-        <Select.Trigger placeholder="Select a language" />
-        <Select.Portal>
-          <ul
-            className={css({
-              bgColor: "red_300",
-              overflow: "auto",
-              boxSizing: "border-box",
-            })}
-          >
-            <Select.Item value="javascript">JavaScript</Select.Item>
-            <Select.Item value="python">Python</Select.Item>
-            <Select.Item value="java">Java</Select.Item>
-            <Select.Item value="typescript">TypeScript</Select.Item>
-          </ul>
-        </Select.Portal>
+        <Select.Trigger>
+          <Select.Value placeholder="Select a fruit" />
+        </Select.Trigger>
+
+        <Select.Content position="popper" data-position="popper">
+          <Select.ViewPort overflow="auto" maxH="12">
+            <Select.Group data-position="popper" color="red" overflow="visible">
+              {arr.map((num) => (
+                <Select.Item key={num} value={num.toString()}>
+                  {num}
+                </Select.Item>
+              ))}
+            </Select.Group>
+          </Select.ViewPort>
+        </Select.Content>
       </Select>
     )
   },
