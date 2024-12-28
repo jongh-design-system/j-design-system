@@ -1,5 +1,0 @@
-export * from "./Button"
-export * from "./Accordion"
-export * from "./Tabs"
-export * from "./Slider"
-export * from "./Select"
