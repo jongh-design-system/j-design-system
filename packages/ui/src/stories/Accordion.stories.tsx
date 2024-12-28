@@ -1,9 +1,8 @@
-import { Accordion, Content, Item, Trigger } from "../components"
+import Accordion from "../component/Accordion"
 import type { Meta, StoryObj } from "@storybook/react"
 import { expect, userEvent, waitFor } from "@storybook/test"
 export default {
   title: "Accordion",
-  component: Accordion,
   tags: ["autodocs"],
 } satisfies Meta<typeof Accordion>
 
@@ -13,19 +12,29 @@ export const Primary: Story = {
   render: () => {
     return (
       <div style={{ width: "500px" }}>
-        <Accordion>
-          <Item value="1">
-            <Trigger>1번</Trigger>
-            <Content>내용1</Content>
-          </Item>
-          <Item value="2">
-            <Trigger>2번</Trigger>
-            <Content>내용2</Content>
-          </Item>
-          <Item value="3">
-            <Trigger>3번</Trigger>
-            <Content>내용2</Content>
-          </Item>
+        <Accordion type="single" collapsible>
+          <Accordion.Item value="1">
+            <Accordion.Header>
+              <Accordion.Trigger>1번</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>
+              <div>내용1</div>
+            </Accordion.Content>
+          </Accordion.Item>
+          <Accordion.Item value="2">
+            <Accordion.Header>
+              <Accordion.Trigger>2번</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>
+              <div>내용1</div>
+            </Accordion.Content>
+          </Accordion.Item>
+          <Accordion.Item value="3">
+            <Accordion.Header>
+              <Accordion.Trigger>3번</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>내용3</Accordion.Content>
+          </Accordion.Item>
         </Accordion>
       </div>
     )

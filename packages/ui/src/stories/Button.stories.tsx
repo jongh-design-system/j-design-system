@@ -1,5 +1,5 @@
 import { expect, fn, userEvent, within } from "@storybook/test"
-import { Button } from "../components"
+import { Button } from "../component/Button"
 import type { Meta, StoryObj } from "@storybook/react"
 export default {
   title: "Button",
@@ -12,6 +12,8 @@ type Story = StoryObj<typeof Button>
 export const Primary: Story = {
   args: {
     children: "click",
+    variant: "default",
+    tabIndex: 0,
     onClick: fn(),
   },
   play: async ({ args, canvasElement }) => {
@@ -22,10 +24,17 @@ export const Primary: Story = {
   },
 }
 
-export const Text: Story = {
+export const Secondary: Story = {
   args: {
     children: "click",
-    variant: "text",
+    variant: "secondary",
+  },
+}
+
+export const Ghost: Story = {
+  args: {
+    children: "click",
+    variant: "outline",
   },
 }
 
