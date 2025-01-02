@@ -4,6 +4,7 @@ import { checkJsonInit } from "./utils/checkJsonInit"
 import { getTsConfigAlias } from "./utils/directoryUtils"
 import fs from "fs-extra"
 import path from "path"
+import { type ConfigType } from "../common/types"
 
 export async function init() {
   const root = await packageDirectory()
@@ -31,7 +32,7 @@ export async function init() {
     components: `${baseAlias}/components`,
     hooks: `${baseAlias}/hooks`,
     styledsystem: styledSystemAlias,
-  }
+  } satisfies ConfigType
 
   await fs.writeFile(
     path.resolve(root, "components.json"),
