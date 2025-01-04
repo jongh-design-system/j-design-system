@@ -5,7 +5,13 @@ import { getTsConfigAlias } from "./utils/directoryUtils"
 import fs from "fs-extra"
 import path from "path"
 import { type ConfigType } from "../common/types"
+import ora from "ora"
+import { z } from "zod"
 import { Command } from "commander"
+
+const initSchema = z.object({
+  cwd: z.string(),
+})
 
 export const initCommand = new Command()
   .name("init")
@@ -15,9 +21,18 @@ export const initCommand = new Command()
     "current working directory, default to process.cwd()",
     process.cwd(),
   )
+  .action(async (opts) => {
+    const options = initSchema.parse({
+      cwd: path.resolve(opts.cwd),
+    })
+    await init(options)
+  })
 
-export async function init() {
-  const root = await packageDirectory()
+export async function init(options: z.infer<typeof initSchema>) {
+  const spinner = ora("initiating").start("Initializing project...")
+  spinner.color = "blue"
+
+  const root = options.cwd || (await packageDirectory())
   if (!root) {
     throw new Error("Failed to find package root")
   }
