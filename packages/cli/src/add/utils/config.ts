@@ -1,4 +1,4 @@
-import { configSchema, type ConfigType } from "common/types"
+import { configSchema, type ConfigType } from "../../common/types"
 import fs from "fs-extra"
 import path from "path"
 import { loadConfig } from "tsconfig-paths"
@@ -29,7 +29,6 @@ export async function resolveAllPaths(
     utils: await resolveImport(config.utils, tsconfig),
     components: await resolveImport(config.components, tsconfig),
     hooks: await resolveImport(config.hooks, tsconfig),
-    styledSystem: await resolveImport(config.styledsystem, tsconfig),
   }
 }
 
