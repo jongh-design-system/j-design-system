@@ -5,6 +5,16 @@ import { getTsConfigAlias } from "./utils/directoryUtils"
 import fs from "fs-extra"
 import path from "path"
 import { type ConfigType } from "../common/types"
+import { Command } from "commander"
+
+export const initCommand = new Command()
+  .name("init")
+  .description("Initialize the project")
+  .option(
+    "-c, --cwd <cwd>",
+    "current working directory, default to process.cwd()",
+    process.cwd(),
+  )
 
 export async function init() {
   const root = await packageDirectory()
