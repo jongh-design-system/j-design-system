@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "paths": {
-      "@styled-system/*": ["./styled-system/*"],
-      "@utils/*": ["./src/utils/*"]
-    }
-  }
-}
