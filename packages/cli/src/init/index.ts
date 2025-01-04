@@ -43,7 +43,7 @@ export async function init(options: z.infer<typeof initSchema>) {
   }
 
   const isPandaInit = await checkPandaInit(root)
-  if (isPandaInit) {
+  if (!isPandaInit) {
     throw new Error("install pandacss")
   }
 
