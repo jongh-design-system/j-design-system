@@ -29,6 +29,7 @@ export async function resolveAllPaths(
     utils: await resolveImport(config.utils, tsconfig),
     components: await resolveImport(config.components, tsconfig),
     hooks: await resolveImport(config.hooks, tsconfig),
+    styledsystem: await resolveImport(config.styledsystem, tsconfig),
   }
 }
 

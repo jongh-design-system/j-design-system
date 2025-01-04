@@ -11,7 +11,7 @@ const COMPONENTS_JSON = {
   utils: "@/utils",
   components: "@/ui",
   hooks: "@/hooks",
-  styledsystem: "@styled-system",
+  styledsystem: "@styled-system/*",
 }
 
 const TS_CONFIG = {
@@ -74,6 +74,9 @@ describe("person", () => {
         "src/ui",
       ),
       hooks: path.resolve(__dirname, "../fixture/config-prepared", "src/hooks"),
+      styledsystem:
+        path.resolve(__dirname, "../fixture/config-prepared", "styled-system") +
+        "/",
     })
   })
 })
