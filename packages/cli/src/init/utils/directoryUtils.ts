@@ -3,7 +3,7 @@ import fs from "fs-extra"
 import { loadConfig } from "tsconfig-paths"
 import path from "path"
 
-export function getTsConfigAlias(cwd: string) {
+export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
   const tsConfig = loadConfig(cwd)
 
   if (
@@ -18,8 +18,8 @@ export function getTsConfigAlias(cwd: string) {
 
   // 모든 alias 순회하면서 둘 다 찾기
   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
-    // styled-system alias 찾기
-    if (paths.includes("./styled-system/*")) {
+    // styled-system alias 찾기 - paths 경로 문자열에 포함되어있으면 styled-system alias라고 판단
+    if (paths[0].includes(styledSytemPath)) {
       styledSystemAlias = alias.replace(/\/\*$/, "")
     }
 
@@ -32,7 +32,6 @@ export function getTsConfigAlias(cwd: string) {
       baseAlias = alias.replace(/\/\*$/, "")
     }
   }
-
   if (!baseAlias) {
     baseAlias = Object.keys(tsConfig?.paths)?.[0].replace(/\/\*$/, "") ?? null
   }
