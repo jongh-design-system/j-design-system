@@ -114,4 +114,5 @@ export async function init(options: z.infer<typeof initSchema>) {
     JSON.stringify(config),
     "utf-8",
   )
+  return config
 }
