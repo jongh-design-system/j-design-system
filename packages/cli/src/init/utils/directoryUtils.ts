@@ -43,8 +43,28 @@ export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
 }
 //panda.config.ts파일 찾기 -> 여기서 outdir이 현재 저장경로(없으면 styled-system)
 export async function getPandacssConfigFile(cwd: string) {
-  const files = await fg.glob(["panda.config.*"], { cwd })
+  const files = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
   return files.length ? files[0] : null
+}
+
+export async function resolvePandaConfig(config: string) {
+  const outdirMatch = config.match(/outdir:\s*["']([^"']+)["']/)
+  const importMapMatch = config.match(/importMap:\s*({[^}]+}|["'][^"']+["'])/)
+
+  const outdir = outdirMatch ? outdirMatch[1] : null
+  let importMap = null
+
+  if (importMapMatch) {
+    const value = importMapMatch[1]
+    if (value.startsWith("{")) {
+      const cssMatch = value.match(/css:\s*["']([^"']+)["']/)
+      importMap = cssMatch ? cssMatch[1].replace(/\/css$/, "") : null
+    } else {
+      importMap = value.replace(/["']/g, "")
+    }
+  }
+
+  return { outdir, importMap }
 }
 
 //src/app 일수도 있고 /app일수도 있음
