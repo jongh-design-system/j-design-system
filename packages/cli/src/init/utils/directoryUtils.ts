@@ -3,7 +3,7 @@ import fs from "fs-extra"
 import { loadConfig } from "tsconfig-paths"
 import path from "path"
 
-export function getTsConfigAlias(cwd: string) {
+export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
   const tsConfig = loadConfig(cwd)
 
   if (
@@ -18,8 +18,8 @@ export function getTsConfigAlias(cwd: string) {
 
   // 모든 alias 순회하면서 둘 다 찾기
   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
-    // styled-system alias 찾기
-    if (paths.includes("./styled-system/*")) {
+    // styled-system alias 찾기 - paths 경로 문자열에 포함되어있으면 styled-system alias라고 판단
+    if (paths[0].includes(styledSytemPath)) {
       styledSystemAlias = alias.replace(/\/\*$/, "")
     }
 
@@ -32,7 +32,6 @@ export function getTsConfigAlias(cwd: string) {
       baseAlias = alias.replace(/\/\*$/, "")
     }
   }
-
   if (!baseAlias) {
     baseAlias = Object.keys(tsConfig?.paths)?.[0].replace(/\/\*$/, "") ?? null
   }
@@ -44,8 +43,28 @@ export function getTsConfigAlias(cwd: string) {
 }
 //panda.config.ts파일 찾기 -> 여기서 outdir이 현재 저장경로(없으면 styled-system)
 export async function getPandacssConfigFile(cwd: string) {
-  const files = await fg.glob(["panda.config.*"], { cwd })
+  const files = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
   return files.length ? files[0] : null
+}
+
+export async function resolvePandaConfig(config: string) {
+  const outdirMatch = config.match(/outdir:\s*["']([^"']+)["']/)
+  const importMapMatch = config.match(/importMap:\s*({[^}]+}|["'][^"']+["'])/)
+
+  const outdir = outdirMatch ? outdirMatch[1] : null
+  let importMap = null
+
+  if (importMapMatch) {
+    const value = importMapMatch[1]
+    if (value.startsWith("{")) {
+      const cssMatch = value.match(/css:\s*["']([^"']+)["']/)
+      importMap = cssMatch ? cssMatch[1].replace(/\/css$/, "") : null
+    } else {
+      importMap = value.replace(/["']/g, "")
+    }
+  }
+
+  return { outdir, importMap }
 }
 
 //src/app 일수도 있고 /app일수도 있음

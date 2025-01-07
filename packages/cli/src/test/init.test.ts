@@ -3,59 +3,97 @@ import path from "path"
 import fs from "fs-extra"
 import { checkJsonInit } from "../init/utils/checkJsonInit"
 import { checkPandaInit } from "../init/utils/checkPandaInit"
-import { initTemplate } from "../init/utils/initTemplate"
+import { getTsConfigAlias } from "../init/utils/directoryUtils"
+import { init } from "../init"
+
+const TS_CONFIG = {
+  compilerOptions: {
+    paths: {
+      "@/*": ["./src/"],
+      "@styled-system/*": ["./styled-system/"],
+      "@utils/*": ["./src/utils/"],
+    },
+  },
+}
+
+const PACKAGE_JSON = {
+  devDependencies: {
+    "@pandacss/dev": "^1.0.0",
+  },
+}
 
 const COMPONENTS_JSON = {
   utils: "@/utils",
-  components: "@/ui",
+  components: "@/components",
   hooks: "@/hooks",
   styledsystem: "@styled-system",
 }
 
-describe("설정 초기화 테스트", () => {
-  const CONFIG_PREPARED_PATH = path.resolve(
-    __dirname,
-    "../fixture/config-prepared",
-  )
-  const TOKENS_PATH = path.resolve(CONFIG_PREPARED_PATH, "tokens.ts")
-  const JSON_PATH = path.resolve(CONFIG_PREPARED_PATH, "components.json")
+const PANDA_CONFIG_TS = `import { defineConfig } from "@pandacss/dev"
 
-  beforeAll(() => {
-    // 테스트 시작 전 tokens.ts 파일이 있다면 제거
-    fs.writeFile(JSON_PATH, JSON.stringify(COMPONENTS_JSON, null, 2), "utf-8")
+export default defineConfig({
+  // Whether to use css reset
+  preflight: true,
+
+  // Where to look for your css declarations
+  include: ["./src//*.{js,jsx,ts,tsx}", "./pages//*.{js,jsx,ts,tsx}"],
+
+  // Files to exclude
+  exclude: [],
+
+  // Useful for theme customization
+  theme: {
+    extend: {},
+  },
+
+  // The output directory for your css system
+  outdir: "styled-system",
+})
+`
+describe("설정 초기화 테스트", () => {
+  const temp = path.resolve(__dirname, "../temp")
+
+  beforeAll(async () => {
+    await fs.mkdir(temp, { recursive: true })
+    fs.writeFile(
+      path.resolve(temp, "tsconfig.json"),
+      JSON.stringify(TS_CONFIG, null, 2),
+      "utf-8",
+    )
+    fs.writeFile(
+      path.resolve(temp, "package.json"),
+      JSON.stringify(PACKAGE_JSON, null, 2),
+      "utf-8",
+    )
+    fs.writeFile(
+      path.resolve(temp, "panda.config.ts"),
+      PANDA_CONFIG_TS,
+      "utf-8",
+    )
   })
 
   afterAll(() => {
     // 테스트 완료 후 tokens.ts 파일 정리
-    fs.remove(TOKENS_PATH)
-    fs.remove(path.resolve(CONFIG_PREPARED_PATH, "components.json"))
+    fs.remove(temp)
   })
 
   test("root 경로에 components.json 파일이 있는지 확인합니다", async () => {
-    expect(await checkJsonInit(CONFIG_PREPARED_PATH)).toBeTruthy()
+    expect(await checkJsonInit(temp)).toBeFalsy()
   })
 
-  test("PandaCSS 설치 상태를 확인합니다", async () => {
-    // 설치되지 않은 경우
-    expect(
-      await checkPandaInit(
-        path.resolve(__dirname, "../fixture/panda-not-installed"),
-      ),
-    ).toBeFalsy()
-
-    // 초기화되지 않은 경우
-    expect(
-      await checkPandaInit(
-        path.resolve(__dirname, "../fixture/panda-not-initialized"),
-      ),
-    ).toBeFalsy()
-
+  test("pandaCSS 설치 상태를 확인합니다", async () => {
     // 정상 설치된 경우
-    expect(await checkPandaInit(CONFIG_PREPARED_PATH)).toBeTruthy()
+    expect(await checkPandaInit(temp)).toBeTruthy()
   })
 
-  test("tokens.ts 파일이 정상적으로 생성되는지 테스트합니다", async () => {
-    initTemplate(CONFIG_PREPARED_PATH)
-    expect(fs.existsSync(TOKENS_PATH)).toBeTruthy()
+  test("tsconfig와 panda.config.ts 설정 파일의 경로를 통해 alias를 찾습니다", async () => {
+    expect(getTsConfigAlias(temp, "styled-system")).toStrictEqual({
+      baseAlias: "@",
+      styledSystemAlias: "@styled-system",
+    })
+  })
+
+  test("init", async () => {
+    expect(await init({ cwd: temp })).toStrictEqual(COMPONENTS_JSON)
   })
 })

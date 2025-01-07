@@ -1,27 +1,15 @@
 #!/usr/bin/env node
 
-import yargs from "yargs"
-import { hideBin } from "yargs/helpers"
-import * as p from "@clack/prompts"
-import { init } from "./init"
+import { initCommand } from "./init"
+import { Command } from "commander"
+import packageJson from "../package.json"
 
-yargs(hideBin(process.argv))
-  .command(
-    "init",
-    "Initialize the project",
-    () => {},
-    async () => {
-      try {
-        p.note("Initializing project...")
-        p.spinner()
-        await init()
-        p.log.success("Project initialized")
-      } catch (e) {
-        if (e instanceof Error) {
-          p.log.error(e.message)
-        }
-        process.exit(1)
-      }
-    },
-  )
-  .parse()
+async function main() {
+  const cmd = new Command()
+    .name("design-system")
+    .version(packageJson.version || "0.0.0")
+
+  cmd.addCommand(initCommand).parse()
+}
+
+main()
