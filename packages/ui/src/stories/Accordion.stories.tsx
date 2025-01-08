@@ -1,4 +1,4 @@
-import Accordion from "../component/Accordion"
+import * as Accordion from "../component/Accordion"
 import type { Meta, StoryObj } from "@storybook/react"
 import { expect, userEvent, waitFor } from "@storybook/test"
 export default {
@@ -12,7 +12,7 @@ export const Primary: Story = {
   render: () => {
     return (
       <div style={{ width: "500px" }}>
-        <Accordion type="single" collapsible>
+        <Accordion.Root type="single" collapsible>
           <Accordion.Item value="1">
             <Accordion.Header>
               <Accordion.Trigger>1번</Accordion.Trigger>
@@ -35,7 +35,7 @@ export const Primary: Story = {
             </Accordion.Header>
             <Accordion.Content>내용3</Accordion.Content>
           </Accordion.Item>
-        </Accordion>
+        </Accordion.Root>
       </div>
     )
   },

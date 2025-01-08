@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import Tabs from "../component/Tabs/Tabs"
+import * as Tabs from "../component/Tabs"
 import { useState } from "@storybook/preview-api"
 
 const meta = {
@@ -20,7 +20,7 @@ const data = [
 export const Primary: Story = {
   render: (args) => {
     return (
-      <Tabs {...args}>
+      <Tabs.Root {...args}>
         <Tabs.List width="11">
           {data.map((item) => (
             <Tabs.Trigger key={item.value} value={item.value}>
@@ -33,7 +33,7 @@ export const Primary: Story = {
             {item.content}
           </Tabs.Content>
         ))}
-      </Tabs>
+      </Tabs.Root>
     )
   },
 }
@@ -43,7 +43,7 @@ export const Controlled: Story = {
   render: (args) => {
     const [value, setValue] = useState("2")
     return (
-      <Tabs value={value} onValueChange={setValue} {...args}>
+      <Tabs.Root value={value} onValueChange={setValue} {...args}>
         <Tabs.List>
           <Tabs.Trigger value="1">Tab 1</Tabs.Trigger>
           <Tabs.Trigger value="2">Tab 2</Tabs.Trigger>
@@ -52,7 +52,7 @@ export const Controlled: Story = {
         <Tabs.Content value="1">1번</Tabs.Content>
         <Tabs.Content value="2">2번</Tabs.Content>
         <Tabs.Content value="3">3번</Tabs.Content>
-      </Tabs>
+      </Tabs.Root>
     )
   },
 }

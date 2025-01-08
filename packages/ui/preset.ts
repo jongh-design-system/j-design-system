@@ -1,9 +1,4 @@
-import {
-  defineKeyframes,
-  definePreset,
-  defineSemanticTokens,
-  defineTokens,
-} from "@pandacss/dev"
+import { definePreset, defineSemanticTokens, defineTokens } from "@pandacss/dev"
 import { buttonRecipe } from "./src/component/Button/recipe"
 import { accordionRecipe } from "./src/component/Accordion/recipe"
 import { tabsRecipe } from "./src/component/Tabs/recipe"
@@ -112,18 +107,8 @@ export const radius = defineSemanticTokens.radii({
   sm: { value: "calc({radii.radius} - 4px)" },
 })
 
-export const keyframes = defineKeyframes({
-  "accordion-down": {
-    from: { height: 0 },
-    to: { height: "var(--radix-accordion-content-height)" },
-  },
-  "accordion-up": {
-    from: { height: "var(--radix-accordion-content-height)" },
-    to: { height: 0 },
-  },
-})
-
 export const defaultPreset = definePreset({
+  name: "default",
   theme: {
     extend: {
       tokens: {
@@ -142,7 +127,6 @@ export const defaultPreset = definePreset({
         select: selectRecipe,
         avatar: avatarRecipe,
       },
-      keyframes,
     },
   },
   staticCss: {

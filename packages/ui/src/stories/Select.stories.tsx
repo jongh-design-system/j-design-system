@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import Select from "../component/Select"
+import * as Select from "../component/Select"
 
 export default {
   title: "Select",
-  component: Select,
   tags: ["autodocs"],
 } satisfies Meta<typeof Select>
 
@@ -15,13 +14,13 @@ const arr = Array.from({ length: 100 }, (_, i) => i)
 export const Primary: Story = {
   render: () => {
     return (
-      <Select>
+      <Select.Root>
         <Select.Trigger>
           <Select.Value placeholder="Select a fruit" />
         </Select.Trigger>
 
         <Select.Content position="popper" data-position="popper">
-          <Select.ViewPort overflow="auto" maxH="12">
+          <Select.Viewport overflow="auto" maxH="12">
             <Select.Group data-position="popper" color="red" overflow="visible">
               {arr.map((num) => (
                 <Select.Item key={num} value={num.toString()}>
@@ -29,9 +28,9 @@ export const Primary: Story = {
                 </Select.Item>
               ))}
             </Select.Group>
-          </Select.ViewPort>
+          </Select.Viewport>
         </Select.Content>
-      </Select>
+      </Select.Root>
     )
   },
 }

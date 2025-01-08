@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { createStyleContext } from "@utils/createStyleContext"
@@ -9,7 +7,7 @@ import type { Assign, ComponentProps } from "@styled-system/types"
 
 const { withProvider, withContext } = createStyleContext(select)
 
-const Trigger = React.forwardRef<
+export const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ children, ...props }, ref) => (
@@ -18,9 +16,9 @@ const Trigger = React.forwardRef<
     <SelectPrimitive.Icon asChild></SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
-Trigger.displayName = SelectPrimitive.Trigger.displayName
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
-const Content = React.forwardRef<
+export const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ children, position = "popper", ...props }, ref) => (
@@ -35,52 +33,51 @@ const Content = React.forwardRef<
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
 ))
-Content.displayName = SelectPrimitive.Content.displayName
+SelectContent.displayName = SelectPrimitive.Content.displayName
 
-const ItemIndicator = withContext(
+export const Indicator = withContext(
   SelectPrimitive.ItemIndicator,
   "itemIndicator",
 )
 
-const Item = React.forwardRef<
+export const SelectItem = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
 >(({ children, ...props }, ref) => (
   <SelectPrimitive.Item ref={ref} {...props}>
-    <ItemIndicator></ItemIndicator>
-
+    <Indicator></Indicator>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ))
-Item.displayName = SelectPrimitive.Item.displayName
+SelectItem.displayName = SelectPrimitive.Item.displayName
 
 export type RootProps = React.ComponentProps<typeof SelectPrimitive.Root>
-export const SelectRoot = withProvider<
+export const Root = withProvider<
   HTMLDivElement,
   Assign<HTMLStyledProps<"div">, RootProps>
 >(SelectPrimitive.Root, "root")
 
-export const SelectGroup = withContext<
+export const Group = withContext<
   HTMLDivElement,
   Assign<HTMLStyledProps<"div">, ComponentProps<typeof SelectPrimitive.Group>>
 >(SelectPrimitive.Group, "group")
 
-export const SelectValue = withContext<
+export const Value = withContext<
   HTMLSpanElement,
   Assign<HTMLStyledProps<"span">, ComponentProps<typeof SelectPrimitive.Value>>
 >(SelectPrimitive.Value, "value")
 
-export const SelectTrigger = withContext<
+export const Trigger = withContext<
   HTMLButtonElement,
-  Assign<HTMLStyledProps<"button">, ComponentProps<typeof Trigger>>
->(Trigger, "trigger")
+  Assign<HTMLStyledProps<"button">, ComponentProps<typeof SelectTrigger>>
+>(SelectTrigger, "trigger")
 
-export const SelectContent = withContext<
+export const Content = withContext<
   HTMLDivElement,
-  Assign<HTMLStyledProps<"div">, ComponentProps<typeof Content>>
->(Content, "content")
+  Assign<HTMLStyledProps<"div">, ComponentProps<typeof SelectContent>>
+>(SelectContent, "content")
 
-const SelectViewport = withContext<
+export const Viewport = withContext<
   HTMLDivElement,
   Assign<
     HTMLStyledProps<"div">,
@@ -88,33 +85,20 @@ const SelectViewport = withContext<
   >
 >(SelectPrimitive.Viewport, "viewport")
 
-export const SelectLabel = withContext<
+export const Label = withContext<
   HTMLDivElement,
   Assign<HTMLStyledProps<"div">, ComponentProps<typeof SelectPrimitive.Label>>
 >(SelectPrimitive.Label, "label")
 
-export const SelectItem = withContext<
+export const Item = withContext<
   HTMLDivElement,
-  Assign<HTMLStyledProps<"div">, ComponentProps<typeof Item>>
->(Item, "item")
+  Assign<HTMLStyledProps<"div">, ComponentProps<typeof SelectItem>>
+>(SelectItem, "item")
 
-export const SelectSeparator = withContext<
+export const Separator = withContext<
   HTMLDivElement,
   Assign<
     HTMLStyledProps<"div">,
     ComponentProps<typeof SelectPrimitive.Separator>
   >
 >(SelectPrimitive.Separator, "separator")
-
-const Select = Object.assign(SelectRoot, {
-  Group: SelectGroup,
-  Value: SelectValue,
-  Trigger: SelectTrigger,
-  Content: SelectContent,
-  Label: SelectLabel,
-  Item: SelectItem,
-  Separator: SelectSeparator,
-  ViewPort: SelectViewport,
-})
-
-export default Select

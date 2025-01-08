@@ -1,5 +1,3 @@
-"use client"
-
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { createStyleContext } from "@utils/createStyleContext"
 import { accordion, type AccordionVariantProps } from "@styled-system/recipes"
@@ -11,7 +9,7 @@ import {
 
 const { withProvider, withContext } = createStyleContext(accordion)
 
-const AccordionRoot = withProvider<
+export const Root = withProvider<
   HTMLDivElement,
   Assign<
     Assign<
@@ -22,7 +20,7 @@ const AccordionRoot = withProvider<
   >
 >(AccordionPrimitive.Root, "root")
 
-const AccordionHeader = withContext<
+export const Header = withContext<
   HTMLDivElement,
   Assign<
     HTMLStyledProps<"div">,
@@ -30,12 +28,12 @@ const AccordionHeader = withContext<
   >
 >(AccordionPrimitive.Header, "header")
 
-const AccordionItem = withContext<
+export const Item = withContext<
   HTMLDivElement,
   Assign<HTMLStyledProps<"div">, ComponentProps<typeof AccordionPrimitive.Item>>
 >(AccordionPrimitive.Item, "item")
 
-const AccordionTrigger = withContext<
+export const Trigger = withContext<
   HTMLButtonElement,
   Assign<
     HTMLStyledProps<"button">,
@@ -43,19 +41,10 @@ const AccordionTrigger = withContext<
   >
 >(AccordionPrimitive.Trigger, "trigger")
 
-const AccordionContent = withContext<
+export const Content = withContext<
   HTMLDivElement,
   Assign<
     HTMLStyledProps<"div">,
     ComponentProps<typeof AccordionPrimitive.Content>
   >
 >(AccordionPrimitive.Content, "content")
-
-const Accordion = Object.assign(AccordionRoot, {
-  Header: AccordionHeader,
-  Item: AccordionItem,
-  Trigger: AccordionTrigger,
-  Content: AccordionContent,
-})
-
-export default Accordion

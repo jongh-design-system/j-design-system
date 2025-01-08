@@ -3,7 +3,7 @@ import type {
   ComponentProps,
   HTMLStyledProps,
   Assign,
-} from "styled-system/types"
+} from "@styled-system/types"
 import { createStyleContext } from "@utils/createStyleContext"
 import * as BaseSlider from "@radix-ui/react-slider"
 
@@ -28,5 +28,3 @@ export const Thumb = withContext<
   HTMLSpanElement,
   Assign<HTMLStyledProps<"span">, ComponentProps<typeof BaseSlider.Thumb>>
 >(BaseSlider.Thumb, "thumb")
-
-export const Slider = Object.assign(Root, { Track, Range, Thumb })

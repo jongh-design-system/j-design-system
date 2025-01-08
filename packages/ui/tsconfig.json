@@ -7,8 +7,7 @@
     "declaration": true,
     "noEmit": false,
     "strict": true,
-
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "declarationMap": true,
     "declarationDir": "dist",
     "outDir": "dist",

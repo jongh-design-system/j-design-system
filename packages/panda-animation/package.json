@@ -1,18 +1,17 @@
 {
-  "name": "@jongh/panda-preset",
-  "version": "1.4.0",
-  "description": "pandacss preset",
+  "name": "panda-animation",
+  "version": "0.0.1",
+  "description": "animation preset for pandacss",
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "main": "./src/preset.ts",
+  "main": "./src/index.ts",
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "dist",
-    "src",
     "package.json"
   ],
   "clean-package": {
@@ -20,12 +19,12 @@
       "exports": {
         ".": {
           "import": {
-            "types": "./dist/preset.d.ts",
-            "default": "./dist/preset.js"
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
           },
           "require": {
-            "types": "./dist/preset.d.cts",
-            "default": "./dist/preset.cjs"
+            "types": "./dist/index.d.cts",
+            "default": "./dist/index.cjs"
           }
         }
       }
@@ -36,7 +35,8 @@
     "prepack": "clean-package",
     "postpack": "clean-package restore",
     "check-type": "tsc --noEmit",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "build": "tsup"
   },
   "tsup": {
     "entry": [
@@ -51,7 +51,6 @@
     ]
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.40.1",
     "clean-package": "^2.2.0",
     "tsup": "^8.3.0"
   }

@@ -43,12 +43,12 @@ export const accordionRecipe = defineSafe.slotRecipe({
       transition: "all",
 
       "&[data-state=closed]": {
-        animationName: "accordion-up",
+        animationName: "accordion-up_radix",
         animationDuration: "normal",
       },
 
       "&[data-state=open]": {
-        animationName: "accordion-down",
+        animationName: "accordion-down_radix",
         animationDuration: "normal",
       },
 

@@ -1,14 +1,14 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import { useState } from "react"
 import { describe, expect, it, vi } from "vitest"
-import Accordion from "../component/Accordion"
+import * as Accordion from "../component/Accordion"
 
 // 예시 컴포넌트
 const AccordionExample = () => {
   const [selectedItems, setSelectedItems] = useState<string[]>([])
 
   return (
-    <Accordion
+    <Accordion.Root
       type="multiple"
       value={selectedItems}
       onValueChange={(items) => setSelectedItems(items)}
@@ -19,7 +19,7 @@ const AccordionExample = () => {
         </Accordion.Header>
         <Accordion.Content>내용1</Accordion.Content>
       </Accordion.Item>
-    </Accordion>
+    </Accordion.Root>
   )
 }
 
@@ -44,12 +44,16 @@ describe("Accordion with useState", () => {
     const onValueChange = vi.fn()
 
     render(
-      <Accordion type="multiple" value={["1"]} onValueChange={onValueChange}>
+      <Accordion.Root
+        type="multiple"
+        value={["1"]}
+        onValueChange={onValueChange}
+      >
         <Accordion.Item value="1">
           <Accordion.Trigger data-testid="trigger-1">1번</Accordion.Trigger>
           <Accordion.Content>내용1</Accordion.Content>
         </Accordion.Item>
-      </Accordion>,
+      </Accordion.Root>,
     )
     //Fix: getByText로 찾을 시 multiple error 발생
     const trigger = screen.getByTestId("trigger-1")
