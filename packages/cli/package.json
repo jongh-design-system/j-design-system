@@ -9,7 +9,8 @@
     "release": "pnpm publish -no-git-checks",
     "lint": "eslint . --max-warnings 0",
     "check-type": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build:registry": "npx tsx ./src/build-script.ts --all"
   },
   "keywords": [],
   "author": "",

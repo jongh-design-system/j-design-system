@@ -1,4 +1,3 @@
-// registry.ts
 import { Command } from "commander"
 import { z } from "zod"
 import fs from "fs-extra"
@@ -11,7 +10,8 @@ const __dirname = dirname(__filename)
 
 const program = new Command()
 
-const UI_WORKSPACE_PATH = path.resolve(__dirname, "../../ui/src/component")
+const UI_WORKSPACE_PATH = path.resolve(__dirname, "../../ui/src/component") //ui 경로
+const TARGET_PATH = path.resolve(__dirname, "../../../app/docs/public") //registry 파일이 생성될 경로
 
 const registryOptionSchema = z.object({
   component: z.string().optional(),
@@ -92,7 +92,7 @@ export async function createRegistryFile(component: string) {
   const stringifiedFileContent = JSON.stringify(fileContent)
 
   await fs.writeFile(
-    path.join(__dirname, `../../app/src/${component}.json`),
+    path.join(TARGET_PATH, `${component}.json`),
     stringifiedFileContent,
   )
 }

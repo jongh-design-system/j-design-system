@@ -15,7 +15,7 @@ node_modules
 .pnpm-store/
 .yalc/*
 
-
+.next
 
 # Logs
 logs

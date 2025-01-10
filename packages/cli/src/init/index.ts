@@ -11,6 +11,7 @@ import { z } from "zod"
 import { Command } from "commander"
 import fs from "fs-extra"
 import { spinner } from "@clack/prompts"
+import { Project, SyntaxKind, type ObjectLiteralExpression } from "ts-morph"
 
 const initSchema = z.object({
   cwd: z.string(),
@@ -109,10 +110,55 @@ export async function init(options: z.infer<typeof initSchema>) {
 
   configSchema.schema.parse(config)
 
+  const project = new Project()
+  const sourceFile = project.addSourceFileAtPath(
+    path.resolve(root, pandacssConfigPath),
+  )
+
+  //TODO: preset.ts파일 제공 - 배포 먼저 진행되어야할것같음
+
+  //modify panda.config.ts
+  sourceFile.addImportDeclaration({
+    namedImports: [{ name: "preset" }],
+    moduleSpecifier: "panda-animation",
+  })
+
+  sourceFile.addImportDeclaration({
+    namedImports: [{ name: "defaultPreset" }],
+    moduleSpecifier: "./preset",
+  })
+
+  const defineConfigCall = sourceFile.getFirstDescendantByKind(
+    SyntaxKind.CallExpression,
+  )
+  // 설정 객체 가져오기
+  const configObject =
+    defineConfigCall?.getArguments()[0] as ObjectLiteralExpression
+
+  //panda.config.ts파일에 presets에 추가하기
+  if (configObject) {
+    // presets 속성이 이미 있는지 확인
+    const existingPresets = configObject.getProperty("presets")
+
+    if (!existingPresets) {
+      // presets 속성이 없다면 추가
+      configObject.addPropertyAssignment({
+        name: "presets",
+        initializer: "[preset(), @pandacss/preset-panda, defaultPreset]",
+      })
+    }
+
+    // 변경사항 저장
+    sourceFile.saveSync()
+  } else {
+    console.warn("Could not find config object in panda.config.ts")
+  }
+
   await fs.writeFile(
     path.resolve(root, "components.json"),
     JSON.stringify(config),
     "utf-8",
   )
+
   return config
 }
