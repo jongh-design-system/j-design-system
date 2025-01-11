@@ -30,11 +30,9 @@ export const tabsRecipe = defineSafe.slotRecipe({
       ringColor: "background",
 
       _focusVisible: {
-        outlineWidth: "2px",
-        outlineOffset: "2",
-        ringWidth: "2",
+        ringWidth: "1",
         ringColor: "ring",
-        offset: "2",
+        ringOffset: "1",
       },
 
       _disabled: {
@@ -42,7 +40,7 @@ export const tabsRecipe = defineSafe.slotRecipe({
         opacity: "50%",
       },
 
-      "&[data-state=active]": {
+      "&:is([data-state=active])": {
         bg: "background",
         color: "foreground",
         shadow: "sm",

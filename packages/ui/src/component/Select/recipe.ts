@@ -38,7 +38,7 @@ export const selectRecipe = defineSafe.slotRecipe({
       _focus: {
         ringWidth: "1",
         ringColor: "ring",
-        outlineOffset: "2",
+        outlineOffset: "1",
       },
 
       _disabled: {
@@ -47,7 +47,7 @@ export const selectRecipe = defineSafe.slotRecipe({
       },
     },
     viewport: {
-      "&[data-position=popper]": {
+      "&:is([data-position=popper])": {
         h: "var(--radix-select-trigger-height)",
         w: "full",
         minW: "var(--radix-select-trigger-width)",
@@ -63,49 +63,34 @@ export const selectRecipe = defineSafe.slotRecipe({
       bg: "popover",
       color: "popover.foreground",
       shadow: "md",
+      maxH: "96",
 
-      // "&[data-state=open]": {
-      //   animateIn: true,
-      //   fadeIn: 0,
-      //   zoomIn: 95,
-      // },
+      "&:is([data-state=open])": {
+        animationName: "fadeIn",
+        animationState: "ease-in",
+        animationDuration: "slowest",
+      },
 
-      // "&[data-state=closed]": {
-      //   animateOut: true,
-      //   fadeOut: 0,
-      //   zoomOut: 95,
-      // },
+      "&:is(&[data-state=closed])": {
+        animationName: "slideInDown",
+        animationState: "ease-in",
+        animationDuration: "slowest",
+      },
 
-      // "&[data-side=top]": {
-      //   slideInFromBottom: "2",
-      // },
-
-      // "&[data-side=bottom]": {
-      //   slideInFromTop: "2",
-      // },
-
-      // "&[data-side=left]": {
-      //   slideInFromRight: "2",
-      // },
-
-      // "&[data-side=right]": {
-      //   slideInFromLeft: "2",
-      // },
-
-      "&[data-position=popper]": {
-        "&[data-side=top]": {
+      "&:is([data-position=popper])": {
+        "&:is([data-side=top])": {
           translateY: "-1",
         },
 
-        "&[data-side=bottom]": {
+        "&:is([data-side=bottom])": {
           translateY: "1",
         },
 
-        "&[data-side=left]": {
+        "&:is([data-side=left])": {
           translateX: "-1",
         },
 
-        "&[data-side=right]": {
+        "&:is([data-side=right])": {
           translateX: "1",
         },
       },

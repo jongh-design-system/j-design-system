@@ -1,4 +1,6 @@
 import { defineConfig } from "@pandacss/dev"
+import { preset } from "panda-animation"
+import { defaultPreset } from "./preset"
 
 export default defineConfig({
   // Whether to use css reset
@@ -17,4 +19,5 @@ export default defineConfig({
 
   // The output directory for your css system
   outdir: "styled-system",
+  presets: [preset(), "@pandacss/preset-panda", defaultPreset],
 })

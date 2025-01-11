@@ -41,11 +41,9 @@ export const sliderRecipe = defineSafe.slotRecipe({
       transition: "colors",
 
       _focusVisible: {
-        outline: "primary",
-        outlineOffset: "2",
-        ringWidth: "2",
+        ringWidth: "1",
         ringColor: "ring",
-        ringOffset: "2",
+        ringOffset: "1",
       },
 
       _disabled: {

@@ -10,27 +10,26 @@ export default {
 type Story = StoryObj<typeof Select>
 
 const arr = Array.from({ length: 100 }, (_, i) => i)
-
+//부모 요소의 width 고정값 or Trigger의 width 고정값 필요
 export const Primary: Story = {
   render: () => {
     return (
-      <Select.Root>
-        <Select.Trigger>
-          <Select.Value placeholder="Select a fruit" />
-        </Select.Trigger>
-
-        <Select.Content position="popper" data-position="popper">
-          <Select.Viewport overflow="auto" maxH="12">
-            <Select.Group data-position="popper" color="red" overflow="visible">
+      <div style={{ width: "300px" }}>
+        <Select.Root>
+          <Select.Trigger>
+            <Select.Value placeholder="Select a frui" />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Group color="red" overflow="visible">
               {arr.map((num) => (
                 <Select.Item key={num} value={num.toString()}>
                   {num}
                 </Select.Item>
               ))}
             </Select.Group>
-          </Select.Viewport>
-        </Select.Content>
-      </Select.Root>
+          </Select.Content>
+        </Select.Root>
+      </div>
     )
   },
 }

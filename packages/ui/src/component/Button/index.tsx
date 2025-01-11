@@ -15,7 +15,7 @@ export const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
   },
 )
 
-BaseButton.displayName = ""
+BaseButton.displayName = "Button"
 
 export const Button = styled(BaseButton, button)
 export type ButtonProps = HTMLStyledProps<typeof Button>

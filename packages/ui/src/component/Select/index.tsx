@@ -7,8 +7,8 @@ import type { Assign, ComponentProps } from "@styled-system/types"
 
 const { withProvider, withContext } = createStyleContext(select)
 
-export const SelectTrigger = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Trigger>,
+const BaseTrigger = React.forwardRef<
+  React.ComponentRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ children, ...props }, ref) => (
   <SelectPrimitive.Trigger ref={ref} {...props}>
@@ -16,32 +16,54 @@ export const SelectTrigger = React.forwardRef<
     <SelectPrimitive.Icon asChild></SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
-export const SelectContent = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Content>,
+BaseTrigger.displayName = SelectPrimitive.Trigger.displayName
+
+export const Trigger = withContext<
+  HTMLButtonElement,
+  Assign<HTMLStyledProps<"button">, ComponentProps<typeof BaseTrigger>>
+>(BaseTrigger, "trigger")
+
+export const Viewport = withContext<
+  HTMLDivElement,
+  Assign<
+    HTMLStyledProps<"div">,
+    ComponentProps<typeof SelectPrimitive.Viewport>
+  >
+>(SelectPrimitive.Viewport, "viewport")
+
+const BaseContent = React.forwardRef<
+  React.ComponentRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ children, position = "popper", ...props }, ref) => (
-  <SelectPrimitive.Portal>
-    <SelectPrimitive.Content
-      ref={ref}
-      position={position}
-      data-position={position}
-      {...props}
-    >
-      {children}
-    </SelectPrimitive.Content>
-  </SelectPrimitive.Portal>
-))
-SelectContent.displayName = SelectPrimitive.Content.displayName
+>(({ children, position = "popper", ...props }, ref) => {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
+        ref={ref}
+        position={position}
+        data-position={position}
+        {...props}
+      >
+        <Viewport data-position={position}>{children}</Viewport>
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
+  )
+})
+
+BaseContent.displayName = SelectPrimitive.Content.displayName
+
+export const Content = withContext<
+  HTMLDivElement,
+  Assign<HTMLStyledProps<"div">, ComponentProps<typeof BaseContent>>
+>(BaseContent, "content")
 
 export const Indicator = withContext(
   SelectPrimitive.ItemIndicator,
   "itemIndicator",
 )
 
-export const SelectItem = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Item>,
+const BaseItem = React.forwardRef<
+  React.ComponentRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
 >(({ children, ...props }, ref) => (
   <SelectPrimitive.Item ref={ref} {...props}>
@@ -49,14 +71,17 @@ export const SelectItem = React.forwardRef<
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ))
-SelectItem.displayName = SelectPrimitive.Item.displayName
+BaseItem.displayName = SelectPrimitive.Item.displayName
 
+export const Item = withContext<
+  HTMLDivElement,
+  Assign<HTMLStyledProps<"div">, ComponentProps<typeof BaseItem>>
+>(BaseItem, "item")
 export type RootProps = React.ComponentProps<typeof SelectPrimitive.Root>
 export const Root = withProvider<
   HTMLDivElement,
   Assign<HTMLStyledProps<"div">, RootProps>
 >(SelectPrimitive.Root, "root")
-
 export const Group = withContext<
   HTMLDivElement,
   Assign<HTMLStyledProps<"div">, ComponentProps<typeof SelectPrimitive.Group>>
@@ -67,33 +92,10 @@ export const Value = withContext<
   Assign<HTMLStyledProps<"span">, ComponentProps<typeof SelectPrimitive.Value>>
 >(SelectPrimitive.Value, "value")
 
-export const Trigger = withContext<
-  HTMLButtonElement,
-  Assign<HTMLStyledProps<"button">, ComponentProps<typeof SelectTrigger>>
->(SelectTrigger, "trigger")
-
-export const Content = withContext<
-  HTMLDivElement,
-  Assign<HTMLStyledProps<"div">, ComponentProps<typeof SelectContent>>
->(SelectContent, "content")
-
-export const Viewport = withContext<
-  HTMLDivElement,
-  Assign<
-    HTMLStyledProps<"div">,
-    ComponentProps<typeof SelectPrimitive.Viewport>
-  >
->(SelectPrimitive.Viewport, "viewport")
-
 export const Label = withContext<
   HTMLDivElement,
   Assign<HTMLStyledProps<"div">, ComponentProps<typeof SelectPrimitive.Label>>
 >(SelectPrimitive.Label, "label")
-
-export const Item = withContext<
-  HTMLDivElement,
-  Assign<HTMLStyledProps<"div">, ComponentProps<typeof SelectItem>>
->(SelectItem, "item")
 
 export const Separator = withContext<
   HTMLDivElement,

@@ -21,7 +21,7 @@ export const Primary: Story = {
   render: (args) => {
     return (
       <Tabs.Root {...args}>
-        <Tabs.List width="11">
+        <Tabs.List>
           {data.map((item) => (
             <Tabs.Trigger key={item.value} value={item.value}>
               {item.label}
@@ -45,13 +45,17 @@ export const Controlled: Story = {
     return (
       <Tabs.Root value={value} onValueChange={setValue} {...args}>
         <Tabs.List>
-          <Tabs.Trigger value="1">Tab 1</Tabs.Trigger>
-          <Tabs.Trigger value="2">Tab 2</Tabs.Trigger>
-          <Tabs.Trigger value="3">Tab 3</Tabs.Trigger>
+          {data.map((item) => (
+            <Tabs.Trigger key={item.value} value={item.value}>
+              {item.label}
+            </Tabs.Trigger>
+          ))}
         </Tabs.List>
-        <Tabs.Content value="1">1번</Tabs.Content>
-        <Tabs.Content value="2">2번</Tabs.Content>
-        <Tabs.Content value="3">3번</Tabs.Content>
+        {data.map((item) => (
+          <Tabs.Content key={item.value} value={item.value}>
+            {item.content}
+          </Tabs.Content>
+        ))}
       </Tabs.Root>
     )
   },
