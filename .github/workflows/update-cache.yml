@@ -1,51 +1,21 @@
-name: Cache Setup
+name: cache
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 on:
   push:
     branches:
       - dev
 
 jobs:
-  cache-setup:
+  version:
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
+      - name: ci setup
+        uses: ./.github/actions/setup
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Get playwright version
-        shell: bash
-        run: |
-          echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('playwright/package.json').version)")" >> $GITHUB_OUTPUT
-        id: playwright-version
-
-      - name: Cache Playwright
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.PLAYWRIGHT_VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
-        id: playwright-cache
-
-      - name: Install Playwright Deps
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+      - name: playwright setup
+        uses: ./.github/actions/playwright
