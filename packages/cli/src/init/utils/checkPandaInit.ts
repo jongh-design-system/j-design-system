@@ -1,6 +1,6 @@
 import fs from "fs-extra"
 import path from "path"
-import { getPandacssConfigFile } from "./directoryUtils"
+import { getPandacssConfigFile } from "../../common/utils/directoryUtils"
 
 const panda = "@pandacss/dev"
 

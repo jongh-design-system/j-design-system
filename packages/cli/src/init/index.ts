@@ -4,7 +4,7 @@ import {
   getPandacssConfigFile,
   getTsConfigAlias,
   resolvePandaConfig,
-} from "./utils/directoryUtils"
+} from "../common/utils/directoryUtils"
 import path from "path"
 import { configSchema, type ConfigType } from "../common/types"
 import { z } from "zod"
