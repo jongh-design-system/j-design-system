@@ -5,7 +5,7 @@ import { defaultPreset } from "./preset"
 export default defineConfig({
   // Whether to use css reset
   preflight: true,
-
+  jsxFramework: "react",
   // Where to look for your css declarations
   include: ["./src/app/**/*.{js,jsx,ts,tsx}", "./pages/**/*.{js,jsx,ts,tsx}"],
 

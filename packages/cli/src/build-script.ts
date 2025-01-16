@@ -92,7 +92,7 @@ export async function createRegistryFile(component: string) {
   const stringifiedFileContent = JSON.stringify(fileContent)
 
   await fs.writeFile(
-    path.join(TARGET_PATH, `${component}.json`),
+    path.join(TARGET_PATH, `${component.toLowerCase()}.json`),
     stringifiedFileContent,
   )
 }
