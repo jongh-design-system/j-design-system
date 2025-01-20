@@ -20,7 +20,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: build
-        uses: pnpm turbo build
+        run: pnpm turbo build
 
       - name: Setup npmrc
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
