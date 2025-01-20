@@ -8,17 +8,12 @@
     "dev": "vite",
     "lint": "eslint . --ignore-pattern 'styled-system/'",
     "preinstall": "npx only-allow pnpm",
-    "tokens": "pnpm --filter token",
-    "app": "pnpm --filter app",
-    "ui": "pnpm --filter ui",
-    "script": "pnpm --filter script",
-    "preset": "pnpm --filter panda-preset",
     "prepare": "husky",
     "lint-staged": "lint-staged",
     "commit": "git-cz",
     "ci:version": "changeset version",
     "ci:publish": "changeset publish -r",
-    "ci": "turbo run lint check-type test build"
+    "ci": "turbo run lint check-type test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
