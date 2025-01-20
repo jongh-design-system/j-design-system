@@ -2,4 +2,4 @@
 "panda-animation": patch
 ---
 
-initial feature for pandacss animation
+animation feature for pandacss animation
