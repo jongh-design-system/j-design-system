@@ -1,4 +1,8 @@
 name: Changesets
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   push:
     branches:
@@ -8,6 +12,8 @@ on:
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
   version:
