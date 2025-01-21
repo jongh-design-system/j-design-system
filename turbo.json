@@ -5,6 +5,9 @@
       "outputs": ["dist/**", ".next/**", "out/**"],
       "dependsOn": ["^build"]
     },
+    "docs#build": {
+      "dependsOn": ["@jongh/cli#build"]
+    },
     "check-type": {},
     "lint": {},
     "test": {},
