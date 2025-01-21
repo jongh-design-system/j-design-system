@@ -6,7 +6,9 @@ on:
   push:
     branches:
       - dev
-
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 jobs:
   build:
     runs-on: ubuntu-latest
