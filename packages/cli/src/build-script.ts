@@ -38,30 +38,43 @@ program.parse()
 export async function handleRegistryCommand(
   option: z.infer<typeof registryOptionSchema>,
 ) {
-  const { component, all } = registryOptionSchema.parse(option)
-  if (all && !component) {
-    const components = await fs.readdir(path.resolve(UI_WORKSPACE_PATH))
-    for (const component of components) {
-      await createRegistryFile(component)
+  try {
+    console.log("🚀 Registry 파일 생성을 시작합니다...")
+    const { component, all } = registryOptionSchema.parse(option)
+    if (all && !component) {
+      console.log("📑 모든 컴포넌트에 대한 Registry 파일을 생성합니다.")
+      const components = await fs.readdir(path.resolve(UI_WORKSPACE_PATH))
+      console.log(`📋 총 ${components.length}개의 컴포넌트를 처리합니다.`)
+      for (const component of components) {
+        console.log(`\n🔄 ${component} 처리 중...`)
+        await createRegistryFile(component)
+      }
+      console.log("\n✅ 모든 컴포넌트의 Registry 파일 생성이 완료되었습니다!")
+    } else {
+      console.log(`🔄 ${component} 컴포넌트의 Registry 파일을 생성합니다.`)
+      await createRegistryFile(component!)
+      console.log(`✅ ${component} Registry 파일 생성이 완료되었습니다!`)
     }
-  } else {
-    await createRegistryFile(component!)
+  } catch (e) {
+    console.error("❌ Registry 파일 생성에 실패했습니다", e)
   }
 }
 
 export async function createRegistryFile(component: string) {
+  console.log(`📁 ${component} 컴포넌트 경로를 확인합니다...`)
   const componentPath = path.join(UI_WORKSPACE_PATH, `./${component}`)
   const files = await fs.readdir(componentPath)
 
   files.forEach((file) => {
     if (file !== `index.tsx` && file !== `recipe.ts`) {
-      console.log(
-        `${component} 파일 형식이 올바르지 않음 , ${file}은 유효하지 않음`,
+      console.error(
+        `⚠️ ${component} 파일 형식이 올바르지 않습니다. ${file}은 유효하지 않은 파일입니다.`,
       )
       process.exit(1)
     }
   })
 
+  console.log(`📖 ${component} 파일 내용을 읽어들입니다...`)
   const fileContents: { name: string; content: string }[] = []
   const dependencies: string[] = []
 
@@ -69,11 +82,13 @@ export async function createRegistryFile(component: string) {
   for (const file of files) {
     const content = fs.readFileSync(path.join(componentPath, file), "utf-8")
     fileContents.push({ name: file, content })
+    console.log(`✓ ${file} 파일을 읽었습니다.`)
   }
   const sourceFile = project.addSourceFileAtPath(
     path.join(componentPath, "index.tsx"),
   )
 
+  console.log(`🔍 의존성을 분석합니다...`)
   sourceFile.getImportDeclarations().forEach((importDeclaration) => {
     const module = importDeclaration.getModuleSpecifier().getLiteralValue()
     dependencies.push(module)
@@ -91,6 +106,7 @@ export async function createRegistryFile(component: string) {
   }
   const stringifiedFileContent = JSON.stringify(fileContent)
 
+  console.log(`💾 Registry 파일을 저장합니다...`)
   await fs.writeFile(
     path.join(TARGET_PATH, `${component.toLowerCase()}.json`),
     stringifiedFileContent,
