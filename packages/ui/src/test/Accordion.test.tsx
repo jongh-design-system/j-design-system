@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import { useState } from "react"
 import { describe, expect, it, vi } from "vitest"
-import * as Accordion from "../component/Accordion"
+import * as Accordion from "../component/accordion/ui"
 
 // 예시 컴포넌트
 const AccordionExample = () => {

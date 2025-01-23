@@ -1,4 +1,4 @@
-import * as Accordion from "../component/Accordion"
+import * as Accordion from "../component/accordion/ui"
 import type { Meta, StoryObj } from "@storybook/react"
 import { expect, userEvent, waitFor } from "@storybook/test"
 export default {

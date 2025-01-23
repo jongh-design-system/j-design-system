@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import * as Select from "../component/Select"
+import * as Select from "../component/select/ui"
 
 export default {
   title: "Select",

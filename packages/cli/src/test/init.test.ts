@@ -5,6 +5,9 @@ import { checkJsonInit } from "../init/utils/checkJsonInit"
 import { checkPandaInit } from "../init/utils/checkPandaInit"
 import { getTsConfigAlias } from "../common/utils/directoryUtils"
 import { init } from "../init"
+import { execaCommandSync } from "execa"
+
+const CLI_PATH = path.join(__dirname, "..")
 
 const TS_CONFIG = {
   compilerOptions: {
@@ -50,8 +53,9 @@ export default defineConfig({
   outdir: "styled-system",
 })
 `
-describe("설정 초기화 테스트", () => {
-  const temp = path.resolve(__dirname, "../temp")
+// init.test.ts
+describe("init 테스트", () => {
+  const temp = path.resolve(__dirname, "../temp-init")
 
   beforeAll(async () => {
     await fs.mkdir(temp, { recursive: true })
@@ -72,9 +76,8 @@ describe("설정 초기화 테스트", () => {
     )
   })
 
-  afterAll(() => {
-    // 테스트 완료 후 tokens.ts 파일 정리
-    fs.remove(temp)
+  afterAll(async () => {
+    await fs.remove(temp)
   })
 
   test("root 경로에 components.json 파일이 있는지 확인합니다", async () => {
@@ -82,7 +85,6 @@ describe("설정 초기화 테스트", () => {
   })
 
   test("pandaCSS 설치 상태를 확인합니다", async () => {
-    // 정상 설치된 경우
     expect(await checkPandaInit(temp)).toBeTruthy()
   })
 
@@ -93,7 +95,15 @@ describe("설정 초기화 테스트", () => {
     })
   })
 
-  test("init", async () => {
+  test("init 함수 테스트", async () => {
     expect(await init({ cwd: temp })).toStrictEqual(COMPONENTS_JSON)
   })
+
+  test("명령어를 입력했을 경우", async () => {
+    process.chdir(temp)
+    execaCommandSync(`npx tsx ${CLI_PATH} init`)
+    expect(await fs.exists(path.join(temp, "components.json"))).toBeTruthy()
+  })
 })
+
+// add.test.ts

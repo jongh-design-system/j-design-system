@@ -1,10 +1,10 @@
 import { definePreset, defineSemanticTokens, defineTokens } from "@pandacss/dev"
-import { buttonRecipe } from "./src/component/Button/recipe"
-import { accordionRecipe } from "./src/component/Accordion/recipe"
-import { tabsRecipe } from "./src/component/Tabs/recipe"
-import { sliderRecipe } from "./src/component/Slider/recipe"
-import { selectRecipe } from "./src/component/Select/recipe"
-import { avatarRecipe } from "./src/component/Avatar/recipe"
+import { buttonRecipe } from "./src/component/button/ui/recipe"
+import { accordionRecipe } from "./src/component/accordion/ui/recipe"
+import { tabsRecipe } from "./src/component/tabs/ui/recipe"
+import { sliderRecipe } from "./src/component/slider/ui/recipe"
+import { selectRecipe } from "./src/component/select/ui/recipe"
+import { avatarRecipe } from "./src/component/avatar/ui/recipe"
 
 const radii = defineTokens.radii({
   radius: { value: "0.5rem" },
