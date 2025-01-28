@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "tsup && npx tsx ./src/build-script.ts --all",
+    "build:cli": "tsup",
+    "build:registry": "npx tsx ./src/build-script.ts --all",
     "release": "pnpm publish -no-git-checks",
     "lint": "eslint . --max-warnings 0",
     "check-type": "tsc --noEmit",
@@ -29,6 +31,7 @@
     "@effect/platform": "^0.69.13",
     "@effect/schema": "^0.75.5",
     "@types/babel__traverse": "^7.20.6",
+    "chalk": "^5.4.1",
     "commander": "^13.0.0",
     "effect": "^3.10.8",
     "execa": "^9.5.2",

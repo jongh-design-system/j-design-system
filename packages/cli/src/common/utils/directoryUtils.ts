@@ -2,6 +2,7 @@ import fg from "fast-glob"
 import fs from "fs-extra"
 import { loadConfig } from "tsconfig-paths"
 import path from "path"
+import { ErrorMap } from "../error"
 
 export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
   const tsConfig = loadConfig(cwd)
@@ -42,9 +43,28 @@ export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
   return { baseAlias, styledSystemAlias }
 }
 //panda.config.ts파일 찾기 -> 여기서 outdir이 현재 저장경로(없으면 styled-system)
-export async function getPandacssConfigFile(cwd: string) {
-  const files = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
-  return files.length ? files[0] : null
+export async function getPandacssConfigPath(cwd: string) {
+  try {
+    const files = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
+    if (!files.length) {
+      throw ErrorMap({
+        code: "config_not_found",
+        configFile: "panda.config.*",
+        message: ["failed to find panda.config file"],
+      })
+    }
+    return files[0]
+  } catch (error) {
+    throw ErrorMap({
+      code: "config_not_found",
+      configFile: "panda.config.*",
+      message: [
+        error instanceof Error
+          ? error.message
+          : "unknown error occured finding panda.config",
+      ],
+    })
+  }
 }
 
 export async function resolvePandaConfig(config: string) {

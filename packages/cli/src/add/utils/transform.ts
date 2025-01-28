@@ -67,17 +67,33 @@ export function transformPreset(
 
   if (!objectLiteral) return
 
-  // 새로운 import 문 추가
-  sourceFile.addImportDeclaration({
-    moduleSpecifier: recipePath,
-    namedImports: [{ name: `${recipeName}Recipe` }],
-  })
+  const isImportExists = sourceFile
+    .getImportDeclarations()
+    .some((importDeclaration) => {
+      const moduleSpecifier = importDeclaration.getModuleSpecifierValue()
+      const namedImports = importDeclaration.getNamedImports()
+      return (
+        moduleSpecifier === recipePath &&
+        namedImports.some(
+          (importSpecifier) =>
+            importSpecifier.getName() === `${recipeName}Recipe`,
+        )
+      )
+    })
 
-  // recipes 객체에 새로운 속성 추가
-  objectLiteral.addPropertyAssignment({
-    name: recipeName,
-    initializer: `${recipeName}Recipe`,
-  })
+  // 새로운 import 문 추가
+  if (!isImportExists) {
+    sourceFile.addImportDeclaration({
+      moduleSpecifier: recipePath,
+      namedImports: [{ name: `${recipeName}Recipe` }],
+    })
+
+    // recipes 객체에 새로운 속성 추가
+    objectLiteral.addPropertyAssignment({
+      name: recipeName,
+      initializer: `${recipeName}Recipe`,
+    })
+  }
 
   // 변경사항 저장
   sourceFile.saveSync()

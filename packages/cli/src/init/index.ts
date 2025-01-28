@@ -1,7 +1,7 @@
 import { packageDirectory } from "pkg-dir"
 import { checkJsonInit } from "./utils/checkJsonInit"
 import {
-  getPandacssConfigFile,
+  getPandacssConfigPath,
   getTsConfigAlias,
   resolvePandaConfig,
 } from "../common/utils/directoryUtils"
@@ -59,11 +59,7 @@ export async function init(options: z.infer<typeof initSchema>) {
   //   throw new Error("install pandacss")
   // }
 
-  const pandacssConfigPath = await getPandacssConfigFile(root)
-
-  if (!pandacssConfigPath) {
-    throw new Error("Failed to resolve pandacss config file")
-  }
+  const pandacssConfigPath = await getPandacssConfigPath(root)
 
   const pandacssConfigFile = await fs.readFile(
     path.resolve(root, pandacssConfigPath),

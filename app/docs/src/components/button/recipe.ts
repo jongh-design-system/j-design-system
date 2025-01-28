@@ -14,10 +14,9 @@ export const buttonRecipe = defineSafe.recipe({
     cursor: "pointer",
     gap: "2",
     _focusVisible: {
-      outlineColor: "background",
-      outlineWidth: "2px",
+      ringWidth: "1",
       ringColor: "ring",
-      ringOffset: "2",
+      ringOffset: "1",
     },
 
     _disabled: {
