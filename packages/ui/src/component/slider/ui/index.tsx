@@ -5,7 +5,7 @@ import type {
   Assign,
 } from "@styled-system/types"
 import { createStyleContext } from "@utils/createStyleContext"
-import * as BaseSlider from "@radix-ui/react-slider"
+import { Slider as BaseSlider } from "radix-ui"
 
 const { withProvider, withContext } = createStyleContext(slider)
 

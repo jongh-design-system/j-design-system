@@ -2,7 +2,7 @@ import { styled, type HTMLStyledProps } from "@styled-system/jsx"
 import { button } from "@styled-system/recipes"
 import type { ComponentPropsWithoutRef } from "react"
 import { forwardRef } from "react"
-import { Slot } from "@radix-ui/react-slot"
+import { Slot } from "radix-ui"
 
 export type BaseButtonProps = ComponentPropsWithoutRef<"button"> & {
   asChild?: boolean
@@ -10,7 +10,7 @@ export type BaseButtonProps = ComponentPropsWithoutRef<"button"> & {
 
 export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
   ({ asChild, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    const Comp = asChild ? Slot.Slot : "button"
 
     return <Comp role="button" ref={ref} {...props}></Comp>
   },

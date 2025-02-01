@@ -1,4 +1,4 @@
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
+import { Avatar as AvatarPrimitive } from "radix-ui"
 import { createStyleContext } from "@utils/createStyleContext"
 import { avatar } from "@styled-system/recipes"
 import type {

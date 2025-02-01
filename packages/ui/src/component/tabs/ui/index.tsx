@@ -1,4 +1,4 @@
-import * as TabsPrimitive from "@radix-ui/react-tabs"
+import { Tabs as TabsPrimitive } from "radix-ui"
 import { createStyleContext } from "@utils/createStyleContext"
 import { tabs } from "@styled-system/recipes"
 import type {

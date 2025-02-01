@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as SelectPrimitive from "@radix-ui/react-select"
+import { Select as SelectPrimitive } from "radix-ui"
 import { createStyleContext } from "@utils/createStyleContext"
 import { type HTMLStyledProps } from "@styled-system/jsx"
 import { select } from "@styled-system/recipes"
