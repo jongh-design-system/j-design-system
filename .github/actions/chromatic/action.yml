@@ -21,8 +21,8 @@ runs:
   using: "composite"
   steps:
     - name: Deploy to Chromatic
-      uses: chromaui/action@latest
       shell: bash
+      uses: chromaui/action@latest
       with:
         projectToken: ${{ inputs.projectToken }}
         token: ${{ inputs.token }}
