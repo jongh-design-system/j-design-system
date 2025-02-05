@@ -11,7 +11,7 @@ export const Root = forwardRef<
   return (
     <AvatarPrimitive.Root
       ref={ref}
-      className={cx(css(styles), className)}
+      className={cx(css(styles.root), className)}
       {...props}
     />
   )
@@ -25,7 +25,7 @@ export const Image = forwardRef<
   return (
     <AvatarPrimitive.Image
       ref={ref}
-      className={cx(css(styles), className)}
+      className={cx(css(styles.image), className)}
       {...props}
     />
   )
@@ -39,7 +39,7 @@ export const Fallback = forwardRef<
   return (
     <AvatarPrimitive.Fallback
       ref={ref}
-      className={cx(css(styles), className)}
+      className={cx(css(styles.fallback), className)}
       {...props}
     />
   )
