@@ -25,9 +25,27 @@ jobs:
       - name: build
         run: pnpm turbo build
 
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+
+      - name: Check changed paths
+        id: check-paths
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            if [[ $file == app/docs/* ]]; then
+              echo "DOCS_CHANGED=true" >> $GITHUB_ENV
+            fi
+            if [[ $file == packages/ui/* ]]; then
+              echo "UI_CHANGED=true" >> $GITHUB_ENV
+            fi
+          done
+
       - name: deploy to AWS
         uses: ./.github/actions/deploy
-        if: contains(github.event.head_commit.message,'app/docs')
+        if: env.DOCS_CHANGED == 'true'
         with:
           aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws_region: ${{ secrets.AWS_REGION }}
@@ -36,8 +54,8 @@ jobs:
 
       - name: deploy storybook using chromatic
         uses: ./.github/actions/chromatic
+        if: env.UI_CHANGED == 'true'
         with:
-          #👇 Chromatic projectToken, see https://storybook.js.org/tutorials/intro-to-storybook/react/ko/deploy/ to obtain it
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
           workingDir: packages/ui
