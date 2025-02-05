@@ -42,4 +42,4 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
           workingDir: packages/ui
-          storybookBuildDir: packages/ui/storybook-static
+          storybookBuildDir: storybook-static
