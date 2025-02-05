@@ -2,10 +2,7 @@ name: Build & Deploy Docs
 permissions:
   id-token: write
   contents: read
-on:
-  push:
-    branches:
-      - dev
+on: workflow_dispatch
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
@@ -23,18 +20,20 @@ jobs:
       - name: build
         run: pnpm turbo build
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: deploy to AWS
+        uses: ./.github/actions/deploy
+        if: contains(github.event.head_commit.message,'app/docs')
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-session-name: "deploy"
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          aws_s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          aws_cloudfront_id: ${{ secrets.AWS_CLOUDFRONT_ID }}
 
-      - name: Deploy to S3
-        run: aws s3 sync ./app/docs/out s3://${{ secrets.AWS_S3_BUCKET_NAME }} --delete
-
-      - name: Invalidate CloudFront Cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{secrets.AWS_CLOUDFRONT_ID}} \
-            --paths "/*"
+      - name: deploy storybook to chromatic
+        uses: chromaui/action@latest
+        # Options required for Chromatic's GitHub Action
+        with:
+          #👇 Chromatic projectToken, see https://storybook.js.org/tutorials/intro-to-storybook/react/ko/deploy/ to obtain it
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          workingDir: packages/ui

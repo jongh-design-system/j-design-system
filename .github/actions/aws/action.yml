@@ -1,0 +1,35 @@
+name: "AWS Deploy"
+description: "Configures AWS credentials and deploys to S3, then invalidates CloudFront cache."
+inputs:
+  aws_role_to_assume:
+    description: "The ARN of the AWS role to assume."
+    required: true
+  aws_region:
+    description: "The AWS region."
+    required: true
+  aws_s3_bucket_name:
+    description: "The name of the S3 bucket."
+    required: true
+  aws_cloudfront_id:
+    description: "The ID of the CloudFront distribution."
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      shell: bash
+      with:
+        role-to-assume: ${{ inputs.aws_role_to_assume }}
+        role-session-name: "deploy"
+        aws-region: ${{ inputs.aws_region }}
+    - name: Deploy to S3
+      shell: bash
+      run: aws s3 sync ./app/docs/out s3://${{ inputs.aws_s3_bucket_name }} --delete
+
+    - name: Invalidate CloudFront Cache
+      shell: bash
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id ${{ inputs.aws_cloudfront_id }} \
+          --paths '/*'
