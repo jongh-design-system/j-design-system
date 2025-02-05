@@ -34,9 +34,8 @@ jobs:
           aws_s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
           aws_cloudfront_id: ${{ secrets.AWS_CLOUDFRONT_ID }}
 
-      - name: deploy storybook to chromatic
-        uses: chromaui/action@latest
-        # Options required for Chromatic's GitHub Action
+      - name: deploy storybook using chromatic
+        uses: ./.github/actions/chromatic
         with:
           #👇 Chromatic projectToken, see https://storybook.js.org/tutorials/intro-to-storybook/react/ko/deploy/ to obtain it
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
