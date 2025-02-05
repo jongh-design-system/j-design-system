@@ -1,8 +1,6 @@
-import { defineSafe } from "@utils/defineSafe"
+import { sva } from "@styled-system/css"
 
-export const accordionRecipe = defineSafe.slotRecipe({
-  className: "accordion",
-  description: "Styles for the Accordion component",
+export const recipe = sva({
   slots: ["root", "item", "header", "trigger", "content"],
   base: {
     item: {
@@ -20,7 +18,6 @@ export const accordionRecipe = defineSafe.slotRecipe({
       fontWeight: "medium",
       transition: "all",
       cursor: "pointer",
-
       _hover: {
         textDecoration: "underline",
       },
@@ -50,11 +47,6 @@ export const accordionRecipe = defineSafe.slotRecipe({
       "&[data-state=open]": {
         animationName: "accordion-down_radix",
         animationDuration: "normal",
-      },
-
-      "& > div": {
-        pb: "4",
-        pt: "0",
       },
     },
   },

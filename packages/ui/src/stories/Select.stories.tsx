@@ -20,7 +20,7 @@ export const Primary: Story = {
             <Select.Value placeholder="Select a frui" />
           </Select.Trigger>
           <Select.Content>
-            <Select.Group color="red" overflow="visible">
+            <Select.Group>
               {arr.map((num) => (
                 <Select.Item key={num} value={num.toString()}>
                   {num}

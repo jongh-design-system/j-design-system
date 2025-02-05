@@ -1,19 +1,18 @@
 import { expect, fn, userEvent, within } from "@storybook/test"
 import { Button } from "../component/button/ui"
 import type { Meta, StoryObj } from "@storybook/react"
+import type { ComponentProps } from "react"
 export default {
   title: "Button",
-  component: Button,
   tags: ["autodocs"],
-} satisfies Meta<typeof Button>
+  component: Button,
+} as Meta<typeof Button>
 
-type Story = StoryObj<typeof Button>
+type Story = StoryObj<ComponentProps<typeof Button>>
 
 export const Primary: Story = {
   args: {
     children: "click",
-    variant: "default",
-    tabIndex: 0,
     onClick: fn(),
   },
   play: async ({ args, canvasElement }) => {

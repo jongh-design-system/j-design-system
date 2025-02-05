@@ -1,6 +1,7 @@
 import * as Accordion from "../component/accordion/ui"
 import type { Meta, StoryObj } from "@storybook/react"
 import { expect, userEvent, waitFor } from "@storybook/test"
+import { css } from "@styled-system/css"
 export default {
   title: "Accordion",
   tags: ["autodocs"],
@@ -15,7 +16,13 @@ export const Primary: Story = {
         <Accordion.Root type="single" collapsible>
           <Accordion.Item value="1">
             <Accordion.Header>
-              <Accordion.Trigger>1번</Accordion.Trigger>
+              <Accordion.Trigger
+                className={css({
+                  color: "red.100",
+                })}
+              >
+                1번
+              </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.Content>
               <div>내용1</div>

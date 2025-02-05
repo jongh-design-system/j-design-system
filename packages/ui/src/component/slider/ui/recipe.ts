@@ -1,8 +1,6 @@
-import { defineSafe } from "@utils/defineSafe"
+import { sva } from "@styled-system/css"
 
-export const sliderRecipe = defineSafe.slotRecipe({
-  className: "slider",
-  description: "Styles for the Slider component",
+export const recipe = sva({
   slots: ["root", "track", "range", "thumb"],
   base: {
     root: {

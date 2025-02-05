@@ -1,8 +1,6 @@
-import { defineSafe } from "@utils/defineSafe"
+import { sva } from "@styled-system/css"
 
-export const tabsRecipe = defineSafe.slotRecipe({
-  className: "tabs",
-  description: "Styles for the Tabs component",
+export const recipe = sva({
   slots: ["root", "list", "trigger", "content"],
   base: {
     list: {

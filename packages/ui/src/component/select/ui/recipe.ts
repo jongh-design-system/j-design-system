@@ -1,8 +1,7 @@
-import { defineSafe } from "@utils/defineSafe"
+import { sva } from "@styled-system/css"
 
-export const selectRecipe = defineSafe.slotRecipe({
+export const recipe = sva({
   className: "select",
-  description: "Styles for the Select component",
   slots: [
     "root",
     "group",

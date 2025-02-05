@@ -2,14 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react"
 
 import * as Avatar from "../component/avatar/ui"
 
-const meta = {
+export default {
   title: "Avatar",
   tags: ["autodocs"],
 } satisfies Meta<typeof Avatar>
 
-export default meta
-
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof Avatar>
 
 export const Primary: Story = {
   args: {},

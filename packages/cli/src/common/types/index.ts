@@ -27,3 +27,9 @@ export const registrySchema = z.object({
   dependencies: z.array(z.string()).optional(),
   files: z.array(fileSchema).optional(),
 })
+
+export const presetSchema = z.object({
+  name: z.string(),
+  dependencies: z.array(z.string()).optional(),
+  file: z.string(),
+})

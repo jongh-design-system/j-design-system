@@ -1,8 +1,6 @@
-import { defineSafe } from "@utils/defineSafe"
+import { sva } from "@styled-system/css"
 
-export const avatarRecipe = defineSafe.slotRecipe({
-  className: "avatar",
-  description: "Styles for the Avatar component",
+export const recipe = sva({
   slots: ["root", "image", "fallback"],
   base: {
     root: {

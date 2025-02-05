@@ -1,8 +1,7 @@
-import { defineSafe } from "@utils/defineSafe"
+import { cva, type RecipeVariantProps } from "@styled-system/css"
 
-export const buttonRecipe = defineSafe.recipe({
-  className: "button",
-  description: "Styles for the Button component",
+export type ButtonVariantProps = RecipeVariantProps<typeof recipe>
+export const recipe = cva({
   base: {
     display: "inline-flex",
     alignItems: "center",
