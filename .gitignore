@@ -9,7 +9,7 @@ panda
 panda-static
 outdir
 ts-import-map-outdir
-
+.eslintcache
 # Dependencies
 node_modules
 .pnpm-store/

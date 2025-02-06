@@ -25,38 +25,34 @@ jobs:
       - name: build
         run: pnpm turbo build
 
-      - name: Get changed files
-        id: changed-files
+      - name: Get changed files - ui
+        id: changed-ui-files
         uses: tj-actions/changed-files@v45
-
-      - name: Check changed paths
-        id: check-paths
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
-        run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            if [[ $file == app/docs/* ]]; then
-              echo "DOCS_CHANGED=true" >> $GITHUB_ENV
-            fi
-            if [[ $file == packages/ui/* ]]; then
-              echo "UI_CHANGED=true" >> $GITHUB_ENV
-            fi
-          done
-
-      - name: deploy to AWS
-        uses: ./.github/actions/deploy
-        if: env.DOCS_CHANGED == 'true'
         with:
-          aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          aws_s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
-          aws_cloudfront_id: ${{ secrets.AWS_CLOUDFRONT_ID }}
+          files: |
+            package/ui/**
 
       - name: deploy storybook using chromatic
         uses: ./.github/actions/chromatic
-        if: env.UI_CHANGED == 'true'
+        if: ${{steps.changed-ui-files.outputs.all_changed_and_modified_files_count != '0'}}
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
           workingDir: packages/ui
           storybookBuildDir: storybook-static
+
+      - name: Get changed files - docs
+        id: changed-docs-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            app/docs/**
+
+      - name: deploy docs to AWS S3 + Cloudfront
+        uses: ./.github/actions/deploy
+        if: ${{steps.changed-docs-files.outputs.all_changed_and_modified_files_count != '0'}}
+        with:
+          aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          aws_s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          aws_cloudfront_id: ${{ secrets.AWS_CLOUDFRONT_ID }}
