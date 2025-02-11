@@ -1,50 +1,43 @@
-# React UI Design System 🎨
+## 소개
+shadcn에서 영감을 받아, pandacss 기반의 컴포넌트 코드를 CLI를 통해 제공하는 CLI 라이브러리입니다
 
-개인 사이드 프로젝트에서 사용하는 디자인 시스템입니다
-개인용으로 제작되었으나, 다른 사용자가 사용하기에 제약이 없도록 headless 패턴을 적용했습니다
+## 명령어
 
-## Demo
+### init
+```
+npx @jongh/cli init
+```
 
-storybook을 통해 결과물을 확인할 수 있습니다 [링크](https://6683c8acf34b923f7227be4a-etvwiuojnp.chromatic.com/?path=/story/accordion--primary)
+- 컴포넌트 스타일에 필요한 pandacss preset 파일을 생성하고, 경로 설정을 분석하여 components.json 이라는 파일을 생성합니다
 
-## Tech Stack ⚛️
 
-[![My Skills](https://skillicons.dev/icons?i=react&perline=3)](https://skillicons.dev) ![React Version](https://img.shields.io/badge/React-18+-blue)
 
-PandaCSS
+### add 
+```
+npx @jongh/cli add [component name]
+```
 
-## Features ✨
+- 컴포넌트 코드 등 필요한 코드를 registry에서 불러온 뒤, init에서 생성된 components.json의 경로 설정을 기반으로 파일을 생성합니다
 
-- PandaCSS를 활용한 스타일 관리
-- 독립적인 UI 로직과 스타일 분리
-- Figma 디자인 토큰 기반 SSOT 원칙 준수
-- CLI를 통한 손쉬운 컴포넌트 설치 (실험적)
 
-## Usage 📦
 
-1. PandaCSS 설치
-2. 스타일 preset 설치 [@jongh/panda-preset](https://www.npmjs.com/package/@jongh/panda-preset)
-3. PandaCSS config에 preset 등록
-4. CLI 또는 직접 코드를 복사하여 컴포넌트 사용
 
-## Architecture 🏗️
+## 이 밖의 기능
+- codemod 기능을 개발중입니다
 
-pnpm workspace를 통한 monorepo 구조:
+### radix-ui-import
+```
+npx @jongh/cli radix-ui-import
+```
 
-### @jongh/panda-preset
+- 최근 추가된 radix-ui [설치방법](https://www.radix-ui.com/primitives/docs/overview/introduction#incremental-adoption)에 대응하여 코드를 변환하는 CLI입니다
 
-스타일 시스템 관리
+before
+```
+import * as AccordionPrimitive from '@radix-ui/react-accordion'
+```
 
-- Figma 디자인 토큰 가공
-- 컴포넌트 스타일 레시피 제공
-- clean-package를 통한 로컬/배포 환경 분기
-
-### @jongh/cli
-
-컴포넌트 설치 CLI 제공
-
-### UI
-
-- 컴포넌트 UI 로직 구현
-- Storybook을 통한 컴포넌트와 관련된 모든 테스트 진행
-- Chromatic을 통한 배포
+after
+```
+import {Accordion as AccordionPrimitive} from 'radix-ui'
+```
