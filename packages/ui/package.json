@@ -45,12 +45,10 @@
     "chromatic": "^11.5.4",
     "playwright": "^1.48.2",
     "storybook": "^8.5.3",
-    "tsc-alias": "^1.8.10",
-    "tslib": "^2.6.3",
-    "typescript": "^5.2.2",
     "vite": "^5.4.10",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^3.9.1"
+    "vite-plugin-dts": "^3.9.1",
+    "@jongh/tsconfig": "workspace:*"
   },
   "keywords": [],
   "author": "",

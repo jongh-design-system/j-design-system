@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "@jongh/tsconfig/react.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "emitDeclarationOnly": true,
