@@ -1,7 +1,8 @@
-import * as Accordion from "../component/accordion/ui"
 import type { Meta, StoryObj } from "@storybook/react"
 import { expect, userEvent, waitFor } from "@storybook/test"
 import { css } from "@styled-system/css"
+
+import * as Accordion from "../component/accordion/ui"
 export default {
   title: "Accordion",
   tags: ["autodocs"],

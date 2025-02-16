@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
+import { css } from "@styled-system/css"
 
 import * as Slider from "../component/slider/ui"
-import { css } from "@styled-system/css"
 
 export default {
   title: "Slider",
