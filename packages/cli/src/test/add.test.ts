@@ -1,6 +1,7 @@
-import path from "path"
-import { test, vi, describe, beforeAll, expect, afterAll } from "vitest"
 import fs from "fs-extra"
+import path from "path"
+import { afterAll, beforeAll, describe, expect, test, vi } from "vitest"
+
 import { addCommand } from "../add"
 
 const BUTTON_JSON = {

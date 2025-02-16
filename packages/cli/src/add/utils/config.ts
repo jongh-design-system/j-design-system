@@ -1,10 +1,11 @@
-import { configSchema, type ConfigType } from "../../common/types"
 import fs from "fs-extra"
 import path from "path"
 import { loadConfig } from "tsconfig-paths"
-import { resolveImport } from "./resolveImport"
 import { type ConfigLoaderSuccessResult } from "tsconfig-paths"
+
 import { ErrorMap } from "../../common/error"
+import { configSchema, type ConfigType } from "../../common/types"
+import { resolveImport } from "./resolveImport"
 
 // components.json 파일 읽기 전용
 export function loadComponentConfig(cwd: string) {

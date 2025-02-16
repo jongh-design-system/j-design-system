@@ -1,6 +1,7 @@
-import { Tabs as TabsPrimitive } from "radix-ui"
-import { ElementRef, forwardRef, ComponentPropsWithoutRef } from "react"
 import { css, cx } from "@styled-system/css"
+import { Tabs as TabsPrimitive } from "radix-ui"
+import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+
 import { recipe } from "./recipe"
 
 export const Root = forwardRef<

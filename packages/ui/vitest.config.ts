@@ -1,8 +1,8 @@
-import { defineConfig, mergeConfig } from "vitest/config"
 import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin"
+import { defineConfig, mergeConfig } from "vitest/config"
+
 // 👇 If you're using Next.js, apply this framework plugin as well
 // import { storybookNextJsPlugin } from '@storybook/experimental-nextjs-vite/vite-plugin';
-
 import viteConfig from "./vite.config"
 
 export default mergeConfig(

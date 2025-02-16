@@ -1,5 +1,6 @@
-import path from "path"
 import fs from "fs-extra"
+import path from "path"
+
 import { template } from "./template"
 
 export function initTemplate(dir: string) {

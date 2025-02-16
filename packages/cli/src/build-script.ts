@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Command } from "commander"
-import { z } from "zod"
 import fs from "fs-extra"
-import { Project } from "ts-morph"
 import path, { dirname } from "path"
+import { Project } from "ts-morph"
 import { fileURLToPath } from "url"
+import { z } from "zod"
+
 import { subDirectories } from "./common/types"
 
 const __filename = fileURLToPath(import.meta.url)
@@ -79,7 +81,8 @@ export async function createRegistryFile(component: string) {
   //   }
   // })
 
-  const fileContents: { name: string; content: string; type: string }[] = []
+  const fileContents: Array<{ name: string; content: string; type: string }> =
+    []
   const dependencies: string[] = []
 
   for (const subDirectory of subDirectories) {

@@ -1,7 +1,8 @@
+import { css, cx } from "@styled-system/css"
 import { Avatar as AvatarPrimitive } from "radix-ui"
+import { type ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+
 import { recipe } from "./recipe"
-import { cx, css } from "@styled-system/css"
-import { ElementRef, forwardRef, type ComponentPropsWithoutRef } from "react"
 
 export const Root = forwardRef<
   ElementRef<typeof AvatarPrimitive.Root>,

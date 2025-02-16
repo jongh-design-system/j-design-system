@@ -6,8 +6,8 @@ import {
 } from "@pandacss/dev"
 import {
   RecipeConfig as CodegenRecipeConfig,
-  SlotRecipeConfig as CodegenSlotRecipeConfig,
   RecipeVariantRecord,
+  SlotRecipeConfig as CodegenSlotRecipeConfig,
   SlotRecipeVariantRecord,
   SystemStyleObject as CodegenSystemStyleObject,
 } from "@styled-system/types"

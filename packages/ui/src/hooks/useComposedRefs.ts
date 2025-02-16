@@ -10,11 +10,11 @@ function setRef<T>(ref: PossibleRef<T>, value: T) {
   }
 }
 
-export function composeRefs<T>(...refs: PossibleRef<T>[]) {
+export function composeRefs<T>(...refs: Array<PossibleRef<T>>) {
   return (node: T) => refs.forEach((ref) => setRef(ref, node))
 }
 
-export function useComposedRefs<T>(...refs: PossibleRef<T>[]) {
+export function useComposedRefs<T>(...refs: Array<PossibleRef<T>>) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(composeRefs(...refs), refs)
 }

@@ -1,5 +1,6 @@
+import { type ConfigLoaderSuccessResult, createMatchPath } from "tsconfig-paths"
+
 import { ErrorMap } from "../../common/error"
-import { createMatchPath, type ConfigLoaderSuccessResult } from "tsconfig-paths"
 export async function resolveImport(
   importPath: string,
   config: Pick<ConfigLoaderSuccessResult, "absoluteBaseUrl" | "paths">,
