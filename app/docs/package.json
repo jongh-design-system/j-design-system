@@ -2,12 +2,14 @@
   "name": "docs",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "prepare": "panda codegen",
     "dev": "next dev --turbopack",
     "start": "next start",
-    "lint": "next lint",
-    "build": "next build"
+    "lint": "next lint --fix",
+    "build": "next build",
+    "check-type": "tsc --noEmit"
   },
   "dependencies": {
     "next": "15.1.4",
@@ -17,9 +19,10 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@jongh/eslint": "workspace:*",
+    "@jongh/tsconfig": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "typescript": "^5"
+    "@types/react-dom": "^19"
   }
 }
