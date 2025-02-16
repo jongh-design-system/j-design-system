@@ -1,24 +1,24 @@
 #!/usr/bin/env node
 
+import { confirm, intro, outro, select } from "@clack/prompts"
+import chalk from "chalk"
 import { Command } from "commander"
+import { execa } from "execa"
+import fs from "fs-extra"
+import { detect } from "package-manager-detector"
 import path from "path"
 import { z, ZodError } from "zod"
-import fs from "fs-extra"
-import { confirm, select, intro, outro } from "@clack/prompts"
 
-import { loadComponentConfig, loadTSConfig } from "./utils/config"
+import { CommandError, ErrorMap, type FetchIssue } from "../common/error"
+import { configSchema, registrySchema } from "../common/types"
 import {
   getPandacssConfigPath,
   resolvePandaConfig,
 } from "../common/utils/directoryUtils"
-import { resolveImport } from "./utils/resolveImport"
-import { configSchema, registrySchema } from "../common/types"
-import { transformPreset, transformImports } from "./utils/transform"
-import { execa } from "execa"
-import { detect } from "package-manager-detector"
 import { getPackageManagerRunner } from "../common/utils/packageManager"
-import { CommandError, ErrorMap, type FetchIssue } from "../common/error"
-import chalk from "chalk"
+import { loadComponentConfig, loadTSConfig } from "./utils/config"
+import { resolveImport } from "./utils/resolveImport"
+import { transformImports, transformPreset } from "./utils/transform"
 
 const addSchema = z.object({
   components: z.array(z.string()).optional(),
@@ -46,7 +46,7 @@ export const addCommand = new Command()
       })
       intro(info("install components..."))
       //1. components.json 파일을 읽어온다
-      const components_json = configSchema.schema.parse(
+      const componentsJson = configSchema.schema.parse(
         loadComponentConfig(options.cwd),
       )
       //2. tsconfig.json 파일을 읽어온다
@@ -63,9 +63,9 @@ export const addCommand = new Command()
       //최종 경로
 
       const paths = configSchema.schema.parse({
-        utils: await resolveImport(components_json.utils, tsconfig),
-        components: await resolveImport(components_json.components, tsconfig),
-        hooks: await resolveImport(components_json.hooks, tsconfig),
+        utils: await resolveImport(componentsJson.utils, tsconfig),
+        components: await resolveImport(componentsJson.components, tsconfig),
+        hooks: await resolveImport(componentsJson.hooks, tsconfig),
         styledsystem: path.join(options.cwd, outdir || "styled-system"),
       })
       //fetch
@@ -138,7 +138,7 @@ export const addCommand = new Command()
             //import문을 경로를 반영하여 변경하기
             const convertedContent = transformImports(
               file.content,
-              components_json,
+              componentsJson,
             )
             //TODO: file의 타입에 따라 변경하기
             if (file.name === "recipe.ts") {
@@ -149,7 +149,7 @@ export const addCommand = new Command()
                 path.join(options.cwd, "preset.ts"),
                 `${componentList[index]}`,
                 path.join(
-                  components_json.components,
+                  componentsJson.components,
                   `${componentList[index]}`,
                   "recipe",
                 ),

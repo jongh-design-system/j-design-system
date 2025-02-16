@@ -1,13 +1,12 @@
+import generate from "@babel/generator"
 import * as parser from "@babel/parser"
 import traverse from "@babel/traverse"
-import generate from "@babel/generator"
-
 import * as t from "@babel/types"
 import fs from "fs-extra"
 import path from "path"
 import { packageDirectorySync } from "pkg-dir"
 
-const required_presets = ["@pandacss/preset-panda"]
+const requiredPresets = ["@pandacss/preset-panda"]
 
 export async function parseConfig() {
   const root = packageDirectorySync()
@@ -30,7 +29,7 @@ export async function parseConfig() {
           path.node.properties.forEach((prop) => {
             if (prop.key.name === "presets") {
               prop.value.elements.push([
-                ...required_presets.map((preset) => t.stringLiteral(preset)),
+                ...requiredPresets.map((preset) => t.stringLiteral(preset)),
               ])
             }
           })

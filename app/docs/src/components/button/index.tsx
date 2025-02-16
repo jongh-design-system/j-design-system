@@ -1,8 +1,8 @@
-import { styled, type HTMLStyledProps } from "@styled-system/jsx"
+import { type HTMLStyledProps, styled } from "@styled-system/jsx"
 import { button } from "@styled-system/recipes"
+import { Slot } from "radix-ui"
 import type { ComponentPropsWithoutRef } from "react"
 import { forwardRef } from "react"
-import { Slot } from "radix-ui"
 
 export type BaseButtonProps = ComponentPropsWithoutRef<"button"> & {
   asChild?: boolean

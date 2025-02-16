@@ -9,7 +9,7 @@
     "build:cli": "tsup",
     "build:registry": "npx tsx ./src/build-script.ts --all",
     "release": "pnpm publish -no-git-checks",
-    "lint": "eslint . --max-warnings 0",
+    "lint": "eslint --max-warnings 0 --fix",
     "check-type": "tsc --noEmit",
     "test": "vitest run"
   },
@@ -51,6 +51,8 @@
     "@types/yargs": "^17.0.33",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
-    "tsx": "^4.19.2"
+    "tsx": "^4.19.2",
+    "@jongh/tsconfig": "workspace:*",
+    "@jongh/eslint": "workspace:*"
   }
 }

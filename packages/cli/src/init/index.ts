@@ -1,18 +1,19 @@
+import { spinner } from "@clack/prompts"
+import { Command } from "commander"
+import fs from "fs-extra"
+import path from "path"
 import { packageDirectory } from "pkg-dir"
-import { checkJsonInit } from "./utils/checkJsonInit"
+import { type ObjectLiteralExpression, Project, SyntaxKind } from "ts-morph"
+import { z } from "zod"
+
+import { configSchema, type ConfigType } from "../common/types"
 import {
   getPandacssConfigPath,
   getTsConfigAlias,
   resolvePandaConfig,
 } from "../common/utils/directoryUtils"
-import path from "path"
-import { configSchema, type ConfigType } from "../common/types"
-import { z } from "zod"
-import { Command } from "commander"
-import fs from "fs-extra"
-import { spinner } from "@clack/prompts"
-import { Project, SyntaxKind, type ObjectLiteralExpression } from "ts-morph"
 import { fetchPreset } from "../common/utils/fetchRegistry"
+import { checkJsonInit } from "./utils/checkJsonInit"
 
 const initSchema = z.object({
   cwd: z.string(),

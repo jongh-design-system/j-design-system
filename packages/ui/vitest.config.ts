@@ -1,8 +1,8 @@
-import { defineConfig, mergeConfig } from "vitest/config"
 import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin"
+import { defineConfig, mergeConfig } from "vitest/config"
+
 // 👇 If you're using Next.js, apply this framework plugin as well
 // import { storybookNextJsPlugin } from '@storybook/experimental-nextjs-vite/vite-plugin';
-
 import viteConfig from "./vite.config"
 
 export default mergeConfig(
@@ -10,16 +10,13 @@ export default mergeConfig(
   defineConfig({
     plugins: [storybookTest({})],
     test: {
-      // Glob pattern to find story files
-      include: [
-        "src/**/*.stories.?(m)[jt]s?(x)",
-        "src/test/*.test.?(m)[jt]s?(x)",
-      ],
-      // Enable browser mode
       browser: {
+        instances: [
+          {
+            browser: "chromium",
+          },
+        ],
         enabled: true,
-        name: "chromium",
-        // Make sure to install Playwright
         provider: "playwright",
         headless: true,
       },

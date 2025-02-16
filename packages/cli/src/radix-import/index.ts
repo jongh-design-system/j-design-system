@@ -1,10 +1,11 @@
+import { intro, log, outro } from "@clack/prompts"
+import chalk from "chalk"
 import { Command } from "commander"
 import fg from "fast-glob"
 import path from "path"
-import { transform } from "./transform"
 import { Project } from "ts-morph"
-import { intro, log, outro } from "@clack/prompts"
-import chalk from "chalk"
+
+import { transform } from "./transform"
 export const codemodCommand = new Command()
   .name("radix-ui-import")
   .action(() => {

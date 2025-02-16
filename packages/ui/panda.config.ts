@@ -1,6 +1,7 @@
 import { defineConfig } from "@pandacss/dev"
-import { defaultPreset } from "./preset"
 import { preset } from "panda-animation"
+
+import { defaultPreset } from "./preset"
 export default defineConfig({
   preflight: true,
   presets: [preset(), "@pandacss/preset-panda", defaultPreset],
