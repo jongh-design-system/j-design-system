@@ -1,7 +1,8 @@
-import { recipe } from "./recipe"
-import { Slider as SliderPrimitive } from "radix-ui"
-import { ElementRef, forwardRef, ComponentPropsWithoutRef } from "react"
 import { css, cx } from "@styled-system/css"
+import { Slider as SliderPrimitive } from "radix-ui"
+import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+
+import { recipe } from "./recipe"
 
 export const Root = forwardRef<
   ElementRef<typeof SliderPrimitive.Root>,

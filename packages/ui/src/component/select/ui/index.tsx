@@ -1,7 +1,8 @@
+import { css, cx } from "@styled-system/css"
 import { Select as SelectPrimitive } from "radix-ui"
+import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+
 import { recipe } from "./recipe"
-import { cx, css } from "@styled-system/css"
-import { ElementRef, forwardRef, ComponentPropsWithoutRef } from "react"
 
 const BaseTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,

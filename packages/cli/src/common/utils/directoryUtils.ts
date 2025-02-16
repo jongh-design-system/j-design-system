@@ -1,12 +1,12 @@
 import fg from "fast-glob"
 import fs from "fs-extra"
-import { loadConfig } from "tsconfig-paths"
 import path from "path"
+import { loadConfig } from "tsconfig-paths"
+
 import { ErrorMap } from "../error"
 
 export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
   const tsConfig = loadConfig(cwd)
-
   if (
     tsConfig?.resultType === "failed" ||
     !Object.entries(tsConfig?.paths).length

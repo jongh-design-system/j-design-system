@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
 
 import * as Tabs from "../component/tabs/ui"
-import { useState } from "@storybook/preview-api"
 
 const meta = {
   title: "Tabs",

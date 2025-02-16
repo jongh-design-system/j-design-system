@@ -1,7 +1,8 @@
-import { Accordion as AccordionPrimitive } from "radix-ui"
-import { recipe } from "./recipe"
 import { css, cx } from "@styled-system/css"
-import { ElementRef, forwardRef, type ComponentPropsWithoutRef } from "react"
+import { Accordion as AccordionPrimitive } from "radix-ui"
+import { type ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+
+import { recipe } from "./recipe"
 
 export const Root = forwardRef<
   ElementRef<typeof AccordionPrimitive.Root>,

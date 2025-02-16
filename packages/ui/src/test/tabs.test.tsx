@@ -1,9 +1,9 @@
-import { test, expect } from "vitest"
-import { screen } from "@testing-library/react"
 import { composeStories } from "@storybook/react"
-
-import * as stories from "../stories/Tabs.stories"
+import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { expect, test } from "vitest"
+
+import * as stories from "../stories/tabs.stories"
 
 const { Primary } = composeStories(stories)
 
