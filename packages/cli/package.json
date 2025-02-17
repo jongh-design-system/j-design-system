@@ -9,7 +9,7 @@
     "build:cli": "tsup",
     "build:registry": "npx tsx ./src/build-script.ts --all",
     "release": "pnpm publish -no-git-checks",
-    "lint": "eslint --max-warnings 0 --fix",
+    "lint": "eslint --max-warnings 0 --no-warn-ignored --fix",
     "check-type": "tsc --noEmit",
     "test": "vitest run"
   },
@@ -23,6 +23,9 @@
     "dist",
     "package.json"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@babel/generator": "^7.26.3",
     "@babel/parser": "^7.26.3",

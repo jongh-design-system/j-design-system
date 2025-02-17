@@ -14,9 +14,8 @@ import {
   getPandacssConfigPath,
   loadComponentConfig,
   loadTSConfig,
-  resolvePandaConfig,
 } from "@/common/get-config"
-import { resolveImport } from "@/common/resolve"
+import { resolveImport, resolvePandaConfig } from "@/common/resolve"
 import { transformImports, transformPreset } from "@/common/transform"
 import { configSchema, registrySchema } from "@/common/types"
 import { getPackageManagerRunner } from "@/common/utils/packageManager"
