@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## null
+
+### Minor Changes
+
+- a93a200: fix esm error
+
 ## 1.3.0
 
 ### Minor Changes
