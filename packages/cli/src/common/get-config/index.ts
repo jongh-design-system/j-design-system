@@ -94,15 +94,15 @@ export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
 
 export async function getPandacssConfigPath(cwd: string) {
   try {
-    const files = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
-    if (!files.length) {
+    const paths = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
+    if (!paths.length) {
       throw ErrorMap({
         code: "config_not_found",
         configFile: "panda.config.*",
         message: ["failed to find panda.config file"],
       })
     }
-    return files[0]
+    return paths[0]
   } catch (error) {
     throw ErrorMap({
       code: "config_not_found",
