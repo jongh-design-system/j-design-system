@@ -25,48 +25,31 @@ jobs:
       - name: build
         run: pnpm turbo build
 
-      - name: Get changed files - ui
-        id: changed-ui-files
-        uses: tj-actions/changed-files@v45
-        with:
-          files: |
-            packages/ui/**
-
-      - name: deploy storybook using chromatic
-        uses: ./.github/actions/chromatic
-        if: ${{steps.changed-ui-files.outputs.all_changed_and_modified_files_count != '0'}}
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workingDir: packages/ui
-          storybookBuildDir: storybook-static
-
-      - name: List all changed files
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
-        run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "$file was changed"
-          done
-
       - name: Get changed files - docs
         id: changed-docs-files
         uses: tj-actions/changed-files@v45
         with:
           files: |
             app/docs/**
+            packages/ui/**
 
-      - name: List all changed files
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+      - name: Print changed files
         run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "$file was changed"
-          done
+          echo "Changed files in 'app/docs/':"
+          echo "${{ steps.changed-docs-files.outputs.modified_files }}"
+          echo "${{ steps.changed-docs-files.outputs.added_files }}"
+          echo "${{ steps.changed-docs-files.outputs.deleted_files }}"
+
+      - name: deploy storybook using chromatic
+        uses: ./.github/actions/chromatic
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          workingDir: packages/ui
+          storybookBuildDir: storybook-static
 
       - name: deploy docs to AWS S3 + Cloudfront
-        uses: ./.github/actions/deploy
-        if: ${{steps.changed-docs-files.outputs.all_changed_and_modified_files_count != '0'}}
+        uses: ./.github/actions/aws
         with:
           aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws_region: ${{ secrets.AWS_REGION }}
