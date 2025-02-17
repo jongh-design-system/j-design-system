@@ -1,5 +1,15 @@
 # @jongh/cli
 
+## null
+
+### Minor Changes
+
+- a93a200: fix esm error
+
+### Patch Changes
+
+- 5b76d4a: fix version error
+
 ## 1.3.0
 
 ### Minor Changes
