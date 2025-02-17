@@ -2,10 +2,10 @@ import fs from "fs-extra"
 import path from "path"
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest"
 
-import { getTsConfigAlias } from "../common/utils/directoryUtils"
-import { initCommand } from "../init"
-import { checkJsonInit } from "../init/utils/checkJsonInit"
-import { checkPandaInit } from "../init/utils/checkPandaInit"
+import { initCommand } from "@/commands/init"
+import { checkJsonInit } from "@/common/get-config"
+import { checkPandaInit } from "@/common/get-config"
+import { getTsConfigAlias } from "@/common/get-config"
 
 const TS_CONFIG = {
   compilerOptions: {
