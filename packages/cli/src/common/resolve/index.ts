@@ -33,3 +33,23 @@ export async function resolveAllPaths(
     styledsystem: await resolveImport(config.styledsystem, tsconfig),
   }
 }
+
+export async function resolvePandaConfig(config: string) {
+  const outdirMatch = config.match(/outdir:\s*["']([^"']+)["']/)
+  const importMapMatch = config.match(/importMap:\s*({[^}]+}|["'][^"']+["'])/)
+
+  const outdir = outdirMatch ? outdirMatch[1] : null
+  let importMap = null
+
+  if (importMapMatch) {
+    const value = importMapMatch[1]
+    if (value.startsWith("{")) {
+      const cssMatch = value.match(/css:\s*["']([^"']+)["']/)
+      importMap = cssMatch ? cssMatch[1].replace(/\/css$/, "") : null
+    } else {
+      importMap = value.replace(/["']/g, "")
+    }
+  }
+
+  return { outdir, importMap }
+}
