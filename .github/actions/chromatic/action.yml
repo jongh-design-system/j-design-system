@@ -20,11 +20,14 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Build Storybook
+      run: pnpm turbo build --filter=@jongh/ui --force
+
     - name: Deploy to Chromatic
-      shell: bash
       uses: chromaui/action@latest
       with:
         projectToken: ${{ inputs.projectToken }}
         token: ${{ inputs.token }}
         workingDir: ${{ inputs.workingDir }}
         storybookBuildDir: ${{ inputs.storybookBuildDir }}
+        onlyChanged: false
