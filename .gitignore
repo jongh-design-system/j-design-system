@@ -15,7 +15,7 @@ tsconfig.tsbuildinfo
 node_modules
 .pnpm-store/
 .yalc/*
-
+storybook-static
 .next
 out
 # Logs
