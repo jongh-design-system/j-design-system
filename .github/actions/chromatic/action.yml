@@ -22,6 +22,7 @@ runs:
   steps:
     - name: Build Storybook
       run: pnpm turbo build --filter=@jongh/ui --force
+      shell: bash
 
     - name: Deploy to Chromatic
       uses: chromaui/action@latest
