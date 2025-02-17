@@ -5,7 +5,6 @@ import { afterAll, beforeAll, describe, expect, test, vi } from "vitest"
 import { initCommand } from "@/commands/init"
 import { checkJsonInit } from "@/common/get-config"
 import { checkPandaInit } from "@/common/get-config"
-import { getTsConfigAlias } from "@/common/get-config"
 
 const TS_CONFIG = {
   compilerOptions: {
@@ -90,13 +89,6 @@ describe("init 테스트", () => {
 
   test("pandaCSS 설치 상태를 확인합니다", async () => {
     expect(await checkPandaInit(temp)).toBeTruthy()
-  })
-
-  test("tsconfig와 panda.config.ts 설정 파일의 경로를 통해 alias를 찾습니다", async () => {
-    expect(getTsConfigAlias(temp, "styled-system")).toStrictEqual({
-      baseAlias: "@",
-      styledSystemAlias: "@styled-system",
-    })
   })
 
   test("cli init", async () => {

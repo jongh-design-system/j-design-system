@@ -53,27 +53,60 @@ export async function checkPandaInit(cwd: string) {
   return isInstalled && !!pandaConfig
 }
 
-export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
+// export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
+//   //현재 styledSystemPath -> 즉 styled-system 역할을 하는 파일이 tsconfig에서 어떤 alias로 지정되어있는지 확인
+//   //추가로 tsconfig의 base alias도 확인
+//   const tsConfig = loadConfig(cwd)
+
+//   if (
+//     tsConfig?.resultType === "failed" ||
+//     !Object.entries(tsConfig?.paths).length
+//   ) {
+//     return { baseAlias: null, styledSystemAlias: null }
+//   }
+
+//   let baseAlias = null
+//   let styledSystemAlias = null
+
+//   // 모든 alias 순회하면서 둘 다 찾기
+//   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
+//     // styled-system alias 찾기 - paths 경로 문자열에 포함되어있으면 styled-system alias라고 판단
+//     if (paths[0].includes(styledSytemPath)) {
+//       styledSystemAlias = alias.replace(/\/\*$/, "")
+//     }
+
+//     // base alias 찾기
+//     if (
+//       paths.includes("./*") ||
+//       paths.includes("./src/*") ||
+//       paths.includes("./app/*")
+//     ) {
+//       baseAlias = alias.replace(/\/\*$/, "")
+//     }
+//   }
+//   if (!baseAlias) {
+//     baseAlias = Object.keys(tsConfig?.paths)?.[0].replace(/\/\*$/, "") ?? null
+//   }
+//   if (!styledSystemAlias) {
+//     styledSystemAlias = "."
+//   }
+
+//   return { baseAlias, styledSystemAlias }
+// }
+
+export function getBaseAlias(cwd: string) {
   const tsConfig = loadConfig(cwd)
 
   if (
     tsConfig?.resultType === "failed" ||
     !Object.entries(tsConfig?.paths).length
   ) {
-    return { baseAlias: null, styledSystemAlias: null }
+    return null
   }
 
   let baseAlias = null
-  let styledSystemAlias = null
 
-  // 모든 alias 순회하면서 둘 다 찾기
   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
-    // styled-system alias 찾기 - paths 경로 문자열에 포함되어있으면 styled-system alias라고 판단
-    if (paths[0].includes(styledSytemPath)) {
-      styledSystemAlias = alias.replace(/\/\*$/, "")
-    }
-
-    // base alias 찾기
     if (
       paths.includes("./*") ||
       paths.includes("./src/*") ||
@@ -82,14 +115,34 @@ export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
       baseAlias = alias.replace(/\/\*$/, "")
     }
   }
-  if (!baseAlias) {
-    baseAlias = Object.keys(tsConfig?.paths)?.[0].replace(/\/\*$/, "") ?? null
+
+  return baseAlias
+}
+
+export function getStyleAlias(cwd: string, styleForderName: string) {
+  const tsConfig = loadConfig(cwd)
+
+  if (
+    tsConfig?.resultType === "failed" ||
+    !Object.entries(tsConfig?.paths).length
+  ) {
+    return null
   }
-  if (!styledSystemAlias) {
-    styledSystemAlias = "."
+  let styledAlias: string | null = null
+
+  // 각 alias의 첫 번째 경로를 확인하여 styledSystemPath가 포함되었는지 체크
+  for (const [alias, paths] of Object.entries(tsConfig.paths)) {
+    if (paths[0].includes(styleForderName)) {
+      styledAlias = alias.replace(/\/\*$/, "")
+      break
+    }
   }
 
-  return { baseAlias, styledSystemAlias }
+  // if (!styledAlias) {
+  //   styledAlias = "."
+  // }
+
+  return styledAlias
 }
 
 export async function getPandacssConfigPath(cwd: string) {

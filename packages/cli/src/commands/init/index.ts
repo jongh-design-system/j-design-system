@@ -5,11 +5,11 @@ import path from "path"
 import { packageDirectory } from "pkg-dir"
 import { z } from "zod"
 
-import { checkJsonInit, getTsConfigAlias } from "@/common/get-config"
+import { checkJsonInit, getBaseAlias, getStyleAlias } from "@/common/get-config"
 import { getPandacssConfigPath } from "@/common/get-config"
 import { resolvePandaConfig } from "@/common/resolve"
 import { transformPandaConfig } from "@/common/transform"
-import { configSchema, type ConfigType } from "@/common/types"
+import { configSchema } from "@/common/types"
 import { fetchPreset } from "@/common/utils/fetchRegistry"
 
 const initSchema = z.object({
@@ -64,69 +64,37 @@ export async function init(options: z.infer<typeof initSchema>) {
     "utf-8",
   )
 
-  // const project = new Project()
-  // project.addSourceFileAtPath(pandacssConfigPath)
-  // const sourceFile = project.getSourceFileOrThrow(pandacssConfigPath)
-
-  // const defineCofigExpression = sourceFile
-  //   .getDescendantsOfKind(SyntaxKind.CallExpression)
-  //   .filter((v) => v.getExpression().getText() === "defineConfig")[0]
-
-  // const object = defineCofigExpression.getChildrenOfKind(
-  //   SyntaxKind.ObjectLiteralExpression,
-  // )[0]
-
-  // for (const property of object.getProperties()) {
-  //   if (property.getText().startsWith("outdir")) {
-  //     return property.getText().split(":")[1].replace(/"/g, "")
-  //   }
-  // }
-
-  //styled-system은 상대경로가 어떻게 되어있나만 체크하면 됨
-  //outdir 속성이 없으면 default로 styled-system으로 지정되어있음 -> 이 경로에 해당하는 tsconfig alias를 찾아야함
-  //outdir 속성이 있으면 -> 해당 값의 경로에 해당하는 tsconfig alias를 찾아야함
-  //importMap 속성이 있으면 -> 해당 값 그대로 사용
-  //string일수도 , object일수도 있음
-  //string이면 -> 그대로 사용
-  //object면 -> css라는 속성값만 찾아서 사용
-
   let defaultStyledSystemAlias = "styled-system"
 
-  const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile) //outdir와 importMap이 있는지
+  const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile)
+  // outdir은 생성된 파일들이 저장될 디렉토리를 지정하는 옵션이고,
+  // importMap은 그 디렉토리를 애플리케이션 코드에서 어떻게 import할지 경로를 매핑하는 역할
 
+  //만약 importMap이 있으면 그 값을 그대로 사용
+  if (importMap) {
+    defaultStyledSystemAlias = importMap
+  } else {
+    //존재하지 않을 경우 - outdir || styled-system으로 되어있는 alias를 찾아본 뒤
+    defaultStyledSystemAlias =
+      getStyleAlias(root, outdir || "styled-system") || "." //없다면 현재 디렉토리의 root경로에 있다고 가정(.)
+  }
   if (outdir) {
     defaultStyledSystemAlias = outdir //outdir이 있으면 경로는 outdir
   }
 
-  const { baseAlias, styledSystemAlias } = getTsConfigAlias(
-    root,
-    defaultStyledSystemAlias,
-  ) //tsconfig에 접근해서 찾아내기
+  const baseAlias = getBaseAlias(root)
 
-  if (!baseAlias || !styledSystemAlias) {
-    throw new Error("Failed to find tsconfig alias")
-  }
-
-  if (importMap) {
-    defaultStyledSystemAlias = importMap //importMap이 있으면 그대로 사용
-  } else {
-    defaultStyledSystemAlias = styledSystemAlias //importMap이 없으면 찾은 값 사용
-  }
-
-  const config = {
+  const config = configSchema.schema.parse({
     utils: `${baseAlias}/utils`,
     components: `${baseAlias}/components`,
     hooks: `${baseAlias}/hooks`,
     styledsystem: defaultStyledSystemAlias,
-  } satisfies ConfigType
-
-  configSchema.schema.parse(config)
+  })
 
   const preset = await fetchPreset()
 
   fs.writeFile(path.join(root, preset.name), JSON.parse(preset.file))
 
-  //modify panda.config.ts
   transformPandaConfig(path.resolve(root, pandacssConfigPath))
 
   await fs.writeFile(
