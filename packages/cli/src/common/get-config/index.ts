@@ -4,9 +4,58 @@ import path from "path"
 import { loadConfig } from "tsconfig-paths"
 
 import { ErrorMap } from "../error"
+import { configSchema } from "../types"
+export function loadComponentConfig(cwd: string) {
+  try {
+    const configFile = fs.readJsonSync(path.resolve(cwd, configSchema.fileName))
+    return configFile
+  } catch (e) {
+    return ErrorMap({
+      code: "config_not_found",
+      configFile: configSchema.fileName,
+      message: [e instanceof Error ? e.message : ""],
+    })
+  }
+}
+
+// tsConfig 읽기 전용
+// loadConfig는 현재 디렉토리에 tsconfig가 없으면 경로를 내려가서 tsconfig를 찾는걸로 보임
+export async function loadTSConfig(cwd: string) {
+  const tsconfig = loadConfig(cwd)
+  if (tsconfig.resultType === "failed") {
+    throw ErrorMap({
+      code: "config_not_found",
+      configFile: "tsconfig.json",
+      message: ["cannot found tsconfig.json"],
+    })
+  }
+  return tsconfig
+}
+
+export async function checkJsonInit(root: string) {
+  return await fs.pathExists(path.join(root, "components.json"))
+}
+
+export async function checkPandaInit(cwd: string) {
+  const panda = "@pandacss/dev"
+  const pkg = JSON.parse(
+    fs.readFileSync(path.join(cwd, "package.json"), "utf-8"),
+  )
+
+  const devDeps = pkg?.devDependencies || {}
+  const deps = pkg?.dependencies || {}
+
+  const isInstalled =
+    Object.keys(devDeps).includes(panda) || Object.keys(deps).includes(panda) //panda가 devDependencies나 dependencies에 있는지 확인
+
+  const pandaConfig = await getPandacssConfigPath(cwd)
+
+  return isInstalled && !!pandaConfig
+}
 
 export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
   const tsConfig = loadConfig(cwd)
+
   if (
     tsConfig?.resultType === "failed" ||
     !Object.entries(tsConfig?.paths).length
@@ -42,7 +91,7 @@ export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
 
   return { baseAlias, styledSystemAlias }
 }
-//panda.config.ts파일 찾기 -> 여기서 outdir이 현재 저장경로(없으면 styled-system)
+
 export async function getPandacssConfigPath(cwd: string) {
   try {
     const files = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
@@ -85,14 +134,4 @@ export async function resolvePandaConfig(config: string) {
   }
 
   return { outdir, importMap }
-}
-
-//src/app 일수도 있고 /app일수도 있음
-export function isAppDir(cwd: string) {
-  const isSrc = fs.pathExistsSync(path.resolve(cwd, "src"))
-  if (isSrc) {
-    return fs.pathExists(path.resolve(cwd, "src/app"))
-  } else {
-    return fs.pathExists(path.resolve(cwd, "app/"))
-  }
 }

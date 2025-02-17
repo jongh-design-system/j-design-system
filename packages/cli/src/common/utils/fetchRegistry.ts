@@ -1,5 +1,5 @@
-import { ErrorMap } from "../../common/error"
-import { presetSchema } from "../../common/types"
+import { ErrorMap } from "@/common/error"
+import { presetSchema } from "@/common/types"
 
 const BASE_URL = "https://whdgur.shop"
 
