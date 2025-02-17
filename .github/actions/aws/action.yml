@@ -13,12 +13,16 @@ inputs:
   aws_cloudfront_id:
     description: "The ID of the CloudFront distribution."
     required: true
+
 runs:
   using: composite
   steps:
+    - name: build docs
+      shell: bash
+      run: pnpm turbo build --filter=docs --force
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
-      shell: bash
       with:
         role-to-assume: ${{ inputs.aws_role_to_assume }}
         role-session-name: "deploy"
