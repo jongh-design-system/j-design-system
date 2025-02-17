@@ -1,5 +1,13 @@
 # @jongh/cli
 
+## 1.3.0
+
+### Minor Changes
+
+- 6e16f2b: add error handle process
+
+  fix build error
+
 ## 1.2.0
 
 ### Minor Changes
