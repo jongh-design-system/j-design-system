@@ -1,5 +1,13 @@
 # @jongh/cli
 
+## 1.4.0
+
+### Minor Changes
+
+- a93a200: fix esm error
+- 68cbbd8: improve resolving alias and handling error
+- 9391c11: version update
+
 ## 1.3.2
 
 ### Minor Changes
