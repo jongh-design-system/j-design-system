@@ -1,7 +1,7 @@
 import fg from "fast-glob"
 import fs from "fs-extra"
 import path from "path"
-import { loadConfig } from "tsconfig-paths"
+import { type ConfigLoaderSuccessResult, loadConfig } from "tsconfig-paths"
 
 import { ErrorMap } from "../error"
 import { configSchema } from "../types"
@@ -20,7 +20,7 @@ export function loadComponentConfig(cwd: string) {
 
 // tsConfig 읽기 전용
 // loadConfig는 현재 디렉토리에 tsconfig가 없으면 경로를 내려가서 tsconfig를 찾는걸로 보임
-export async function loadTSConfig(cwd: string) {
+export function loadTSConfig(cwd: string) {
   const tsconfig = loadConfig(cwd)
   if (tsconfig.resultType === "failed") {
     throw ErrorMap({
@@ -53,96 +53,47 @@ export async function checkPandaInit(cwd: string) {
   return isInstalled && !!pandaConfig
 }
 
-// export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
-//   //현재 styledSystemPath -> 즉 styled-system 역할을 하는 파일이 tsconfig에서 어떤 alias로 지정되어있는지 확인
-//   //추가로 tsconfig의 base alias도 확인
-//   const tsConfig = loadConfig(cwd)
-
-//   if (
-//     tsConfig?.resultType === "failed" ||
-//     !Object.entries(tsConfig?.paths).length
-//   ) {
-//     return { baseAlias: null, styledSystemAlias: null }
-//   }
-
-//   let baseAlias = null
-//   let styledSystemAlias = null
-
-//   // 모든 alias 순회하면서 둘 다 찾기
-//   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
-//     // styled-system alias 찾기 - paths 경로 문자열에 포함되어있으면 styled-system alias라고 판단
-//     if (paths[0].includes(styledSytemPath)) {
-//       styledSystemAlias = alias.replace(/\/\*$/, "")
-//     }
-
-//     // base alias 찾기
-//     if (
-//       paths.includes("./*") ||
-//       paths.includes("./src/*") ||
-//       paths.includes("./app/*")
-//     ) {
-//       baseAlias = alias.replace(/\/\*$/, "")
-//     }
-//   }
-//   if (!baseAlias) {
-//     baseAlias = Object.keys(tsConfig?.paths)?.[0].replace(/\/\*$/, "") ?? null
-//   }
-//   if (!styledSystemAlias) {
-//     styledSystemAlias = "."
-//   }
-
-//   return { baseAlias, styledSystemAlias }
-// }
-
-export function getBaseAlias(cwd: string) {
-  const tsConfig = loadConfig(cwd)
-
-  if (
-    tsConfig?.resultType === "failed" ||
-    !Object.entries(tsConfig?.paths).length
-  ) {
-    return null
-  }
-
-  let baseAlias = null
+export function getBaseAlias(cwd: string, tsConfig: ConfigLoaderSuccessResult) {
+  const basePaths = ["./", "./src/", "./app/", "./src/app"].map((p) =>
+    path.resolve(cwd, p),
+  )
 
   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
+    const resolvedPaths = path.join(
+      cwd,
+      tsConfig.baseUrl || "",
+      paths[0].replace(/\/\*$/, ""),
+    )
+
     if (
-      paths.includes("./*") ||
-      paths.includes("./src/*") ||
-      paths.includes("./app/*")
+      basePaths.some((p) => p === resolvedPaths || p.includes(resolvedPaths))
     ) {
-      baseAlias = alias.replace(/\/\*$/, "")
+      return alias.replace(/\/\*$/, "")
     }
   }
 
-  return baseAlias
+  return null
 }
+//outdir을 설정하면
+//outdir의 경로는 process.cwd+outdir
+export function getStyleAlias(
+  cwd: string,
+  styleFolderName: string,
+  tsConfig: ConfigLoaderSuccessResult,
+) {
+  // outdir를 절대 경로로 변환
+  const targetOutdir = path.join(cwd, styleFolderName) //styleForderName이 절대경로일 수도 있음
 
-export function getStyleAlias(cwd: string, styleForderName: string) {
-  const tsConfig = loadConfig(cwd)
-
-  if (
-    tsConfig?.resultType === "failed" ||
-    !Object.entries(tsConfig?.paths).length
-  ) {
-    return null
-  }
-  let styledAlias: string | null = null
-
-  // 각 alias의 첫 번째 경로를 확인하여 styledSystemPath가 포함되었는지 체크
   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
-    if (paths[0].includes(styleForderName)) {
-      styledAlias = alias.replace(/\/\*$/, "")
-      break
+    const normalizedPath = paths[0].replace(/\/\*$/, "")
+    if (
+      targetOutdir === path.join(cwd, tsConfig.baseUrl || "", normalizedPath)
+    ) {
+      return alias.replace(/\/\*$/, "")
     }
   }
 
-  // if (!styledAlias) {
-  //   styledAlias = "."
-  // }
-
-  return styledAlias
+  return null
 }
 
 export async function getPandacssConfigPath(cwd: string) {

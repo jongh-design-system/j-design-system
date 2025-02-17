@@ -5,7 +5,13 @@ import path from "path"
 import { packageDirectory } from "pkg-dir"
 import { z } from "zod"
 
-import { checkJsonInit, getBaseAlias, getStyleAlias } from "@/common/get-config"
+import { CommandError, ErrorMap } from "@/common/error"
+import {
+  checkJsonInit,
+  getBaseAlias,
+  getStyleAlias,
+  loadTSConfig,
+} from "@/common/get-config"
 import { getPandacssConfigPath } from "@/common/get-config"
 import { resolvePandaConfig } from "@/common/resolve"
 import { transformPandaConfig } from "@/common/transform"
@@ -32,10 +38,10 @@ export const initCommand = new Command()
         cwd: path.resolve(opts.cwd),
       })
       await init(options)
-      s.stop("Initialized")
+      s.stop("successfully Initialized!")
     } catch (e) {
-      if (e instanceof Error) {
-        console.error(e.message)
+      if (e instanceof CommandError) {
+        console.error(e.format)
       }
       s.stop("Failed to initialize")
       process.exit(0)
@@ -45,8 +51,14 @@ export const initCommand = new Command()
 export async function init(options: z.infer<typeof initSchema>) {
   const root = options.cwd || (await packageDirectory()) //뒤에꺼 절대 실행안되고 있음
   if (!root) {
-    throw new Error("Failed to find package root")
+    throw ErrorMap({
+      code: "config_not_found",
+      configFile: "package.json",
+      message: [`cannot find package.json in ${root}`],
+    })
   }
+
+  const result = loadTSConfig(root)
 
   const isInitialize = await checkJsonInit(root)
   if (isInitialize) {
@@ -64,6 +76,8 @@ export async function init(options: z.infer<typeof initSchema>) {
     "utf-8",
   )
 
+  const baseAlias = getBaseAlias(root, result)
+
   let defaultStyledSystemAlias = "styled-system"
 
   const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile)
@@ -76,13 +90,11 @@ export async function init(options: z.infer<typeof initSchema>) {
   } else {
     //존재하지 않을 경우 - outdir || styled-system으로 되어있는 alias를 찾아본 뒤
     defaultStyledSystemAlias =
-      getStyleAlias(root, outdir || "styled-system") || "." //없다면 현재 디렉토리의 root경로에 있다고 가정(.)
+      getStyleAlias(root, outdir || "styled-system", result) || "." //없다면 현재 디렉토리의 root경로에 있다고 가정(.)
   }
   if (outdir) {
     defaultStyledSystemAlias = outdir //outdir이 있으면 경로는 outdir
   }
-
-  const baseAlias = getBaseAlias(root)
 
   const config = configSchema.schema.parse({
     utils: `${baseAlias}/utils`,
