@@ -30,7 +30,7 @@ jobs:
         uses: tj-actions/changed-files@v45
         with:
           files: |
-            package/ui/**
+            packages/ui/**
 
       - name: deploy storybook using chromatic
         uses: ./.github/actions/chromatic
