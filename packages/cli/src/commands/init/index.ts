@@ -3,12 +3,19 @@ import { Command } from "commander"
 import fs from "fs-extra"
 import path from "path"
 import { packageDirectory } from "pkg-dir"
-import { type ObjectLiteralExpression, Project, SyntaxKind } from "ts-morph"
 import { z } from "zod"
 
-import { checkJsonInit, getTsConfigAlias } from "@/common/get-config"
-import { getPandacssConfigPath, resolvePandaConfig } from "@/common/get-config"
-import { configSchema, type ConfigType } from "@/common/types"
+import { CommandError, ErrorMap } from "@/common/error"
+import {
+  checkJsonInit,
+  getBaseAlias,
+  getStyleAlias,
+  loadTSConfig,
+} from "@/common/get-config"
+import { getPandacssConfigPath } from "@/common/get-config"
+import { resolvePandaConfig } from "@/common/resolve"
+import { transformPandaConfig } from "@/common/transform"
+import { configSchema } from "@/common/types"
 import { fetchPreset } from "@/common/utils/fetchRegistry"
 
 const initSchema = z.object({
@@ -31,10 +38,10 @@ export const initCommand = new Command()
         cwd: path.resolve(opts.cwd),
       })
       await init(options)
-      s.stop("Initialized")
+      s.stop("successfully Initialized!")
     } catch (e) {
-      if (e instanceof Error) {
-        console.error(e.message)
+      if (e instanceof CommandError) {
+        console.error(e.format)
       }
       s.stop("Failed to initialize")
       process.exit(0)
@@ -44,8 +51,14 @@ export const initCommand = new Command()
 export async function init(options: z.infer<typeof initSchema>) {
   const root = options.cwd || (await packageDirectory()) //뒤에꺼 절대 실행안되고 있음
   if (!root) {
-    throw new Error("Failed to find package root")
+    throw ErrorMap({
+      code: "config_not_found",
+      configFile: "package.json",
+      message: [`cannot find package.json in ${root}`],
+    })
   }
+
+  const result = loadTSConfig(root)
 
   const isInitialize = await checkJsonInit(root)
   if (isInitialize) {
@@ -58,76 +71,43 @@ export async function init(options: z.infer<typeof initSchema>) {
   }
 
   const pandacssConfigPath = await getPandacssConfigPath(root)
-
   const pandacssConfigFile = await fs.readFile(
     path.join(root, pandacssConfigPath),
     "utf-8",
   )
 
-  // const project = new Project()
-  // project.addSourceFileAtPath(pandacssConfigPath)
-  // const sourceFile = project.getSourceFileOrThrow(pandacssConfigPath)
-
-  // const defineCofigExpression = sourceFile
-  //   .getDescendantsOfKind(SyntaxKind.CallExpression)
-  //   .filter((v) => v.getExpression().getText() === "defineConfig")[0]
-
-  // const object = defineCofigExpression.getChildrenOfKind(
-  //   SyntaxKind.ObjectLiteralExpression,
-  // )[0]
-
-  // for (const property of object.getProperties()) {
-  //   if (property.getText().startsWith("outdir")) {
-  //     return property.getText().split(":")[1].replace(/"/g, "")
-  //   }
-  // }
-
-  //styled-system은 상대경로가 어떻게 되어있나만 체크하면 됨
-  //outdir 속성이 없으면 default로 styled-system으로 지정되어있음 -> 이 경로에 해당하는 tsconfig alias를 찾아야함
-  //outdir 속성이 있으면 -> 해당 값의 경로에 해당하는 tsconfig alias를 찾아야함
-  //importMap 속성이 있으면 -> 해당 값 그대로 사용
-  //string일수도 , object일수도 있음
-  //string이면 -> 그대로 사용
-  //object면 -> css라는 속성값만 찾아서 사용
+  const baseAlias = getBaseAlias(root, result)
 
   let defaultStyledSystemAlias = "styled-system"
 
-  const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile) //outdir와 importMap이 있는지
+  const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile)
+  // outdir은 생성된 파일들이 저장될 디렉토리를 지정하는 옵션이고,
+  // importMap은 그 디렉토리를 애플리케이션 코드에서 어떻게 import할지 경로를 매핑하는 역할
 
+  //만약 importMap이 있으면 그 값을 그대로 사용
+  if (importMap) {
+    defaultStyledSystemAlias = importMap
+  } else {
+    //존재하지 않을 경우 - outdir || styled-system으로 되어있는 alias를 찾아본 뒤
+    defaultStyledSystemAlias =
+      getStyleAlias(root, outdir || "styled-system", result) || "." //없다면 현재 디렉토리의 root경로에 있다고 가정(.)
+  }
   if (outdir) {
     defaultStyledSystemAlias = outdir //outdir이 있으면 경로는 outdir
   }
 
-  const { baseAlias, styledSystemAlias } = getTsConfigAlias(
-    root,
-    defaultStyledSystemAlias,
-  ) //tsconfig에 접근해서 찾아내기
-
-  if (!baseAlias || !styledSystemAlias) {
-    throw new Error("Failed to find tsconfig alias")
-  }
-
-  if (importMap) {
-    defaultStyledSystemAlias = importMap //importMap이 있으면 그대로 사용
-  } else {
-    defaultStyledSystemAlias = styledSystemAlias //importMap이 없으면 찾은 값 사용
-  }
-
-  const config = {
+  const config = configSchema.schema.parse({
     utils: `${baseAlias}/utils`,
     components: `${baseAlias}/components`,
     hooks: `${baseAlias}/hooks`,
     styledsystem: defaultStyledSystemAlias,
-  } satisfies ConfigType
-
-  configSchema.schema.parse(config)
+  })
 
   const preset = await fetchPreset()
 
   fs.writeFile(path.join(root, preset.name), JSON.parse(preset.file))
 
-  //modify panda.config.ts
-  modifyPandaConfig(path.resolve(root, pandacssConfigPath))
+  transformPandaConfig(path.resolve(root, pandacssConfigPath))
 
   await fs.writeFile(
     path.resolve(root, "components.json"),
@@ -136,51 +116,4 @@ export async function init(options: z.infer<typeof initSchema>) {
   )
 
   return config
-}
-
-function modifyPandaConfig(path: string) {
-  const project = new Project()
-  const sourceFile = project.addSourceFileAtPath(path)
-
-  const importToIncludes = [
-    {
-      namedImports: [{ name: "preset" }],
-      moduleSpecifier: "panda-animation",
-    },
-    {
-      namedImports: [{ name: "defaultPreset" }],
-      moduleSpecifier: "./preset",
-    },
-  ]
-
-  sourceFile.addImportDeclarations(importToIncludes)
-
-  //export defineConfig() 형식으로 사용한 경우에만 가능
-  const defineConfigCall = sourceFile.getFirstDescendantByKind(
-    SyntaxKind.CallExpression,
-  )
-  // 설정 객체 가져오기
-  const configObject =
-    defineConfigCall?.getArguments()[0] as ObjectLiteralExpression
-
-  //panda.config.ts파일에 presets에 추가하기
-  if (configObject) {
-    // presets 속성이 이미 있는지 확인
-    const existingPresets = configObject.getProperty("presets")
-
-    if (!existingPresets) {
-      // presets 속성이 없다면 추가
-      configObject.addPropertyAssignment({
-        name: "presets",
-        initializer: `[preset(), "@pandacss/preset-panda", defaultPreset"]`,
-      })
-    }
-
-    // 변경사항 저장
-    sourceFile.saveSync()
-  } else {
-    console.warn(
-      "Could not modify panda.config.ts. add presets : [preset(), @pandacss/preset-panda, defaultPreset] in your panda.config",
-    )
-  }
 }

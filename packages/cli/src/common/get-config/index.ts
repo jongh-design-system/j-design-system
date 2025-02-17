@@ -1,7 +1,7 @@
 import fg from "fast-glob"
 import fs from "fs-extra"
 import path from "path"
-import { loadConfig } from "tsconfig-paths"
+import { type ConfigLoaderSuccessResult, loadConfig } from "tsconfig-paths"
 
 import { ErrorMap } from "../error"
 import { configSchema } from "../types"
@@ -20,7 +20,7 @@ export function loadComponentConfig(cwd: string) {
 
 // tsConfig 읽기 전용
 // loadConfig는 현재 디렉토리에 tsconfig가 없으면 경로를 내려가서 tsconfig를 찾는걸로 보임
-export async function loadTSConfig(cwd: string) {
+export function loadTSConfig(cwd: string) {
   const tsconfig = loadConfig(cwd)
   if (tsconfig.resultType === "failed") {
     throw ErrorMap({
@@ -53,56 +53,60 @@ export async function checkPandaInit(cwd: string) {
   return isInstalled && !!pandaConfig
 }
 
-export function getTsConfigAlias(cwd: string, styledSytemPath: string) {
-  const tsConfig = loadConfig(cwd)
+export function getBaseAlias(cwd: string, tsConfig: ConfigLoaderSuccessResult) {
+  const basePaths = ["./", "./src/", "./app/", "./src/app"].map((p) =>
+    path.resolve(cwd, p),
+  )
 
-  if (
-    tsConfig?.resultType === "failed" ||
-    !Object.entries(tsConfig?.paths).length
-  ) {
-    return { baseAlias: null, styledSystemAlias: null }
-  }
-
-  let baseAlias = null
-  let styledSystemAlias = null
-
-  // 모든 alias 순회하면서 둘 다 찾기
   for (const [alias, paths] of Object.entries(tsConfig.paths)) {
-    // styled-system alias 찾기 - paths 경로 문자열에 포함되어있으면 styled-system alias라고 판단
-    if (paths[0].includes(styledSytemPath)) {
-      styledSystemAlias = alias.replace(/\/\*$/, "")
-    }
+    const resolvedPaths = path.join(
+      cwd,
+      tsConfig.baseUrl || "",
+      paths[0].replace(/\/\*$/, ""),
+    )
 
-    // base alias 찾기
     if (
-      paths.includes("./*") ||
-      paths.includes("./src/*") ||
-      paths.includes("./app/*")
+      basePaths.some((p) => p === resolvedPaths || p.includes(resolvedPaths))
     ) {
-      baseAlias = alias.replace(/\/\*$/, "")
+      return alias.replace(/\/\*$/, "")
     }
   }
-  if (!baseAlias) {
-    baseAlias = Object.keys(tsConfig?.paths)?.[0].replace(/\/\*$/, "") ?? null
-  }
-  if (!styledSystemAlias) {
-    styledSystemAlias = "."
+
+  return null
+}
+//outdir을 설정하면
+//outdir의 경로는 process.cwd+outdir
+export function getStyleAlias(
+  cwd: string,
+  styleFolderName: string,
+  tsConfig: ConfigLoaderSuccessResult,
+) {
+  // outdir를 절대 경로로 변환
+  const targetOutdir = path.join(cwd, styleFolderName) //styleForderName이 절대경로일 수도 있음
+
+  for (const [alias, paths] of Object.entries(tsConfig.paths)) {
+    const normalizedPath = paths[0].replace(/\/\*$/, "")
+    if (
+      targetOutdir === path.join(cwd, tsConfig.baseUrl || "", normalizedPath)
+    ) {
+      return alias.replace(/\/\*$/, "")
+    }
   }
 
-  return { baseAlias, styledSystemAlias }
+  return null
 }
 
 export async function getPandacssConfigPath(cwd: string) {
   try {
-    const files = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
-    if (!files.length) {
+    const paths = await fg.glob(["panda.config.*"], { cwd, deep: 3 })
+    if (!paths.length) {
       throw ErrorMap({
         code: "config_not_found",
         configFile: "panda.config.*",
         message: ["failed to find panda.config file"],
       })
     }
-    return files[0]
+    return paths[0]
   } catch (error) {
     throw ErrorMap({
       code: "config_not_found",
@@ -114,24 +118,4 @@ export async function getPandacssConfigPath(cwd: string) {
       ],
     })
   }
-}
-
-export async function resolvePandaConfig(config: string) {
-  const outdirMatch = config.match(/outdir:\s*["']([^"']+)["']/)
-  const importMapMatch = config.match(/importMap:\s*({[^}]+}|["'][^"']+["'])/)
-
-  const outdir = outdirMatch ? outdirMatch[1] : null
-  let importMap = null
-
-  if (importMapMatch) {
-    const value = importMapMatch[1]
-    if (value.startsWith("{")) {
-      const cssMatch = value.match(/css:\s*["']([^"']+)["']/)
-      importMap = cssMatch ? cssMatch[1].replace(/\/css$/, "") : null
-    } else {
-      importMap = value.replace(/["']/g, "")
-    }
-  }
-
-  return { outdir, importMap }
 }
