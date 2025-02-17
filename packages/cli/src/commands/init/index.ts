@@ -3,11 +3,12 @@ import { Command } from "commander"
 import fs from "fs-extra"
 import path from "path"
 import { packageDirectory } from "pkg-dir"
-import { type ObjectLiteralExpression, Project, SyntaxKind } from "ts-morph"
 import { z } from "zod"
 
 import { checkJsonInit, getTsConfigAlias } from "@/common/get-config"
-import { getPandacssConfigPath, resolvePandaConfig } from "@/common/get-config"
+import { getPandacssConfigPath } from "@/common/get-config"
+import { resolvePandaConfig } from "@/common/resolve"
+import { transformPandaConfig } from "@/common/transform"
 import { configSchema, type ConfigType } from "@/common/types"
 import { fetchPreset } from "@/common/utils/fetchRegistry"
 
@@ -58,7 +59,6 @@ export async function init(options: z.infer<typeof initSchema>) {
   }
 
   const pandacssConfigPath = await getPandacssConfigPath(root)
-
   const pandacssConfigFile = await fs.readFile(
     path.join(root, pandacssConfigPath),
     "utf-8",
@@ -127,7 +127,7 @@ export async function init(options: z.infer<typeof initSchema>) {
   fs.writeFile(path.join(root, preset.name), JSON.parse(preset.file))
 
   //modify panda.config.ts
-  modifyPandaConfig(path.resolve(root, pandacssConfigPath))
+  transformPandaConfig(path.resolve(root, pandacssConfigPath))
 
   await fs.writeFile(
     path.resolve(root, "components.json"),
@@ -136,51 +136,4 @@ export async function init(options: z.infer<typeof initSchema>) {
   )
 
   return config
-}
-
-function modifyPandaConfig(path: string) {
-  const project = new Project()
-  const sourceFile = project.addSourceFileAtPath(path)
-
-  const importToIncludes = [
-    {
-      namedImports: [{ name: "preset" }],
-      moduleSpecifier: "panda-animation",
-    },
-    {
-      namedImports: [{ name: "defaultPreset" }],
-      moduleSpecifier: "./preset",
-    },
-  ]
-
-  sourceFile.addImportDeclarations(importToIncludes)
-
-  //export defineConfig() 형식으로 사용한 경우에만 가능
-  const defineConfigCall = sourceFile.getFirstDescendantByKind(
-    SyntaxKind.CallExpression,
-  )
-  // 설정 객체 가져오기
-  const configObject =
-    defineConfigCall?.getArguments()[0] as ObjectLiteralExpression
-
-  //panda.config.ts파일에 presets에 추가하기
-  if (configObject) {
-    // presets 속성이 이미 있는지 확인
-    const existingPresets = configObject.getProperty("presets")
-
-    if (!existingPresets) {
-      // presets 속성이 없다면 추가
-      configObject.addPropertyAssignment({
-        name: "presets",
-        initializer: `[preset(), "@pandacss/preset-panda", defaultPreset"]`,
-      })
-    }
-
-    // 변경사항 저장
-    sourceFile.saveSync()
-  } else {
-    console.warn(
-      "Could not modify panda.config.ts. add presets : [preset(), @pandacss/preset-panda, defaultPreset] in your panda.config",
-    )
-  }
 }

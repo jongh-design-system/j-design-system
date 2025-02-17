@@ -1,4 +1,9 @@
-import { Node, Project, SyntaxKind } from "ts-morph"
+import {
+  Node,
+  type ObjectLiteralExpression,
+  Project,
+  SyntaxKind,
+} from "ts-morph"
 
 import type { ConfigType } from "../types"
 
@@ -98,4 +103,51 @@ export function transformPreset(
 
   // 변경사항 저장
   sourceFile.saveSync()
+}
+
+export function transformPandaConfig(path: string) {
+  const project = new Project()
+  const sourceFile = project.addSourceFileAtPath(path)
+
+  const importToIncludes = [
+    {
+      namedImports: [{ name: "preset" }],
+      moduleSpecifier: "panda-animation",
+    },
+    {
+      namedImports: [{ name: "defaultPreset" }],
+      moduleSpecifier: "./preset",
+    },
+  ]
+
+  sourceFile.addImportDeclarations(importToIncludes)
+
+  //export defineConfig() 형식으로 사용한 경우에만 가능
+  const defineConfigCall = sourceFile.getFirstDescendantByKind(
+    SyntaxKind.CallExpression,
+  )
+  // 설정 객체 가져오기
+  const configObject =
+    defineConfigCall?.getArguments()[0] as ObjectLiteralExpression
+
+  //panda.config.ts파일에 presets에 추가하기
+  if (configObject) {
+    // presets 속성이 이미 있는지 확인
+    const existingPresets = configObject.getProperty("presets")
+
+    if (!existingPresets) {
+      // presets 속성이 없다면 추가
+      configObject.addPropertyAssignment({
+        name: "presets",
+        initializer: `[preset(), "@pandacss/preset-panda", defaultPreset"]`,
+      })
+    }
+
+    // 변경사항 저장
+    sourceFile.saveSync()
+  } else {
+    console.warn(
+      "Could not modify panda.config.ts. add presets : [preset(), @pandacss/preset-panda, defaultPreset] in your panda.config",
+    )
+  }
 }
