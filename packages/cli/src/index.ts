@@ -2,10 +2,11 @@
 
 import { Command } from "commander"
 
+import { addCommand } from "@/commands/add"
+import { initCommand } from "@/commands/init"
+import { codemodCommand } from "@/commands/radix-import"
+
 import packageJson from "../package.json"
-import { addCommand } from "./add"
-import { initCommand } from "./init"
-import { codemodCommand } from "./radix-import"
 
 async function main() {
   const cmd = new Command()
