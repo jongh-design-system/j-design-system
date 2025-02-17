@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/app/*"],
+      "fake/*": ["/a/b/c/d/*"],
+      "@styled-system/*": ["./styled-system/*"],
+      "@utils/*": ["./src/utils/*"]
+    }
+  }
+}
