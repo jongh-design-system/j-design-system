@@ -9,16 +9,17 @@ import { detect } from "package-manager-detector"
 import path from "path"
 import { z, ZodError } from "zod"
 
-import { CommandError, ErrorMap, type FetchIssue } from "../common/error"
-import { configSchema, registrySchema } from "../common/types"
+import { CommandError, ErrorMap, type FetchIssue } from "@/common/error"
 import {
   getPandacssConfigPath,
+  loadComponentConfig,
+  loadTSConfig,
   resolvePandaConfig,
-} from "../common/utils/directoryUtils"
-import { getPackageManagerRunner } from "../common/utils/packageManager"
-import { loadComponentConfig, loadTSConfig } from "./utils/config"
-import { resolveImport } from "./utils/resolveImport"
-import { transformImports, transformPreset } from "./utils/transform"
+} from "@/common/get-config"
+import { resolveImport } from "@/common/resolve"
+import { transformImports, transformPreset } from "@/common/transform"
+import { configSchema, registrySchema } from "@/common/types"
+import { getPackageManagerRunner } from "@/common/utils/packageManager"
 
 const addSchema = z.object({
   components: z.array(z.string()).optional(),
@@ -197,6 +198,7 @@ export const addCommand = new Command()
         }
       })
     } catch (e) {
+      console.log(e)
       if (e instanceof ZodError) {
         error(e.message)
       }

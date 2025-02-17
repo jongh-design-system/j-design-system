@@ -2,7 +2,10 @@
   "extends": "@jongh/tsconfig/base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": ["src"],
   "exclude": ["src/test/fixture/*"]

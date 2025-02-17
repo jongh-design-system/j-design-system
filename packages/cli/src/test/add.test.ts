@@ -2,7 +2,7 @@ import fs from "fs-extra"
 import path from "path"
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest"
 
-import { addCommand } from "../add"
+import { addCommand } from "@/commands/add"
 
 const BUTTON_JSON = {
   name: "button",

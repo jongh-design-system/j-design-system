@@ -1,4 +1,4 @@
-import { spinner } from "@clack/prompts"
+import { confirm, spinner } from "@clack/prompts"
 import { Command } from "commander"
 import fs from "fs-extra"
 import path from "path"
@@ -6,14 +6,10 @@ import { packageDirectory } from "pkg-dir"
 import { type ObjectLiteralExpression, Project, SyntaxKind } from "ts-morph"
 import { z } from "zod"
 
-import { configSchema, type ConfigType } from "../common/types"
-import {
-  getPandacssConfigPath,
-  getTsConfigAlias,
-  resolvePandaConfig,
-} from "../common/utils/directoryUtils"
-import { fetchPreset } from "../common/utils/fetchRegistry"
-import { checkJsonInit } from "./utils/checkJsonInit"
+import { checkJsonInit, getTsConfigAlias } from "@/common/get-config"
+import { getPandacssConfigPath, resolvePandaConfig } from "@/common/get-config"
+import { configSchema, type ConfigType } from "@/common/types"
+import { fetchPreset } from "@/common/utils/fetchRegistry"
 
 const initSchema = z.object({
   cwd: z.string(),
@@ -46,27 +42,45 @@ export const initCommand = new Command()
   })
 
 export async function init(options: z.infer<typeof initSchema>) {
-  const root = options.cwd || (await packageDirectory())
+  const root = options.cwd || (await packageDirectory()) //뒤에꺼 절대 실행안되고 있음
   if (!root) {
     throw new Error("Failed to find package root")
   }
 
   const isInitialize = await checkJsonInit(root)
   if (isInitialize) {
-    throw new Error("Already initialized")
+    const conf = await confirm({
+      message: "you already initialize,are you want to overwrite it?",
+    })
+    if (!conf) {
+      process.exit(1)
+    }
   }
-
-  // const isPandaInit = await checkPandaInit(root)
-  // if (!isPandaInit) {
-  //   throw new Error("install pandacss")
-  // }
 
   const pandacssConfigPath = await getPandacssConfigPath(root)
 
   const pandacssConfigFile = await fs.readFile(
-    path.resolve(root, pandacssConfigPath),
+    path.join(root, pandacssConfigPath),
     "utf-8",
   )
+
+  // const project = new Project()
+  // project.addSourceFileAtPath(pandacssConfigPath)
+  // const sourceFile = project.getSourceFileOrThrow(pandacssConfigPath)
+
+  // const defineCofigExpression = sourceFile
+  //   .getDescendantsOfKind(SyntaxKind.CallExpression)
+  //   .filter((v) => v.getExpression().getText() === "defineConfig")[0]
+
+  // const object = defineCofigExpression.getChildrenOfKind(
+  //   SyntaxKind.ObjectLiteralExpression,
+  // )[0]
+
+  // for (const property of object.getProperties()) {
+  //   if (property.getText().startsWith("outdir")) {
+  //     return property.getText().split(":")[1].replace(/"/g, "")
+  //   }
+  // }
 
   //styled-system은 상대경로가 어떻게 되어있나만 체크하면 됨
   //outdir 속성이 없으면 default로 styled-system으로 지정되어있음 -> 이 경로에 해당하는 tsconfig alias를 찾아야함

@@ -1,6 +1,6 @@
 import { Node, Project, SyntaxKind } from "ts-morph"
 
-import type { ConfigType } from "../../common/types"
+import type { ConfigType } from "../types"
 
 export function transformImports(content: string, config: ConfigType) {
   let transformedContent = content
@@ -52,27 +52,21 @@ export function transformPreset(
       node.getExpression().getText() === "definePreset",
   )
 
-  if (!definePresetCall) {
-    return
-  }
+  if (!definePresetCall) return
 
   // recipes 객체를 찾음
   const recipesObj = definePresetCall?.getFirstDescendant(
     (node) => Node.isPropertyAssignment(node) && node.getName() === "recipes",
   )
 
-  if (!recipesObj) {
-    return
-  }
+  if (!recipesObj) return
 
   // recipes의 객체 리터럴을 가져옴
   const objectLiteral = recipesObj.getFirstDescendantByKind(
     SyntaxKind.ObjectLiteralExpression,
   )
 
-  if (!objectLiteral) {
-    return
-  }
+  if (!objectLiteral) return
 
   const isImportExists = sourceFile
     .getImportDeclarations()
