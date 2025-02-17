@@ -41,8 +41,13 @@ jobs:
           workingDir: packages/ui
           storybookBuildDir: storybook-static
 
-      - name: Debug changed-ui-files output
-        run: echo ${{steps.changed-ui-files.outputs.all_changed_and_modified_files_count}}
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
 
       - name: Get changed files - docs
         id: changed-docs-files
@@ -51,8 +56,13 @@ jobs:
           files: |
             app/docs/**
 
-      - name: Debug changed-ui-files output
-        run: echo ${{steps.changed-ui-files.outputs.all_changed_and_modified_files_count}}
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
 
       - name: deploy docs to AWS S3 + Cloudfront
         uses: ./.github/actions/deploy
