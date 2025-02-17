@@ -31,6 +31,7 @@ const WHITE_LIST = [
   /^@utils\/.+/,
   /^@components\/.+/,
   /^@hooks\/.+/,
+  /^\.\/.+/,
 ]
 
 export const registry = program
