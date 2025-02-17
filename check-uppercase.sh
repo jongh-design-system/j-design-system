@@ -4,7 +4,7 @@ error_found=0
 
 for file in "$@"; do
   filename=$(basename "$file")
-  if echo "$filename" | grep -qE '^[A-Z]'; then
+  if echo "$filename" | grep -qE '^(?!CHAGELOG)[A-Z]'; then
     echo "Error: '$file' starts with an uppercase letter."
     error_found=1
   fi
