@@ -49,5 +49,14 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
+  },
+  "pnpm": {
+    "packageExtensions": {
+      "lucide-react": {
+        "peerDependencies": {
+          "@types/react": "*"
+        }
+      }
+    }
   }
 }
