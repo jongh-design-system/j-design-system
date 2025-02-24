@@ -17,41 +17,26 @@ export const recipe = cva({
     "& svg": {
       flexShrink: 0,
     },
+    _disabled: {
+      opacity: 0.5,
+      cursor: "not-allowed",
+    },
   },
   variants: {
     variant: {
       filled: {
-        bg: "primary",
-        color: "primary.foreground",
+        bg: "secondary",
+        color: "secondary.foreground",
         _hover: {
-          bg: "primary/90",
-        },
-        _active: {
-          bg: "primary/80",
-        },
-        _disabled: {
-          bg: "muted",
-          color: "muted.foreground",
-          cursor: "not-allowed",
-          opacity: 0.5,
+          bg: "secondary/80",
         },
       },
       outlined: {
         border: "base",
-        bg: "transparent",
+        bg: "background",
         color: "foreground",
         _hover: {
-          bg: "muted/20",
-        },
-        _active: {
-          bg: "accent",
-          borderColor: "accent",
-        },
-        _disabled: {
-          borderColor: "muted",
-          color: "muted.foreground",
-          cursor: "not-allowed",
-          opacity: 0.5,
+          bg: "secondary",
         },
       },
     },
@@ -71,13 +56,6 @@ export const recipe = cva({
           width: "4",
           height: "4",
         },
-      },
-    },
-    state: {
-      enabled: {},
-      disabled: {
-        opacity: 0.5,
-        cursor: "not-allowed",
       },
     },
     layout: {
@@ -129,7 +107,6 @@ export const recipe = cva({
   defaultVariants: {
     variant: "filled",
     size: "md",
-    state: "enabled",
     layout: "withText",
   },
 })
