@@ -16,6 +16,7 @@
     "@floating-ui/react-dom": "^2.1.2",
     "@vitejs/plugin-react": "^4.3.1",
     "framer-motion": "^11.3.19",
+    "lucide-react": "^0.475.0",
     "panda-animation": "workspace:*",
     "radix-ui": "^1.1.2",
     "react": "^18.2.0",
@@ -23,8 +24,8 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.4",
-    "@jongh/tsconfig": "workspace:*",
     "@jongh/eslint": "workspace:*",
+    "@jongh/tsconfig": "workspace:*",
     "@pandacss/studio": "^0.46.0",
     "@storybook/addon-a11y": "^8.5.3",
     "@storybook/addon-controls": "^8.5.3",
