@@ -1,22 +1,29 @@
-import { type HTMLStyledProps, styled } from "@styled-system/jsx"
-import { button } from "@styled-system/recipes"
+import { css, cx } from "@styled-system/css"
 import { Slot } from "radix-ui"
 import type { ComponentPropsWithoutRef } from "react"
 import { forwardRef } from "react"
 
-export type BaseButtonProps = ComponentPropsWithoutRef<"button"> & {
+import { ButtonVariantProps, recipe } from "./recipe"
+
+export type ButtonProps = ComponentPropsWithoutRef<"button"> & {
   asChild?: boolean
-}
+} & ButtonVariantProps
 
-export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
-  ({ asChild, ...props }, ref) => {
-    const Comp = asChild ? Slot.Slot : "button"
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ asChild, className, ...props }, ref) => {
+    const Comp = asChild ? Slot.Root : "button"
+    const [variantProps, componentProps] = recipe.splitVariantProps(props)
+    const styles = recipe.raw(variantProps)
 
-    return <Comp role="button" ref={ref} {...props}></Comp>
+    return (
+      <Comp
+        role="button"
+        ref={ref}
+        className={cx(css(styles), className)}
+        {...componentProps}
+      />
+    )
   },
 )
 
-BaseButton.displayName = "Button"
-
-export const Button = styled(BaseButton, button)
-export type ButtonProps = HTMLStyledProps<typeof Button>
+Button.displayName = "Button"

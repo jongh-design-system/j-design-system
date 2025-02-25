@@ -1,13 +1,22 @@
 import { defineConfig } from "@pandacss/dev"
 import { preset } from "panda-animation"
+
 import { defaultPreset } from "./preset"
 
 export default defineConfig({
   // Whether to use css reset
+  globalCss: {
+    "li,ul": {
+      listStyle: "none",
+    },
+  },
   preflight: true,
   jsxFramework: "react",
   // Where to look for your css declarations
-  include: ["./src/app/**/*.{js,jsx,ts,tsx}", "./pages/**/*.{js,jsx,ts,tsx}"],
+  include: [
+    "./src/app/**/*.{ts,tsx,mdx}",
+    "./src/components/**/*.{ts,tsx,mdx}",
+  ],
 
   // Files to exclude
   exclude: [],
