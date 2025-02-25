@@ -1,5 +1,6 @@
 import "./globals.css"
 
+import { Flex } from "@styled-system/jsx"
 import { Geist } from "next/font/google"
 
 const geistSans = Geist({
@@ -14,7 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable}`}>{children}</body>
+      <body className={`${geistSans.variable}`}>
+        <Flex direction="column" maxWidth="full" minHeight="100vh">
+          {children}
+        </Flex>
+      </body>
     </html>
   )
 }
