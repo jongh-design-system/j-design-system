@@ -5,7 +5,8 @@
     "baseUrl": "./",
     "paths": {
       "@styled-system/*": ["styled-system/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
