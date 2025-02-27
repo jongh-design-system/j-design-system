@@ -1,7 +1,21 @@
-export default function Home() {
+import { center } from "@styled-system/patterns"
+import Link from "next/link"
+
+import { Button } from "@/components/button"
+
+export default function MainPage() {
   return (
-    <div>
-      <a>안녕하세요</a>
-    </div>
+    <>
+      <main
+        className={center({
+          flexGrow: "1",
+          bg: "gray.800",
+        })}
+      >
+        <Link href="/docs/introduction">
+          <Button size="lg">시작하기</Button>
+        </Link>
+      </main>
+    </>
   )
 }
