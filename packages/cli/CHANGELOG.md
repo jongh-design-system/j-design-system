@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## 1.5.0
+
+### Minor Changes
+
+- b642c86: remove package installation in add command
+
 ## 1.4.0
 
 ### Minor Changes
