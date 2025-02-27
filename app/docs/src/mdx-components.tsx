@@ -20,8 +20,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         className={css({
           textStyle: "xl",
           color: "foreground",
+          mt: "12",
           mb: "3",
           fontWeight: "semibold",
+          borderBottom: "1px solid",
+          borderBottomColor: "gray.100",
+          pb: "2",
         })}
       >
         {children}
