@@ -55,3 +55,6 @@ jobs:
           aws_region: ${{ secrets.AWS_REGION }}
           aws_s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
           aws_cloudfront_id: ${{ secrets.AWS_CLOUDFRONT_ID }}
+
+      - name: cache playwright
+        uses: ./.github/actions/playwright
