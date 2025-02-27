@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-import { confirm, intro, outro, select } from "@clack/prompts"
+import { confirm, intro, outro } from "@clack/prompts"
 import chalk from "chalk"
 import { Command } from "commander"
-import { execa } from "execa"
 import fs from "fs-extra"
 import { detect } from "package-manager-detector"
 import path from "path"
@@ -18,7 +17,6 @@ import {
 import { resolveImport, resolvePandaConfig } from "@/common/resolve"
 import { transformImports, transformPreset } from "@/common/transform"
 import { configSchema, registrySchema } from "@/common/types"
-import { getPackageManagerRunner } from "@/common/utils/packageManager"
 
 const addSchema = z.object({
   components: z.array(z.string()).optional(),
@@ -167,31 +165,31 @@ export const addCommand = new Command()
             }
           })
 
-          const pm = await detect({ cwd: options.cwd })
+          await detect({ cwd: options.cwd })
 
-          let pmName = pm ? pm.name : ""
+          // let pmName = pm ? pm.name : ""
 
-          if (!pmName) {
-            const selected = await select({
-              message: "cannot find package manager, select",
-              options: [
-                { value: "npm", label: "npm" },
-                { value: "pnpm", label: "pnpm" },
-                { value: "yarn", label: "yarn" },
-              ],
-            })
-            pmName = selected as string
-          }
-          if (registry.dependencies?.length) {
-            await execa(pmName, [
-              pmName === "npm" ? "install" : "add",
-              ...registry.dependencies,
-            ])
-          }
-          const runner = await getPackageManagerRunner(options.cwd)
-          const [name, ...cmd] = runner.split(" ")
-          execa(name, [...cmd, "panda", "codegen"])
-          outro(info(`${componentList[index]} completed successfully`))
+          // if (!pmName) {
+          //   const selected = await select({
+          //     message: "cannot find package manager, select",
+          //     options: [
+          //       { value: "npm", label: "npm" },
+          //       { value: "pnpm", label: "pnpm" },
+          //       { value: "yarn", label: "yarn" },
+          //     ],
+          //   })
+          //   pmName = selected as string
+          // }
+          // if (registry.dependencies?.length) {
+          //   await execa(pmName, [
+          //     pmName === "npm" ? "install" : "add",
+          //     ...registry.dependencies,
+          //   ])
+          // }
+          // const runner = await getPackageManagerRunner(options.cwd)
+          // const [name, ...cmd] = runner.split(" ")
+          // execa(name, [...cmd, "panda", "codegen"])
+          // outro(info(`${componentList[index]} completed successfully`))
         } catch (e) {
           console.log(e)
         }
