@@ -48,7 +48,7 @@ export const addCommand = new Command()
         loadComponentConfig(options.cwd),
       )
       //2. tsconfig.json 파일을 읽어온다
-      const tsconfig = await loadTSConfig(options.cwd)
+      const tsconfig = loadTSConfig(options.cwd)
       //3. panda.config.* 파일을 읽어온다
       const pandaConfigPath = await getPandacssConfigPath(options.cwd)
 
