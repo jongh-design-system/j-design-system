@@ -15,7 +15,7 @@ import {
   loadTSConfig,
 } from "@/common/get-config"
 import { resolveImport, resolvePandaConfig } from "@/common/resolve"
-import { transformImports, transformPreset } from "@/common/transform"
+import { transformImports } from "@/common/transform"
 import { configSchema, registrySchema } from "@/common/types"
 
 const addSchema = z.object({
@@ -138,22 +138,20 @@ export const addCommand = new Command()
               file.content,
               componentsJson,
             )
-            //TODO: file의 타입에 따라 변경하기
-            if (file.name === "recipe.ts") {
-              //현재 export하고있는 recipe 변수명은 componentList[index]+Recipe
-              //이걸 preset.ts에 넣어줘야 함 - 현재는 이 파일이 root에 있다고 가정
-              //이 파일의 alias는 component alias / 컴포넌트명 / recipe.ts
-              transformPreset(
-                path.join(options.cwd, "preset.ts"),
-                `${componentList[index]}`,
-                path.join(
-                  componentsJson.components,
-                  `${componentList[index]}`,
-                  "recipe",
-                ),
-              )
-            }
-
+            // if (file.name === "recipe.ts") {
+            //   //현재 export하고있는 recipe 변수명은 componentList[index]+Recipe
+            //   //이걸 preset.ts에 넣어줘야 함 - 현재는 이 파일이 root에 있다고 가정
+            //   //이 파일의 alias는 component alias / 컴포넌트명 / recipe.ts
+            //   transformPreset(
+            //     path.join(options.cwd, "preset.ts"),
+            //     `${componentList[index]}`,
+            //     path.join(
+            //       componentsJson.components,
+            //       `${componentList[index]}`,
+            //       "recipe",
+            //     ),
+            //   )
+            // }
             if (file.type === "ui") {
               fs.outputFileSync(path.join(src, file.name), convertedContent)
             } else {
