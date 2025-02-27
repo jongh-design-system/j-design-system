@@ -1,6 +1,5 @@
 import createMDX from "@next/mdx"
 import type { NextConfig } from "next"
-
 const nextConfig: NextConfig = {
   /* config options here */
   output: "export",
@@ -8,6 +7,12 @@ const nextConfig: NextConfig = {
   pageExtensions: ["js", "md", "mdx", "ts", "tsx"],
 }
 
-const withMdx = createMDX({})
+const withMdx = createMDX({
+  options: {
+    remarkPlugins: [],
+    //@ts-expect-error '''
+    rehypePlugins: [["rehype-pretty-code", {}]],
+  },
+})
 
 export default withMdx(nextConfig)
