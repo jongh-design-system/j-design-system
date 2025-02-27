@@ -4,17 +4,18 @@ import Link from "next/link"
 import { ReactNode } from "react"
 
 interface NavItem {
-  label: string
+  label: string | ReactNode
   href: string
 }
 
 interface HeaderProps {
   logo: ReactNode
   navItems: NavItem[]
+  icons: ReactNode[]
   className?: string
 }
 
-export function Header({ logo, navItems }: HeaderProps) {
+export function Header({ logo, navItems, icons }: HeaderProps) {
   return (
     <header
       className={css({
@@ -25,33 +26,38 @@ export function Header({ logo, navItems }: HeaderProps) {
       })}
     >
       <Flex justify="space-between" align="center" mx="auto" width="full">
-        <div className={css({ fontSize: "2xl", fontWeight: "bold" })}>
+        <Link href="/" className={css({ fontSize: "2xl", fontWeight: "bold" })}>
           {logo}
-        </div>
-        <nav>
-          <Flex
-            gap={{ base: 3, mdDown: 3 }}
-            direction={{ base: "row", mdDown: "column" }}
-          >
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={css({
-                    color: "foreground",
-                    fontWeight: "medium",
-                    _hover: { color: "primary" },
-                    textDecoration: "none",
-                    px: 2,
-                    py: 1,
-                  })}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+        </Link>
+        <Flex align="center" gap="4">
+          <nav>
+            <Flex
+              gap={{ base: 3, mdDown: 3 }}
+              direction={{ base: "row", mdDown: "column" }}
+            >
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={css({
+                      color: "foreground",
+                      fontWeight: "medium",
+                      _hover: { color: "primary" },
+                      textDecoration: "none",
+                      px: 2,
+                      py: 1,
+                    })}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </Flex>
+          </nav>
+          <Flex gap="2" align="center">
+            {icons?.map((icon, index) => <div key={index}>{icon}</div>)}
           </Flex>
-        </nav>
+        </Flex>
       </Flex>
     </header>
   )
