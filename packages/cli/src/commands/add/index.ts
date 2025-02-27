@@ -4,7 +4,6 @@ import { confirm, intro, outro } from "@clack/prompts"
 import chalk from "chalk"
 import { Command } from "commander"
 import fs from "fs-extra"
-import { detect } from "package-manager-detector"
 import path from "path"
 import { z, ZodError } from "zod"
 
@@ -17,6 +16,7 @@ import {
 import { resolveImport, resolvePandaConfig } from "@/common/resolve"
 import { transformImports } from "@/common/transform"
 import { configSchema, registrySchema } from "@/common/types"
+import { getPackageManagerCommand } from "@/common/utils/packageManager"
 
 const addSchema = z.object({
   components: z.array(z.string()).optional(),
@@ -138,20 +138,7 @@ export const addCommand = new Command()
               file.content,
               componentsJson,
             )
-            // if (file.name === "recipe.ts") {
-            //   //현재 export하고있는 recipe 변수명은 componentList[index]+Recipe
-            //   //이걸 preset.ts에 넣어줘야 함 - 현재는 이 파일이 root에 있다고 가정
-            //   //이 파일의 alias는 component alias / 컴포넌트명 / recipe.ts
-            //   transformPreset(
-            //     path.join(options.cwd, "preset.ts"),
-            //     `${componentList[index]}`,
-            //     path.join(
-            //       componentsJson.components,
-            //       `${componentList[index]}`,
-            //       "recipe",
-            //     ),
-            //   )
-            // }
+
             if (file.type === "ui") {
               fs.outputFileSync(path.join(src, file.name), convertedContent)
             } else {
@@ -163,31 +150,20 @@ export const addCommand = new Command()
             }
           })
 
-          await detect({ cwd: options.cwd })
+          const packageManagerCommand = await getPackageManagerCommand(
+            options.cwd,
+            registry.dependencies || [],
+          )
 
-          // let pmName = pm ? pm.name : ""
+          const outroMsg = !packageManagerCommand
+            ? `Cannot find your package manager, install this dependencies: ${registry.dependencies?.join(" ")}`
+            : `Run this command in the terminal : ${packageManagerCommand.command} ${packageManagerCommand.args.join(" ")}`
 
-          // if (!pmName) {
-          //   const selected = await select({
-          //     message: "cannot find package manager, select",
-          //     options: [
-          //       { value: "npm", label: "npm" },
-          //       { value: "pnpm", label: "pnpm" },
-          //       { value: "yarn", label: "yarn" },
-          //     ],
-          //   })
-          //   pmName = selected as string
-          // }
-          // if (registry.dependencies?.length) {
-          //   await execa(pmName, [
-          //     pmName === "npm" ? "install" : "add",
-          //     ...registry.dependencies,
-          //   ])
-          // }
-          // const runner = await getPackageManagerRunner(options.cwd)
-          // const [name, ...cmd] = runner.split(" ")
-          // execa(name, [...cmd, "panda", "codegen"])
-          // outro(info(`${componentList[index]} completed successfully`))
+          outro(
+            info(
+              `${componentList[index]} completed successfully \n ${outroMsg}`,
+            ),
+          )
         } catch (e) {
           console.log(e)
         }
