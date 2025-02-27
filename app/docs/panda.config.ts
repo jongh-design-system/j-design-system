@@ -16,8 +16,12 @@ export default defineConfig({
   include: [
     "./src/app/**/*.{ts,tsx,mdx}",
     "./src/components/**/*.{ts,tsx,mdx}",
+    "./src/mdx-components.tsx",
   ],
-
+  conditions: {
+    light: "[data-color-mode=light] &",
+    dark: "[data-color-mode=dark] &",
+  },
   // Files to exclude
   exclude: [],
 
