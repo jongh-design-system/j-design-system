@@ -1,4 +1,6 @@
+import { css } from "@styled-system/css"
 import { createStyleContext } from "@utils/createStyleContext"
+import { X } from "lucide-react"
 import { Dialog } from "radix-ui"
 import {
   type ComponentProps,
@@ -32,6 +34,10 @@ export const ContentPrimitive = forwardRef<
     <Overlay />
     <Dialog.Content ref={ref} {...props}>
       {children}
+      <Close>
+        <X />
+        <span className={css({ srOnly: true })}>Close</span>
+      </Close>
     </Dialog.Content>
   </Portal>
 ))

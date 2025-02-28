@@ -41,6 +41,34 @@ export const recipe = sva({
         animationDuration: "slow",
       },
     },
+    close: {
+      position: "absolute",
+      right: "4",
+      top: "4",
+      rounded: "sm",
+      opacity: "0.7",
+      transition: "opacity",
+      cursor: "pointer",
+
+      _hover: {
+        opacity: "1",
+      },
+
+      _focus: {
+        ringWidth: "1",
+        ringColor: "ring",
+        ringOffset: "1",
+      },
+
+      _disabled: {
+        pointerEvents: "none",
+      },
+
+      "&[data-state=open]": {
+        bg: "accent",
+        color: "muted.foreground",
+      },
+    },
     header: {
       display: "flex",
       flexDirection: "column",
