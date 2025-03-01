@@ -6,7 +6,6 @@ export const recipe = sva({
     root: {
       position: "relative",
       display: "flex",
-      w: "full",
       touchAction: "none",
       userSelect: "none",
       alignItems: "center",

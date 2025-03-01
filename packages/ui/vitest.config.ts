@@ -1,30 +1,45 @@
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+
 import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin"
-import { defineConfig, mergeConfig } from "vitest/config"
+import { defineConfig, defineProject, mergeConfig } from "vitest/config"
+
+const dirname =
+  typeof __dirname !== "undefined"
+    ? __dirname
+    : path.dirname(fileURLToPath(import.meta.url))
 
 // 👇 If you're using Next.js, apply this framework plugin as well
 // import { storybookNextJsPlugin } from '@storybook/experimental-nextjs-vite/vite-plugin';
 import viteConfig from "./vite.config"
 
-export default mergeConfig(
-  viteConfig,
-  defineConfig({
-    plugins: [storybookTest({})],
-    test: {
-      browser: {
-        instances: [
-          {
-            browser: "chromium",
-          },
-        ],
-        enabled: true,
-        provider: "playwright",
-        headless: true,
+export default defineProject(
+  mergeConfig(
+    viteConfig,
+    defineConfig({
+      plugins: [
+        storybookTest({
+          configDir: path.join(dirname, ".storybook"),
+          storybookScript: "pnpm storybook --ci",
+        }),
+      ],
+      test: {
+        browser: {
+          instances: [
+            {
+              browser: "chromium",
+            },
+          ],
+          enabled: true,
+          provider: "playwright",
+          headless: true,
+        },
+        // Speed up tests and better match how they run in Storybook itself
+        // https://vitest.dev/config/#isolate
+        // Consider removing this if you have flaky tests
+        isolate: false,
+        setupFiles: ["./.storybook/vitest.setup.ts"],
       },
-      // Speed up tests and better match how they run in Storybook itself
-      // https://vitest.dev/config/#isolate
-      // Consider removing this if you have flaky tests
-      isolate: false,
-      setupFiles: ["./.storybook/vitest.setup.ts"],
-    },
-  }),
+    }),
+  ),
 )

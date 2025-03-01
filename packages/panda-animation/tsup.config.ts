@@ -5,7 +5,7 @@ export default defineConfig({
   format: ["cjs", "esm"],
   clean: true,
   sourcemap: false,
-  minify: false,
+  minify: true,
   dts: true,
   external: ["@pandacss/dev"],
 })

@@ -910,4 +910,14 @@ export const keyframes = defineKeyframes({
       transform: "translate3d(0, -100%, 0)",
     },
   },
+  contentShow: {
+    "0%": {
+      opacity: 0,
+      transform: "translate(-50%, -48%) scale(0.96)",
+    },
+    to: {
+      opacity: 1,
+      transform: "translate(-50%, -50%) scale(1)",
+    },
+  },
 })

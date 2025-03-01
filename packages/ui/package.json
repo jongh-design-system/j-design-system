@@ -4,7 +4,7 @@
   "description": "Headless UI components for React",
   "type": "module",
   "scripts": {
-    "lint": "eslint --max-warnings 0 --fix",
+    "lint": "eslint --max-warnings 0 --no-warn-ignored --fix",
     "prepare": "panda codegen",
     "test": "vitest run",
     "test-storybook": "vitest",
