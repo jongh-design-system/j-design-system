@@ -50,7 +50,7 @@ export const Primary: Story = {
     const canvas = within(canvasElement)
     const ButtonElement = canvas.getByRole("button")
     await userEvent.click(ButtonElement)
-    const CloseElement = screen.getByTestId("close")
+    const CloseElement = screen.getByText("Close")
     expect(CloseElement).not.toBeNull()
 
     await userEvent.click(CloseElement)
