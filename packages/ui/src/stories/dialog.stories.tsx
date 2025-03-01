@@ -1,4 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react"
+import {
+  expect,
+  screen,
+  userEvent,
+  waitForElementToBeRemoved,
+  within,
+} from "@storybook/test"
 import { css } from "@styled-system/css"
 
 import * as Dialog from "../component/dialog/ui"
@@ -36,6 +43,22 @@ export const Primary: Story = {
       </Dialog.Root>
     )
   },
+  play: async ({ canvasElement }) => {
+    //canvasElement -> storybook의 #storybook-root
+    //React portal API를 사용할 경우 다른곳에 렌더링
+    //더 넓은 범위의 screen으로 테스트하는게 더 올바른 방법이라고 생각
+    const canvas = within(canvasElement)
+    const ButtonElement = canvas.getByRole("button")
+    await userEvent.click(ButtonElement)
+    const CloseElement = screen.getByTestId("close")
+    expect(CloseElement).not.toBeNull()
+
+    await userEvent.click(CloseElement)
+
+    waitForElementToBeRemoved(CloseElement).then(() =>
+      expect(CloseElement).not.toBeInTheDocument(),
+    )
+  },
 }
 
 export const LongText: Story = {
@@ -64,7 +87,7 @@ export const LongText: Story = {
             </Dialog.Title>
             <Dialog.Description
               className={css({
-                fontSize: "smaller",
+                fontSize: "sm",
               })}
             >
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
