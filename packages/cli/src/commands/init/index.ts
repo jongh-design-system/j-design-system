@@ -25,6 +25,7 @@ import { configSchema } from "@/common/types"
 
 const initSchema = z.object({
   cwd: z.string(),
+  default: z.boolean(),
 })
 
 export const initCommand = new Command()
@@ -35,12 +36,14 @@ export const initCommand = new Command()
     "current working directory, default to process.cwd()",
     process.cwd(),
   )
+  .option("-d, --default", "use default color", false)
   .action(async (opts) => {
     const s = spinner()
     s.start("Initializing")
     try {
       const options = initSchema.parse({
         cwd: path.resolve(opts.cwd),
+        default: opts.default,
       })
       await init(options)
       s.stop("successfully Initialized!")
@@ -109,32 +112,38 @@ export async function init(options: z.infer<typeof initSchema>) {
     styledsystem: defaultStyledSystemAlias,
   })
 
-  const primary = await select({
-    message: "Pick primary color",
-    initialValue: "neutral",
-    options: colorPalette.map((color) => ({
-      value: color,
-      label: color,
-    })),
-  })
+  let primary = "neutral"
+  let secondary = "slate"
+  let gray = "gray"
 
-  const secondary = await select({
-    message: "Pick secondary color",
-    initialValue: "slate",
-    options: colorPalette.map((color) => ({
-      value: color,
-      label: color,
-    })),
-  })
+  if (!options.default) {
+    primary = (await select({
+      message: "Pick primary color",
+      initialValue: "neutral",
+      options: colorPalette.map((color) => ({
+        value: color,
+        label: color,
+      })),
+    })) as string
 
-  const gray = await select({
-    message: "Pick gray color",
-    initialValue: "graye",
-    options: grayColorPalette.map((color) => ({
-      value: color,
-      label: color,
-    })),
-  })
+    secondary = (await select({
+      message: "Pick secondary color",
+      initialValue: "slate",
+      options: colorPalette.map((color) => ({
+        value: color,
+        label: color,
+      })),
+    })) as string
+
+    gray = (await select({
+      message: "Pick gray color",
+      initialValue: "gray",
+      options: grayColorPalette.map((color) => ({
+        value: color,
+        label: color,
+      })),
+    })) as string
+  }
 
   const preset = transformTemplate(
     colorSchema.parse({
@@ -143,8 +152,6 @@ export async function init(options: z.infer<typeof initSchema>) {
       gray,
     }),
   )
-
-  // const preset = await fetchPreset()
 
   fs.writeFile(path.join(root, "preset.ts"), preset)
 
