@@ -1,4 +1,7 @@
+import Handlebars from "handlebars"
 import { z } from "zod"
+
+import { template } from "./template"
 
 const colorPalette = [
   "rose",
@@ -32,3 +35,8 @@ export const colorSchema = z.object({
   secondary: z.enum(colorPalette),
   gray: z.enum(grayColorPalette),
 })
+
+export const transformTemplate = (options: z.infer<typeof colorSchema>) => {
+  const compliedTemplate = Handlebars.compile(template)
+  return compliedTemplate(options)
+}
