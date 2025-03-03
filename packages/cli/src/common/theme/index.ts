@@ -3,7 +3,7 @@ import { z } from "zod"
 
 import { template } from "./template"
 
-const colorPalette = [
+export const colorPalette = [
   "rose",
   "pink",
   "fuchsia",
@@ -28,7 +28,13 @@ const colorPalette = [
   "slate",
 ] as const
 
-const grayColorPalette = ["neutral", "stone", "zinc", "gray", "slate"] as const
+export const grayColorPalette = [
+  "neutral",
+  "stone",
+  "zinc",
+  "gray",
+  "slate",
+] as const
 
 export const colorSchema = z.object({
   primary: z.enum(colorPalette),
