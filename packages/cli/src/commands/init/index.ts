@@ -48,6 +48,9 @@ export const initCommand = new Command()
       if (e instanceof CommandError) {
         console.error(e.format)
       }
+      if (e instanceof Error) {
+        console.log(e.message, e.cause)
+      }
       s.stop("Failed to initialize")
       process.exit(0)
     }
@@ -86,8 +89,6 @@ export async function init(options: z.infer<typeof initSchema>) {
   let defaultStyledSystemAlias = "styled-system"
 
   const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile)
-  // outdir은 생성된 파일들이 저장될 디렉토리를 지정하는 옵션이고,
-  // importMap은 그 디렉토리를 애플리케이션 코드에서 어떻게 import할지 경로를 매핑하는 역할
 
   //만약 importMap이 있으면 그 값을 그대로 사용
   if (importMap) {
