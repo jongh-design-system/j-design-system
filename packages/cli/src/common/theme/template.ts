@@ -1,5 +1,5 @@
 export const template = `
-  import { defineConfig, defineSemanticTokens, definePreset } from "@pandacss/dev"
+  import { defineSemanticTokens, definePreset } from "@pandacss/dev"
 
 const colors = defineSemanticTokens.colors({
       "background": {
