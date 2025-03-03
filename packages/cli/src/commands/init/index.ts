@@ -1,4 +1,4 @@
-import { confirm, spinner } from "@clack/prompts"
+import { confirm, select, spinner } from "@clack/prompts"
 import { Command } from "commander"
 import fs from "fs-extra"
 import path from "path"
@@ -14,9 +14,14 @@ import {
 } from "@/common/get-config"
 import { getPandacssConfigPath } from "@/common/get-config"
 import { resolvePandaConfig } from "@/common/resolve"
+import {
+  colorPalette,
+  colorSchema,
+  grayColorPalette,
+  transformTemplate,
+} from "@/common/theme"
 import { transformPandaConfig } from "@/common/transform"
 import { configSchema } from "@/common/types"
-import { fetchPreset } from "@/common/utils/fetchRegistry"
 
 const initSchema = z.object({
   cwd: z.string(),
@@ -103,9 +108,44 @@ export async function init(options: z.infer<typeof initSchema>) {
     styledsystem: defaultStyledSystemAlias,
   })
 
-  const preset = await fetchPreset()
+  const primary = await select({
+    message: "Pick primary color",
+    initialValue: "neutral",
+    options: colorPalette.map((color) => ({
+      value: color,
+      label: color,
+    })),
+  })
 
-  fs.writeFile(path.join(root, preset.name), JSON.parse(preset.file))
+  const secondary = await select({
+    message: "Pick secondary color",
+    initialValue: "slate",
+    options: colorPalette.map((color) => ({
+      value: color,
+      label: color,
+    })),
+  })
+
+  const gray = await select({
+    message: "Pick gray color",
+    initialValue: "graye",
+    options: grayColorPalette.map((color) => ({
+      value: color,
+      label: color,
+    })),
+  })
+
+  const preset = transformTemplate(
+    colorSchema.parse({
+      primary,
+      secondary,
+      gray,
+    }),
+  )
+
+  // const preset = await fetchPreset()
+
+  fs.writeFile(path.join(root, "preset.ts"), preset)
 
   transformPandaConfig(path.resolve(root, pandacssConfigPath))
 
