@@ -18,8 +18,11 @@ export function loadComponentConfig(cwd: string) {
   }
 }
 
-// tsConfig 읽기 전용
-// loadConfig는 현재 디렉토리에 tsconfig가 없으면 경로를 내려가서 tsconfig를 찾는걸로 보임
+/**
+ *
+ * 주어진 경로를 기반으로 tsconfig.json파일을 탐색
+ * 현재 경로에 없다면, 부모 디렉토리로 이동
+ */
 export function loadTSConfig(cwd: string) {
   const tsconfig = loadConfig(cwd)
   if (tsconfig.resultType === "failed") {
@@ -53,6 +56,20 @@ export async function checkPandaInit(cwd: string) {
   return isInstalled && !!pandaConfig
 }
 
+/**
+ * react, nextJS 사용자가 일반적으로 많이 사용하는 경로를 기반으로 alias를 반환하는 함수
+ *
+ * @example
+const exampleTsConfig = {
+  baseUrl: ".",
+  paths: {
+    "@/*": ["./src/*"],
+    "@app/*": ["./src/app/*"],
+    "@components/*": ["./src/components/*"],
+  }
+}
+  getBaseAlias(process.cwd(),exampleTsConfig) // @
+ */
 export function getBaseAlias(cwd: string, tsConfig: ConfigLoaderSuccessResult) {
   const basePaths = ["./", "./src/", "./app/", "./src/app"].map((p) =>
     path.resolve(cwd, p),
@@ -74,8 +91,22 @@ export function getBaseAlias(cwd: string, tsConfig: ConfigLoaderSuccessResult) {
 
   return null
 }
-//outdir을 설정하면
-//outdir의 경로는 process.cwd+outdir
+
+/**
+ * pandacss의 output 경로에 해당하는 alias를 반환하는 함수
+ * @param styleFolderName panda.config의 output 설정, 기본값은 styled-system
+ * @example
+const exampleTsConfig = {
+  baseUrl: ".",
+  paths: {
+    "@/*": ["./src/*"],
+    "@app/*": ["./src/app/*"],
+    "@styledSysytem/*": ["./styled-system/*"],
+  }
+}
+  getBaseAlias(process.cwd(),exampleTsConfig) // '@styledSysytem'
+ */
+
 export function getStyleAlias(
   cwd: string,
   styleFolderName: string,
