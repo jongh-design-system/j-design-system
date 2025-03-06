@@ -112,6 +112,12 @@ export async function init(options: z.infer<typeof initSchema>) {
     styledsystem: defaultStyledSystemAlias,
   })
 
+  fs.writeFile(
+    path.resolve(root, "components.json"),
+    JSON.stringify(config),
+    "utf-8",
+  )
+
   let primary = "neutral"
   let secondary = "slate"
   let gray = "gray"
@@ -156,12 +162,6 @@ export async function init(options: z.infer<typeof initSchema>) {
   fs.writeFile(path.join(root, "preset.ts"), preset)
 
   transformPandaConfig(path.resolve(root, pandacssConfigPath))
-
-  await fs.writeFile(
-    path.resolve(root, "components.json"),
-    JSON.stringify(config),
-    "utf-8",
-  )
 
   return config
 }
