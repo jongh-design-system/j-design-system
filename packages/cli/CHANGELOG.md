@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## 1.6.0
+
+### Minor Changes
+
+- fa2d9cc: reorganize preset color system
+
 ## 1.5.0
 
 ### Minor Changes
