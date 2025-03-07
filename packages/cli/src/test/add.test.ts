@@ -3,6 +3,9 @@ import path from "path"
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest"
 
 import { addCommand } from "@/commands/add"
+import { loadComponentConfig, loadTSConfig } from "@/common/get-config"
+import { resolveImport } from "@/common/resolve"
+import { configSchema } from "@/common/types"
 
 const BUTTON_JSON = {
   name: "button",
@@ -23,23 +26,6 @@ const BUTTON_JSON = {
   ],
 }
 
-const PACKAGE_JSON = {
-  devDependencies: {
-    "@pandacss/dev": "0.0.5",
-  },
-}
-
-const TS_CONFIG = {
-  compilerOptions: {
-    baseUrl: "src",
-    paths: {
-      "@/*": ["./*"],
-      "@styled-system/*": ["../styled-system/*"],
-      // "@utils/*": ["./src/utils/"],
-    },
-  },
-}
-
 const COMPONENTS_JSON = {
   utils: "@/utils",
   components: "@/components",
@@ -47,85 +33,58 @@ const COMPONENTS_JSON = {
   styledsystem: "@styled-system",
 }
 
-const PRESET_TS = `
-export const defaultPreset = definePreset({
-  name: "default",
-  theme: {
-    extend: {
-
-      recipes: {
-
-      },
+const TSCONFIG_JSON = {
+  compilerOptions: {
+    baseUrl: ".",
+    paths: {
+      "@/*": ["./src/*"],
+      "@styled-system/*": ["./styled-system/*"],
     },
   },
-  staticCss: {
-    recipes: "*",
-  },
-})
-`
+}
 
-const PANDA_CONFIG_TS = `export default defineConfig({
-  // Whether to use css reset
-  preflight: true,
-
-  // Where to look for your css declarations
-  include: ["./src//*.{js,jsx,ts,tsx}", "./pages//*.{js,jsx,ts,tsx}"],
-
-  // Files to exclude
-  exclude: [],
-
-  // Useful for theme customization
-  theme: {
-    extend: {},
-  },
-
-  // The output directory for your css system
-  outdir: "styled-system",
-})
-`
+const cwd = path.join(__dirname, "./fixture/add_test")
 
 describe("add test", () => {
-  const temp = path.join(__dirname, "../../../temp-add")
-
-  beforeAll(async () => {
-    await fs.mkdir(temp, { recursive: true })
-    await Promise.all([
-      fs.writeFile(
-        path.resolve(temp, "tsconfig.json"),
-        JSON.stringify(TS_CONFIG, null, 2),
-        "utf-8",
-      ),
-      fs.writeFile(
-        path.resolve(temp, "package.json"),
-        JSON.stringify(PACKAGE_JSON, null, 2),
-        "utf-8",
-      ),
-      fs.writeFile(
-        path.resolve(temp, "panda.config.ts"),
-        PANDA_CONFIG_TS,
-        "utf-8",
-      ),
-      fs.writeFile(
-        path.resolve(temp, "components.json"),
-        JSON.stringify(COMPONENTS_JSON, null, 2),
-        "utf-8",
-      ),
-      fs.writeFile(path.resolve(temp, "preset.ts"), PRESET_TS, "utf-8"),
-      //folder
-      fs.mkdir(path.join(temp, "src", "components"), {
-        recursive: true,
-      }),
-      fs.mkdir(path.join(temp, "src", "utils"), { recursive: true }),
-      fs.mkdir(path.join(temp, "src", "hooks"), { recursive: true }),
-      fs.mkdir(path.join(temp, "styled-system"), { recursive: true }),
-    ])
+  beforeAll(() => {
+    fs.writeFileSync(
+      path.join(cwd, "components.json"),
+      JSON.stringify(COMPONENTS_JSON),
+      "utf-8",
+    )
+    fs.writeFileSync(
+      path.join(cwd, "tsconfig.json"),
+      JSON.stringify(TSCONFIG_JSON),
+      "utf-8",
+    )
   })
 
-  afterAll(async () => {
-    await fs.remove(temp)
+  afterAll(() => {
+    fs.remove(path.join(cwd, "components.json"))
+    fs.remove(path.join(cwd, "tsconfig.json"))
   })
 
-  test("터미널에 add button을 입력했을 경우 ./src/components 경로에 폴더가 생성된다", async () => {
+  describe("add 유틸함수 test", () => {
+    test("현재 경로에서 components.json파일을 읽습니다", () => {
+      expect(configSchema.schema.parse(loadComponentConfig(cwd))).toEqual(
+        COMPONENTS_JSON,
+      )
+    })
+
+    test("tsconfig.json를 사용해 components.json의 alias를 실제 path로 변환합니다", async () => {
+      const tsconfig = loadTSConfig(cwd)
+
+      const componentsPath = await resolveImport(
+        COMPONENTS_JSON["components"],
+        tsconfig,
+      )
+      expect(componentsPath).equal(path.join(cwd, "src", "components"))
+    })
+  })
+
+  describe("터미널에 @jongh/cli add button을 입력합니다", () => {
+    const buttonFolder = path.join(cwd, "src", "components", "button")
+
     global.fetch = vi.fn(
       () =>
         Promise.resolve({
@@ -133,17 +92,25 @@ describe("add test", () => {
           json: () => Promise.resolve(BUTTON_JSON),
         }) as Promise<Response>,
     )
-    await addCommand.parseAsync(["node", "add", "button", "-c", temp])
 
-    expect(
-      fs.pathExistsSync(
-        path.join(temp, "src", "components", "button", "index.tsx"),
-      ),
-    ).toBeTruthy()
-    expect(
-      fs.pathExistsSync(
-        path.join(temp, "src", "components", "button", "recipe.ts"),
-      ),
-    ).toBeTruthy()
+    beforeAll(async () => {
+      await addCommand.parseAsync(["node", "add", "button", "-c", cwd])
+    })
+
+    afterAll(() => {
+      fs.remove(path.join(cwd, "src"))
+    })
+
+    test("components/button 폴더에 index.tsx파일이 생성됩니다", () => {
+      expect(
+        fs.pathExistsSync(path.join(buttonFolder, "index.tsx")),
+      ).toBeTruthy()
+    })
+
+    test("components/button 폴더에 recipe.ts 파일이 생성됩니다", () => {
+      expect(
+        fs.pathExistsSync(path.join(buttonFolder, "recipe.ts")),
+      ).toBeTruthy()
+    })
   })
 })

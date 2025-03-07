@@ -40,6 +40,7 @@
     "execa": "^9.5.2",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
+    "handlebars": "^4.7.8",
     "package-manager-detector": "^0.2.8",
     "pkg-dir": "^8.0.0",
     "ts-morph": "^25.0.0",
@@ -48,14 +49,14 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@jongh/eslint": "workspace:*",
+    "@jongh/tsconfig": "workspace:*",
     "@types/babel__generator": "^7.6.8",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.8.6",
     "@types/yargs": "^17.0.33",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
-    "tsx": "^4.19.2",
-    "@jongh/tsconfig": "workspace:*",
-    "@jongh/eslint": "workspace:*"
+    "tsx": "^4.19.2"
   }
 }

@@ -139,7 +139,7 @@ export function transformPandaConfig(path: string) {
       // presets 속성이 없다면 추가
       configObject.addPropertyAssignment({
         name: "presets",
-        initializer: `[preset(), "@pandacss/preset-panda", defaultPreset"]`,
+        initializer: `[preset(), "@pandacss/preset-panda", defaultPreset]`,
       })
     }
 

@@ -1,4 +1,4 @@
-import { confirm, spinner } from "@clack/prompts"
+import { confirm, select, spinner } from "@clack/prompts"
 import { Command } from "commander"
 import fs from "fs-extra"
 import path from "path"
@@ -14,12 +14,18 @@ import {
 } from "@/common/get-config"
 import { getPandacssConfigPath } from "@/common/get-config"
 import { resolvePandaConfig } from "@/common/resolve"
+import {
+  colorPalette,
+  colorSchema,
+  grayColorPalette,
+  transformTemplate,
+} from "@/common/theme"
 import { transformPandaConfig } from "@/common/transform"
 import { configSchema } from "@/common/types"
-import { fetchPreset } from "@/common/utils/fetchRegistry"
 
 const initSchema = z.object({
   cwd: z.string(),
+  default: z.boolean(),
 })
 
 export const initCommand = new Command()
@@ -30,18 +36,23 @@ export const initCommand = new Command()
     "current working directory, default to process.cwd()",
     process.cwd(),
   )
+  .option("-d, --default", "use default color", false)
   .action(async (opts) => {
     const s = spinner()
     s.start("Initializing")
     try {
       const options = initSchema.parse({
         cwd: path.resolve(opts.cwd),
+        default: opts.default,
       })
       await init(options)
       s.stop("successfully Initialized!")
     } catch (e) {
       if (e instanceof CommandError) {
         console.error(e.format)
+      }
+      if (e instanceof Error) {
+        console.log(e.message, e.cause)
       }
       s.stop("Failed to initialize")
       process.exit(0)
@@ -81,8 +92,6 @@ export async function init(options: z.infer<typeof initSchema>) {
   let defaultStyledSystemAlias = "styled-system"
 
   const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile)
-  // outdir은 생성된 파일들이 저장될 디렉토리를 지정하는 옵션이고,
-  // importMap은 그 디렉토리를 애플리케이션 코드에서 어떻게 import할지 경로를 매핑하는 역할
 
   //만약 importMap이 있으면 그 값을 그대로 사용
   if (importMap) {
@@ -103,17 +112,56 @@ export async function init(options: z.infer<typeof initSchema>) {
     styledsystem: defaultStyledSystemAlias,
   })
 
-  const preset = await fetchPreset()
-
-  fs.writeFile(path.join(root, preset.name), JSON.parse(preset.file))
-
-  transformPandaConfig(path.resolve(root, pandacssConfigPath))
-
-  await fs.writeFile(
+  fs.writeFile(
     path.resolve(root, "components.json"),
     JSON.stringify(config),
     "utf-8",
   )
+
+  let primary = "neutral"
+  let secondary = "slate"
+  let gray = "gray"
+
+  if (!options.default) {
+    primary = (await select({
+      message: "Pick primary color",
+      initialValue: "neutral",
+      options: colorPalette.map((color) => ({
+        value: color,
+        label: color,
+      })),
+    })) as string
+
+    secondary = (await select({
+      message: "Pick secondary color",
+      initialValue: "slate",
+      options: colorPalette.map((color) => ({
+        value: color,
+        label: color,
+      })),
+    })) as string
+
+    gray = (await select({
+      message: "Pick gray color",
+      initialValue: "gray",
+      options: grayColorPalette.map((color) => ({
+        value: color,
+        label: color,
+      })),
+    })) as string
+  }
+
+  const preset = transformTemplate(
+    colorSchema.parse({
+      primary,
+      secondary,
+      gray,
+    }),
+  )
+
+  fs.writeFile(path.join(root, "preset.ts"), preset)
+
+  transformPandaConfig(path.resolve(root, pandacssConfigPath))
 
   return config
 }
