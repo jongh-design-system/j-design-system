@@ -35,6 +35,14 @@ export async function resolveAllPaths(
   }
 }
 
+/**
+ *
+ *
+ * @returns
+ * outdir : 생성된 파일들이 저장될 디렉토리 경로
+ *
+ * importMap : 그 디렉토리를 애플리케이션 코드에서 어떻게 import할지 경로를 매핑하는 역할
+ */
 export async function resolvePandaConfig(config: string) {
   const outdirMatch = config.match(/outdir:\s*["']([^"']+)["']/)
   const importMapMatch = config.match(/importMap:\s*({[^}]+}|["'][^"']+["'])/)
