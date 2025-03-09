@@ -6,14 +6,14 @@ import { Aside } from "@/components/aside"
 
 const asideConfig = [
   {
-    title: "시작하기",
+    title: "get started",
     items: [
       {
-        title: "소개",
+        title: "introduction",
         href: "/docs/introduction",
       },
       {
-        title: "설치하기",
+        title: "installation",
         href: "/docs/installation",
       },
     ],
