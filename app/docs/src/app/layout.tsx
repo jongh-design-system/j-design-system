@@ -1,13 +1,13 @@
 import "./globals.css"
 
-import { css, cx } from "@styled-system/css"
-import { Flex } from "@styled-system/jsx"
+import { Container } from "@styled-system/jsx"
 import { Geist } from "next/font/google"
 import Link from "next/link"
-import { ThemeProvider } from "next-themes"
 
 import { Header } from "@/components/header"
-import Icon from "@/components/icons/icon"
+import Github from "@/components/icons/github"
+import { ThemeProvider } from "@/components/theme/themeProvider"
+import { ThemeToggleButton } from "@/components/theme/themeToggleButton"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,31 +28,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cx(
-          `${geistSans.variable}`,
-          css({
-            bg: "background",
-            color: "foreground",
-          }),
-        )}
-      >
-        <Header
-          logo={<span>Design System</span>}
-          navItems={navItems}
-          icons={[
-            <Link
-              href="https://github.com/jongh-design-system/j-design-system/"
-              key="github"
-            >
-              <Icon icon="github" />
-            </Link>,
-          ]}
-        />
-        <ThemeProvider attribute="data-color-mode">
-          <Flex direction="column" maxWidth="full" minHeight="100vh">
+      <body className={`${geistSans.variable}`}>
+        <ThemeProvider>
+          <Container width="full" height="100vh">
+            <Header
+              logo={<span>Design System</span>}
+              navItems={navItems}
+              icons={[
+                <Link
+                  href="https://github.com/jongh-design-system/j-design-system/"
+                  key="github"
+                >
+                  <Github />
+                </Link>,
+                <ThemeToggleButton key="toggle" />,
+              ]}
+            />
             {children}
-          </Flex>
+          </Container>
         </ThemeProvider>
       </body>
     </html>

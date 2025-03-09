@@ -1,6 +1,8 @@
 import { defineConfig } from "@pandacss/dev"
 import { preset } from "panda-animation"
 
+import { breakpoints } from "@/config"
+
 import { defaultPreset } from "./preset"
 
 export default defineConfig({
@@ -27,6 +29,7 @@ export default defineConfig({
 
   // Useful for theme customization
   theme: {
+    breakpoints: breakpoints,
     extend: {},
   },
 
