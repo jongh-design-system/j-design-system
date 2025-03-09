@@ -77,7 +77,24 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </a>
     ),
-
+    pre: ({ children }) => (
+      <pre
+        className={css({
+          display: "block",
+          fontFamily: "mono",
+          fontSize: "sm",
+          color: "zinc.50",
+          overflow: "hidden",
+          rounded: "xl",
+          bg: "zinc.950",
+          _dark: { bg: "zinc.900" },
+          padding: "4",
+        })}
+      >
+        {children}
+      </pre>
+    ),
+    code: ({ children }) => <code>{children}</code>,
     ...components,
   }
 }
