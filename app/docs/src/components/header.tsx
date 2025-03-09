@@ -1,5 +1,6 @@
 import { css } from "@styled-system/css"
-import { Flex } from "@styled-system/jsx"
+import { Flex, styled } from "@styled-system/jsx"
+import { flex } from "@styled-system/patterns"
 import Link from "next/link"
 import { ReactNode } from "react"
 
@@ -17,48 +18,57 @@ interface HeaderProps {
 
 export function Header({ logo, navItems, icons }: HeaderProps) {
   return (
-    <header
-      className={css({
-        bg: "background",
-        borderBottom: "1px solid token(colors.border)",
+    <styled.header
+      className={flex({
         px: "4",
         py: "2",
+        h: "14",
+        justify: "space-between",
+        align: "center",
+        mx: "auto",
+        width: "full",
+        position: "sticky",
       })}
     >
-      <Flex justify="space-between" align="center" mx="auto" width="full">
-        <Link href="/" className={css({ fontSize: "2xl", fontWeight: "bold" })}>
-          {logo}
-        </Link>
-        <Flex align="center" gap="4">
-          <nav>
-            <Flex
-              gap={{ base: 3, mdDown: 3 }}
-              direction={{ base: "row", mdDown: "column" }}
+      <Link
+        href="/"
+        className={css({
+          textStyle: "2xl",
+          _hover: {
+            animationName: "tada",
+            animationDuration: "faster",
+            animationTimingFunction: "ease-in",
+          },
+        })}
+      >
+        {logo}
+      </Link>
+      <Flex
+        direction="row"
+        gap="2"
+        display={{
+          base: "flex",
+          mdDown: "none",
+        }}
+      >
+        {navItems.map((item) => (
+          <li key={item.href}>
+            <Link
+              href={item.href}
+              className={css({
+                color: "foreground",
+                fontWeight: "medium",
+                px: 2,
+                py: 1,
+              })}
             >
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={css({
-                      color: "foreground",
-                      fontWeight: "medium",
-                      _hover: { color: "primary" },
-                      textDecoration: "none",
-                      px: 2,
-                      py: 1,
-                    })}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </Flex>
-          </nav>
-          <Flex gap="2" align="center">
-            {icons?.map((icon, index) => <div key={index}>{icon}</div>)}
-          </Flex>
-        </Flex>
+              {item.label}
+            </Link>
+          </li>
+        ))}
       </Flex>
-    </header>
+      <Flex gap="2">{icons.map((icon) => icon)}</Flex>
+    </styled.header>
   )
 }
+//TODO: 화면이 작아졌을 경우 navItem에 대한 dropdown menu만들기
