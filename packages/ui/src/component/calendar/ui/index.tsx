@@ -2,8 +2,10 @@ import "dayjs/locale/ko"
 
 import dayjs from "dayjs"
 import localeData from "dayjs/plugin/localeData"
+import updateLocale from "dayjs/plugin/updateLocale"
 
 dayjs.extend(localeData)
+dayjs.extend(updateLocale)
 dayjs.locale("ko")
 
 import { Context, useControllableState } from "radix-ui/internal"
@@ -50,6 +52,8 @@ export const Calendar = ({
     defaultProp: defaultValue,
     onChange,
   })
+
+  dayjs.updateLocale("ko", { weekStart })
 
   const onMonthChange = useCallback(
     (amount: number) => {
