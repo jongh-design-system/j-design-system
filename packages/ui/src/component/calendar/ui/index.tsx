@@ -1,4 +1,11 @@
+import "dayjs/locale/ko"
+
 import dayjs from "dayjs"
+import localeData from "dayjs/plugin/localeData"
+
+dayjs.extend(localeData)
+dayjs.locale("ko")
+
 import { Context, useControllableState } from "radix-ui/internal"
 import { type ReactNode, useMemo } from "react"
 
