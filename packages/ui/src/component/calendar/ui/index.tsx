@@ -8,11 +8,12 @@ type DateFormat = {
   day: number
   daysInMonth: number
   daysInPrevMonth: number
-  startWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6
-  nextMonthStartWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6
+  startWeek: number //0 | 1 | 2 | 3 | 4 | 5 | 6
+  nextMonthStartWeek: number //0 | 1 | 2 | 3 | 4 | 5 | 6
 }
 export interface CalendarContextType {
   value: DateFormat
+  weekStart?: 0 | 1
   onChange: (value: Date) => void
 }
 
@@ -25,6 +26,7 @@ export type CalendarRootProps = {
   value?: Date
   defaultValue?: Date
   onChange?: (date: Date) => void
+  weekStart?: 0 | 1 // 0: 일요일, 1: 월요일
 }
 
 export const Calendar = ({
@@ -32,6 +34,7 @@ export const Calendar = ({
   value,
   defaultValue,
   onChange,
+  weekStart = 0,
 }: CalendarRootProps) => {
   const [dateValue = new Date(), setDateValue] = useControllableState({
     prop: value,
@@ -46,13 +49,18 @@ export const Calendar = ({
     month: currentDate.month() + 1,
     day: currentDate.date(),
     daysInMonth: currentDate.daysInMonth(),
-    startWeek: currentDate.startOf("month").day(), // 1일의 요일
+    startWeek: currentDate.startOf("month").day() - weekStart,
     daysInPrevMonth: currentDate.subtract(1, "month").daysInMonth(),
-    nextMonthStartWeek: currentDate.add(1, "month").startOf("month").day(),
+    nextMonthStartWeek:
+      currentDate.add(1, "month").startOf("month").day() - weekStart,
   } satisfies DateFormat
 
   return (
-    <CalendarProvider value={dateFormat} onChange={setDateValue}>
+    <CalendarProvider
+      value={dateFormat}
+      onChange={setDateValue}
+      weekStart={weekStart}
+    >
       {children}
     </CalendarProvider>
   )
@@ -61,22 +69,36 @@ export const Calendar = ({
 export const Days = () => {
   const { value } = useCalendarContext(contextScopeName)
 
-  useMemo(() => {
-    const days: number[] = [] //7*6
+  const weeks = useMemo(() => {
+    const days: Array<{ day: number; isCurrentMonth: boolean }> = []
 
     for (let i = value.startWeek; i > 0; i--) {
-      days.push(value.daysInPrevMonth - i + 1)
-    } //display previous
+      days.push({
+        day: value.daysInPrevMonth - i + 1,
+        isCurrentMonth: false,
+      })
+    }
 
     for (let i = 1; i <= value.daysInMonth; i++) {
-      days.push(i)
-    } //display current
+      days.push({
+        day: i,
+        isCurrentMonth: true,
+      })
+    }
 
     for (let i = 1; i <= 6 - value.nextMonthStartWeek + 1; i++) {
-      days.push(i)
-    } //display next
+      days.push({
+        day: i,
+        isCurrentMonth: false,
+      })
+    }
 
-    return days
+    const weeks = []
+    for (let i = 0; i < days.length; i += 7) {
+      weeks.push(days.slice(i, i + 7))
+    }
+
+    return weeks
   }, [
     value.startWeek,
     value.daysInMonth,
@@ -84,5 +106,15 @@ export const Days = () => {
     value.nextMonthStartWeek,
   ])
 
-  return <div></div>
+  return (
+    <div>
+      {weeks.map((week, weekIndex) => (
+        <div key={weekIndex} style={{ display: "flex" }}>
+          {week.map((day, dayIndex) => (
+            <div key={`${weekIndex}-${dayIndex}`}>{day.day}</div>
+          ))}
+        </div>
+      ))}
+    </div>
+  )
 }
