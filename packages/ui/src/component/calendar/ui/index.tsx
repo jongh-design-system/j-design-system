@@ -7,7 +7,7 @@ dayjs.extend(localeData)
 dayjs.locale("ko")
 
 import { Context, useControllableState } from "radix-ui/internal"
-import { type ReactNode, useMemo } from "react"
+import { type ReactNode, useCallback, useMemo } from "react"
 
 type DateFormat = {
   year: number
@@ -22,6 +22,8 @@ export interface CalendarContextType {
   value: DateFormat
   weekStart?: 0 | 1
   onChange: (value: Date) => void
+  onMonthChange: (amount: number) => void
+  onYearChange: (amount: number) => void
 }
 
 const contextScopeName = "calendar"
@@ -33,7 +35,7 @@ export type CalendarRootProps = {
   value?: Date
   defaultValue?: Date
   onChange?: (date: Date) => void
-  weekStart?: 0 | 1 // 0: 일요일, 1: 월요일
+  weekStart: 0 | 1 // 0: 일요일, 1: 월요일
 }
 
 export const Calendar = ({
@@ -49,23 +51,41 @@ export const Calendar = ({
     onChange,
   })
 
-  const currentDate = dayjs(dateValue)
+  const onMonthChange = useCallback(
+    (amount: number) => {
+      setDateValue((prevDate) => dayjs(prevDate).add(amount, "month").toDate())
+    },
+    [setDateValue],
+  )
 
-  const dateFormat = {
-    year: currentDate.year(),
-    month: currentDate.month() + 1,
-    day: currentDate.date(),
-    daysInMonth: currentDate.daysInMonth(),
-    startWeek: currentDate.startOf("month").day() - weekStart,
-    daysInPrevMonth: currentDate.subtract(1, "month").daysInMonth(),
-    nextMonthStartWeek:
-      currentDate.add(1, "month").startOf("month").day() - weekStart,
-  } satisfies DateFormat
+  const onYearChange = useCallback(
+    (amount: number) => {
+      setDateValue((prevDate) => dayjs(prevDate).add(amount, "year").toDate())
+    },
+    [setDateValue],
+  )
+
+  // 날짜 계산 로직을 useMemo로 최적화
+  const dateFormat = useMemo(() => {
+    const currentDate = dayjs(dateValue)
+    return {
+      year: currentDate.year(),
+      month: currentDate.month() + 1,
+      day: currentDate.date(),
+      daysInMonth: currentDate.daysInMonth(),
+      startWeek: currentDate.startOf("month").day() - weekStart,
+      daysInPrevMonth: currentDate.subtract(1, "month").daysInMonth(),
+      nextMonthStartWeek:
+        currentDate.add(1, "month").startOf("month").day() - weekStart,
+    }
+  }, [dateValue, weekStart])
 
   return (
     <CalendarProvider
       value={dateFormat}
       onChange={setDateValue}
+      onMonthChange={onMonthChange}
+      onYearChange={onYearChange}
       weekStart={weekStart}
     >
       {children}
