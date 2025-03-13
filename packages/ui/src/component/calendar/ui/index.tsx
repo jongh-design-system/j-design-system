@@ -1,13 +1,3 @@
-import "dayjs/locale/ko"
-
-import dayjs from "dayjs"
-import localeData from "dayjs/plugin/localeData"
-import updateLocale from "dayjs/plugin/updateLocale"
-
-dayjs.extend(localeData)
-dayjs.extend(updateLocale)
-dayjs.locale("ko")
-
 import { Context, useControllableState } from "radix-ui/internal"
 import { type ReactNode, useCallback, useMemo } from "react"
 
@@ -22,7 +12,8 @@ type DateFormat = {
 }
 export interface CalendarContextType {
   value: DateFormat
-  weekStart?: 0 | 1
+  weekStart: 0 | 1
+
   onChange: (value: Date) => void
   onMonthChange: (amount: number) => void
   onYearChange: (amount: number) => void
@@ -53,34 +44,55 @@ export const Calendar = ({
     onChange,
   })
 
-  dayjs.updateLocale("ko", { weekStart })
-
   const onMonthChange = useCallback(
     (amount: number) => {
-      setDateValue((prevDate) => dayjs(prevDate).add(amount, "month").toDate())
+      const newDate = new Date(dateValue)
+      newDate.setMonth(newDate.getMonth() + amount)
+      setDateValue(newDate)
     },
-    [setDateValue],
+    [dateValue, setDateValue],
   )
 
   const onYearChange = useCallback(
     (amount: number) => {
-      setDateValue((prevDate) => dayjs(prevDate).add(amount, "year").toDate())
+      const newDate = new Date(dateValue)
+      newDate.setFullYear(newDate.getFullYear() + amount)
+      setDateValue(newDate)
     },
-    [setDateValue],
+    [dateValue, setDateValue],
   )
 
-  // 날짜 계산 로직을 useMemo로 최적화
   const dateFormat = useMemo(() => {
-    const currentDate = dayjs(dateValue)
+    const currentDate = new Date(dateValue)
+    const firstDay = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1,
+    )
+    const lastDay = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0,
+    )
+    const prevMonthLastDay = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      0,
+    )
+    const nextMonthFirstDay = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      1,
+    )
+
     return {
-      year: currentDate.year(),
-      month: currentDate.month() + 1,
-      day: currentDate.date(),
-      daysInMonth: currentDate.daysInMonth(),
-      startWeek: currentDate.startOf("month").day() - weekStart,
-      daysInPrevMonth: currentDate.subtract(1, "month").daysInMonth(),
-      nextMonthStartWeek:
-        currentDate.add(1, "month").startOf("month").day() - weekStart,
+      year: currentDate.getFullYear(),
+      month: currentDate.getMonth() + 1,
+      day: currentDate.getDate(),
+      daysInMonth: lastDay.getDate(),
+      startWeek: firstDay.getDay() - weekStart,
+      daysInPrevMonth: prevMonthLastDay.getDate(),
+      nextMonthStartWeek: nextMonthFirstDay.getDay() - weekStart,
     }
   }, [dateValue, weekStart])
 
@@ -151,17 +163,28 @@ export const Days = () => {
 }
 
 interface HeaderProps {
-  short?: boolean
+  format?: "short" | "long"
 }
 
-export const Header = ({ short = true }: HeaderProps) => {
-  const weekdays = short ? dayjs.weekdaysShort(true) : dayjs.weekdays(true)
+export const Header = ({ format = "short" }: HeaderProps) => {
+  const { weekStart } = useCalendarContext(contextScopeName)
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
-      {weekdays.map((day) => (
-        <div key={day}>{day}</div>
+      {getWeekdays(weekStart, "ko-KR", format).map((day, index) => (
+        <div key={index}>{day}</div>
       ))}
     </div>
   )
+}
+
+function getWeekdays(
+  weekStart: 0 | 1,
+  locale: Intl.LocalesArgument,
+  format: Intl.DateTimeFormatOptions["weekday"] = "short",
+): string[] {
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(2024, 0, i + weekStart) //temp
+    return new Intl.DateTimeFormat(locale, { weekday: format }).format(date)
+  })
 }
