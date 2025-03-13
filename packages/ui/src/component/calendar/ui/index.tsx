@@ -149,3 +149,19 @@ export const Days = () => {
     </div>
   )
 }
+
+interface HeaderProps {
+  short?: boolean
+}
+
+export const Header = ({ short = true }: HeaderProps) => {
+  const weekdays = short ? dayjs.weekdaysShort(true) : dayjs.weekdays(true)
+
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      {weekdays.map((day) => (
+        <div key={day}>{day}</div>
+      ))}
+    </div>
+  )
+}
