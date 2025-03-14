@@ -13,6 +13,7 @@ type DateFormat = {
 export interface CalendarContextType {
   value: DateFormat
   weekStart: 0 | 1
+  locale: Intl.LocalesArgument
 
   onChange: (value: Date) => void
   onMonthChange: (amount: number) => void
@@ -29,6 +30,7 @@ export type CalendarRootProps = {
   defaultValue?: Date
   onChange?: (date: Date) => void
   weekStart: 0 | 1 // 0: 일요일, 1: 월요일
+  locale?: Intl.LocalesArgument
 }
 
 export const Calendar = ({
@@ -37,6 +39,7 @@ export const Calendar = ({
   defaultValue,
   onChange,
   weekStart = 0,
+  locale = "en-US",
 }: CalendarRootProps) => {
   const [dateValue = new Date(), setDateValue] = useControllableState({
     prop: value,
@@ -103,6 +106,7 @@ export const Calendar = ({
       onMonthChange={onMonthChange}
       onYearChange={onYearChange}
       weekStart={weekStart}
+      locale={locale}
     >
       {children}
     </CalendarProvider>
@@ -167,11 +171,11 @@ interface HeaderProps {
 }
 
 export const Header = ({ format = "short" }: HeaderProps) => {
-  const { weekStart } = useCalendarContext(contextScopeName)
+  const { weekStart, locale } = useCalendarContext(contextScopeName)
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
-      {getWeekdays(weekStart, "ko-KR", format).map((day, index) => (
+      {getWeekdays(weekStart, locale, format).map((day, index) => (
         <div key={index}>{day}</div>
       ))}
     </div>
