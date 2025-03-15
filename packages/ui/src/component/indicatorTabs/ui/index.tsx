@@ -10,6 +10,7 @@ export const Root = forwardRef<
   ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
 >(({ className, ...props }, ref) => {
   const styles = recipe.raw()
+
   return (
     <TabsPrimitive.Root
       ref={ref}
@@ -19,35 +20,33 @@ export const Root = forwardRef<
   )
 })
 
+const handleIndicatorUpdate = (node: HTMLElement | null) => {
+  if (!node) return
+
+  const activeElement = Array.from(node.children).find(
+    (child) => child instanceof HTMLElement && child.dataset.state === "active",
+  ) as HTMLElement | undefined
+
+  if (!activeElement) return
+
+  const parentRect = node.getBoundingClientRect()
+  const activeRect = activeElement.getBoundingClientRect()
+
+  const left = Math.abs(parentRect.left - activeRect.left)
+  const width = activeRect.width
+
+  document.documentElement.style.setProperty("--indicator-left", `${left}px`)
+  document.documentElement.style.setProperty("--indicator-width", `${width}px`)
+}
+
 export const List = forwardRef<
   ElementRef<typeof TabsPrimitive.List>,
-  ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
-    showIndicator?: boolean
-  }
+  ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, children, ...props }, ref) => {
   const styles = recipe.raw()
   return (
     <TabsPrimitive.List
-      ref={composeRefs(ref, (node) => {
-        const activeElement = Array.from(node?.children || []).filter(
-          (child) =>
-            child instanceof HTMLElement && child.dataset.state === "active",
-        )[0] as HTMLElement
-        if (!activeElement) return
-
-        const parentRect = node?.getBoundingClientRect()
-        if (!parentRect) return
-
-        const activeRect = activeElement.getBoundingClientRect()
-        document.documentElement.style.setProperty(
-          "--indicator-left",
-          `${Math.abs(parentRect?.left - activeRect?.left)}px`,
-        )
-        document.documentElement.style.setProperty(
-          "--indicator-width",
-          `${Math.abs(activeRect?.width)}px`,
-        )
-      })}
+      ref={composeRefs(ref, handleIndicatorUpdate)}
       className={cx(css(styles.list), className)}
       {...props}
     >
@@ -75,6 +74,7 @@ export const Content = forwardRef<
   ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({ className, ...props }, ref) => {
   const styles = recipe.raw()
+
   return (
     <TabsPrimitive.Content
       ref={ref}
@@ -88,4 +88,3 @@ export const Indicator = () => {
   const styles = recipe.raw()
   return <div className={css(styles.indicator)} />
 }
-//left가 변경이 되고, width가 변경이 되면 애니메이션을 준다.
