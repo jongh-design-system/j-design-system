@@ -172,7 +172,6 @@ interface HeaderProps {
 
 export const Header = ({ format = "short" }: HeaderProps) => {
   const { weekStart, locale } = useCalendarContext(contextScopeName)
-
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       {getWeekdays(weekStart, locale, format).map((day, index) => (
@@ -187,8 +186,17 @@ function getWeekdays(
   locale: Intl.LocalesArgument,
   format: Intl.DateTimeFormatOptions["weekday"] = "short",
 ): string[] {
-  return Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(2024, 0, i + weekStart) //temp
+  const dayIndices = [0, 1, 2, 3, 4, 5, 6]
+
+  const orderedDayIndices = [
+    ...dayIndices.slice(weekStart),
+    ...dayIndices.slice(0, weekStart),
+  ]
+
+  return orderedDayIndices.map((dayIndex) => {
+    const date = new Date()
+    date.setDate(date.getDate() - date.getDay() + dayIndex)
+
     return new Intl.DateTimeFormat(locale, { weekday: format }).format(date)
   })
 }
