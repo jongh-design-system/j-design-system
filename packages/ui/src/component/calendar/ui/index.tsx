@@ -166,11 +166,11 @@ export const Days = () => {
   )
 }
 
-interface HeaderProps {
+interface WeekdayProps {
   format?: "short" | "long"
 }
 
-export const Header = ({ format = "short" }: HeaderProps) => {
+export const Weekday = ({ format = "short" }: WeekdayProps) => {
   const { weekStart, locale } = useCalendarContext(contextScopeName)
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
