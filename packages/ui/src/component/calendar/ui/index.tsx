@@ -185,7 +185,44 @@ export const Weekday = ({ format = "short" }: WeekdayProps) => {
   )
 }
 
-export const Days = () => {
+interface DaysProps {
+  showOutsideDays?: boolean
+}
+
+interface DayButtonProps {
+  day: number
+  month: number
+  year: number
+  isHidden: boolean
+  isOutsideMonth: boolean
+  className?: string
+}
+
+const DayButton = ({
+  day,
+  month,
+  year,
+  isHidden,
+  isOutsideMonth,
+}: DayButtonProps) => {
+  const styles = recipe()
+
+  return (
+    <button
+      className={styles.dayCell}
+      data-day={day}
+      data-month={month}
+      data-year={year}
+      data-hidden={isHidden}
+      data-outside-month={isOutsideMonth}
+      aria-hidden={isHidden}
+    >
+      {!isHidden && day}
+    </button>
+  )
+}
+
+export const Days = ({ showOutsideDays = true }: DaysProps) => {
   const { value } = useCalendarContext(contextScopeName)
   const styles = recipe()
 
@@ -227,22 +264,34 @@ export const Days = () => {
   ])
 
   return (
-    <div className={styles.daysGrid}>
-      {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} className={styles.weekRow}>
-          {week.map((day, dayIndex) => {
-            return (
-              <button
-                key={`${weekIndex}-${dayIndex}`}
-                className={styles.dayCell}
-              >
-                {day.day}
-              </button>
-            )
-          })}
-        </div>
-      ))}
-    </div>
+    <table className={styles.daysGrid}>
+      <tbody>
+        {weeks.map((week, weekIndex) => (
+          <tr key={weekIndex} className={styles.weekRow}>
+            {week.map((day, dayIndex) => {
+              const isHidden = !showOutsideDays && !day.isCurrentMonth
+              const month = day.isCurrentMonth
+                ? value.month
+                : weekIndex === 0
+                  ? value.month - 1
+                  : value.month + 1
+
+              return (
+                <td key={`${weekIndex}-${dayIndex}`}>
+                  <DayButton
+                    day={day.day}
+                    month={month}
+                    year={value.year}
+                    isHidden={isHidden}
+                    isOutsideMonth={!day.isCurrentMonth}
+                  />
+                </td>
+              )
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   )
 }
 
