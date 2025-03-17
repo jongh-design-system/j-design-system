@@ -28,8 +28,7 @@ export const recipe = sva({
       padding: "3",
     },
     title: {
-      fontWeight: "semibold",
-      fontSize: "md",
+      textStyle: "xl",
     },
     navButton: {
       display: "flex",
@@ -39,6 +38,7 @@ export const recipe = sva({
       height: "8",
       borderRadius: "full",
       color: "gray.500",
+      cursor: "pointer",
       _hover: {
         opacity: 0.8,
         bg: "gray.100",
@@ -81,7 +81,8 @@ export const recipe = sva({
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      height: "10",
+      minWidth: "4",
+      minHeight: "4",
       borderRadius: "md",
       fontSize: "sm",
       cursor: "pointer",
