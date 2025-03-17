@@ -23,6 +23,16 @@ export const ThemeToggleButton = () => {
   return (
     <SwitchCase
       value={theme}
+      defaultComponent={
+        <motion.button
+          key="dark"
+          onClick={handleToggle}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <Lightmode />
+        </motion.button>
+      }
       caseBy={{
         light: (
           <motion.button
