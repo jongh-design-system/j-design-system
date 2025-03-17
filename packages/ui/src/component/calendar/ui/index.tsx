@@ -1,5 +1,10 @@
+"use client"
+
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Context, useControllableState } from "radix-ui/internal"
 import { type ReactNode, useCallback, useMemo } from "react"
+
+import { recipe } from "./recipe"
 
 type DateFormat = {
   year: number
@@ -10,6 +15,7 @@ type DateFormat = {
   startWeek: number //0 | 1 | 2 | 3 | 4 | 5 | 6
   nextMonthStartWeek: number //0 | 1 | 2 | 3 | 4 | 5 | 6
 }
+
 export interface CalendarContextType {
   value: DateFormat
   weekStart: 0 | 1
@@ -29,17 +35,18 @@ export type CalendarRootProps = {
   value?: Date
   defaultValue?: Date
   onChange?: (date: Date) => void
-  weekStart: 0 | 1 // 0: 일요일, 1: 월요일
+  weekStart?: 0 | 1 // 0: 일요일, 1: 월요일
   locale?: Intl.LocalesArgument
 }
 
-export const Calendar = ({
+export const Root = ({
   children,
   value,
   defaultValue,
   onChange,
   weekStart = 0,
   locale = "en-US",
+  ...props
 }: CalendarRootProps) => {
   const [dateValue = new Date(), setDateValue] = useControllableState({
     prop: value,
@@ -99,6 +106,8 @@ export const Calendar = ({
     }
   }, [dateValue, weekStart])
 
+  const styles = recipe()
+
   return (
     <CalendarProvider
       value={dateFormat}
@@ -108,13 +117,65 @@ export const Calendar = ({
       weekStart={weekStart}
       locale={locale}
     >
-      {children}
+      <div className={styles.root} {...props}>
+        {children}
+      </div>
     </CalendarProvider>
+  )
+}
+
+export const Header = () => {
+  const { value, onMonthChange, locale } = useCalendarContext(contextScopeName)
+
+  const styles = recipe()
+
+  const monthName = new Intl.DateTimeFormat(locale, { month: "long" }).format(
+    new Date(value.year, value.month - 1),
+  )
+
+  return (
+    <div className={styles.header}>
+      <button
+        className={styles.navButton}
+        onClick={() => onMonthChange(-1)}
+        aria-label="Previous month"
+      >
+        <ChevronLeft />
+      </button>
+      <div className={styles.title}>
+        {monthName} {value.year}
+      </div>
+      <button
+        className={styles.navButton}
+        onClick={() => onMonthChange(1)}
+        aria-label="Next month"
+      >
+        <ChevronRight />
+      </button>
+    </div>
+  )
+}
+
+interface WeekdayProps {
+  format?: "short" | "long"
+}
+
+export const Weekday = ({ format = "short" }: WeekdayProps) => {
+  const { weekStart, locale } = useCalendarContext(contextScopeName)
+  const styles = recipe()
+
+  return (
+    <div className={styles.weekday}>
+      {getWeekdays(weekStart, locale, format).map((day, index) => (
+        <div key={index}>{day}</div>
+      ))}
+    </div>
   )
 }
 
 export const Days = () => {
   const { value } = useCalendarContext(contextScopeName)
+  const styles = recipe()
 
   const weeks = useMemo(() => {
     const days: Array<{ day: number; isCurrentMonth: boolean }> = []
@@ -154,28 +215,20 @@ export const Days = () => {
   ])
 
   return (
-    <div>
+    <div className={styles.daysGrid}>
       {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} style={{ display: "flex" }}>
-          {week.map((day, dayIndex) => (
-            <div key={`${weekIndex}-${dayIndex}`}>{day.day}</div>
-          ))}
+        <div key={weekIndex} className={styles.weekRow}>
+          {week.map((day, dayIndex) => {
+            return (
+              <button
+                key={`${weekIndex}-${dayIndex}`}
+                className={styles.dayCell}
+              >
+                {day.day}
+              </button>
+            )
+          })}
         </div>
-      ))}
-    </div>
-  )
-}
-
-interface WeekdayProps {
-  format?: "short" | "long"
-}
-
-export const Weekday = ({ format = "short" }: WeekdayProps) => {
-  const { weekStart, locale } = useCalendarContext(contextScopeName)
-  return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      {getWeekdays(weekStart, locale, format).map((day, index) => (
-        <div key={index}>{day}</div>
       ))}
     </div>
   )
