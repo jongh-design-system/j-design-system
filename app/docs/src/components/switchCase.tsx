@@ -11,6 +11,7 @@ export function SwitchCase<Case extends string | number>({
   caseBy,
   defaultComponent: defaultComponent = null,
 }: Props<Case>) {
+  console.log(value)
   if (!value) {
     return defaultComponent
   }
