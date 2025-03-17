@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react"
+import { css } from "@styled-system/css"
 
-import { Calendar, Days, Header } from "../component/calendar/ui"
+import * as Calendar from "../component/calendar/ui"
 
 const meta = {
   title: "Calendar",
   tags: ["autodocs"],
-  component: Calendar,
 } satisfies Meta<typeof Calendar>
 
 export default meta
@@ -13,15 +13,20 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-  args: {
-    weekStart: 0,
-  },
   render: (args) => {
     return (
-      <Calendar {...args}>
-        <Header />
-        <Days />
-      </Calendar>
+      <Calendar.Root
+        {...args}
+        weekStart={1}
+        locale="en-US"
+        className={css({
+          p: "10",
+        })}
+      >
+        <Calendar.Header month="long" year="numeric" />
+        <Calendar.Weekday />
+        <Calendar.Days />
+      </Calendar.Root>
     )
   },
 }
