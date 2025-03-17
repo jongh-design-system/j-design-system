@@ -124,31 +124,43 @@ export const Root = ({
   )
 }
 
-export const Header = () => {
-  const { value, onMonthChange, locale } = useCalendarContext(contextScopeName)
+interface HeaderProps {
+  month?: Intl.DateTimeFormatOptions["month"]
+  year?: Intl.DateTimeFormatOptions["year"]
+  render?: (date: Date, locale: Intl.LocalesArgument) => string
+}
 
+export const Header = ({
+  month = "long",
+  year = "numeric",
+  render,
+}: HeaderProps) => {
+  const { value, onMonthChange, locale } = useCalendarContext(contextScopeName)
   const styles = recipe()
 
-  const monthName = new Intl.DateTimeFormat(locale, { month: "long" }).format(
-    new Date(value.year, value.month - 1),
-  )
+  const monthAndYear = new Intl.DateTimeFormat(locale, {
+    month: month,
+    year: year,
+  }).format(new Date(value.year, value.month - 1))
 
   return (
     <div className={styles.header}>
       <button
         className={styles.navButton}
         onClick={() => onMonthChange(-1)}
-        aria-label="Previous month"
+        aria-label="Go To Previous month"
       >
         <ChevronLeft />
       </button>
       <div className={styles.title}>
-        {monthName} {value.year}
+        {render
+          ? render(new Date(value.year, value.month - 1), locale)
+          : `${monthAndYear}`}
       </div>
       <button
         className={styles.navButton}
         onClick={() => onMonthChange(1)}
-        aria-label="Next month"
+        aria-label="Go To Next month"
       >
         <ChevronRight />
       </button>
