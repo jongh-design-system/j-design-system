@@ -11,11 +11,10 @@ import { SwitchCase } from "../switchCase"
 export const ThemeToggleButton = () => {
   const isMounted = useIsMounted()
   const { theme, setTheme } = useTheme()
-
   const handleToggle = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"))
   }
-
+  console.log(theme, isMounted)
   if (!isMounted) {
     return null
   }
