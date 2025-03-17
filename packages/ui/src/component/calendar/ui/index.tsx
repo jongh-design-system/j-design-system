@@ -112,9 +112,9 @@ export const Root = forwardRef<HTMLDivElement, CalendarRootProps>(
         month: currentDate.getMonth() + 1,
         day: currentDate.getDate(),
         daysInMonth: lastDay.getDate(),
-        startWeek: firstDay.getDay() - weekStart,
+        startWeek: (firstDay.getDay() - weekStart + 7) % 7,
         daysInPrevMonth: prevMonthLastDay.getDate(),
-        nextMonthStartWeek: nextMonthFirstDay.getDay() - weekStart,
+        nextMonthStartWeek: (nextMonthFirstDay.getDay() - weekStart + 7) % 7,
       }
     }, [dateValue, weekStart])
 
