@@ -1,8 +1,15 @@
 "use client"
 
+import { css, cx } from "@styled-system/css"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Context, useControllableState } from "radix-ui/internal"
-import { type ReactNode, useCallback, useMemo } from "react"
+import {
+  type ComponentPropsWithoutRef,
+  forwardRef,
+  type ReactNode,
+  useCallback,
+  useMemo,
+} from "react"
 
 import { recipe } from "./recipe"
 
@@ -30,113 +37,120 @@ const contextScopeName = "calendar"
 
 const [CalendarProvider, useCalendarContext] =
   Context.createContext<CalendarContextType>(contextScopeName)
-export type CalendarRootProps = {
+export interface CalendarRootProps extends ComponentPropsWithoutRef<"div"> {
   children?: ReactNode
-  value?: Date
-  defaultValue?: Date
-  onChange?: (date: Date) => void
+  date?: Date
+  defaultDate?: Date
+  onDateChange?: (date: Date) => void
   weekStart?: 0 | 1 // 0: 일요일, 1: 월요일
   locale?: Intl.LocalesArgument
 }
 
-export const Root = ({
-  children,
-  value,
-  defaultValue,
-  onChange,
-  weekStart = 0,
-  locale = "en-US",
-  ...props
-}: CalendarRootProps) => {
-  const [dateValue = new Date(), setDateValue] = useControllableState({
-    prop: value,
-    defaultProp: defaultValue,
-    onChange,
-  })
-
-  const onMonthChange = useCallback(
-    (amount: number) => {
-      const newDate = new Date(dateValue)
-      newDate.setMonth(newDate.getMonth() + amount)
-      setDateValue(newDate)
+export const Root = forwardRef<HTMLDivElement, CalendarRootProps>(
+  (
+    {
+      className,
+      children,
+      date,
+      defaultDate,
+      onDateChange,
+      weekStart = 0,
+      locale = "en-US",
+      ...props
     },
-    [dateValue, setDateValue],
-  )
+    ref,
+  ) => {
+    const [dateValue = new Date(), setDateValue] = useControllableState({
+      prop: date,
+      defaultProp: defaultDate,
+      onChange: onDateChange,
+    })
 
-  const onYearChange = useCallback(
-    (amount: number) => {
-      const newDate = new Date(dateValue)
-      newDate.setFullYear(newDate.getFullYear() + amount)
-      setDateValue(newDate)
-    },
-    [dateValue, setDateValue],
-  )
-
-  const dateFormat = useMemo(() => {
-    const currentDate = new Date(dateValue)
-    const firstDay = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      1,
-    )
-    const lastDay = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      0,
-    )
-    const prevMonthLastDay = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      0,
-    )
-    const nextMonthFirstDay = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      1,
+    const onMonthChange = useCallback(
+      (amount: number) => {
+        const newDate = new Date(dateValue)
+        newDate.setMonth(newDate.getMonth() + amount)
+        setDateValue(newDate)
+      },
+      [dateValue, setDateValue],
     )
 
-    return {
-      year: currentDate.getFullYear(),
-      month: currentDate.getMonth() + 1,
-      day: currentDate.getDate(),
-      daysInMonth: lastDay.getDate(),
-      startWeek: firstDay.getDay() - weekStart,
-      daysInPrevMonth: prevMonthLastDay.getDate(),
-      nextMonthStartWeek: nextMonthFirstDay.getDay() - weekStart,
-    }
-  }, [dateValue, weekStart])
+    const onYearChange = useCallback(
+      (amount: number) => {
+        const newDate = new Date(dateValue)
+        newDate.setFullYear(newDate.getFullYear() + amount)
+        setDateValue(newDate)
+      },
+      [dateValue, setDateValue],
+    )
 
-  const styles = recipe()
+    const dateFormat = useMemo(() => {
+      const currentDate = new Date(dateValue)
+      const firstDay = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1,
+      )
+      const lastDay = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0,
+      )
+      const prevMonthLastDay = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        0,
+      )
+      const nextMonthFirstDay = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        1,
+      )
 
-  return (
-    <CalendarProvider
-      value={dateFormat}
-      onChange={setDateValue}
-      onMonthChange={onMonthChange}
-      onYearChange={onYearChange}
-      weekStart={weekStart}
-      locale={locale}
-    >
-      <div className={styles.root} {...props}>
-        {children}
-      </div>
-    </CalendarProvider>
-  )
-}
+      return {
+        year: currentDate.getFullYear(),
+        month: currentDate.getMonth() + 1,
+        day: currentDate.getDate(),
+        daysInMonth: lastDay.getDate(),
+        startWeek: firstDay.getDay() - weekStart,
+        daysInPrevMonth: prevMonthLastDay.getDate(),
+        nextMonthStartWeek: nextMonthFirstDay.getDay() - weekStart,
+      }
+    }, [dateValue, weekStart])
+
+    const styles = recipe.raw()
+    return (
+      <CalendarProvider
+        value={dateFormat}
+        onChange={setDateValue}
+        onMonthChange={onMonthChange}
+        onYearChange={onYearChange}
+        weekStart={weekStart}
+        locale={locale}
+      >
+        <div ref={ref} className={cx(css(styles.root), className)} {...props}>
+          {children}
+        </div>
+      </CalendarProvider>
+    )
+  },
+)
 
 interface HeaderProps {
   month?: Intl.DateTimeFormatOptions["month"]
   year?: Intl.DateTimeFormatOptions["year"]
   render?: (date: Date, locale: Intl.LocalesArgument) => string
+  className?: string
 }
 
 export const Header = ({
+  className,
   month = "long",
   year = "numeric",
   render,
 }: HeaderProps) => {
   const { value, onMonthChange, locale } = useCalendarContext(contextScopeName)
-  const styles = recipe()
+  const styles = recipe.raw()
 
   const monthAndYear = new Intl.DateTimeFormat(locale, {
     month: month,
@@ -144,21 +158,21 @@ export const Header = ({
   }).format(new Date(value.year, value.month - 1))
 
   return (
-    <div className={styles.header}>
+    <div className={cx(css(styles.header), className)}>
       <button
-        className={styles.navButton}
+        className={cx(css(styles.navButton))}
         onClick={() => onMonthChange(-1)}
         aria-label="Go To Previous month"
       >
         <ChevronLeft />
       </button>
-      <div className={styles.title}>
+      <div className={cx(css(styles.title))}>
         {render
           ? render(new Date(value.year, value.month - 1), locale)
           : `${monthAndYear}`}
       </div>
       <button
-        className={styles.navButton}
+        className={cx(css(styles.navButton))}
         onClick={() => onMonthChange(1)}
         aria-label="Go To Next month"
       >
@@ -170,16 +184,19 @@ export const Header = ({
 
 interface WeekdayProps {
   format?: "short" | "long"
+  className?: string
 }
 
-export const Weekday = ({ format = "short" }: WeekdayProps) => {
+export const Weekday = ({ className, format = "short" }: WeekdayProps) => {
   const { weekStart, locale } = useCalendarContext(contextScopeName)
-  const styles = recipe()
+  const styles = recipe.raw()
 
   return (
-    <div className={styles.weekday}>
+    <div className={cx(css(styles.weekday), className)}>
       {getWeekdays(weekStart, locale, format).map((day, index) => (
-        <div key={index}>{day}</div>
+        <div key={index} className={cx(css(styles.weekday))}>
+          {day}
+        </div>
       ))}
     </div>
   )
@@ -187,6 +204,7 @@ export const Weekday = ({ format = "short" }: WeekdayProps) => {
 
 interface DaysProps {
   showOutsideDays?: boolean
+  className?: string
 }
 
 interface DayButtonProps {
@@ -199,17 +217,18 @@ interface DayButtonProps {
 }
 
 const DayButton = ({
+  className,
   day,
   month,
   year,
   isHidden,
   isOutsideMonth,
 }: DayButtonProps) => {
-  const styles = recipe()
+  const styles = recipe.raw()
 
   return (
     <button
-      className={styles.dayCell}
+      className={cx(css(styles.dayCell), className)}
       data-day={day}
       data-month={month}
       data-year={year}
@@ -222,9 +241,9 @@ const DayButton = ({
   )
 }
 
-export const Days = ({ showOutsideDays = true }: DaysProps) => {
+export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
   const { value } = useCalendarContext(contextScopeName)
-  const styles = recipe()
+  const styles = recipe.raw()
 
   const weeks = useMemo(() => {
     const days: Array<{ day: number; isCurrentMonth: boolean }> = []
@@ -264,10 +283,10 @@ export const Days = ({ showOutsideDays = true }: DaysProps) => {
   ])
 
   return (
-    <table className={styles.daysGrid}>
+    <table className={cx(css(styles.daysGrid), className)}>
       <tbody>
         {weeks.map((week, weekIndex) => (
-          <tr key={weekIndex} className={styles.weekRow}>
+          <tr key={weekIndex} className={cx(css(styles.weekRow))}>
             {week.map((day, dayIndex) => {
               const isHidden = !showOutsideDays && !day.isCurrentMonth
               const month = day.isCurrentMonth
@@ -277,7 +296,10 @@ export const Days = ({ showOutsideDays = true }: DaysProps) => {
                   : value.month + 1
 
               return (
-                <td key={`${weekIndex}-${dayIndex}`}>
+                <td
+                  key={`${weekIndex}-${dayIndex}`}
+                  className={cx(css(styles.daysGrid))}
+                >
                   <DayButton
                     day={day.day}
                     month={month}
