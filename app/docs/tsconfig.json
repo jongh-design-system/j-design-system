@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@styled-system/*": ["./styled-system/*"]
+      "@styled-system/*": ["./styled-system/*"],
+      "#site/content": ["./.velite"]
     }
   },
   "include": [
