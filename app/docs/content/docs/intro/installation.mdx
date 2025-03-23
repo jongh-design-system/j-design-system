@@ -1,0 +1,57 @@
+---
+slug: installation
+---
+
+## Typescript
+
+This project is designed for TypeScript users, If you prefer not to modify your import statement in components, I recommend registering tsconfig.json paths configuration like this
+
+```
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+
+```
+
+## Initialize
+
+<CommandCodeBlock
+  command={{
+    npm: "npx @jongh/cli init",
+    pnpm: "pnpm dlx @jongh/cli init",
+    yarn: "yarn @jongh/cli init",
+  }}
+/>
+
+You can initialize the project easily using the CLI. Running the command below will generate the components.json and preset.ts files
+
+## components.json
+
+This configuration is similar to shadcn. For the add command, the file storage location and import statements are determined by these paths
+
+styledsystem refer to pandacss generated folder
+
+```
+{
+  "utils": "@/utils",
+  "components": "@/components",
+  "hooks": "@/hooks",
+  "styledsystem": "styled-system"
+}
+```
+
+## preset.ts
+
+All component styles are generated using this preset.
+
+It is based on the default preset provided by pandacss.
+
+You can choose from the primary, secondary, and gray color themes
+
+## panda.config
+
+Finally, your panda.config file is updated to use the generated preset
