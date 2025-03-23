@@ -3,30 +3,74 @@ title: Button
 slug: button
 ---
 
-# Button
+## Button Component Documentation
 
-Button 컴포넌트는 Radix UI의 Slot을 활용하여 구현된 다용도 버튼 컴포넌트입니다.
+## Overview
 
-## 특징
+Button 컴포넌트는 다양한 variant와 size 옵션을 통해 버튼의 스타일을 변경할 수 있는 React 컴포넌트입니다. 이 컴포넌트는 @styled-system/css의 cva (Class Variance Authority) API를 사용하여 스타일을 설정하며, 여러 가지 시각적 스타일을 선택할 수 있는 variant prop을 제공합니다.
 
-- Slot 패턴을 통한 다양한 엘리먼트로의 확장성
-- 접근성을 고려한 키보드 포커스 스타일
-- 다양한 상태와 크기 지원
+## Installation
 
-## 변형 (Variants)
+이 컴포넌트를 사용하려면 아래 명령어를 통해 패키지를 설치합니다.
 
-버튼은 다음과 같은 스타일 변형을 지원합니다:
+<CommandCodeBlock
+  command={{
+    npm: "npx @jongh/cli add button",
+    yarn: "yarn @jongh/cli add button",
+    pnpm: "pnpm dlx @jongh/cli add button",
+  }}
+/>
 
-<div>
-  <Button>ㅎㅇ</Button>
-  <Button variant="secondary">ㅎㅇ</Button>
-  <Button variant="ghost">ㅎㅇ</Button>
-  <Button variant="destructive">ㅎㅇ</Button>
-</div>
+## Usage
 
+Button 컴포넌트는 다양한 variant와 size 옵션을 제공하여 버튼을 쉽게 스타일링할 수 있습니다.
+
+## Props
+
+기본적인 HTML button 태그의 기능과 함께 style customize를 위한 props를 제공합니다
+
+### variant
+
+variant prop은 버튼의 스타일을 설정하는 주요 요소입니다. 다음과 같은 variant 값을 사용할 수 있습니다:
+
+- default: 기본 스타일 (배경색: primary, 텍스트 색: primary.foreground)
+- destructive: 위험을 나타내는 버튼 (배경색: destructive, 텍스트 색: destructive.foreground)
+- outline: 테두리만 있는 버튼 (배경색: background, 테두리 색: input)
+- secondary: 보조 버튼 (배경색: secondary, 텍스트 색: secondary.foreground)
+- ghost: 배경색이 없는 버튼 (호버 시 배경색: accent)
+- link: 링크 스타일 버튼 (텍스트 색: primary, 호버 시 텍스트 밑줄)
+
+### size
+
+size prop은 버튼의 크기를 설정합니다:
+
+- default: 기본 크기
+- sm: 작은 크기
+- lg: 큰 크기
+- icon: 아이콘 버튼 (너비와 높이가 동일)
+
+## Example Usage:
+
+```tsx
+import { Button } from "@/components/button"
+
+const MyComponent = () => (
+  <div>
+    <Button variant="default">Primary Button</Button>
+    <Button variant="destructive">Destructive Button</Button>
+    <Button variant="outline">Outline Button</Button>
+    <Button variant="secondary">Secondary Button</Button>
+    <Button variant="ghost">Ghost Button</Button>
+    <Button variant="link">Link Button</Button>
+  </div>
+)
 ```
-<Button variant="primary">ㅎㅇ</Button>
-<Button variant="secondary">ㅎㅇ</Button>
-<Button variant="ghost">ㅎㅇ</Button>
-<Button variant="destructive">ㅎㅇ</Button>
-```
+
+## Example:
+
+    <Button variant="default" size="default">Default Button</Button>
+    <Button variant="destructive" size="sm">Destructive Button</Button>
+    <Button variant="outline" size="lg">Outline Button</Button>
+    <Button variant="secondary" size="sm">Secondary Button</Button>
+    <Button variant="ghost" size="sm">Ghost Button</Button>
+    <Button variant="link" size="default">Link Button</Button>
