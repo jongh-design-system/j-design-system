@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as runtime from "react/jsx-runtime"
 
-import { useMDXComponents } from "@/mdx-components"
+import { MDXComponents } from "@/mdx-components"
 
 import { Button } from "./button"
 import { CodeBlock } from "./codeBlock"
@@ -11,7 +11,7 @@ const sharedComponents = {
   // Add your global components here
   Button,
   CommandCodeBlock,
-  ...useMDXComponents,
+  ...MDXComponents(),
   pre: (props: any) => <CodeBlock {...props} />,
 }
 

@@ -3,7 +3,7 @@ import { css } from "@styled-system/css"
 import type { ComponentType } from "react"
 
 //TODO: @next/mdx 사용시 만들었던 컴포넌트, 컴포넌트명 및 타입 개선 필요
-export function useMDXComponents(): Record<string, ComponentType<any>> {
+export function MDXComponents(): Record<string, ComponentType<any>> {
   return {
     h1: ({ children }) => (
       <h1
