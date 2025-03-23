@@ -3,18 +3,18 @@ import { notFound } from "next/navigation"
 import path from "path"
 
 import { MDXContent } from "@/components/mdx-content"
-import { components } from "#site/content"
+import { intro } from "#site/content"
 
 type Props = {
   params: Promise<{ slug: string }>
 }
 
 function getPageBySlug(slug: string) {
-  return components.find((post) => post.slug === slug)
+  return intro.find((post) => post.slug === slug)
 }
 
 export async function generateStaticParams() {
-  const contentPath = path.join(process.cwd(), "content/docs/components")
+  const contentPath = path.join(process.cwd(), "content/docs/intro")
   const files = fs.readdirSync(contentPath)
   const jsonFiles = files.filter((file) => file.endsWith(".mdx"))
 
@@ -26,6 +26,7 @@ export async function generateStaticParams() {
 export default async function Page({ params }: Props) {
   const { slug } = await params
   const post = getPageBySlug(slug)
+
   if (!post) {
     return notFound()
   }
