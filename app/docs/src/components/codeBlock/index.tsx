@@ -58,7 +58,7 @@ export const CodeBlock = ({
           zIndex: 10,
         })}
       >
-        {!isCopied ? <Check style={{ color: "white" }} /> : <Copy />}
+        {isCopied ? <Check style={{ color: "white" }} /> : <Copy />}
       </button>
       <pre ref={preRef} {...props} className={className}>
         {children}
