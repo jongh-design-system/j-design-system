@@ -8,7 +8,6 @@ import { CodeBlock } from "./codeBlock"
 import { CommandCodeBlock } from "./commandCodeBlock"
 
 const sharedComponents = {
-  // Add your global components here
   Button,
   CommandCodeBlock,
   ...MDXComponents(),

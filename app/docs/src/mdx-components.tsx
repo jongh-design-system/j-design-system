@@ -2,10 +2,10 @@
 import { css } from "@styled-system/css"
 import type { ComponentType } from "react"
 
-//TODO: @next/mdx 사용시 만들었던 컴포넌트, 컴포넌트명 및 타입 개선 필요
+//global components using mdx
 export function MDXComponents(): Record<string, ComponentType<any>> {
   return {
-    h1: ({ children }) => (
+    h1: (props) => (
       <h1
         className={css({
           textStyle: "2xl",
@@ -13,11 +13,10 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
           mb: "4",
           fontWeight: "bold",
         })}
-      >
-        {children}
-      </h1>
+        {...props}
+      />
     ),
-    h2: ({ children }) => (
+    h2: (props) => (
       <h2
         className={css({
           textStyle: "xl",
@@ -29,11 +28,10 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
           borderBottomColor: "gray.100",
           pb: "2",
         })}
-      >
-        {children}
-      </h2>
+        {...props}
+      />
     ),
-    h3: ({ children }) => (
+    h3: (props) => (
       <h3
         className={css({
           textStyle: "lg",
@@ -41,45 +39,40 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
           mb: "2",
           fontWeight: "medium",
         })}
-      >
-        {children}
-      </h3>
+        {...props}
+      />
     ),
-    p: ({ children }) => (
+    p: (props) => (
       <p
         className={css({
           textStyle: "base",
           color: "foreground",
           mb: "4",
         })}
-      >
-        {children}
-      </p>
+        {...props}
+      />
     ),
-    span: ({ children }) => (
+    span: (props) => (
       <span
         className={css({
           textStyle: "base",
           color: "foreground",
         })}
-      >
-        {children}
-      </span>
+        {...props}
+      />
     ),
-    a: ({ href, children }) => (
+    a: (props) => (
       <a
-        href={href}
         className={css({
           textStyle: "base",
           color: "primary",
           textDecoration: "underline",
           _hover: { opacity: 0.8 },
         })}
-      >
-        {children}
-      </a>
+        {...props}
+      />
     ),
-    // pre: ({ children }) => (
+    // pre: (props) => (
     //   <pre
     //     className={css({
     //       display: "block",
@@ -92,11 +85,10 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     //       _dark: { bg: "zinc.900" },
     //       padding: "4",
     //     })}
-    //   >
-    //     {children}
-    //   </pre>
+    //     {...props}
+    //   />
     // ),
-    // code: ({ children }) => <code>{children}</code>,
+    // code: (props) => <code {...props} />,
     // ...components,
   }
 }
