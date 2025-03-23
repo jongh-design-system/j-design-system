@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { css } from "@styled-system/css"
-import type { MDXComponents } from "mdx/types"
+import type { ComponentType } from "react"
 
-export function useMDXComponents(components: MDXComponents): MDXComponents {
+//TODO: @next/mdx 사용시 만들었던 컴포넌트, 컴포넌트명 및 타입 개선 필요
+export function useMDXComponents(): Record<string, ComponentType<any>> {
   return {
     h1: ({ children }) => (
       <h1
@@ -77,24 +79,24 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </a>
     ),
-    pre: ({ children }) => (
-      <pre
-        className={css({
-          display: "block",
-          fontFamily: "mono",
-          fontSize: "sm",
-          color: "zinc.50",
-          overflow: "hidden",
-          rounded: "xl",
-          bg: "zinc.950",
-          _dark: { bg: "zinc.900" },
-          padding: "4",
-        })}
-      >
-        {children}
-      </pre>
-    ),
-    code: ({ children }) => <code>{children}</code>,
-    ...components,
+    // pre: ({ children }) => (
+    //   <pre
+    //     className={css({
+    //       display: "block",
+    //       fontFamily: "mono",
+    //       fontSize: "sm",
+    //       color: "zinc.50",
+    //       overflow: "hidden",
+    //       rounded: "xl",
+    //       bg: "zinc.950",
+    //       _dark: { bg: "zinc.900" },
+    //       padding: "4",
+    //     })}
+    //   >
+    //     {children}
+    //   </pre>
+    // ),
+    // code: ({ children }) => <code>{children}</code>,
+    // ...components,
   }
 }
