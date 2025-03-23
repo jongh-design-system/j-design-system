@@ -19,3 +19,25 @@ body {
 * {
   box-sizing: border-box;
 }
+
+pre.shiki {
+  max-height: var(--max-height, 80svh);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+
+  code {
+    display: grid;
+    overflow: auto;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .line {
+    position: relative;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}

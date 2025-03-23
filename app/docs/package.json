@@ -13,29 +13,26 @@
     "transform-icon": "npx tsx ./scripts/transformIcon.ts && npx prettier --write ./src/components/icons/*.tsx"
   },
   "dependencies": {
-    "@mdx-js/loader": "^3.1.0",
-    "@mdx-js/react": "^3.1.0",
-    "@next/mdx": "^15.1.7",
-    "@types/mdx": "^2.0.13",
     "motion": "^12.4.10",
     "next": "15.1.4",
     "next-themes": "^0.4.4",
     "panda-animation": "workspace:*",
     "radix-ui": "^1.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "rehype-highlight": "^7.0.2",
-    "rehype-pretty-code": "^0.14.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@jongh/eslint": "workspace:*",
     "@jongh/tsconfig": "workspace:*",
+    "@shikijs/rehype": "^3.2.1",
+    "@shikijs/transformers": "^3.2.1",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-prettier": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
-    "@types/react-dom": "^19"
+    "@types/react-dom": "^19",
+    "velite": "^0.2.2"
   }
 }
