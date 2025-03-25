@@ -60,12 +60,21 @@ export const addCommand = new Command()
       const { outdir } = await resolvePandaConfig(config)
       //최종 경로
 
-      const paths = configSchema.schema.parse({
-        utils: await resolveImport(componentsJson.utils, tsconfig),
-        components: await resolveImport(componentsJson.components, tsconfig),
-        hooks: await resolveImport(componentsJson.hooks, tsconfig),
-        styledsystem: path.join(options.cwd, outdir || "styled-system"),
-      })
+      const paths = configSchema.schema.parse(
+        {
+          utils: await resolveImport(componentsJson.utils, tsconfig),
+          components: await resolveImport(componentsJson.components, tsconfig),
+          hooks: await resolveImport(componentsJson.hooks, tsconfig),
+          styledsystem: path.join(options.cwd, outdir || "styled-system"),
+        },
+        {
+          errorMap: () => {
+            return {
+              message: `validation failed at components.json`,
+            }
+          },
+        },
+      )
       //fetch
       const componentList = options.components?.map((c) => c.toLowerCase())
 
@@ -104,7 +113,7 @@ export const addCommand = new Command()
               })
             }
             if (e instanceof Error) {
-              throw ErrorMap(e.cause as FetchIssue) //TODO : remove assertion
+              throw ErrorMap(e.cause as FetchIssue)
             }
           }
         }),
@@ -169,17 +178,16 @@ export const addCommand = new Command()
         }
       })
     } catch (e) {
-      console.log(e)
+      outro(error(info("error occured")))
       if (e instanceof ZodError) {
-        error(e.message)
+        console.log(e.message)
       }
       if (e instanceof CommandError) {
-        error(e.format)
+        console.log(error(e.format))
       }
       if (e instanceof Error) {
-        error(e.message)
+        console.log(error(e.message))
       }
-      outro(info("error occured"))
       process.exit(1)
     }
   })
