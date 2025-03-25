@@ -95,7 +95,16 @@ export async function init(options: z.infer<typeof initSchema>) {
   )
 
   const baseAlias = getBaseAlias(root, result)
-
+  if (baseAlias === null) {
+    throw ErrorMap({
+      code: "resolve_path_fail",
+      target: "tsconfig.json",
+      cwd: root,
+      message: [
+        `cannot find paths alias in your ${path.join(root, "tsconfig.json")}`,
+      ],
+    })
+  }
   let defaultStyledSystemAlias = "styled-system"
 
   const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile)
