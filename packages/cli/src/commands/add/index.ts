@@ -5,9 +5,9 @@ import chalk from "chalk"
 import { Command } from "commander"
 import fs from "fs-extra"
 import path from "path"
-import { z, ZodError } from "zod"
+import { z } from "zod"
 
-import { CommandError, ErrorMap, type FetchIssue } from "@/common/error"
+import { CommandError, ErrorMap } from "@/common/error"
 import {
   getPandacssConfigPath,
   loadComponentConfig,
@@ -25,6 +25,9 @@ const addSchema = z.object({
 
 const BASE_URL = "https://whdgur.shop"
 
+const error = chalk.bold.red
+const info = chalk.bold.blue
+
 export const addCommand = new Command()
   .name("add")
   .argument("[components...]")
@@ -34,9 +37,6 @@ export const addCommand = new Command()
     process.cwd(),
   )
   .action(async (components, opts) => {
-    const error = chalk.bold.red
-    const info = chalk.bold.blue
-
     try {
       const options = addSchema.parse({
         components,
@@ -68,11 +68,9 @@ export const addCommand = new Command()
           styledsystem: path.join(options.cwd, outdir || "styled-system"),
         },
         {
-          errorMap: () => {
-            return {
-              message: `validation failed at components.json`,
-            }
-          },
+          errorMap: () => ({
+            message: `validation failed at components.json`,
+          }),
         },
       )
       //fetch
@@ -83,39 +81,17 @@ export const addCommand = new Command()
       }
 
       const results = await Promise.allSettled(
-        componentList?.map(async (c) => {
-          try {
-            const response = await fetch(`${BASE_URL}/${c}.json`)
-            if (!response.ok) {
-              const error = new Error("fetch error", {
-                cause: {
-                  code: "failed_to_fetch",
-                  target: c,
-                  statusCode: response.status,
-                  message: [response.statusText],
-                } satisfies FetchIssue,
-              })
-              throw error
-            }
-            return await response.json()
-          } catch (e) {
-            if (e instanceof TypeError) {
-              throw ErrorMap({
-                code: "failed_to_fetch",
-                target: c,
-                statusCode: null,
-                message: [
-                  error(e.message),
-                  error(
-                    e.cause ? JSON.stringify(e.cause) : "cause by typeError",
-                  ),
-                ],
-              })
-            }
-            if (e instanceof Error) {
-              throw ErrorMap(e.cause as FetchIssue)
-            }
+        componentList.map(async (c) => {
+          const response = await fetch(`${BASE_URL}/${c}.json`)
+          if (!response.ok) {
+            throw ErrorMap({
+              code: "failed_to_fetch",
+              target: c,
+              statusCode: response.status,
+              message: [response.statusText],
+            })
           }
+          return await response.json()
         }),
       )
 
@@ -123,12 +99,18 @@ export const addCommand = new Command()
         if (result.status === "rejected") {
           if (result.reason instanceof CommandError) {
             console.log(error(result.reason.format))
+          } else {
+            console.log(error(result.reason))
           }
           return
         }
         try {
           //1. registry schema check
-          const registry = registrySchema.parse(result.value)
+          const registry = registrySchema.parse(result.value, {
+            errorMap: () => ({
+              message: `registry for ${componentList[index]} is invaliad`,
+            }),
+          })
           //2.폴더를 하나 생성해야 함 -> 폴더이름은 reigstry.name
           const src = path.join(paths.components, componentList[index])
 
@@ -173,13 +155,16 @@ export const addCommand = new Command()
               `${componentList[index]} completed successfully \n ${outroMsg}`,
             ),
           )
+          process.exit(0)
         } catch (e) {
-          console.log(e)
+          if (e instanceof Error) {
+            console.log(error(e.message))
+          }
         }
       })
     } catch (e) {
       outro(error(info("error occured")))
-      if (e instanceof ZodError) {
+      if (e instanceof z.ZodError) {
         console.log(e.message)
       }
       if (e instanceof CommandError) {
