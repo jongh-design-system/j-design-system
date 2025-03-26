@@ -5,9 +5,9 @@ import chalk from "chalk"
 import { Command } from "commander"
 import fs from "fs-extra"
 import path from "path"
-import { z, ZodError } from "zod"
+import { z } from "zod"
 
-import { CommandError, ErrorMap, type FetchIssue } from "@/common/error"
+import { CommandError, ErrorMap } from "@/common/error"
 import {
   getPandacssConfigPath,
   loadComponentConfig,
@@ -25,6 +25,9 @@ const addSchema = z.object({
 
 const BASE_URL = "https://whdgur.shop"
 
+const error = chalk.bold.red
+const info = chalk.bold.blue
+
 export const addCommand = new Command()
   .name("add")
   .argument("[components...]")
@@ -34,9 +37,6 @@ export const addCommand = new Command()
     process.cwd(),
   )
   .action(async (components, opts) => {
-    const error = chalk.bold.red
-    const info = chalk.bold.blue
-
     try {
       const options = addSchema.parse({
         components,
@@ -60,12 +60,19 @@ export const addCommand = new Command()
       const { outdir } = await resolvePandaConfig(config)
       //최종 경로
 
-      const paths = configSchema.schema.parse({
-        utils: await resolveImport(componentsJson.utils, tsconfig),
-        components: await resolveImport(componentsJson.components, tsconfig),
-        hooks: await resolveImport(componentsJson.hooks, tsconfig),
-        styledsystem: path.join(options.cwd, outdir || "styled-system"),
-      })
+      const paths = configSchema.schema.parse(
+        {
+          utils: await resolveImport(componentsJson.utils, tsconfig),
+          components: await resolveImport(componentsJson.components, tsconfig),
+          hooks: await resolveImport(componentsJson.hooks, tsconfig),
+          styledsystem: path.join(options.cwd, outdir || "styled-system"),
+        },
+        {
+          errorMap: () => ({
+            message: `validation failed at components.json`,
+          }),
+        },
+      )
       //fetch
       const componentList = options.components?.map((c) => c.toLowerCase())
 
@@ -74,52 +81,36 @@ export const addCommand = new Command()
       }
 
       const results = await Promise.allSettled(
-        componentList?.map(async (c) => {
-          try {
-            const response = await fetch(`${BASE_URL}/${c}.json`)
-            if (!response.ok) {
-              const error = new Error("fetch error", {
-                cause: {
-                  code: "failed_to_fetch",
-                  target: c,
-                  statusCode: response.status,
-                  message: [response.statusText],
-                } satisfies FetchIssue,
-              })
-              throw error
-            }
-            return await response.json()
-          } catch (e) {
-            if (e instanceof TypeError) {
-              throw ErrorMap({
-                code: "failed_to_fetch",
-                target: c,
-                statusCode: null,
-                message: [
-                  error(e.message),
-                  error(
-                    e.cause ? JSON.stringify(e.cause) : "cause by typeError",
-                  ),
-                ],
-              })
-            }
-            if (e instanceof Error) {
-              throw ErrorMap(e.cause as FetchIssue) //TODO : remove assertion
-            }
+        componentList.map(async (c) => {
+          const response = await fetch(`${BASE_URL}/${c}.json`)
+          if (!response.ok) {
+            throw ErrorMap({
+              code: "failed_to_fetch",
+              target: c,
+              statusCode: response.status,
+              message: [response.statusText],
+            })
           }
+          return await response.json()
         }),
       )
 
-      results.forEach(async (result, index) => {
+      for (const [index, result] of results.entries()) {
         if (result.status === "rejected") {
           if (result.reason instanceof CommandError) {
             console.log(error(result.reason.format))
+          } else {
+            console.log(error(result.reason))
           }
-          return
+          continue
         }
         try {
           //1. registry schema check
-          const registry = registrySchema.parse(result.value)
+          const registry = registrySchema.parse(result.value, {
+            errorMap: () => ({
+              message: `registry for ${componentList[index]} is invaliad`,
+            }),
+          })
           //2.폴더를 하나 생성해야 함 -> 폴더이름은 reigstry.name
           const src = path.join(paths.components, componentList[index])
 
@@ -165,21 +156,22 @@ export const addCommand = new Command()
             ),
           )
         } catch (e) {
-          console.log(e)
+          if (e instanceof Error) {
+            console.log(error(e.message))
+          }
         }
-      })
+      }
     } catch (e) {
-      console.log(e)
-      if (e instanceof ZodError) {
-        error(e.message)
+      outro(error(info("error occured")))
+      if (e instanceof z.ZodError) {
+        console.log(e.message)
       }
       if (e instanceof CommandError) {
-        error(e.format)
+        console.log(error(e.format))
       }
       if (e instanceof Error) {
-        error(e.message)
+        console.log(error(e.message))
       }
-      outro(info("error occured"))
-      process.exit(1)
+      process.exit(1) // 전체 프로세스가 실패했을 때만 종료
     }
   })

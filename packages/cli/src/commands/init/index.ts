@@ -1,4 +1,5 @@
 import { confirm, select, spinner } from "@clack/prompts"
+import chalk from "chalk"
 import { Command } from "commander"
 import fs from "fs-extra"
 import path from "path"
@@ -28,6 +29,8 @@ const initSchema = z.object({
   default: z.boolean(),
 })
 
+const error = chalk.bold.red
+const info = chalk.bold.blue
 export const initCommand = new Command()
   .name("init")
   .description("Initialize the project")
@@ -48,14 +51,17 @@ export const initCommand = new Command()
       await init(options)
       s.stop("successfully Initialized!")
     } catch (e) {
+      s.stop(error(info("error occured")))
+      if (e instanceof z.ZodError) {
+        console.log(e.message)
+      }
       if (e instanceof CommandError) {
-        console.error(e.format)
+        console.log(error(e.format))
       }
       if (e instanceof Error) {
-        console.log(e.message, e.cause)
+        console.log(error(e.message))
       }
-      s.stop("Failed to initialize")
-      process.exit(0)
+      process.exit(1)
     }
   })
 
@@ -77,7 +83,7 @@ export async function init(options: z.infer<typeof initSchema>) {
       message: "you already initialize,are you want to overwrite it?",
     })
     if (!conf) {
-      process.exit(1)
+      process.exit(0)
     }
   }
 
@@ -88,7 +94,16 @@ export async function init(options: z.infer<typeof initSchema>) {
   )
 
   const baseAlias = getBaseAlias(root, result)
-
+  if (baseAlias === null) {
+    throw ErrorMap({
+      code: "resolve_path_fail",
+      target: "tsconfig.json",
+      cwd: root,
+      message: [
+        `cannot find paths alias in your ${path.join(root, "tsconfig.json")}`,
+      ],
+    })
+  }
   let defaultStyledSystemAlias = "styled-system"
 
   const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile)
@@ -105,12 +120,17 @@ export async function init(options: z.infer<typeof initSchema>) {
     defaultStyledSystemAlias = outdir //outdir이 있으면 경로는 outdir
   }
 
-  const config = configSchema.schema.parse({
-    utils: `${baseAlias}/utils`,
-    components: `${baseAlias}/components`,
-    hooks: `${baseAlias}/hooks`,
-    styledsystem: defaultStyledSystemAlias,
-  })
+  const config = configSchema.schema.parse(
+    {
+      utils: `${baseAlias}/utils`,
+      components: `${baseAlias}/components`,
+      hooks: `${baseAlias}/hooks`,
+      styledsystem: defaultStyledSystemAlias,
+    },
+    {
+      errorMap: () => ({ message: `components.json is invalid` }),
+    },
+  )
 
   fs.writeFile(
     path.resolve(root, "components.json"),
