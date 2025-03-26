@@ -95,14 +95,14 @@ export const addCommand = new Command()
         }),
       )
 
-      results.forEach(async (result, index) => {
+      for (const [index, result] of results.entries()) {
         if (result.status === "rejected") {
           if (result.reason instanceof CommandError) {
             console.log(error(result.reason.format))
           } else {
             console.log(error(result.reason))
           }
-          return
+          continue
         }
         try {
           //1. registry schema check
@@ -155,13 +155,12 @@ export const addCommand = new Command()
               `${componentList[index]} completed successfully \n ${outroMsg}`,
             ),
           )
-          process.exit(0)
         } catch (e) {
           if (e instanceof Error) {
             console.log(error(e.message))
           }
         }
-      })
+      }
     } catch (e) {
       outro(error(info("error occured")))
       if (e instanceof z.ZodError) {
@@ -173,6 +172,6 @@ export const addCommand = new Command()
       if (e instanceof Error) {
         console.log(error(e.message))
       }
-      process.exit(1)
+      process.exit(1) // 전체 프로세스가 실패했을 때만 종료
     }
   })

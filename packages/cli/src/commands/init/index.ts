@@ -50,7 +50,6 @@ export const initCommand = new Command()
       })
       await init(options)
       s.stop("successfully Initialized!")
-      process.exit(0)
     } catch (e) {
       s.stop(error(info("error occured")))
       if (e instanceof z.ZodError) {
