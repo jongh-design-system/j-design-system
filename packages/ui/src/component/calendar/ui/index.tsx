@@ -28,25 +28,209 @@ export interface CalendarContextType {
   weekStart: 0 | 1
   locale: Intl.LocalesArgument
 
-  onChange: (value: Date) => void
   onMonthChange: (amount: number) => void
   onYearChange: (amount: number) => void
+  selectedValue: Array<Date | null>
+  handleDayClick: (date: Date) => void
 }
 
 const contextScopeName = "calendar"
 
 const [CalendarProvider, useCalendarContext] =
   Context.createContext<CalendarContextType>(contextScopeName)
-export interface CalendarRootProps extends ComponentPropsWithoutRef<"div"> {
+
+type RangeDate = Array<Date | null>
+
+interface CalendarBaseProps extends ComponentPropsWithoutRef<"div"> {
   children?: ReactNode
-  date?: Date
-  defaultDate?: Date
-  onDateChange?: (date: Date) => void
-  weekStart?: 0 | 1 // 0: 일요일, 1: 월요일
+  weekStart?: 0 | 1
   locale?: Intl.LocalesArgument
 }
 
-export const Root = forwardRef<HTMLDivElement, CalendarRootProps>(
+interface CalendarViewProps {
+  viewDate?: Date // 제어: 현재 보여지는 월/년 기준 날짜
+  defaultViewDate?: Date // 비제어: 초기 보여지는 월/년 기준 날짜
+  onViewDateChange?: (date: Date) => void // viewDate 변경 시 콜백
+}
+
+export interface CalendarRootProps
+  extends CalendarBaseProps,
+    CalendarViewProps {
+  type: "single"
+
+  date?: Date
+  defaultDate?: Date
+  onDateChange?: (date: Date) => void
+}
+
+export interface CalendarRangeProps
+  extends CalendarBaseProps,
+    CalendarViewProps {
+  type: "range" // 구별자
+  range?: RangeDate // 제어: 선택된 날짜 범위
+  defaultRange?: RangeDate // 비제어: 초기 선택된 날짜 범위
+  onRangeChange?: (range: RangeDate | undefined) => void // range 변경 시 콜백
+}
+
+export const Root = (props: CalendarRootProps | CalendarRangeProps) => {
+  const { type = "single", ...rest } = props
+  const singleProps = rest as CalendarRootProps
+  const rangeProps = rest as CalendarRangeProps
+  if (type === "single") {
+    return <SingleCalendar {...singleProps} type="single" />
+  } else {
+    return <RangeCalendar {...rangeProps} type="range" />
+  }
+}
+
+export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
+  (
+    {
+      className,
+      children,
+      range,
+      defaultRange,
+      onRangeChange,
+      viewDate,
+      defaultViewDate,
+      onViewDateChange,
+      weekStart = 0,
+      locale = "en-US",
+      ...props
+    },
+    ref,
+  ) => {
+    const [rangeValue = [], setRangeValue] = useControllableState<RangeDate>({
+      prop: range,
+      defaultProp: defaultRange,
+      onChange: onRangeChange,
+    })
+
+    const [viewDateValue = new Date(), setViewDateValue] = useControllableState(
+      {
+        prop: viewDate,
+        defaultProp: defaultViewDate,
+        onChange: onViewDateChange,
+      },
+    )
+
+    const onMonthChange = useCallback(
+      (amount: number) => {
+        const newDate = new Date(viewDateValue)
+        newDate.setMonth(newDate.getMonth() + amount)
+        setViewDateValue(newDate)
+      },
+      [viewDateValue, setViewDateValue],
+    )
+
+    const onYearChange = useCallback(
+      (amount: number) => {
+        const newDate = new Date(viewDateValue)
+        newDate.setFullYear(newDate.getFullYear() + amount)
+        setViewDateValue(newDate)
+      },
+      [viewDateValue, setViewDateValue],
+    )
+
+    const dateFormat = useMemo(() => {
+      const currentDate = new Date(viewDateValue)
+      const firstDay = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1,
+      )
+      const lastDay = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0,
+      )
+      const prevMonthLastDay = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        0,
+      )
+      const nextMonthFirstDay = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        1,
+      )
+
+      return {
+        year: currentDate.getFullYear(),
+        month: currentDate.getMonth() + 1,
+        day: currentDate.getDate(),
+        daysInMonth: lastDay.getDate(),
+        startWeek: (firstDay.getDay() - weekStart + 7) % 7,
+        daysInPrevMonth: prevMonthLastDay.getDate(),
+        nextMonthStartWeek: (nextMonthFirstDay.getDay() - weekStart + 7) % 7,
+      }
+    }, [viewDateValue, weekStart])
+
+    const handleDayClick = useCallback(
+      (clickedDate: Date) => {
+        // 시간을 0으로 설정하여 날짜만 비교 (정확한 비교 위함)
+        const normalizedClickedDate = new Date(clickedDate)
+        normalizedClickedDate.setHours(0, 0, 0, 0)
+
+        // 현재 상태(prevRange)를 받아 다음 상태를 반환하는 함수형 업데이트 사용
+        setRangeValue((prevRange) => {
+          if (!prevRange) {
+            return prevRange
+          }
+          const [start, end] = prevRange
+
+          // 시작 날짜의 시간도 0으로 설정 (비교를 위해)
+          const normalizedStart = start ? new Date(start) : null
+          if (normalizedStart) normalizedStart.setHours(0, 0, 0, 0)
+
+          // 1. 시작 날짜가 없는 경우: 클릭한 날짜를 새 시작 날짜로 설정
+          if (!normalizedStart) {
+            return [clickedDate, null] // 원본 Date 객체 저장
+          }
+
+          // 2. 시작 날짜만 있고 종료 날짜는 없는 경우:
+          if (normalizedStart && !end) {
+            // 클릭한 날짜가 시작 날짜보다 이전이면 -> 클릭한 날짜를 새 시작 날짜로 설정 (범위 리셋)
+            if (normalizedClickedDate < normalizedStart) {
+              return [clickedDate, null]
+            }
+            // 클릭한 날짜가 시작 날짜와 같거나 이후면 -> 클릭한 날짜를 종료 날짜로 설정
+            else {
+              // 시작 날짜와 동일한 날짜를 클릭하면 종료 날짜도 시작 날짜와 동일하게 설정할지,
+              // 아니면 아무것도 안할지 정책 결정 필요 (여기선 종료로 설정)
+              return [start, clickedDate] // 원본 Date 객체 저장
+            }
+          }
+
+          // 3. 시작 날짜와 종료 날짜가 모두 있는 경우: 클릭한 날짜를 새 시작 날짜로 설정 (범위 리셋)
+          if (normalizedStart && end) {
+            return [clickedDate, null]
+          }
+        })
+      },
+      [setRangeValue],
+    )
+
+    return (
+      <div ref={ref}>
+        <CalendarProvider
+          value={dateFormat}
+          weekStart={weekStart}
+          locale={locale}
+          onMonthChange={onMonthChange}
+          onYearChange={onYearChange}
+          selectedValue={rangeValue}
+          handleDayClick={handleDayClick}
+          {...props}
+        >
+          {children}
+        </CalendarProvider>
+      </div>
+    )
+  },
+)
+
+export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
   (
     {
       className,
@@ -54,6 +238,9 @@ export const Root = forwardRef<HTMLDivElement, CalendarRootProps>(
       date,
       defaultDate,
       onDateChange,
+      viewDate,
+      defaultViewDate,
+      onViewDateChange,
       weekStart = 0,
       locale = "en-US",
       ...props
@@ -61,10 +248,16 @@ export const Root = forwardRef<HTMLDivElement, CalendarRootProps>(
     ref,
   ) => {
     const [dateValue = new Date(), setDateValue] = useControllableState({
+      prop: viewDate,
+      defaultProp: defaultViewDate,
+      onChange: onViewDateChange,
+    }) //화면에 보여지는 날짜
+
+    const [selectedValue = null, setSelectedValue] = useControllableState({
       prop: date,
-      defaultProp: defaultDate,
-      onChange: onDateChange,
-    })
+      defaultProp: defaultViewDate,
+      onChange: onViewDateChange,
+    }) //선택된 값 - single은 1개임
 
     const onMonthChange = useCallback(
       (amount: number) => {
@@ -122,11 +315,12 @@ export const Root = forwardRef<HTMLDivElement, CalendarRootProps>(
     return (
       <CalendarProvider
         value={dateFormat}
-        onChange={setDateValue}
         onMonthChange={onMonthChange}
         onYearChange={onYearChange}
         weekStart={weekStart}
         locale={locale}
+        selectedValue={selectedValue ? [selectedValue] : []}
+        handleDayClick={(clickedDate: Date) => setSelectedValue(clickedDate)}
       >
         <div ref={ref} className={cx(css(styles.root), className)} {...props}>
           {children}
