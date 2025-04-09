@@ -171,13 +171,9 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
         // 시간을 0으로 설정하여 날짜만 비교 (정확한 비교 위함)
         const normalizedClickedDate = new Date(clickedDate)
         normalizedClickedDate.setHours(0, 0, 0, 0)
-
         // 현재 상태(prevRange)를 받아 다음 상태를 반환하는 함수형 업데이트 사용
         setRangeValue((prevRange) => {
-          if (!prevRange) {
-            return prevRange
-          }
-          const [start, end] = prevRange
+          const [start, end] = prevRange || [null, null]
 
           // 시작 날짜의 시간도 0으로 설정 (비교를 위해)
           const normalizedStart = start ? new Date(start) : null
@@ -255,10 +251,9 @@ export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
 
     const [selectedValue = null, setSelectedValue] = useControllableState({
       prop: date,
-      defaultProp: defaultViewDate,
-      onChange: onViewDateChange,
-    }) //선택된 값 - single은 1개임
-
+      defaultProp: defaultDate,
+      onChange: onDateChange,
+    })
     const onMonthChange = useCallback(
       (amount: number) => {
         const newDate = new Date(dateValue)
@@ -401,7 +396,7 @@ interface DaysProps {
   className?: string
 }
 
-interface DayButtonProps {
+interface DayButtonProps extends ComponentPropsWithoutRef<"button"> {
   day: number
   month: number
   year: number
@@ -417,6 +412,7 @@ const DayButton = ({
   year,
   isHidden,
   isOutsideMonth,
+  ...props
 }: DayButtonProps) => {
   const styles = recipe.raw()
 
@@ -429,6 +425,7 @@ const DayButton = ({
       data-hidden={isHidden}
       data-outside-month={isOutsideMonth}
       aria-hidden={isHidden}
+      {...props}
     >
       {!isHidden && day}
     </button>
@@ -436,9 +433,8 @@ const DayButton = ({
 }
 
 export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
-  const { value } = useCalendarContext(contextScopeName)
+  const { value, handleDayClick } = useCalendarContext(contextScopeName)
   const styles = recipe.raw()
-
   const weeks = useMemo(() => {
     const days: Array<{ day: number; isCurrentMonth: boolean }> = []
 
@@ -500,6 +496,9 @@ export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
                     year={value.year}
                     isHidden={isHidden}
                     isOutsideMonth={!day.isCurrentMonth}
+                    onClick={() =>
+                      handleDayClick(new Date(value.year, month - 1, day.day))
+                    }
                   />
                 </td>
               )
