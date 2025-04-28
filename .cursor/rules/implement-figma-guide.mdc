@@ -70,8 +70,8 @@ export const textFieldRecipe = sva({
       display: 'flex',
       flexDirection: 'column',
       gap: '1',
-      // other common root styles(as c)
-      //
+      // other common root styles(related to container style(flex,gap,...))
+      // mainly use auto-layout(not using specific width,height)
     },
     label: {
       color: 'foreground',
@@ -118,7 +118,7 @@ export const textFieldRecipe = sva({
         // error state styles for other slots if needed
       },
       disabled: {
-        root: { opacity: '50%' },
+        root: { opacity: '0.5' },
         input: { 
           cursor: 'not-allowed',
           bg: 'muted'
