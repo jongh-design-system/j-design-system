@@ -1,39 +1,13 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
+import { expect, userEvent, within } from "@storybook/test"
 import { css } from "@styled-system/css"
+import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"
 
 import { TextField, type TextFieldProps } from "../component/textfield/ui"
 
 // 아이콘 컴포넌트 (예시)
-const EyeIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M12 5C7 5 2.73 8.11 1 12.5C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12.5C21.27 8.11 17 5 12 5ZM12 17.5C9.24 17.5 7 15.26 7 12.5C7 9.74 9.24 7.5 12 7.5C14.76 7.5 17 9.74 17 12.5C17 15.26 14.76 17.5 12 17.5ZM12 9.5C10.34 9.5 9 10.84 9 12.5C9 14.16 10.34 15.5 12 15.5C13.66 15.5 15 14.16 15 12.5C15 10.84 13.66 9.5 12 9.5Z"
-      fill="currentColor"
-    />
-  </svg>
-)
-
-const ClearIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
-      fill="currentColor"
-    />
-  </svg>
-)
 
 const meta: Meta<TextFieldProps> = {
   title: "Components/TextField",
@@ -52,6 +26,11 @@ export const Default: Story = {
     required: true,
     placeholder: "이름을 입력하세요",
     id: "default-field",
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const input = await canvas.findByLabelText("이름")
+    await userEvent.type(input, "홍길동")
   },
 }
 
@@ -96,19 +75,38 @@ export const Disabled: Story = {
     helperText: "이 필드는 수정할 수 없습니다",
     id: "disabled-field",
   },
-}
-
-// 후행 버튼이 있는 TextField
-export const WithTrailingButton: Story = {
-  args: {
-    label: "비밀번호",
-    type: "password",
-    trailingAddon: <EyeIcon />,
-    helperText: "비밀번호를 입력하세요",
-    id: "trailing-button-field",
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const input = await canvas.findByLabelText("비활성화된 필드")
+    expect(input).toBeDisabled()
+    await userEvent.type(input, "홍길동")
+    expect(input).toHaveValue("수정할 수 없는 값")
   },
 }
-//에러에 대한 판단을 누가?
+
+export const WithTrailingButton: Story = {
+  render: () => {
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+    const handleClick = () => {
+      setIsPasswordVisible(!isPasswordVisible)
+    }
+    return (
+      <TextField
+        label="비밀번호"
+        type={isPasswordVisible ? "text" : "password"}
+        trailingAddon={
+          isPasswordVisible ? (
+            <EyeIcon onClick={handleClick} aria-label="비밀번호 보기" />
+          ) : (
+            <EyeClosedIcon onClick={handleClick} aria-label="비밀번호 숨김" />
+          )
+        }
+        helperText="비밀번호를 입력하세요"
+        id="trailing-button-field"
+      />
+    )
+  },
+}
 export const Validation: Story = {
   render: function RenderValidation() {
     const [input, setInput] = useState("")
@@ -125,6 +123,16 @@ export const Validation: Story = {
         id="validation-field"
       />
     )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const input = await canvas.findByLabelText("10자 미만")
+    await userEvent.type(input, "123456789")
+    expect(input).toHaveValue("123456789")
+    expect(input).toHaveAttribute("aria-invalid", "true")
+    await userEvent.type(input, "1234567891011")
+    expect(input).toHaveValue("1234567891011")
+    expect(input).toHaveAttribute("aria-invalid", "false")
   },
 }
 
@@ -146,9 +154,10 @@ export const AllVariants: Story = {
       >
         기본 상태
       </p>
+      <input title="test"></input>
       <TextField
-        label="기본 상태"
-        helperText="기본 상태의 텍스트 필드입니다"
+        label="기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태"
+        helperText="기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다기본 상태의 텍스트 필드입니다"
         id="all-normal-field"
       />
       <TextField
@@ -160,7 +169,6 @@ export const AllVariants: Story = {
       <TextField
         label="성공 상태"
         value="올바른 입력값"
-        status="negative"
         helperText="성공 상태의 텍스트 필드입니다"
         id="all-success-field"
       />
@@ -180,8 +188,13 @@ export const AllVariants: Story = {
       />
       <TextField
         label="후행 버튼"
-        value="후행 버튼이 있는 필드"
-        trailingAddon={<ClearIcon />}
+        trailingAddon={
+          <CircleArrowDown
+            onClick={() => {
+              console.log("clicked")
+            }}
+          />
+        }
         helperText="후행 버튼이 있는 텍스트 필드입니다"
         id="all-trailing-button-field"
       />
