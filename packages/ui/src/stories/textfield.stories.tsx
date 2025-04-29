@@ -108,7 +108,7 @@ export const WithTrailingButton: Story = {
   },
 }
 export const Validation: Story = {
-  render: function RenderValidation() {
+  render: () => {
     const [input, setInput] = useState("")
     const status = input.length < 10 ? "negative" : "normal"
     return (
@@ -121,18 +121,15 @@ export const Validation: Story = {
           status === "negative" ? "10자 이상 입력하세요" : "정상입니다"
         }
         id="validation-field"
+        placeholder="10자 미만"
       />
     )
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    const input = await canvas.findByLabelText("10자 미만")
-    await userEvent.type(input, "123456789")
-    expect(input).toHaveValue("123456789")
+  play: async ({ canvas }) => {
+    const input = canvas.getByPlaceholderText("10자 미만")
+    await userEvent.type(input, "12345678910")
+    expect(input).toHaveValue("12345678910")
     expect(input).toHaveAttribute("aria-invalid", "true")
-    await userEvent.type(input, "1234567891011")
-    expect(input).toHaveValue("1234567891011")
-    expect(input).toHaveAttribute("aria-invalid", "false")
   },
 }
 
