@@ -66,7 +66,7 @@ export const semanticColors = defineSemanticTokens.colors({
   },
   destructive: {
     DEFAULT: {
-      value: { base: "{colors.red.500}", _dark: "{colors.red.400}" },
+      value: { base: "{colors.red.600}", _dark: "{colors.red.400}" },
     },
     foreground: {
       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
