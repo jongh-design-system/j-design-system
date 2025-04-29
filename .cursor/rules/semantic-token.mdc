@@ -97,15 +97,15 @@ popover.foreground - Text in popovers
 
 
 
-Interactive Colors
+## Interactive Colors
 
-primary - Main brand color for key actions
+- primary - Main brand color for key actions
 
 primary.DEFAULT - Primary button background
 primary.foreground - Text on primary buttons
 
 
-secondary - Supporting color for secondary actions
+- secondary - Supporting color for secondary actions
 
 secondary.DEFAULT - Secondary button background
 secondary.foreground - Text on secondary buttons
@@ -138,7 +138,7 @@ Border Colors
 border - Standard borders and dividers
 input - Form input field borders
 ring - Focus indicator outlines
-재시도Claude는 실수를 할 수 있습니다. 응답을 반드시 다시 확인해 주세요.
+
 
 
 
