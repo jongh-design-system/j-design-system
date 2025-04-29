@@ -4,6 +4,8 @@ import { forwardRef } from "react"
 
 import { recipe, TextFieldVariantProps } from "./recipe"
 
+const getHelperText = (id: string) => `${id}-helper-text`
+
 export type TextFieldProps = Omit<
   ComponentPropsWithoutRef<"input">,
   "size" | "width"
@@ -50,6 +52,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             className={cx(css(styles.input), className)}
             required={required}
             id={id}
+            aria-describedby={getHelperText(id)}
+            aria-invalid={variantProps.status === "negative" ? true : false}
             {...rest}
           />
 
@@ -58,7 +62,15 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           )}
         </div>
 
-        {helperText && <div className={css(styles.helper)}>{helperText}</div>}
+        {helperText && (
+          <div
+            className={css(styles.helper)}
+            id={getHelperText(id)}
+            aria-live="polite"
+          >
+            {helperText}
+          </div>
+        )}
       </div>
     )
   },
