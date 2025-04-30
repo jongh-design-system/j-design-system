@@ -21,7 +21,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@styled-system/*": ["./styled-system/*"],
-      "#site/content": ["./.velite"]
+      "#site/content": ["./.velite"],
+      "react": ["./node_modules/@types/react"]
     }
   },
   "include": [
