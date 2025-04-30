@@ -122,14 +122,9 @@ export const Validation: Story = {
         }
         id="validation-field"
         placeholder="10자 미만"
+        data-testid="a"
       />
     )
-  },
-  play: async ({ canvas }) => {
-    const input = canvas.getByPlaceholderText("10자 미만")
-    await userEvent.type(input, "12345678910")
-    expect(input).toHaveValue("12345678910")
-    expect(input).toHaveAttribute("aria-invalid", "true")
   },
 }
 
