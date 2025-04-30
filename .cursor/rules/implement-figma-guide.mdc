@@ -1,0 +1,270 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Implementing Figma Designs Guide
+
+## Core Principles
+1. **Visual Intent**: Figma designs represent the intended visual outcome and user experience.
+2. **Adapt, Don't Copy**: Directly copying raw style values or exact layouts from Figma is discouraged. Implementation requires thoughtful adaptation using the project's established design system.
+
+## Informed Judgment
+Developers must exercise judgment when translating Figma designs into code, considering:
+
+1. **Project's Design System**: Prioritize mapping Figma elements to the established Semantic Tokens (colors, spacing, radii, borders, typography) and component patterns defined in this project's Panda CSS setup.
+- all style's real value is in the 'styled-system/styles.css'. you have to judge based on real value
+
+2. **External Best Practices**: Consider established UI/UX design principles, usability heuristics, and accessibility standards (e.g., WCAG, platform guidelines).
+
+## System Adherence
+The final code implementation must strictly adhere to all technical rules of this Design System:
+
+- Use only defined Design Tokens (Strict Mode is enabled)
+- Follow the Folder & File Structure rules
+- Define styles in recipe.ts using Panda Recipes (cva/sva) and the mapped Design Tokens
+- Apply styles in index.tsx using the specified pattern (recipe.raw(), css(), cx())
+- **Prefer CSS Selectors Over Variants**: Don't create variants for states that can be handled by CSS selectors (_hover, _focus, _disabled, _active, etc.)
+
+## Final Goal
+The goal is an implementation that accurately reflects the Figma design's intent while being built consistently, maintainably, and robustly using the project's specific design system.
+
+## Component Structure Design Principles
+
+### 1. Identify Structural Hierarchy
+- When analyzing Figma designs, first clearly identify the component's hierarchical structure.
+- Distinguish which elements belong to which layer and which parent elements they are children of.
+
+### 2. Maintain DOM Structure
+- When creating recipes, design slots to match the actual DOM structure.
+- Slot names should reflect the component's hierarchical structure.
+
+### 3. Clearly Define State Application Locations
+- Clearly identify which elements focus, hover, active states, etc. should be applied to.
+- Example: In TextField, focus state is applied to the container, not the input element.
+
+### Actual Structure Example (TextField)
+```
+TextField
+│
+├── root (main container)
+│   ├── heading (label area)
+│   │   ├── label
+│   │   └── required (*) indicator
+│   │
+│   ├── container (input field container - focus effect applied here)
+│   │   └── input (input field group)
+│   │       ├── leadingAddon (optional)
+│   │       ├── content (actual input element)
+│   │       └── trailingButton (optional)
+│   │
+│   └── helper (error/help message)
+```
+
+### 4. Maintain Style Property Order Consistency
+- Style properties should be consistently ordered:
+  - Layout (display, flex) → Size (width, height) → Spacing (padding, margin) → Border → Other visual properties
+
+### 5. Use CSS Selectors Instead of Variants for States
+- Use CSS selectors (_hover, _focus, _disabled, _active, etc.) instead of creating variants for states.
+- For example, use `_disabled: { opacity: '0.5' }` in base styles rather than creating a separate `disabled: true` variant.
+- This keeps the API simpler and avoids unnecessary prop passing.
+
+## Mapping Figma Variants to Panda Recipes (cva/sva)
+
+### Variant Analysis & Adherence
+1. **Identify Variants**: Thoroughly examine the Figma component to identify all distinct variants and their properties.
+   - Example: Size=Small|Medium, State=Default|Hover|Disabled, Style=Primary|Outline
+   - Implement only explicitly defined Figma variants.
+
+2. **Identify Style Changes**: Determine which style attributes (CSS properties) change between identified variants.
+
+### Base vs. Variant Styles Separation
+1. **Common Styles (base)**: Styles that remain constant across all variants should be defined in the `base` property of the Panda recipe.
+
+2. **Changing Styles (variants)**: Styles that differ between Figma variants should be defined in the `variants` property of the Panda recipe.
+   - Organize changing styles under logical variant keys that correspond to Figma variant properties (e.g., size, variant, state).
+   - Use project Design Tokens for style values in both base and variants.
+
+## Component Slots and Sub-elements
+
+### Always Consider Component Parts
+1. **Identify All Sub-elements**: Complex components (like TextField, Select, etc.) typically contain multiple visual elements that must all be considered:
+   - For example, a TextField may include: label, input, helper text, error message, etc.
+   - Each of these elements needs its own styling consideration and implementation.
+
+
+2. **Use Multi-slot Components**: For components with distinct sub-elements, use the `sva` (slot-based variant API) instead of `cva`:
+   - Define all required slots based on the Figma component's structure
+   - Example slots for TextField: root, label, input, helperText, errorMessage
+
+3. **Apply Variants Across Slots**: Ensure that variants (like size, state, etc.) properly cascade down to affect all relevant sub-elements:
+   - For instance, a "disabled" state should impact styling of the input, label, and other elements
+   - A "size" variant may need to adjust spacing, font sizes, etc. across multiple slots
+
+### Example: Multi-slot Component Structure
+```ts
+// For a TextField component using sva
+export const textFieldRecipe = sva({
+  slots: ['root', 'label', 'input', 'helperText', 'errorMessage'],
+  base: {
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1',
+      // other common root styles(related to container style(flex,gap,...))
+      // mainly use auto-layout(not using specific width,height)
+    },
+    label: {
+      color: 'foreground',
+      fontWeight: 'medium',
+      // other common label styles
+    },
+    input: {
+      border: 'input',
+      borderRadius: 'md',
+      p: '2',
+      // other common input styles
+      _disabled: { 
+        opacity: '0.5',
+        cursor: 'not-allowed',
+        bg: 'muted'
+      },
+      _hover: {
+        borderColor: 'primary/50'
+      }
+    },
+    helperText: {
+      fontSize: 'sm',
+      color: 'muted.foreground',
+      // other helper text styles
+    },
+    errorMessage: {
+      fontSize: 'sm',
+      color: 'destructive',
+      // other error message styles
+    }
+  },
+  variants: {
+    size: {
+      small: {
+        label: { fontSize: 'xs' },
+        input: { height: '8', px: '2' },
+        helperText: { fontSize: 'xs' },
+        errorMessage: { fontSize: 'xs' },
+      },
+      medium: {
+        label: { fontSize: 'sm' },
+        input: { height: '10', px: '3' },
+        // other medium-specific styles
+      }
+    },
+    // Notice there's no 'disabled' variant since we use _disabled pseudo selector
+  },
+  defaultVariants: {
+    size: 'medium'
+  }
+});
+```
+
+### Detailed TextField Recipe Implementation Example
+```ts
+// TextField recipe example with proper structure and focus handling
+export const textFieldRecipe = sva({
+  slots: [
+    "root",
+    "heading",
+    "required",
+    "container", // element where focus state is applied
+    "input",
+    "content",
+    "trailingButton",
+    "helper",
+  ],
+  base: {
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      width: "full",
+      gap: "2",
+    },
+    heading: {
+      display: "flex",
+      alignItems: "center",
+      alignSelf: "stretch",
+      gap: "1",
+    },
+    required: {
+      fontSize: "sm",
+      fontWeight: "semibold",
+      lineHeight: "normal",
+      letterSpacing: "normal",
+      color: "destructive",
+    },
+    container: {
+      display: "flex", 
+      width: "full",
+      height: "12",
+      padding: "3",
+      justifyContent: "center",
+      alignItems: "center",
+      flex: "1",
+      borderWidth: "1",
+      borderStyle: "solid", 
+      borderColor: "border",
+      borderRadius: "md",
+      _focusWithin: { // important: focus state is applied to container
+        borderColor: "primary",
+      },
+      _disabled: {  // Using CSS selector instead of variant
+        backgroundColor: "muted",
+        cursor: "not-allowed"
+      }
+    },
+    input: {
+      display: "flex",
+      alignItems: "center",
+      alignSelf: "stretch",
+      width: "full",
+      _disabled: {  // Using CSS selector instead of variant
+        opacity: "0.5"
+      }
+    },
+    content: {
+      display: "flex",
+      flex: "1",
+      minHeight: "6",
+    },
+    trailingButton: {
+      display: "none",
+      height: "full",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    helper: {
+      alignSelf: "stretch",
+      fontSize: "xs",
+      fontWeight: "medium",
+      lineHeight: "normal",
+      color: "muted.foreground",
+    },
+  },
+  variants: {
+    status: {
+      normal: {},
+      negative: {
+        container: { // error state border is applied to container
+          borderColor: "destructive",
+          _focusWithin: {
+            borderColor: "destructive", // maintain error color in focus state
+          },
+        },
+        helper: {
+          color: "destructive", // error message color
+        },
+      },
+    },
+  },
+});
+```
