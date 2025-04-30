@@ -1,0 +1,169 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Understanding Semantic Tokens
+
+When implementing UI components using our Panda CSS design system, follow these guidelines for semantic token usage:
+
+## Color Token Structure
+
+- **Base tokens** are referenced directly (e.g., `color: 'primary'`) which applies the DEFAULT value
+- For **text on colored backgrounds**, use the foreground variant (e.g., `color: 'primary.foreground'`)
+
+## Token Reference Pattern
+
+- **Always use semantic tokens** rather than raw color values
+- **Reference format**: `'{tokenCategory}'` or `'{tokenCategory}.{variant}'`
+
+## Implementation Rules
+
+### Figma to Code Translation
+
+- Map Figma visual elements to our established semantic tokens
+- Judge based on real values in `'styled-system/styles.css'`
+- Adapt rather than copy raw Figma values
+
+### Recipe Structure
+
+- Define common styles in `base`
+- Define varying styles in `variants`
+- Use `cva` for simple components
+- Use `sva` for multi-element components with slots
+
+### Component Structure
+
+- Define styles in `recipe.ts` using Panda Recipes
+- Apply styles in `index.tsx` using `recipe.raw()`, `css()`, and `cx()`
+
+### For Complex Components
+
+- Identify all sub-elements that need styling
+- Define all required slots based on component structure
+- Ensure variants properly cascade to all elements
+
+## Examples
+
+For cursor styles, use semantic tokens according to interactive states:
+
+```typescript
+// recipe.ts
+export const interactiveElementRecipe = cva({
+  base: {
+    // Common styles
+  },
+  variants: {
+    state: {
+      default: {
+        cursor: 'default'
+      },
+      interactive: {
+        cursor: 'pointer'
+      },
+      disabled: {
+        cursor: 'not-allowed',
+        color: 'muted.foreground',  // Using semantic token for text
+        bg: 'muted'  // Using semantic token for background
+      },
+      loading: {
+        cursor: 'wait'
+      }
+    }
+  },
+  defaultVariants: {
+    state: 'default'
+  }
+});
+```
+## color guideline
+Basic Colors
+
+background - Page background color
+foreground - Default text color
+
+Component Colors
+
+card - Used for card components
+
+card.DEFAULT - Card background
+card.foreground - Text on cards
+
+
+popover - Used for popover/dropdown elements
+
+popover.DEFAULT - Popover background
+popover.foreground - Text in popovers
+
+
+
+## Interactive Colors
+
+- primary - Main brand color for key actions
+
+primary.DEFAULT - Primary button background
+primary.foreground - Text on primary buttons
+
+
+- secondary - Supporting color for secondary actions
+
+secondary.DEFAULT - Secondary button background
+secondary.foreground - Text on secondary buttons
+
+
+accent - Used for highlighting or emphasis
+
+accent.DEFAULT - Accent element background
+accent.foreground - Text on accent elements
+
+
+
+Utility Colors
+
+muted - Subdued visual elements
+
+muted.DEFAULT - Muted background
+muted.foreground - Subtle text, placeholders
+
+
+destructive - Error states and dangerous actions
+
+destructive.DEFAULT - Delete button, error states
+destructive.foreground - Text on destructive elements
+
+
+
+Border Colors
+
+border - Standard borders and dividers
+input - Form input field borders
+ring - Focus indicator outlines
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

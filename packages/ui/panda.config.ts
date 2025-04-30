@@ -10,4 +10,9 @@ export default defineConfig({
   outdir: "styled-system",
   strictPropertyValues: true,
   strictTokens: true,
+  globalCss: {
+    body: {
+      fontFamily: "Pretendard Variable",
+    },
+  },
 })

@@ -17,6 +17,7 @@ export const Primary: Story = {
     return (
       <Calendar.Root
         {...args}
+        type="range"
         weekStart={1}
         locale="en-US"
         className={css({
