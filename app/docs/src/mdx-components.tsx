@@ -8,10 +8,7 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     h1: (props) => (
       <h1
         className={css({
-          textStyle: "2xl",
-          color: "foreground",
-          mb: "4",
-          fontWeight: "bold",
+          textStyle: "heading1",
         })}
         {...props}
       />
@@ -19,12 +16,10 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     h2: (props) => (
       <h2
         className={css({
-          textStyle: "xl",
-          color: "foreground",
+          textStyle: "title2",
           mt: "12",
           mb: "3",
-          fontWeight: "semibold",
-          borderBottom: "1px solid",
+          borderBottom: "2px solid",
           borderBottomColor: "gray.100",
           pb: "2",
         })}
@@ -34,10 +29,9 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     h3: (props) => (
       <h3
         className={css({
-          textStyle: "lg",
+          textStyle: "title3",
           color: "foreground",
           mb: "2",
-          fontWeight: "medium",
         })}
         {...props}
       />
@@ -45,7 +39,7 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     p: (props) => (
       <p
         className={css({
-          textStyle: "base",
+          textStyle: "body1",
           color: "foreground",
           mb: "4",
         })}
