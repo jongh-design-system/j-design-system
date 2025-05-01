@@ -6,9 +6,11 @@ import { MDXComponents } from "@/mdx-components"
 import { Button } from "./button"
 import { CodeBlock } from "./codeBlock"
 import { CommandCodeBlock } from "./commandCodeBlock"
+import { TextField } from "./textfield"
 
 const sharedComponents = {
   Button,
+  TextField,
   CommandCodeBlock,
   ...MDXComponents(),
   pre: (props: any) => <CodeBlock {...props} />,
