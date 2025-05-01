@@ -1,4 +1,4 @@
-import { css } from "@styled-system/css"
+import { css, cx } from "@styled-system/css"
 import { flex } from "@styled-system/patterns"
 
 import * as Tabs from "@/components/tabs"
@@ -15,12 +15,8 @@ export function CommandCodeBlock({ command }: CommandCodeBlockProps) {
       className={css({
         position: "relative",
         w: "full",
-        mt: 6,
         maxH: "650px",
         overflow: "hidden",
-        rounded: "xl",
-        bg: "zinc.950",
-        _dark: { bg: "zinc.900" },
       })}
       defaultValue="npm"
     >
@@ -29,25 +25,10 @@ export function CommandCodeBlock({ command }: CommandCodeBlockProps) {
           w: "full",
           display: "flex",
           justifyContent: "flex-start",
-          borderBottom: "1px solid",
-          borderColor: "zinc.800",
-          bgColor: "zinc.900",
-          px: 3,
-          pt: 2.5,
         })}
       >
         {packageManagers.map((pm) => (
-          <Tabs.Trigger
-            value={pm}
-            key={pm}
-            className={css({
-              px: 2,
-              py: 1,
-              color: "zinc.400",
-              fontFamily: "mono",
-              fontSize: "sm",
-            })}
-          >
+          <Tabs.Trigger value={pm} key={pm} className={css({})}>
             {pm}
           </Tabs.Trigger>
         ))}
@@ -57,23 +38,20 @@ export function CommandCodeBlock({ command }: CommandCodeBlockProps) {
           value={pm}
           key={pm}
           className={css({
-            mt: 0,
-            px: 4,
-            py: 5,
+            bg: "card",
+            color: "card.foreground",
           })}
         >
-          <code
-            className={css({
-              display: "block",
-              fontFamily: "mono",
-              fontSize: "sm",
-              color: "zinc.50",
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-all",
-            })}
+          <pre
+            className={cx(
+              css({
+                textStyle: "body2",
+              }),
+              "shiki github-dark",
+            )}
           >
-            {command[pm]}
-          </code>
+            <code dangerouslySetInnerHTML={{ __html: `${command[pm]}` }} />
+          </pre>
         </Tabs.Content>
       ))}
     </Tabs.Root>

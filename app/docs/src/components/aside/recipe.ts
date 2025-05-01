@@ -64,10 +64,12 @@ export const recipe = sva({
       px: 2,
       fontWeight: "normal",
       color: "foreground",
+      textDecoration: "none",
+      transition: "colors",
+      transitionDuration: "fastest",
       _hover: {
-        bg: "accent",
+        bg: "accent/90",
         color: "accent.foreground",
-        opacity: 0.9,
       },
       _after: {
         content: '""',
@@ -93,6 +95,7 @@ export const recipe = sva({
       position: "fixed",
       inset: 0,
       zIndex: 30,
+      bg: "muted/50",
     },
     toggle: {
       position: "fixed",
@@ -101,16 +104,33 @@ export const recipe = sva({
       zIndex: 50,
       p: 2,
       bg: "background",
-      border: "1px solid",
-      borderColor: "border",
+      border: "base",
       rounded: "md",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       cursor: "pointer",
+      transition: "colors",
+      transitionDuration: "fast",
       _hover: {
         bg: "accent",
+        color: "accent.foreground",
         opacity: 0.9,
+      },
+    },
+  },
+  variants: {
+    active: {
+      true: {
+        navItem: {
+          bg: "primary/10",
+          color: "primary",
+          fontWeight: "medium",
+          _hover: {
+            bg: "primary/20",
+            color: "primary",
+          },
+        },
       },
     },
   },

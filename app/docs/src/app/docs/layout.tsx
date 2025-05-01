@@ -3,22 +3,7 @@ import { styled } from "@styled-system/jsx"
 import type { ReactNode } from "react"
 
 import { Aside } from "@/components/aside"
-
-const asideConfig = [
-  {
-    title: "get started",
-    items: [
-      {
-        title: "introduction",
-        href: "/docs/introduction",
-      },
-      {
-        title: "installation",
-        href: "/docs/installation",
-      },
-    ],
-  },
-]
+import aside from "@/components/aside/aside.json"
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -33,7 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         },
       })}
     >
-      <Aside metaData={asideConfig} />
+      <Aside data={aside} />
       <styled.main width="100%" pos="relative" px="4">
         {children}
       </styled.main>
