@@ -85,6 +85,9 @@ importers:
 
   app/docs:
     dependencies:
+      lucide-react:
+        specifier: ^0.475.0
+        version: 0.475.0(@types/react@19.0.8)(react@19.0.0)
       motion:
         specifier: ^12.4.10
         version: 12.4.10(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -736,6 +739,7 @@ packages:
 
   '@effect/schema@0.75.5':
     resolution: {integrity: sha512-TQInulTVCuF+9EIbJpyLP6dvxbQJMphrnRqgexm/Ze39rSjfhJuufF7XvU3SxTgg3HnL7B/kpORTJbHhlE6thw==}
+    deprecated: this package has been merged into the main effect package
     peerDependencies:
       effect: ^3.9.2
 
@@ -1500,6 +1504,7 @@ packages:
   '@faker-js/faker@9.5.0':
     resolution: {integrity: sha512-3qbjLv+fzuuCg3umxc9/7YjrEXNaKwHgmig949nfyaTx8eL4FAsvFbu+1JcFUj1YAXofhaDn6JdEUBTYuk0Ssw==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+    deprecated: Please update to a newer version
 
   '@floating-ui/core@1.6.9':
     resolution: {integrity: sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==}
@@ -15366,6 +15371,11 @@ snapshots:
     dependencies:
       '@types/react': 18.3.18
       react: 18.3.1
+
+  lucide-react@0.475.0(@types/react@19.0.8)(react@19.0.0):
+    dependencies:
+      '@types/react': 19.0.8
+      react: 19.0.0
 
   lz-string@1.5.0: {}
 
