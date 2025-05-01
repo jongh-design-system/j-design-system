@@ -1,7 +1,7 @@
 import "./globals.css"
 
 import { Container } from "@styled-system/jsx"
-import { Geist } from "next/font/google"
+import localFont from "next/font/local"
 import Link from "next/link"
 
 import { Header } from "@/components/header"
@@ -9,9 +9,9 @@ import Github from "@/components/icons/github"
 import { ThemeProvider } from "@/components/theme/themeProvider"
 import { ThemeToggleButton } from "@/components/theme/themeToggleButton"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const pretendard = localFont({
+  src: "../../public/PretendardVariable.woff2",
+  display: "swap",
 })
 
 const navItems = [
@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable}`}>
+      <body className={`${pretendard.className}`}>
         <ThemeProvider>
           <Container width="full" height="100vh">
             <Header
