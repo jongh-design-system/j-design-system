@@ -39,7 +39,7 @@ export default defineConfig({
       [
         rehypeShiki as any, // eslint-disable-line @typescript-eslint/no-explicit-any
         {
-          theme: "one-dark-pro",
+          theme: "vitesse-light",
         },
       ],
     ],
