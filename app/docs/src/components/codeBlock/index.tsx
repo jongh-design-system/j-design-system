@@ -1,10 +1,22 @@
 "use client"
 
 import { css } from "@styled-system/css"
-import { type ComponentProps, useRef, useState } from "react"
+import { type ComponentProps, memo, useRef, useState } from "react"
 
 import Check from "@/components/icons/check"
 import Copy from "@/components/icons/copy"
+
+// Children을 memo로 감싸서 불필요한 리렌더링 방지
+const PreContent = memo(
+  ({ children, className, ...props }: ComponentProps<"pre">) => {
+    return (
+      <pre {...props} className={className}>
+        {children}
+      </pre>
+    )
+  },
+)
+PreContent.displayName = "PreContent"
 
 export const CodeBlock = ({
   className = "",
@@ -60,11 +72,9 @@ export const CodeBlock = ({
       >
         {isCopied ? <Check style={{ color: "white" }} /> : <Copy />}
       </button>
-      <pre ref={preRef} {...props} className={className}>
+      <PreContent ref={preRef} {...props} className={className}>
         {children}
-      </pre>
+      </PreContent>
     </div>
   )
 }
-
-//pre 이후 스타일은 globals.css에서 담당
