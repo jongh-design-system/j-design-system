@@ -1,19 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as runtime from "react/jsx-runtime"
 
 import { MDXComponents } from "@/mdx-components"
 
+import * as Avatar from "./avatar"
 import { Button } from "./button"
-import { CodeBlock } from "./codeBlock"
 import { CommandCodeBlock } from "./commandCodeBlock"
+import * as Dialog from "./dialog"
+import * as Select from "./select"
+import * as Tabs from "./tabs"
 import { TextField } from "./textfield"
 
 const sharedComponents = {
   Button,
   TextField,
+  Tabs,
+  Avatar,
+  Select,
+  Dialog,
   CommandCodeBlock,
   ...MDXComponents(),
-  pre: (props: any) => <CodeBlock {...props} />,
 }
 
 // parse the Velite generated MDX code into a React component function
