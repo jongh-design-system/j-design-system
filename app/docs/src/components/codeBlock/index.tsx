@@ -62,15 +62,15 @@ export const CodeBlock = ({
           h: "fit-content",
           w: "fit-content",
           alignItems: "center",
-          borderRadius: "sm",
+          borderRadius: "lg",
           px: "2",
           py: "2",
-          color: "white",
+          color: "black",
           cursor: "pointer",
           zIndex: 10,
         })}
       >
-        {isCopied ? <Check style={{ color: "white" }} /> : <Copy />}
+        {isCopied ? <Check style={{ color: "black" }} /> : <Copy />}
       </button>
       <PreContent ref={preRef} {...props} className={className}>
         {children}

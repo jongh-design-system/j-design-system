@@ -14,14 +14,14 @@ export const semanticColors = defineSemanticTokens.colors({
     value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
   },
   foreground: {
-    value: { base: "{colors.slate.950}", _dark: "{colors.slate.50}" },
+    value: { base: "{colors.slate.900}", _dark: "{colors.slate.50}" },
   },
   card: {
     DEFAULT: {
       value: { base: "{colors.white}", _dark: "{colors.slate.900}" },
     },
     foreground: {
-      value: { base: "{colors.slate.950}", _dark: "{colors.slate.50}" },
+      value: { base: "{colors.slate.900}", _dark: "{colors.slate.50}" },
     },
   },
   popover: {
@@ -29,12 +29,12 @@ export const semanticColors = defineSemanticTokens.colors({
       value: { base: "{colors.white}", _dark: "{colors.slate.900}" },
     },
     foreground: {
-      value: { base: "{colors.slate.950}", _dark: "{colors.slate.50}" },
+      value: { base: "{colors.slate.900}", _dark: "{colors.slate.50}" },
     },
   },
   primary: {
     DEFAULT: {
-      value: { base: "{colors.blue.600}", _dark: "{colors.blue.400}" },
+      value: { base: "{colors.slate.800}", _dark: "{colors.slate.400}" },
     },
     foreground: {
       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
@@ -45,7 +45,7 @@ export const semanticColors = defineSemanticTokens.colors({
       value: { base: "{colors.gray.600}", _dark: "{colors.gray.400}" },
     },
     foreground: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+      value: { base: "{colors.white}", _dark: "{colors.gray.950}" },
     },
   },
   muted: {
@@ -58,7 +58,7 @@ export const semanticColors = defineSemanticTokens.colors({
   },
   accent: {
     DEFAULT: {
-      value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
+      value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" },
     },
     foreground: {
       value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" },
@@ -76,10 +76,10 @@ export const semanticColors = defineSemanticTokens.colors({
     value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
   },
   input: {
-    value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
+    value: { base: "{colors.gray.200}", _dark: "{colors.gray.800}" },
   },
   ring: {
-    value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
+    value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
   },
 })
 
