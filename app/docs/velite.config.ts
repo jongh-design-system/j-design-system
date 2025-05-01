@@ -16,17 +16,21 @@ const components = defineCollection({
     })
     // more additional fields (computed fields)
     .transform((data) => {
-      return { ...data, permalink: `/blog/${data.slug}` }
+      return { ...data, permalink: `/docs/components/${data.slug}` }
     }),
 })
 
 const intro = defineCollection({
   name: "Intro",
   pattern: "docs/intro/*.mdx",
-  schema: s.object({
-    code: s.mdx(),
-    slug: s.slug("docs"),
-  }),
+  schema: s
+    .object({
+      code: s.mdx(),
+      slug: s.slug("docs"),
+    })
+    .transform((data) => {
+      return { ...data, permalink: `/docs/intro/${data.slug}` }
+    }),
 })
 
 export default defineConfig({
