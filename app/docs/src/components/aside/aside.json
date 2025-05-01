@@ -1,0 +1,67 @@
+{
+  "intro": {
+    "title": "Introduction",
+    "items": [
+      {
+        "title": "Installation",
+        "slug": "installation",
+        "permalink": "/docs/intro/installation"
+      },
+      {
+        "title": "Introduction",
+        "slug": "introduction",
+        "permalink": "/docs/intro/introduction"
+      }
+    ]
+  },
+  "components": {
+    "title": "Components",
+    "items": [
+      {
+        "title": "Accordion",
+        "slug": "accordion",
+        "permalink": "/docs/components/accordion"
+      },
+      {
+        "title": "Avatar",
+        "slug": "avatar",
+        "permalink": "/docs/components/avatar"
+      },
+      {
+        "title": "Button",
+        "slug": "button",
+        "permalink": "/docs/components/button"
+      },
+      {
+        "title": "Chip",
+        "slug": "chip",
+        "permalink": "/docs/components/chip"
+      },
+      {
+        "title": "Dialog",
+        "slug": "dialog",
+        "permalink": "/docs/components/dialog"
+      },
+      {
+        "title": "Select",
+        "slug": "select",
+        "permalink": "/docs/components/select"
+      },
+      {
+        "title": "Slider",
+        "slug": "slider",
+        "permalink": "/docs/components/slider"
+      },
+      {
+        "title": "Tabs",
+        "slug": "tabs",
+        "permalink": "/docs/components/tabs"
+      },
+      {
+        "title": "TextField",
+        "slug": "textfield",
+        "permalink": "/docs/components/textfield"
+      }
+    ]
+  }
+}
