@@ -58,7 +58,7 @@ export default function MainPage() {
         })}
       </motion.h1>
       <Button size="lg">
-        <Link href="/docs/introduction">Start</Link>
+        <Link href="/docs/intro/introduction">Start</Link>
       </Button>
     </>
   )
