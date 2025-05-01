@@ -16,7 +16,7 @@ const pretendard = localFont({
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Components", href: "/components" },
+  { label: "Components", href: "/docs/components/button/" },
   { label: "Tokens", href: "/tokens" },
   { label: "Guidelines", href: "/guidelines" },
 ]
