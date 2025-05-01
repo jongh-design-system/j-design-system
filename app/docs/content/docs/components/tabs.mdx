@@ -1,0 +1,105 @@
+---
+title: Tabs
+slug: tabs
+---
+
+## Tabs
+
+Tabs는 동일한 공간 내에서 여러 콘텐츠 섹션을 전환할 수 있는 네비게이션 컴포넌트입니다.
+
+- 접근성을 고려한 탭 인터페이스를 제공합니다
+- 비제어 및 제어 모드를 모두 지원합니다
+- 세련된 스타일과 애니메이션을 포함합니다
+
+## Installation
+
+<CommandCodeBlock
+  command={{
+    npm: "npx @jongh/cli add tabs",
+    yarn: "yarn @jongh/cli add tabs",
+    pnpm: "pnpm dlx @jongh/cli add tabs",
+  }}
+/>
+
+## Usage
+
+Tabs 컴포넌트는 Radix UI의 Tabs 컴포넌트를 기반으로 구현되었으며, 여러 하위 컴포넌트로 구성됩니다.
+
+### 컴포넌트 구조
+
+- `Tabs.Root`: 탭의 모든 파트를 감싸는 컨테이너입니다.
+- `Tabs.List`: 탭 트리거(버튼)들을 담는 컨테이너입니다.
+- `Tabs.Trigger`: 각 탭을 활성화하는 버튼입니다.
+- `Tabs.Content`: 각 탭에 해당하는 콘텐츠를 담는 컨테이너입니다.
+
+### 주요 Props
+
+#### Tabs.Root
+
+- `defaultValue` (`string`): 초기 선택된 탭의 값입니다 (비제어 모드).
+- `value` (`string`): 현재 선택된 탭의 값입니다 (제어 모드).
+- `onValueChange` (`(value: string) => void`): 탭 선택이 변경될 때 호출되는 함수입니다 (제어 모드).
+
+#### Tabs.Trigger / Tabs.Content
+
+- `value` (`string`): 이 탭/콘텐츠와 연결된 고유한 값입니다. Trigger와 Content 간의 매핑을 담당합니다.
+
+### CSS 클래스 적용
+
+각 컴포넌트는 className 속성을 통해 스타일을 커스터마이징할 수 있습니다.
+
+## Example
+
+```tsx
+import * as Tabs from "@/components/tabs"
+
+// 기본 사용 예시
+
+
+// 제어 컴포넌트 예시
+const [selectedTab, setSelectedTab] = useState("tab2")
+
+;<Tabs.Root value={selectedTab} onValueChange={setSelectedTab}>
+  <Tabs.List>
+    <Tabs.Trigger value="tab1">첫 번째 탭</Tabs.Trigger>
+    <Tabs.Trigger value="tab2">두 번째 탭</Tabs.Trigger>
+    <Tabs.Trigger value="tab3">세 번째 탭</Tabs.Trigger>
+  </Tabs.List>
+  <Tabs.Content value="tab1">첫 번째 탭의 내용입니다.</Tabs.Content>
+  <Tabs.Content value="tab2">두 번째 탭의 내용입니다.</Tabs.Content>
+  <Tabs.Content value="tab3">세 번째 탭의 내용입니다.</Tabs.Content>
+</Tabs.Root>
+
+// 동적 탭 생성 예시
+const tabItems = [
+  { value: "tab1", label: "첫 번째", content: "첫 번째 탭 내용" },
+  { value: "tab2", label: "두 번째", content: "두 번째 탭 내용" },
+  { value: "tab3", label: "세 번째", content: "세 번째 탭 내용" },
+]
+
+<Tabs.Root defaultValue="tab1">
+  <Tabs.List>
+    {tabItems.map((item) => (
+      <Tabs.Trigger key={item.value} value={item.value}>
+        {item.label}
+      </Tabs.Trigger>
+    ))}
+  </Tabs.List>
+  {tabItems.map((item) => (
+    <Tabs.Content key={item.value} value={item.value}>
+      {item.content}
+    </Tabs.Content>
+  ))}
+</Tabs.Root>
+```
+
+<Tabs.Root defaultValue="tab1">
+  <Tabs.List>
+    <Tabs.Trigger value="tab1">첫 번째 탭</Tabs.Trigger>
+    <Tabs.Trigger value="tab2">두 번째 탭</Tabs.Trigger>
+    <Tabs.Trigger value="tab3">세 번째 탭</Tabs.Trigger>
+  </Tabs.List>
+  <Tabs.Content value="tab1">첫 번째 탭의 내용입니다.</Tabs.Content>
+  <Tabs.Content value="tab2">두 번째 탭의 내용입니다.</Tabs.Content>
+  <Tabs.Content value="tab3">세 번째 탭의 내용입니다.</Tabs.Content>
+</Tabs.Root>
