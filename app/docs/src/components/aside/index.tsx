@@ -1,43 +1,55 @@
 "use client"
 
-import { css } from "@styled-system/css"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { recipe } from "./recipe"
 
-export interface AsideItem {
+export interface CategoryItems {
   title: string
-  href?: string
-  items?: AsideItem[]
-  label?: string
-  disabled?: boolean
-  external?: boolean
+  slug: string
+  permalink: string
+}
+
+export interface AsideCategory {
+  title: string
+  items: CategoryItems[]
+}
+
+export interface AsideData {
+  [key: string]: AsideCategory
 }
 
 export interface AsideProps {
-  metaData: AsideItem[]
+  data: AsideData
 }
 
-export function Aside({ metaData }: AsideProps) {
+export function Aside({ data }: AsideProps) {
   const { root, content } = recipe()
 
   return (
     <aside className={root}>
       <div className={content}>
-        <div
-          className={css({
-            display: "flex",
-            flexDirection: "column",
-            gap: "6",
-          })}
-        >
-          {metaData.map((item, index) => (
-            <AsideNavItem key={index} item={item} />
-          ))}
-        </div>
+        {Object.entries(data).map(([key, category]) => (
+          <AsideCategory key={key} category={category} />
+        ))}
       </div>
     </aside>
+  )
+}
+
+function AsideCategory({ category }: { category: AsideCategory }) {
+  const { section, sectionTitle, navItems } = recipe()
+
+  return (
+    <div className={section}>
+      <h3 className={sectionTitle}>{category.title}</h3>
+      <div className={navItems}>
+        {category.items.map((item) => (
+          <AsideNavItem key={item.slug} item={item} />
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -45,21 +57,20 @@ function AsideNavItem({
   item,
   level = 1,
 }: {
-  item: AsideItem
+  item: CategoryItems
   level?: number
 }) {
   const pathname = usePathname()
-  const { navItem } = recipe({ active: pathname === item.title })
+  const href = item.permalink
+
+  const isActive = pathname === href + "/" || pathname.endsWith(`/${item.slug}`)
+  const { navItem } = recipe({ active: isActive })
 
   return (
-    <div style={{ paddingLeft: 8 * level }}>
-      <Link href={item?.href || "#"} className={navItem}>
+    <div style={{ paddingLeft: level > 1 ? `${8 * level}px` : 0 }}>
+      <Link href={href} className={navItem}>
         {item.title}
       </Link>
-      {item.items?.length &&
-        item.items.map((item) => (
-          <AsideNavItem key={item.title} item={item} level={level + 1} />
-        ))}
     </div>
   )
 }
