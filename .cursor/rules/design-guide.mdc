@@ -8,7 +8,9 @@ alwaysApply: true
 This document provides rules and best practices for defining component styles using Panda CSS Recipes (cva and sva) within recipe.ts files. 
 All rules are based on the project's configuration (panda.config.ts with strict mode) and 
 you should use the available design tokens (from @pandacss/preset-panda extended by defaultPreset).
-all token value is in the packages/ui/styled-system/styles.css
+all token value is in the [styles.css](mdc:packages/ui/styled-system/styles.css) , and the token is in the [preset.ts](mdc:app/docs/preset.ts)
+make sure that token is gerenated from pandacss's default token + custom token
+
 
 ## API Selection (cva vs. sva)
 

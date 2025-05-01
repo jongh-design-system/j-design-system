@@ -1,0 +1,96 @@
+---
+description: write documentation
+globs: 
+alwaysApply: false
+---
+# UI 컴포넌트 문서화 가이드라인
+
+## 파일 참조 및 문서 작성 규칙
+
+### 참조할 소스 코드
+- **컴포넌트 코드**: `packages/ui/src/component/*` 디렉토리에서 찾을 수 있음
+  - `recipe.ts`: PandaCSS를 사용한 컴포넌트 스타일 정의
+  - `index.ts`: 스타일이 적용된 컴포넌트 로직 구현
+  - 이 밖에도 추가로 정의된 파일들이 디렉토리 내부에 있다면 참고하기
+
+### Props 및 Variant 정보 수집
+- `recipe.ts`와 `index.ts` 파일을 모두 분석하여 Props 및 Variant 정보 수집
+- Type 정의, defaultVariants, variants 객체를 확인하여 정확한 정보 제공
+
+### 사용 예시 참조
+- `packages/ui/src/stories/*` 디렉토리의 Storybook 파일에서 사용 예시 참고
+- 실제 구현 사례를 기반으로 문서 예제 작성
+
+## 예시 코드 작성 주의점
+
+- 모든 예제는 컴포넌트의 Props만으로 구현해야 합니다.
+- 만약 radix-ui를 사용하는 컴포넌트일 경우 radix-ui docs를 참조해서 작성해야 합니다.
+- 임의로 존재하지 않는 prop를 추가하지 않습니다.
+- 
+
+## 문서 형식 구조
+
+```
+---
+title: 컴포넌트명
+slug: 컴포넌트
+---
+
+## 컴포넌트명
+
+간략한 설명 (1-2문장)
+
+* 컴포넌트의 주요 특징에 대한 간단한 설명
+* 필요한 경우 추가 요점 제공
+
+## Installation
+
+<CommandCodeBlock
+  command={{
+    npm: "npx @jongh/cli add 컴포넌트명",
+    yarn: "yarn @jongh/cli add 컴포넌트명",
+    pnpm: "pnpm dlx @jongh/cli add 컴포넌트명",
+  }}
+/>
+
+## Usage
+
+컴포넌트의 기본적인 사용법에 대한 간단한 설명.
+
+### Props
+// props명과 타입을 작성합니다. default로 적용된 타입에 대해서도 작성해야 합니다
+
+* `prop1` (`PropType`): 속성에 대한 간략한 설명.
+* `prop2` (`PropType`): 다른 속성에 대한 설명.
+
+### Variant
+
+variant prop은 컴포넌트의 스타일을 설정합니다. 다음 옵션이 있습니다:
+
+* `옵션1`: 설명
+* `옵션2`: 설명
+
+## Example
+
+```tsx
+import { 컴포넌트 } from "@/components/컴포넌트"
+
+// 간단한 사용 예시 코드
+```
+
+실제 렌더링 예시:
+
+```
+<컴포넌트 variant="default">예시 텍스트</컴포넌트>
+<컴포넌트 variant="옵션2" size="sm">다른 예시</컴포넌트>
+```
+```
+
+## 요약
+
+1. **간결함 유지**: 문서는 간결하면서 필요한 정보를 모두 포함해야 함, 마크다운 문법을 준수해야 함
+2. **코드 예제**: 실제 사용 사례를 반영한 예제 코드 제공
+3. **테크니컬 정확성**: `recipe.ts`와 `index.ts`를 정확히 분석하여 실제 구현과 일치하는 정보 제공
+4. **일관성**: 모든 컴포넌트 문서는 동일한 형식 구조 따르기
+5. **간략화**: 불필요한 세부 정보는 생략하고 핵심 정보에 집중
+6. **선택적 내용**: 컴포넌트의 복잡성에 따라 필요한 섹션만 포함

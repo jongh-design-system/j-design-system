@@ -5,18 +5,16 @@ import { expect, userEvent, within } from "@storybook/test"
 import { css } from "@styled-system/css"
 import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"
 
-import { TextField, type TextFieldProps } from "../component/textfield/ui"
+import { TextField } from "../component/textfield/ui"
 
-// 아이콘 컴포넌트 (예시)
-
-const meta: Meta<TextFieldProps> = {
+const meta: Meta<typeof TextField> = {
   title: "Components/TextField",
   tags: ["autodocs"],
   component: TextField,
-} as Meta<TextFieldProps>
+}
 
 export default meta
-type Story = StoryObj<TextFieldProps>
+type Story = StoryObj<typeof meta>
 
 // 기본 TextField
 export const Default: Story = {

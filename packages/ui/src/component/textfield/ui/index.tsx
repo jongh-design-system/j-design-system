@@ -6,7 +6,7 @@ import { recipe, TextFieldVariantProps } from "./recipe"
 
 const getHelperText = (id: string) => `${id}-helper-text`
 
-export type TextFieldProps = Omit<
+type TextFieldProps = Omit<
   ComponentPropsWithoutRef<"input">,
   "size" | "width"
 > & {

@@ -12,6 +12,7 @@ const nextConfig = {
   output: "export",
   pageExtensions: ["js", "md", "mdx", "ts", "tsx"],
   trailingSlash: true,
+  reactStrictMode: false,
 }
 
 export default nextConfig

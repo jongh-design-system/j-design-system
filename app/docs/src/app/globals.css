@@ -9,9 +9,6 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -26,7 +23,9 @@ pre.shiki {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 0;
+  padding: var(--spacing-2);
+  border-radius: var(--radii-lg);
+  border: 1px solid var(--colors-border);
 
   code {
     display: grid;
