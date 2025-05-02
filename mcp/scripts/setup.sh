@@ -3,13 +3,14 @@
 # Create .cursor directory if it doesn't exist
 mkdir -p .cursor
 
-bun install
+# Install dependencies with pnpm
+pnpm install
 
 # Create mcp.json with the current directory path
 echo "{
   \"mcpServers\": {
     \"TalkToFigma\": {
-      \"command\": \"bunx\",
+      \"command\": \"npx\",
       \"args\": [
         \"cursor-talk-to-figma-mcp\"
       ]
