@@ -107,8 +107,6 @@ async function handleCommand(command, params) {
       return await setTextContent(params)
     case "clone_node":
       return await cloneNode(params)
-    case "get_component_set_styles":
-      return await getComponentSetStyles(params)
     default:
       throw new Error(`Unknown command: ${command}`)
   }

@@ -806,36 +806,36 @@ server.tool(
   },
 )
 
-// Execute Figma Code Tool
-// server.tool(
-//   "execute_figma_code",
-//   "Execute arbitrary JavaScript code in Figma (use with caution)",
-//   {
-//     code: z.string().describe("JavaScript code to execute in Figma")
-//   },
-//   async ({ code }) => {
-//     try {
-//       const result = await sendCommandToFigma('execute_code', { code });
-//       return {
-//         content: [
-//           {
-//             type: "text",
-//             text: `Code executed successfully: ${JSON.stringify(result, null, 2)}`
-//           }
-//         ]
-//       };
-//     } catch (error) {
-//       return {
-//         content: [
-//           {
-//             type: "text",
-//             text: `Error executing code: ${error instanceof Error ? error.message : String(error)}`
-//           }
-//         ]
-//       };
-//     }
-//   }
-// );
+//Execute Figma Code Tool
+server.tool(
+  "execute_figma_code",
+  "Execute arbitrary JavaScript code in Figma (use with caution)",
+  {
+    code: z.string().describe("JavaScript code to execute in Figma"),
+  },
+  async ({ code }) => {
+    try {
+      const result = await sendCommandToFigma("execute_code", { code })
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Code executed successfully: ${JSON.stringify(result, null, 2)}`,
+          },
+        ],
+      }
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error executing code: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      }
+    }
+  },
+)
 
 // Set Corner Radius Tool
 server.tool(
