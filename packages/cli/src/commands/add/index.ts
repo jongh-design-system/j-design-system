@@ -18,7 +18,7 @@ import { transformImports } from "@/common/transform"
 import { configSchema, registrySchema } from "@/common/types"
 import { getPackageManagerCommand } from "@/common/utils/packageManager"
 
-const addSchema = z.object({
+export const addSchema = z.object({
   components: z.array(z.string()).optional(),
   cwd: z.string(),
 })
