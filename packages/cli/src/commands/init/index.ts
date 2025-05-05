@@ -24,9 +24,16 @@ import {
 import { transformPandaConfig } from "@/common/transform"
 import { configSchema } from "@/common/types"
 
-const initSchema = z.object({
+export const themeSchema = z.object({
+  primaryColor: z.string().optional(),
+  secondaryColor: z.string().optional(),
+  grayColor: z.string().optional(),
+})
+
+export const initSchema = z.object({
   cwd: z.string(),
-  default: z.boolean(),
+  default: z.boolean().optional(),
+  theme: themeSchema.optional(),
 })
 
 const error = chalk.bold.red
@@ -66,7 +73,7 @@ export const initCommand = new Command()
   })
 
 export async function init(options: z.infer<typeof initSchema>) {
-  const root = options.cwd || (await packageDirectory()) //뒤에꺼 절대 실행안되고 있음
+  const root = options.cwd || (await packageDirectory())
   if (!root) {
     throw ErrorMap({
       code: "config_not_found",
@@ -137,10 +144,10 @@ export async function init(options: z.infer<typeof initSchema>) {
     JSON.stringify(config),
     "utf-8",
   )
-
-  let primary = "neutral"
-  let secondary = "slate"
-  let gray = "gray"
+  //theme color select
+  let primary = options.theme?.primaryColor || "neutral"
+  let secondary = options.theme?.secondaryColor || "slate"
+  let gray = options.theme?.grayColor || "gray"
 
   if (!options.default) {
     primary = (await select({
@@ -180,8 +187,6 @@ export async function init(options: z.infer<typeof initSchema>) {
   )
 
   fs.writeFile(path.join(root, "preset.ts"), preset)
-
   transformPandaConfig(path.resolve(root, pandacssConfigPath))
-
   return config
 }
