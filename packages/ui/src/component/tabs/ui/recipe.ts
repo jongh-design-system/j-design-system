@@ -9,9 +9,9 @@ export const recipe = sva({
       alignItems: "center",
       justifyContent: "center",
       rounded: "md",
-      bg: "muted",
+      bg: "layer.floating",
       p: "1",
-      color: "muted.foreground",
+      color: "layer.foreground.emphasized",
     },
     trigger: {
       display: "inline-flex",
@@ -25,13 +25,6 @@ export const recipe = sva({
       fontWeight: "medium",
       transition: "all",
       cursor: "pointer",
-      ringColor: "background",
-
-      _focusVisible: {
-        ringWidth: "1",
-        ringColor: "ring",
-        ringOffset: "1",
-      },
 
       _disabled: {
         pointerEvents: "none",
@@ -46,14 +39,6 @@ export const recipe = sva({
     },
     content: {
       mt: "2",
-      ringColor: "background",
-
-      _focusVisible: {
-        outlineWidth: "2",
-        outlineOffset: "2",
-        ringWidth: "2",
-        ringColor: "ring",
-      },
     },
   },
 })

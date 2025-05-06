@@ -42,7 +42,9 @@ export const colorSchema = z.object({
   gray: z.enum(grayColorPalette),
 })
 
-export const transformTemplate = (options: z.infer<typeof colorSchema>) => {
+export type ColorSchema = z.infer<typeof colorSchema>
+
+export const transformTemplate = (options: ColorSchema) => {
   const compliedTemplate = Handlebars.compile(template)
   return compliedTemplate(options)
 }

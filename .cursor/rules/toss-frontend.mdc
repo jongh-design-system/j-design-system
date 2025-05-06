@@ -1,7 +1,7 @@
 ---
-description: 
+description: related to react,typescript,component
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 # Frontend Design Guideline
 

@@ -56,7 +56,7 @@ export const recipe = sva({
     },
     helper: {
       alignSelf: "stretch",
-      color: "muted.foreground",
+      color: "neutral.foreground",
       textStyle: "caption2",
     },
   },

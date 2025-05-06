@@ -1,49 +1,60 @@
 ---
-description: 
+description: related to figma
 globs: 
 alwaysApply: false
 ---
 # Implementing Figma Designs Guide
 
-## Core Principles
+## 1. Core Principles
 1. **Visual Intent**: Figma designs represent the intended visual outcome and user experience.
 2. **Adapt, Don't Copy**: Directly copying raw style values or exact layouts from Figma is discouraged. Implementation requires thoughtful adaptation using the project's established design system.
 
-## Informed Judgment
+## 2. Design Analysis Process
+
+### 2.1 Judgement Approach
 Developers must exercise judgment when translating Figma designs into code, considering:
 
-1. **Project's Design System**: Prioritize mapping Figma elements to the established Semantic Tokens (colors, spacing, radii, borders, typography) and component patterns defined in this project's Panda CSS setup.
-- all style's real value is in the 'styled-system/styles.css'. you have to judge based on real value
+#### 2.1.1 Project's Design System
+- Prioritize mapping Figma elements to the established Tokens (colors, spacing, radii, borders, typography,...) and component patterns defined in this project's Panda CSS setup.
+- All generated token is defined at [tokens.d.ts](mdc:packages/ui/styled-system/tokens/tokens.d.ts) [index.mjs](mdc:packages/ui/styled-system/tokens/index.mjs)
+- All token's real css value is in the [styles.css](mdc:packages/ui/styled-system/styles.css). you have to judge based on real value
+- Sematic token is on priority. ex)colors.primary, colors.muted
 
-2. **External Best Practices**: Consider established UI/UX design principles, usability heuristics, and accessibility standards (e.g., WCAG, platform guidelines).
+Example: do not use gap:'1px'. instead, find spacing token and apply like gap:'1'
 
-## System Adherence
-The final code implementation must strictly adhere to all technical rules of this Design System:
+#### 2.1.2 Rules for Handling Missing Figma Color Tokens
+1. Check Figma Color Value (Optional): If possible, identify the actual HEX/RGB/HSL value of the problematic color in Figma to help with token searching.
+2. Search Project Tokens: First, search [tokens.d.ts](mdc:packages/ui/styled-system/tokens/tokens.d.ts) [index.mjs](mdc:packages/ui/styled-system/tokens/index.mjs) for tokens with similar names or meanings (e.g., primary, border, neutral, gray).
+3. Check Actual CSS Value: Verify the actual CSS value of the problematic color variable in @styles.css.
+4. Replace Based on Meaning and Visual Similarity: Considering the actual CSS value and its semantic meaning, choose the most appropriate and visually similar token from the project tokens.
+5. Prioritize Consistency: If there are existing use cases within the project, prioritize those tokens for visual consistency.
+6. Apply Code: Replace the Figma color with the chosen project token in the style implementation.
+7. Document with Comments (Required): Clearly document in the code why a specific token was chosen as a replacement.
+8. Visual Review: After implementation, visually review the UI to ensure it aligns with the design intent and, if necessary, try other tokens.
 
-- Use only defined Design Tokens (Strict Mode is enabled)
-- Follow the Folder & File Structure rules
-- Define styles in recipe.ts using Panda Recipes (cva/sva) and the mapped Design Tokens
-- Apply styles in index.tsx using the specified pattern (recipe.raw(), css(), cx())
-- **Prefer CSS Selectors Over Variants**: Don't create variants for states that can be handled by CSS selectors (_hover, _focus, _disabled, _active, etc.)
+#### 2.1.3 API Selection (cva vs sva)
+- Use **cva** for components that consist of a single main element requiring styling (e.g., Button, Badge, Chip, Tag).
+- Use **sva** for components with multiple distinct parts or complex nested structures (e.g., TextField, Dialog, Select, Checkbox).
+- When using sva, you must define all required slots based on the component's structure.
 
-## Final Goal
-The goal is an implementation that accurately reflects the Figma design's intent while being built consistently, maintainably, and robustly using the project's specific design system.
+## 3. Component Structure Analysis
 
-## Component Structure Design Principles
+### 3.1 Structural Design Principles
+When analyzing Figma components, follow these principles:
 
-### 1. Identify Structural Hierarchy
+#### 3.1.1 Identify Structural Hierarchy
 - When analyzing Figma designs, first clearly identify the component's hierarchical structure.
 - Distinguish which elements belong to which layer and which parent elements they are children of.
 
-### 2. Maintain DOM Structure
+#### 3.1.2 Maintain DOM Structure
 - When creating recipes, design slots to match the actual DOM structure.
 - Slot names should reflect the component's hierarchical structure.
 
-### 3. Clearly Define State Application Locations
+#### 3.1.3 Clearly Define State Application Locations
 - Clearly identify which elements focus, hover, active states, etc. should be applied to.
 - Example: In TextField, focus state is applied to the container, not the input element.
 
-### Actual Structure Example (TextField)
+#### 3.1.4 Actual Structure Example (TextField)
 ```
 TextField
 │
@@ -61,38 +72,12 @@ TextField
 │   └── helper (error/help message)
 ```
 
-### 4. Maintain Style Property Order Consistency
-- Style properties should be consistently ordered:
-  - Layout (display, flex) → Size (width, height) → Spacing (padding, margin) → Border → Other visual properties
+### 3.2 Component Slots and Sub-elements
 
-### 5. Use CSS Selectors Instead of Variants for States
-- Use CSS selectors (_hover, _focus, _disabled, _active, etc.) instead of creating variants for states.
-- For example, use `_disabled: { opacity: '0.5' }` in base styles rather than creating a separate `disabled: true` variant.
-- This keeps the API simpler and avoids unnecessary prop passing.
-
-## Mapping Figma Variants to Panda Recipes (cva/sva)
-
-### Variant Analysis & Adherence
-1. **Identify Variants**: Thoroughly examine the Figma component to identify all distinct variants and their properties.
-   - Example: Size=Small|Medium, State=Default|Hover|Disabled, Style=Primary|Outline
-   - Implement only explicitly defined Figma variants.
-
-2. **Identify Style Changes**: Determine which style attributes (CSS properties) change between identified variants.
-
-### Base vs. Variant Styles Separation
-1. **Common Styles (base)**: Styles that remain constant across all variants should be defined in the `base` property of the Panda recipe.
-
-2. **Changing Styles (variants)**: Styles that differ between Figma variants should be defined in the `variants` property of the Panda recipe.
-   - Organize changing styles under logical variant keys that correspond to Figma variant properties (e.g., size, variant, state).
-   - Use project Design Tokens for style values in both base and variants.
-
-## Component Slots and Sub-elements
-
-### Always Consider Component Parts
+#### 3.2.1 Always Consider Component Parts
 1. **Identify All Sub-elements**: Complex components (like TextField, Select, etc.) typically contain multiple visual elements that must all be considered:
    - For example, a TextField may include: label, input, helper text, error message, etc.
    - Each of these elements needs its own styling consideration and implementation.
-
 
 2. **Use Multi-slot Components**: For components with distinct sub-elements, use the `sva` (slot-based variant API) instead of `cva`:
    - Define all required slots based on the Figma component's structure
@@ -102,7 +87,156 @@ TextField
    - For instance, a "disabled" state should impact styling of the input, label, and other elements
    - A "size" variant may need to adjust spacing, font sizes, etc. across multiple slots
 
-### Example: Multi-slot Component Structure
+### 3.3 Figma 노드 계층 구조 이해하기
+
+Figma에서 디자인 요소는 특정 타입과 계층 구조로 구성되어 있습니다. 컴포넌트 구현 시 이러한 구조를 이해하는 것이 중요합니다.
+
+#### 3.3.1 주요 노드 타입
+- **FRAME**: 다른 요소들을 담는 기본 컨테이너로, 레이아웃과 그룹화 역할을 합니다.
+- **COMPONENT**: 재사용 가능한 디자인 요소로, Figma 라이브러리에 저장됩니다.
+- **COMPONENT_SET**: 다양한 상태와 변형을 포함하는 컴포넌트 모음(예: 버튼의 다양한 크기와 상태).
+- **INSTANCE**: 원본 컴포넌트의 복제본으로, 원본과 연결되어 있어 원본 변경 시 자동 업데이트됩니다.
+- **VECTOR**: 벡터 기반 그래픽 요소(아이콘, 도형 등).
+- **TEXT**: 텍스트 요소.
+- **GROUP**: 여러 요소를 그룹화한 단순 집합.
+
+#### 3.3.2 일반적인 계층 구조 패턴
+일반적인 컴포넌트의 계층 구조는 다음과 같습니다:
+
+```
+COMPONENT_SET (예: Button)
+  └── COMPONENT (각 변형: small/medium/large, primary/secondary 등)
+       ├── INSTANCE (다른 컴포넌트의 인스턴스, 예: 아이콘)
+       ├── FRAME (레이아웃 구성)
+       │   ├── VECTOR (그래픽 요소)
+       │   └── TEXT (텍스트 요소)
+       └── GROUP (그룹화된 요소들)
+```
+
+#### 3.3.3 구현 시 고려사항
+1. **컴포넌트 세트 분석**: COMPONENT_SET을 분석하여 모든 변형(variants)을 파악하세요.
+2. **인스턴스 관계 이해**: INSTANCE는 다른 컴포넌트를 참조하므로, 원본 컴포넌트와의 관계를 이해해야 합니다.
+3. **레이어 구조 매핑**: Figma의 레이어 구조를 React 컴포넌트 구조로 적절히 매핑하세요.
+4. **상태 처리 위치**: Figma의 각 레이어가 어떤 상태(hover, focus 등)에 반응하는지 파악하고, 코드에서 해당 요소에 올바르게 적용하세요.
+
+#### 3.3.4 INSTANCE 처리 방법
+Figma에서 INSTANCE는 이미 정의된 컴포넌트의 복제본입니다. Input/Checkbox와 같은 컴포넌트를 구현할 때 INSTANCE 요소를 처리하는 방법은 다음과 같습니다:
+
+1. **INSTANCE 식별**: Figma에서 Input/Checkbox 컴포넌트를 분석할 때 다음과 같은 구조가 일반적입니다:
+   ```
+   COMPONENT_SET (Input/Checkbox)
+     └── COMPONENT (각 변형: checked/unchecked, size=sm/md, disabled/enabled 등)
+         ├── FRAME (Container)
+         │   ├── INSTANCE (Checkbox 컨트롤 - 다른 컴포넌트의 인스턴스)
+         │   │   └── VECTOR (체크 마크)
+         │   └── TEXT (Label 텍스트)
+   ```
+
+2. **INSTANCE 구현 방식**: INSTANCE는 이미 구현된 다른 컴포넌트를 참조하므로, 해당 컴포넌트가 이미 구현되었는지 확인해야 합니다.
+   - 만약 참조된 컴포넌트가 이미 구현되어 있다면, 해당 컴포넌트를 임포트하여 사용합니다.
+   - 아직 구현되지 않았다면, 먼저 해당 컴포넌트를 구현한 후 사용합니다.
+
+3. **실제 예: Input/Checkbox에서 INSTANCE 처리**:
+   ```tsx
+   // 예: Checkbox 컴포넌트 구현 시 INSTANCE 처리
+   
+   // 1. Checkbox 컴포넌트의 recipe.ts
+   export const checkboxRecipe = sva({
+     slots: ["root", "control", "indicator", "label"],
+     base: {
+       root: {
+         display: "flex",
+         alignItems: "center",
+         gap: "2"
+       },
+       control: {
+         display: "flex",
+         alignItems: "center",
+         justifyContent: "center",
+         borderWidth: "1px",
+         borderStyle: "solid",
+         borderColor: "border",
+         borderRadius: "sm",
+         // 다른 공통 스타일
+       },
+       indicator: {
+         // 체크 마크 스타일
+         color: "primary.foreground"
+       },
+       label: {
+         // 레이블 스타일
+         fontSize: "sm",
+         color: "foreground"
+       }
+     },
+     variants: {
+       /* 변형 정의 */
+     }
+   });
+   
+   // 2. Checkbox 컴포넌트의 index.tsx
+   import { CheckIcon } from "@/components/icons"; // 이미 구현된 아이콘 컴포넌트
+   
+   export function Checkbox(props) {
+     const styles = checkboxRecipe.raw(props);
+     
+     return (
+       <div className={styles.root}>
+         <div className={styles.control}>
+           {/* INSTANCE 처리: CheckIcon은 Figma의 체크 마크 INSTANCE에 해당 */}
+           {props.checked && <CheckIcon className={styles.indicator} />}
+         </div>
+         <span className={styles.label}>{props.label}</span>
+       </div>
+     );
+   }
+   ```
+
+4. **중요 포인트**: INSTANCE를 처리할 때 다음 사항에 주의하세요:
+   - **스타일 재정의 불필요**: INSTANCE는 원본 컴포넌트의 스타일을 이미 가지고 있으므로, 해당 스타일을 재정의할 필요가 없습니다.
+   - **토큰 일관성 유지**: INSTANCE를 포함한 컴포넌트를 구현할 때도 프로젝트의 디자인 토큰을 일관되게 사용해야 합니다.
+   - **상태 전파**: INSTANCE의 상태(예: checked/unchecked, disabled)는 상위 컴포넌트에서 props로 전달되어야 합니다.
+
+이 접근 방식은 Figma 디자인의 컴포넌트 구조를 코드로 정확하게 매핑하면서도, 디자인 시스템의 원칙과 일관성을 유지하는 데 도움이 됩니다.
+
+## 4. Implementation Guidelines
+
+### 4.1 System Adherence Requirements
+The final code implementation must strictly adhere to all technical rules of this Design System:
+
+- Follow the Folder & File Structure rules
+- Define styles in recipe.ts using Panda Recipes (cva/sva) and the mapped Design Tokens
+- Apply styles in index.tsx using the specified pattern (recipe.raw(), css(), cx())
+- **Prefer CSS Selectors Over Variants**: Don't create variants for states that can be handled by CSS selectors (_hover, _focus, _disabled, _active, etc.)
+
+### 4.2 Style Property Order Consistency
+- Style properties should be consistently ordered:
+  - Layout (display, flex) → Size (width, height) → Spacing (padding, margin) → Border → Other visual properties
+
+### 4.3 CSS Selectors Instead of Variants for States
+- Use CSS selectors (_hover, _focus, _disabled, _active, etc.) instead of creating variants for states.
+- For example, use `_disabled: { opacity: '0.5' }` in base styles rather than creating a separate `disabled: true` variant.
+- This keeps the API simpler and avoids unnecessary prop passing.
+
+### 4.4 Mapping Figma Variants to Panda Recipes (cva/sva)
+
+#### 4.4.1 Variant Analysis & Adherence
+1. **Identify Variants**: Thoroughly examine the Figma component to identify all distinct variants and their properties.
+   - Example: Size=Small|Medium, State=Default|Hover|Disabled, Style=Primary|Outline
+   - Implement only explicitly defined Figma variants.
+
+2. **Identify Style Changes**: Determine which style attributes (CSS properties) change between identified variants.
+
+#### 4.4.2 Base vs. Variant Styles Separation
+1. **Common Styles (base)**: Styles that remain constant across all variants should be defined in the `base` property of the Panda recipe.
+
+2. **Changing Styles (variants)**: Styles that differ between Figma variants should be defined in the `variants` property of the Panda recipe.
+   - Organize changing styles under logical variant keys that correspond to Figma variant properties (e.g., size, variant, state).
+   - Use project Design Tokens for style values in both base and variants.
+
+## 5. Implementation Examples
+
+### 5.1 Example: Multi-slot Component Structure
 ```ts
 // For a TextField component using sva
 export const textFieldRecipe = sva({
@@ -167,7 +301,7 @@ export const textFieldRecipe = sva({
 });
 ```
 
-### Detailed TextField Recipe Implementation Example
+### 5.2 Detailed TextField Recipe Implementation Example
 ```ts
 // TextField recipe example with proper structure and focus handling
 export const textFieldRecipe = sva({
@@ -268,3 +402,6 @@ export const textFieldRecipe = sva({
   },
 });
 ```
+
+## 6. Final Goal
+The goal is an implementation that accurately reflects the Figma design's intent while being built consistently, maintainably, and robustly using the project's specific design system.

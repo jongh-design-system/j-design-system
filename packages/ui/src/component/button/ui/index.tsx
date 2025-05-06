@@ -14,7 +14,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot.Root : "button"
     const [variantProps, componentProps] = recipe.splitVariantProps(props)
     const styles = recipe.raw(variantProps)
-
     return (
       <Comp
         role="button"
