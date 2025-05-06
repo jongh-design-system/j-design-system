@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## 2.0.0
+
+### Major Changes
+
+- 503ffb9: change theme template and add mcp
+
 ## 1.6.0
 
 ### Minor Changes
