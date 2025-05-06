@@ -1,7 +1,7 @@
 ---
-description: 
+description: create style or task related to style
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 # Guidelines for Writing Style Recipes (recipe.ts)
 
@@ -13,7 +13,7 @@ make sure that token is gerenated from pandacss's default token + custom token
 
 
 ## API Selection (cva vs. sva)
-
+ 
 ### Rules
 - Use **cva** (from @styled-system/css) for components that consist of a single main part or element requiring styling (e.g., Button, Badge, Tag).
 - Use **sva** (from @styled-system/css) for components with multiple distinct parts (slots) that need potentially different base styles or variants (e.g., Select with trigger/content/item, Checkbox with control/label).
@@ -102,13 +102,13 @@ export const recipe = cva({
     // Example: Disabled state
     disabled: {
       true: { // Use boolean variant for states if preferred
-        opacity: '50%', // Use opacity token or allowed value
+        opacity: '0.5', // Use opacity token or allowed value
         cursor: 'not-allowed',
         // Override base styles if needed for disabled state
         bg: 'muted', // Use semantic color token
         color: 'muted.foreground',
         _hover: { // Ensure hover styles are also disabled/overridden
-            bg: 'muted'
+            bg: 'muted.hover'
         }
       }
     }

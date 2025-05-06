@@ -1,8 +1,12 @@
 {
   "mcpServers": {
     "TalkToFigma": {
-      "command": "bunx",
+      "command": "npx",
       "args": ["cursor-talk-to-figma-mcp@latest"]
+    },
+    "@jongh/cli": {
+      "command": "pnpx",
+      "args": ["@jongh/cli", "mcp"]
     }
   }
 }

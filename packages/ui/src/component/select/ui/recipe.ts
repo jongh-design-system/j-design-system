@@ -31,13 +31,7 @@ export const recipe = sva({
       ringColor: "background",
 
       _placeholder: {
-        color: "muted.foreground",
-      },
-
-      _focus: {
-        ringWidth: "1",
-        ringColor: "ring",
-        outlineOffset: "1",
+        color: "layer.foreground.emphasized",
       },
 
       _disabled: {
@@ -59,8 +53,8 @@ export const recipe = sva({
       overflow: "hidden",
       rounded: "md",
       border: "base",
-      bg: "popover",
-      color: "popover.foreground",
+      bg: "layer.floating",
+      color: "layer.foreground",
       shadow: "md",
       maxH: "96",
 
@@ -136,7 +130,7 @@ export const recipe = sva({
       mx: "-1",
       my: "1",
       h: "1",
-      bg: "muted",
+      bg: "stroke.border",
     },
   },
 })

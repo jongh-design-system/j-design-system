@@ -1,102 +1,116 @@
 import { cva, type RecipeVariantProps } from "@styled-system/css"
 
 export type ButtonVariantProps = RecipeVariantProps<typeof recipe>
+
 export const recipe = cva({
   base: {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
+    flexShrink: 0,
+    minH: "9",
+    gap: "1",
+    textStyle: "label1",
+    whiteSpace: "nowrap",
     rounded: "md",
-    textStyle: "sm",
-    fontWeight: "medium",
-    transition: "colors",
     cursor: "pointer",
-    gap: "2",
-    _focusVisible: {
-      ringWidth: "1",
-      ringColor: "ring",
-      ringOffset: "1",
+    "& svg": {
+      flexShrink: 0,
     },
-
     _disabled: {
       cursor: "not-allowed",
-      opacity: "50%",
+      opacity: "0.5",
     },
   },
   variants: {
     variant: {
-      default: {
+      primary: {
         bg: "primary",
         color: "primary.foreground",
-
-        _hover: {
-          bg: "primary/90",
+        "&:not(:disabled):hover": {
+          bg: "primary.active",
         },
       },
       destructive: {
         bg: "destructive",
         color: "destructive.foreground",
-
-        _hover: {
-          bg: "destructive/90",
+        "&:not(:disabled):hover": {
+          bg: "destructive.active",
         },
       },
       outline: {
+        bg: "layer",
+        color: "layer.foreground",
         border: "input",
-        bg: "background",
-
-        _hover: {
-          bg: "accent",
-          color: "accent.foreground",
+        "&:not(:disabled):hover": {
+          bg: "accent.active",
         },
       },
       secondary: {
         bg: "secondary",
         color: "secondary.foreground",
-
-        _hover: {
-          bga: "secondary/90",
-        },
-      },
-      ghost: {
-        _hover: {
-          bg: "accent",
-          color: "accent.foreground",
+        "&:not(:disabled):hover": {
+          bg: "secondary.active",
         },
       },
       link: {
         color: "primary",
-        textUnderlineOffset: "4px",
-
-        _hover: {
+        textUnderlineOffset: "2",
+        "&:not(:disabled):hover": {
           textDecoration: "underline",
         },
       },
     },
     size: {
-      default: {
+      sm: {
+        h: "9",
+        px: "3",
+        py: "1.5",
+        textStyle: "label2",
+      },
+      md: {
         h: "10",
         px: "4",
         py: "2",
       },
-      sm: {
-        h: "9",
-        rounded: "md",
-        px: "3",
-      },
       lg: {
         h: "11",
-        rounded: "md",
-        px: "8",
-      },
-      icon: {
-        h: "10",
-        w: "10",
+        px: "5",
+        py: "2",
       },
     },
   },
+  compoundVariants: [
+    {
+      size: "sm",
+      css: {
+        "& svg": {
+          width: "3.5",
+          height: "3.5",
+        },
+      },
+    },
+    {
+      size: "md",
+      css: {
+        "& svg": {
+          width: "4",
+          height: "4",
+        },
+      },
+    },
+    {
+      size: "lg",
+      css: {
+        "& svg": {
+          width: "5",
+          height: "5",
+        },
+      },
+    },
+  ],
   defaultVariants: {
-    variant: "default",
-    size: "default",
+    variant: "primary",
+    size: "md",
   },
 })

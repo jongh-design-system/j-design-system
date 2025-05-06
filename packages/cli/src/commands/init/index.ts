@@ -17,6 +17,7 @@ import { getPandacssConfigPath } from "@/common/get-config"
 import { resolvePandaConfig } from "@/common/resolve"
 import {
   colorPalette,
+  type ColorSchema,
   colorSchema,
   grayColorPalette,
   transformTemplate,
@@ -24,9 +25,10 @@ import {
 import { transformPandaConfig } from "@/common/transform"
 import { configSchema } from "@/common/types"
 
-const initSchema = z.object({
+export const initSchema = z.object({
   cwd: z.string(),
-  default: z.boolean(),
+  default: z.boolean().optional(),
+  theme: colorSchema.optional(),
 })
 
 const error = chalk.bold.red
@@ -47,6 +49,7 @@ export const initCommand = new Command()
       const options = initSchema.parse({
         cwd: path.resolve(opts.cwd),
         default: opts.default,
+        theme: opts.theme,
       })
       await init(options)
       s.stop("successfully Initialized!")
@@ -66,7 +69,7 @@ export const initCommand = new Command()
   })
 
 export async function init(options: z.infer<typeof initSchema>) {
-  const root = options.cwd || (await packageDirectory()) //뒤에꺼 절대 실행안되고 있음
+  const root = options.cwd || (await packageDirectory())
   if (!root) {
     throw ErrorMap({
       code: "config_not_found",
@@ -137,38 +140,39 @@ export async function init(options: z.infer<typeof initSchema>) {
     JSON.stringify(config),
     "utf-8",
   )
+  //theme color select
 
-  let primary = "neutral"
-  let secondary = "slate"
-  let gray = "gray"
+  let primary = options.theme?.primary || "neutral"
+  let secondary = options.theme?.secondary || "slate"
+  let gray = options.theme?.gray || "gray"
 
   if (!options.default) {
     primary = (await select({
       message: "Pick primary color",
-      initialValue: "neutral",
+      initialValue: primary,
       options: colorPalette.map((color) => ({
         value: color,
         label: color,
       })),
-    })) as string
+    })) as ColorSchema["primary"]
 
     secondary = (await select({
       message: "Pick secondary color",
-      initialValue: "slate",
+      initialValue: secondary,
       options: colorPalette.map((color) => ({
         value: color,
         label: color,
       })),
-    })) as string
+    })) as ColorSchema["secondary"]
 
     gray = (await select({
       message: "Pick gray color",
-      initialValue: "gray",
+      initialValue: gray,
       options: grayColorPalette.map((color) => ({
         value: color,
         label: color,
       })),
-    })) as string
+    })) as ColorSchema["gray"]
   }
 
   const preset = transformTemplate(
@@ -180,8 +184,6 @@ export async function init(options: z.infer<typeof initSchema>) {
   )
 
   fs.writeFile(path.join(root, "preset.ts"), preset)
-
   transformPandaConfig(path.resolve(root, pandacssConfigPath))
-
   return config
 }

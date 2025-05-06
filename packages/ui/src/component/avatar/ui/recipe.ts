@@ -24,7 +24,7 @@ export const recipe = sva({
       alignItems: "center",
       justifyContent: "center",
       rounded: "full",
-      bg: "muted",
+      bg: "layer.active",
     },
   },
 })
