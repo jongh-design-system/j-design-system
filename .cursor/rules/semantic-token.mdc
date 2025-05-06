@@ -1,169 +1,176 @@
 ---
-description: 
+description: create style or task related to style
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-# Understanding Semantic Tokens
+# PandaCSS Design Token Guide
 
-When implementing UI components using our Panda CSS design system, follow these guidelines for semantic token usage:
+This guide provides rules and best practices for using design tokens with Panda CSS, ensuring consistent styling across your project
 
-## Color Token Structure
+## Desipes and Their Values
 
-- **Base tokens** are referenced directly (e.g., `color: 'primary'`) which applies the DEFAULT value
-- For **text on colored backgrounds**, use the foreground variant (e.g., `color: 'primary.foreground'`)
+### Color Tokens
+- **Base tokens**: `colors.blue.600` → Actual value: `#2563eb`
+- **Semantic tokens**: `colors.primarl value: References base token (e.g., `var(--colors-blue-600)`)
+- **Usage**: `bg: 'primary'`, `color: 'primary.foreground'`
+- **Opacity modifiers**: Add `/90`, `/10` for opacity variations: `bg: 'primary/90'`
 
-## Token Reference Pattern
+#### Semantic Color Token Naming Convention
+Our design system defines the following semantic color tokens in `preset.ts`:
 
-- **Always use semantic tokens** rather than raw color values
-- **Reference format**: `'{tokenCategory}'` or `'{tokenCategory}.{variant}'`
+- **background/foreground**: Base page colors
+  - `background`: Page background color
+  - `foreground`: Default text color
 
-## Implementation Rules
+- **Component Colors**:
+  - `card`: Card component colors
+    - `card.DEFAULT`: Card background
+    - `card.foreground`: Text on cards
+  - `popover`: Popover/dropdown elements
+    - `popover.DEFAULT`: Popover background
+    - `popover.foreground`: Text in popovers
 
-### Figma to Code Translation
+- **Interactive Colors**:
+  - `primary`: Main brand color for key actions
+    - `primary.DEFAULT`: Primary button background
+    - `primary.foreground`: Text on primary buttons
+  - `secondary`: Supporting color for secondary actions
+    - `secondary.DEFAULT`: Secondary button background
+    - `secondary.foreground`: Text on secondary buttons
+  - `accent`: Used for highlighting or emphasis
+    - `accent.DEFAULT`: Accent element background
+    - `accent.foreground`: Text on accent elements
 
-- Map Figma visual elements to our established semantic tokens
-- Judge based on real values in `'styled-system/styles.css'`
-- Adapt rather than copy raw Figma values
+- **Utility Colors**:
+  - `muted`: Subdued visual elements
+    - `muted.DEFAULT`: Muted background
+    - `muted.foreground`: Subtle text, placeholders
+  - `destructive`: Error states and dangerous actions
+    - `destructive.DEFAULT`: Delete button, error states
+    - `destructive.foreground`: Text on destructive elements
 
-### Recipe Structure
+- **Border styles**:
+  - `border`: Standard borders and dividers
+  - `input`: Form input field borders
+  - `ring`: Focus indicator outlines
 
-- Define common styles in `base`
-- Define varying styles in `variants`
-- Use `cva` for simple components
-- Use `sva` for multi-element components with slots
+### Spacing Tokens
+- **Number tokens**: `spacing.4` → Actual value: `1rem` (16px)
+- **Usage**: `p: '4'`, `gap: '2'`, `px: '4'`, `py: '2'`
 
-### Component Structure
+### Size Tokens
+- **Component sizes**: `sizes.10` → Actual value: `2.5rem` (40px)
+- **Usage**: `width: '10'`, `height: '9'`, `w: 'full'`
 
-- Define styles in `recipe.ts` using Panda Recipes
-- Apply styles in `index.tsx` using `recipe.raw()`, `css()`, and `cx()`
+### Border Tokens
+- **Semantic borders**: `borders.primary` → Actual value: `1px solid var(--colors-primary)`
+- **Usage**: `border: 'primary'`, `borderColor: 'primary'`
 
-### For Complex Components
+### Border Radius Tokens
+- **Size-based**: `radii.md` → Actual value: `0.375rem` (6px)
+- **Usage**: `borderRadius: 'md'`
 
-- Identify all sub-elements that need styling
-- Define all required slots based on component structure
-- Ensure variants properly cascade to all elements
+### Text Style Tokens
+- **Size**: `fontSizes.sm` → Actual value: `0.875rem` (14px)
+- **Weight**: `fontWeights.medium` → Actual value: `500`
+- **Usage**: `fontSize: 'sm'`, `fontWeight: 'medium'`
+- **Composite styles**: `textStyle: 'sm'` → combines font size, line height, etc.
 
-## Examples
+#### Text Style Categories from preset.ts
+Our design system defines the following text styles in `preset.ts`:
 
-For cursor styles, use semantic tokens according to interactive states:
+- **Display**: Largest text styles for hero sections
+  - `display1`: 4.5rem (72px), bold
+  - `display2`: 3.75rem (60px), bold
+
+- **Title**: Large text for section headings
+  - `title1`: 2.25rem (36px), semibold
+  - `title2`: 1.5rem (24px), semibold
+  - `title3`: 1.25rem (20px), bold
+
+- **Heading**: Medium text for sub-headings
+  - `heading1`: 1.125rem (18px), semibold
+  - `heading2`: 1rem (16px), semibold
+
+- **Body**: Standard text for content
+  - `body1`: 1rem (16px), normal weight
+  - `body2`: 0.875rem (14px), normal weight
+
+- **Label/Caption**: Small text for UI elements
+  - `label1`: 0.875rem (14px), semibold
+  - `label2`: 0.75rem (12px), semibold
+  - `caption1`: 0.75rem (12px), semibold
+  - `caption2`: 0.625rem (10px), semibold
+
+## Rules for Token Usage
+
+1. **Always use tokens instead of hardcoded values**
+   - ✅ `px: '4'`, `borderRadius: 'md'`, `color: 'primary'`
+   - ❌ `padding: '16px'`, `borderRadius: '6px'`, `color: '#2563eb'`
+
+2. **Use semantic tokens when available**
+   - ✅ `bg: 'primary'`, `color: 'destructive'`
+   - ❌ `bg: 'blue.600'` (when representing a primary action)
+
+3. **For state variations, use condition modifiers first**
+   - ✅ `_hover: { bg: 'primary/90' }`
+   - ✅ `_disabled: { opacity: '0.5', cursor: 'not-allowed' }`
+   - ❌ add hover variant 
+
+4. **Structure recipes (cva/sva) properly**
+   - Put common styles in `base`
+   - Use `variants` for varying styles
+   - Define reasonable `defaultVariants`
+
+## Example Correct Implementation
 
 ```typescript
-// recipe.ts
-export const interactiveElementRecipe = cva({
+// Button component recipe with proper token usage
+export const buttonRecipe = cva({
   base: {
-    // Common styles
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 'md',
+    bg: 'primary', // omit .Default
+    color: 'primary.foreground',
+    
+    _focus: {
+      outline: 'none',
+      borderColor: 'primary',
+    },
+    _disabled: {
+      opacity: '0.5',
+      cursor: 'not-allowed',
+      bg: 'muted',
+      color: 'muted.foreground',
+    }
   },
   variants: {
-    state: {
-      default: {
-        cursor: 'default'
+    size: {
+      sm: { height: '9', px: '3', fontSize: 'sm' },
+      md: { height: '10', px: '4', fontSize: 'md' },
+      lg: { height: '11', px: '8', fontSize: 'lg' }
+    },
+    variant: {
+      outline: {
+        bg: 'transparent',
+        border: 'input',
+        color: 'foreground',
+        _hover: { bg: 'accent', color: 'accent.foreground' }
       },
-      interactive: {
-        cursor: 'pointer'
-      },
-      disabled: {
-        cursor: 'not-allowed',
-        color: 'muted.foreground',  // Using semantic token for text
-        bg: 'muted'  // Using semantic token for background
-      },
-      loading: {
-        cursor: 'wait'
+      destructive: {
+        bg: 'destructive',
+        color: 'destructive.foreground',
+        _hover: { bg: 'destructive/90' }
       }
     }
   },
   defaultVariants: {
-    state: 'default'
+    size: 'md',
+    variant: 'primary'
   }
 });
 ```
-## color guideline
-Basic Colors
-
-background - Page background color
-foreground - Default text color
-
-Component Colors
-
-card - Used for card components
-
-card.DEFAULT - Card background
-card.foreground - Text on cards
-
-
-popover - Used for popover/dropdown elements
-
-popover.DEFAULT - Popover background
-popover.foreground - Text in popovers
-
-
-
-## Interactive Colors
-
-- primary - Main brand color for key actions
-
-primary.DEFAULT - Primary button background
-primary.foreground - Text on primary buttons
-
-
-- secondary - Supporting color for secondary actions
-
-secondary.DEFAULT - Secondary button background
-secondary.foreground - Text on secondary buttons
-
-
-accent - Used for highlighting or emphasis
-
-accent.DEFAULT - Accent element background
-accent.foreground - Text on accent elements
-
-
-
-Utility Colors
-
-muted - Subdued visual elements
-
-muted.DEFAULT - Muted background
-muted.foreground - Subtle text, placeholders
-
-
-destructive - Error states and dangerous actions
-
-destructive.DEFAULT - Delete button, error states
-destructive.foreground - Text on destructive elements
-
-
-
-Border Colors
-
-border - Standard borders and dividers
-input - Form input field borders
-ring - Focus indicator outlines
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
