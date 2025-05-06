@@ -17,6 +17,7 @@ import { getPandacssConfigPath } from "@/common/get-config"
 import { resolvePandaConfig } from "@/common/resolve"
 import {
   colorPalette,
+  type ColorSchema,
   colorSchema,
   grayColorPalette,
   transformTemplate,
@@ -24,16 +25,10 @@ import {
 import { transformPandaConfig } from "@/common/transform"
 import { configSchema } from "@/common/types"
 
-export const themeSchema = z.object({
-  primaryColor: z.string().optional(),
-  secondaryColor: z.string().optional(),
-  grayColor: z.string().optional(),
-})
-
 export const initSchema = z.object({
   cwd: z.string(),
   default: z.boolean().optional(),
-  theme: themeSchema.optional(),
+  theme: colorSchema.optional(),
 })
 
 const error = chalk.bold.red
@@ -54,6 +49,7 @@ export const initCommand = new Command()
       const options = initSchema.parse({
         cwd: path.resolve(opts.cwd),
         default: opts.default,
+        theme: opts.theme,
       })
       await init(options)
       s.stop("successfully Initialized!")
@@ -145,37 +141,38 @@ export async function init(options: z.infer<typeof initSchema>) {
     "utf-8",
   )
   //theme color select
-  let primary = options.theme?.primaryColor || "neutral"
-  let secondary = options.theme?.secondaryColor || "slate"
-  let gray = options.theme?.grayColor || "gray"
+
+  let primary = options.theme?.primary || "neutral"
+  let secondary = options.theme?.secondary || "slate"
+  let gray = options.theme?.gray || "gray"
 
   if (!options.default) {
     primary = (await select({
       message: "Pick primary color",
-      initialValue: "neutral",
+      initialValue: primary,
       options: colorPalette.map((color) => ({
         value: color,
         label: color,
       })),
-    })) as string
+    })) as ColorSchema["primary"]
 
     secondary = (await select({
       message: "Pick secondary color",
-      initialValue: "slate",
+      initialValue: secondary,
       options: colorPalette.map((color) => ({
         value: color,
         label: color,
       })),
-    })) as string
+    })) as ColorSchema["secondary"]
 
     gray = (await select({
       message: "Pick gray color",
-      initialValue: "gray",
+      initialValue: gray,
       options: grayColorPalette.map((color) => ({
         value: color,
         label: color,
       })),
-    })) as string
+    })) as ColorSchema["gray"]
   }
 
   const preset = transformTemplate(
