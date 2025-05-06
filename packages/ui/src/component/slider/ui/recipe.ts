@@ -17,7 +17,7 @@ export const recipe = sva({
       flexGrow: "1",
       overflow: "hidden",
       rounded: "full",
-      bg: "secondary",
+      bg: "neutral",
     },
     range: {
       position: "absolute",
@@ -31,17 +31,9 @@ export const recipe = sva({
       cursor: "pointer",
       rounded: "full",
       borderWidth: "2px",
-      borderStyle: "solid",
-      borderColor: "primary",
-      bg: "background",
-      ringColor: "background",
+      borderColor: "neutral.foreground",
+      bg: "neutral",
       transition: "colors",
-
-      _focusVisible: {
-        ringWidth: "1",
-        ringColor: "ring",
-        ringOffset: "1",
-      },
 
       _disabled: {
         pointerEvents: "none",

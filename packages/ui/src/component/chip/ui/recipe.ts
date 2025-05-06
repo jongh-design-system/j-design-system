@@ -9,14 +9,13 @@ export const recipe = cva({
     borderRadius: "full",
     transition: "colors",
     cursor: "pointer",
-    _focusVisible: {
-      ringWidth: "1",
-      ringColor: "ring",
-      ringOffset: "1",
-    },
+    whiteSpace: "nowrap",
+    flexShrink: 0,
+
     "& svg": {
       flexShrink: 0,
     },
+
     _disabled: {
       opacity: 0.5,
       cursor: "not-allowed",
@@ -27,16 +26,17 @@ export const recipe = cva({
       filled: {
         bg: "secondary",
         color: "secondary.foreground",
-        _hover: {
-          bg: "secondary/80",
+        "&:not(:disabled):hover": {
+          bg: "secondary.active",
         },
       },
       outlined: {
         border: "base",
         bg: "background",
         color: "foreground",
-        _hover: {
-          bg: "secondary",
+        "&:not(:disabled):hover": {
+          bg: "accent",
+          color: "accent.foreground",
         },
       },
     },
@@ -44,6 +44,7 @@ export const recipe = cva({
       sm: {
         height: "7",
         fontSize: "sm",
+        textStyle: "label2",
         "& svg": {
           width: "3",
           height: "3",
@@ -52,6 +53,7 @@ export const recipe = cva({
       md: {
         height: "9",
         fontSize: "lg",
+        textStyle: "label1",
         "& svg": {
           width: "4",
           height: "4",

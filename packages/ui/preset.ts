@@ -8,7 +8,8 @@ import {
 const radii = defineTokens.radii({
   radius: { value: "0.5rem" },
 })
-
+//main - blue
+//secondary - slate
 export const semanticColors = defineSemanticTokens.colors({
   background: {
     value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
@@ -16,28 +17,15 @@ export const semanticColors = defineSemanticTokens.colors({
   foreground: {
     value: { base: "{colors.slate.950}", _dark: "{colors.slate.50}" },
   },
-  card: {
-    DEFAULT: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.900}" },
-    },
-    foreground: {
-      value: { base: "{colors.slate.950}", _dark: "{colors.slate.50}" },
-    },
-  },
-  popover: {
-    DEFAULT: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.900}" },
-    },
-    foreground: {
-      value: { base: "{colors.slate.950}", _dark: "{colors.slate.50}" },
-    },
-  },
   primary: {
     DEFAULT: {
-      value: { base: "{colors.blue.600}", _dark: "{colors.blue.400}" },
+      value: { base: "{colors.blue.600}", _dark: "{colors.blue.700}" },
     },
     foreground: {
       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+    },
+    active: {
+      value: { base: "{colors.blue.700}", _dark: "{colors.blue.300}" },
     },
   },
   secondary: {
@@ -47,13 +35,19 @@ export const semanticColors = defineSemanticTokens.colors({
     foreground: {
       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
     },
+    active: {
+      value: { base: "{colors.gray.700}", _dark: "{colors.gray.300}" },
+    },
   },
-  muted: {
+  neutral: {
     DEFAULT: {
       value: { base: "{colors.slate.100}", _dark: "{colors.slate.800}" },
     },
     foreground: {
       value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
+    },
+    active: {
+      value: { base: "{colors.slate.200}", _dark: "{colors.slate.700}" },
     },
   },
   accent: {
@@ -63,6 +57,9 @@ export const semanticColors = defineSemanticTokens.colors({
     foreground: {
       value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" },
     },
+    active: {
+      value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" },
+    },
   },
   destructive: {
     DEFAULT: {
@@ -71,22 +68,61 @@ export const semanticColors = defineSemanticTokens.colors({
     foreground: {
       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
     },
+    active: {
+      value: { base: "{colors.red.700}", _dark: "{colors.red.300}" },
+    },
   },
-  border: {
-    value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
+  layer: {
+    DEFAULT: {
+      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+    },
+    overlay: {
+      value: { base: "{colors.black/50}", _dark: "{colors.black/50}" },
+    },
+    floating: {
+      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+    },
+    active: {
+      value: { base: "{colors.slate.50}", _dark: "{colors.slate.800}" },
+    },
+    foreground: {
+      DEFAULT: {
+        value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
+      },
+      muted: {
+        value: { base: "{colors.slate.400}", _dark: "{colors.slate.500}" },
+      },
+      emphasized: {
+        value: { base: "{colors.slate.700}", _dark: "{colors.slate.200}" },
+      },
+      primary: {
+        value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
+      },
+    },
   },
-  input: {
-    value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
-  },
-  ring: {
-    value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
+  stroke: {
+    DEFAULT: {
+      value: { base: "{colors.blue.200}", _dark: "{colors.blue.600}" },
+    },
+    border: {
+      value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
+    },
+    input: {
+      value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
+    },
+    ring: {
+      value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
+    },
+    destructive: {
+      value: { base: "{colors.red.500}", _dark: "{colors.red.400}" },
+    },
   },
 })
 
 const borders = defineSemanticTokens.borders({
-  base: { value: "1px solid {colors.border}" },
-  input: { value: "1px solid {colors.input}" },
-  primary: { value: "1px solid {colors.primary}" },
+  base: { value: "1px solid {colors.stroke.border}" },
+  input: { value: "1px solid {colors.stroke.input}" },
+  primary: { value: "1px solid {colors.stroke}" },
   destructive: { value: "1px solid {colors.destructive}" },
 })
 
@@ -205,7 +241,7 @@ export const textStyles = defineTextStyles({
 export const defaultPreset = definePreset({
   name: "default",
   globalCss: {
-    html: {
+    body: {
       background: "background",
       color: "foreground",
     },
