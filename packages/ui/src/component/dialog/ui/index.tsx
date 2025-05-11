@@ -11,15 +11,23 @@ import {
 
 import { recipe } from "./recipe"
 
-const { withRootProvider, withContext } = createStyleContext(recipe)
+const { withContext, withRootProvider } = createStyleContext(recipe)
 
-export const Root = withRootProvider(Dialog.Root)
+export const Root = withRootProvider<Dialog.DialogProps>(Dialog.Root)
 
-export const Portal = withRootProvider(Dialog.Portal)
+export const Portal = withContext<
+  ElementRef<typeof Dialog.Portal>,
+  Dialog.DialogPortalProps
+>(Dialog.Portal, "portal")
 export const Overlay = withContext<
   ElementRef<typeof Dialog.Overlay>,
   Dialog.DialogOverlayProps
 >(Dialog.Overlay, "overlay")
+
+export const Header = withContext<
+  HTMLDivElement,
+  ComponentPropsWithoutRef<"div">
+>("div", "header")
 
 export const Close = withContext<
   ElementRef<typeof Dialog.Close>,
@@ -33,11 +41,13 @@ export const ContentPrimitive = forwardRef<
   <Portal>
     <Overlay />
     <Dialog.Content ref={ref} {...props}>
-      {children}
-      <Close>
-        <X />
-        <span className={css({ srOnly: true })}>Close</span>
-      </Close>
+      <Header>
+        {children}
+        <Close aria-label="Close Dialog">
+          <X />
+          <span className={css({ srOnly: true })}>Close</span>
+        </Close>
+      </Header>
     </Dialog.Content>
   </Portal>
 ))
@@ -51,11 +61,6 @@ export const Trigger = withContext<
   ElementRef<typeof Dialog.Trigger>,
   Dialog.DialogTriggerProps
 >(Dialog.Trigger, "trigger")
-
-export const Header = withContext<
-  HTMLDivElement,
-  ComponentPropsWithoutRef<"div">
->("div", "header")
 
 export const Footer = withContext<
   HTMLDivElement,

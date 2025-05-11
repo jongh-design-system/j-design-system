@@ -1,80 +1,32 @@
-import { css, cx } from "@styled-system/css"
+import { createStyleContext } from "@utils/createStyleContext"
 import { Accordion as AccordionPrimitive } from "radix-ui"
-import { type ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+import { type ComponentPropsWithoutRef, ElementRef } from "react"
 
 import { recipe } from "./recipe"
 
-export const Root = forwardRef<
+const { withProvider, withContext } = createStyleContext(recipe)
+
+export const Root = withProvider<
   ElementRef<typeof AccordionPrimitive.Root>,
   ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
+>(AccordionPrimitive.Root, "root")
 
-  return (
-    <AccordionPrimitive.Root
-      ref={ref}
-      className={cx(css(styles.root), className)}
-      {...props}
-    />
-  )
-})
-
-export const Header = forwardRef<
-  ElementRef<typeof AccordionPrimitive.Header>,
-  ComponentPropsWithoutRef<typeof AccordionPrimitive.Header>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-
-  return (
-    <AccordionPrimitive.Header
-      ref={ref}
-      className={cx(css(styles.header), className)}
-      {...props}
-    />
-  )
-})
-
-export const Item = forwardRef<
+export const Item = withContext<
   ElementRef<typeof AccordionPrimitive.Item>,
   ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
+>(AccordionPrimitive.Item, "item")
 
-  return (
-    <AccordionPrimitive.Item
-      ref={ref}
-      className={cx(css(styles.item), className)}
-      {...props}
-    />
-  )
-})
+export const Header = withContext<
+  ElementRef<typeof AccordionPrimitive.Header>,
+  ComponentPropsWithoutRef<typeof AccordionPrimitive.Header>
+>(AccordionPrimitive.Header, "header")
 
-export const Trigger = forwardRef<
+export const Trigger = withContext<
   ElementRef<typeof AccordionPrimitive.Trigger>,
   ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
+>(AccordionPrimitive.Trigger, "trigger")
 
-  return (
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className={cx(css(styles.trigger), className)}
-      {...props}
-    />
-  )
-})
-
-export const Content = forwardRef<
+export const Content = withContext<
   ElementRef<typeof AccordionPrimitive.Content>,
   ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-
-  return (
-    <AccordionPrimitive.Content
-      ref={ref}
-      className={cx(css(styles.content), className)}
-      {...props}
-    />
-  )
-})
+>(AccordionPrimitive.Content, "content")

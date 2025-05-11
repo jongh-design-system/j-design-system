@@ -1,47 +1,22 @@
-import { css, cx } from "@styled-system/css"
+import { createStyleContext } from "@utils/createStyleContext"
 import { Avatar as AvatarPrimitive } from "radix-ui"
-import { type ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+import { type ComponentPropsWithoutRef, ElementRef } from "react"
 
 import { recipe } from "./recipe"
 
-export const Root = forwardRef<
+const { withContext, withProvider } = createStyleContext(recipe)
+
+export const Root = withProvider<
   ElementRef<typeof AvatarPrimitive.Root>,
   ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <AvatarPrimitive.Root
-      ref={ref}
-      className={cx(css(styles.root), className)}
-      {...props}
-    />
-  )
-})
+>(AvatarPrimitive.Root, "root")
 
-export const Image = forwardRef<
+export const Image = withContext<
   ElementRef<typeof AvatarPrimitive.Image>,
   ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <AvatarPrimitive.Image
-      ref={ref}
-      className={cx(css(styles.image), className)}
-      {...props}
-    />
-  )
-})
+>(AvatarPrimitive.Image, "image")
 
-export const Fallback = forwardRef<
+export const Fallback = withContext<
   ElementRef<typeof AvatarPrimitive.Fallback>,
   ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <AvatarPrimitive.Fallback
-      ref={ref}
-      className={cx(css(styles.fallback), className)}
-      {...props}
-    />
-  )
-})
+>(AvatarPrimitive.Fallback, "fallback")
