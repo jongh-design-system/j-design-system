@@ -10,109 +10,199 @@ const radii = defineTokens.radii({
 })
 //main - blue
 //secondary - slate
+// export const semanticColors = defineSemanticTokens.colors({
+//   background: {
+//     value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+//   },
+//   foreground: {
+//     value: { base: "{colors.slate.950}", _dark: "{colors.slate.50}" },
+//   },
+//   primary: {
+//     DEFAULT: {
+//       value: { base: "{colors.blue.600}", _dark: "{colors.blue.700}" },
+//     },
+//     foreground: {
+//       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+//     },
+//     active: {
+//       value: { base: "{colors.blue.700}", _dark: "{colors.blue.300}" },
+//     },
+//   },
+//   secondary: {
+//     DEFAULT: {
+//       value: { base: "{colors.gray.600}", _dark: "{colors.gray.400}" },
+//     },
+//     foreground: {
+//       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+//     },
+//     active: {
+//       value: { base: "{colors.gray.700}", _dark: "{colors.gray.300}" },
+//     },
+//   },
+//   neutral: {
+//     DEFAULT: {
+//       value: { base: "{colors.slate.100}", _dark: "{colors.slate.800}" },
+//     },
+//     foreground: {
+//       value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
+//     },
+//     active: {
+//       value: { base: "{colors.slate.200}", _dark: "{colors.slate.700}" },
+//     },
+//   },
+//   accent: {
+//     DEFAULT: {
+//       value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
+//     },
+//     foreground: {
+//       value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" },
+//     },
+//     active: {
+//       value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" },
+//     },
+//   },
+//   destructive: {
+//     DEFAULT: {
+//       value: { base: "{colors.red.600}", _dark: "{colors.red.400}" },
+//     },
+//     foreground: {
+//       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+//     },
+//     active: {
+//       value: { base: "{colors.red.700}", _dark: "{colors.red.300}" },
+//     },
+//   },
+//   layer: {
+//     DEFAULT: {
+//       value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+//     },
+//     overlay: {
+//       value: { base: "{colors.black/50}", _dark: "{colors.black/50}" },
+//     },
+//     floating: {
+//       value: { base: "{colors.slate.50}", _dark: "{colors.slate.900}" },
+//     },
+//     active: {
+//       value: { base: "{colors.slate.50}", _dark: "{colors.slate.800}" },
+//     },
+//     foreground: {
+//       DEFAULT: {
+//         value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
+//       },
+//       muted: {
+//         value: { base: "{colors.slate.400}", _dark: "{colors.slate.500}" },
+//       },
+//       emphasized: {
+//         value: { base: "{colors.slate.700}", _dark: "{colors.slate.200}" },
+//       },
+//       primary: {
+//         value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
+//       },
+//     },
+//   },
+//   stroke: {
+//     DEFAULT: {
+//       value: { base: "{colors.blue.200}", _dark: "{colors.blue.600}" },
+//     },
+//     border: {
+//       value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
+//     },
+//     input: {
+//       value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
+//     },
+//     ring: {
+//       value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
+//     },
+//     destructive: {
+//       value: { base: "{colors.red.500}", _dark: "{colors.red.400}" },
+//     },
+//   },
+// })
+
 export const semanticColors = defineSemanticTokens.colors({
   background: {
     value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
   },
   foreground: {
-    value: { base: "{colors.slate.950}", _dark: "{colors.slate.50}" },
+    DEFAULT: {
+      value: { base: "{colors.slate.700}", _dark: "{colors.slate.300}" },
+    },
+    muted: {
+      value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
+    },
+    emphasized: {
+      value: { base: "{colors.slate.900}", _dark: "{colors.slate.100}" },
+    },
+    primary: {
+      value: { base: "{colors.blue.600}", _dark: "{colors.blue.400}" },
+    },
+    destructive: {
+      value: { base: "{colors.red.600}", _dark: "{colors.red.400}" },
+    },
+    inverted: {
+      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+    },
+  },
+  layer: {
+    DEFAULT: { value: { base: "{colors.white}", _dark: "{colors.slate.950}" } },
+    floating: {
+      value: { base: "{colors.slate.50}", _dark: "{colors.slate.900}" },
+    },
+    active: {
+      value: { base: "{colors.slate.100}", _dark: "{colors.slate.800}" },
+    },
+    overlay: {
+      value: { base: "{colors.black/50}", _dark: "{colors.black/50}" },
+    },
   },
   primary: {
     DEFAULT: {
       value: { base: "{colors.blue.600}", _dark: "{colors.blue.700}" },
     },
-    foreground: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
-    },
     active: {
       value: { base: "{colors.blue.700}", _dark: "{colors.blue.300}" },
+    },
+    foreground: {
+      value: { base: "{colors.white}", _dark: "{colors.slate.50}" },
     },
   },
   secondary: {
     DEFAULT: {
-      value: { base: "{colors.gray.600}", _dark: "{colors.gray.400}" },
-    },
-    foreground: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+      value: { base: "{colors.gray.700}", _dark: "{colors.gray.500}" },
     },
     active: {
-      value: { base: "{colors.gray.700}", _dark: "{colors.gray.300}" },
+      value: { base: "{colors.gray.800}", _dark: "{colors.gray.400}" },
+    },
+    foreground: {
+      value: { base: "{colors.white}", _dark: "{colors.slate.50}" },
     },
   },
   neutral: {
     DEFAULT: {
       value: { base: "{colors.slate.100}", _dark: "{colors.slate.800}" },
     },
-    foreground: {
-      value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
-    },
     active: {
       value: { base: "{colors.slate.200}", _dark: "{colors.slate.700}" },
     },
   },
-  accent: {
-    DEFAULT: {
-      value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
-    },
-    foreground: {
-      value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" },
-    },
-    active: {
-      value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" },
-    },
-  },
   destructive: {
-    DEFAULT: {
-      value: { base: "{colors.red.600}", _dark: "{colors.red.400}" },
-    },
+    DEFAULT: { value: { base: "{colors.red.600}", _dark: "{colors.red.400}" } },
+    active: { value: { base: "{colors.red.700}", _dark: "{colors.red.300}" } },
     foreground: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
-    },
-    active: {
-      value: { base: "{colors.red.700}", _dark: "{colors.red.300}" },
-    },
-  },
-  layer: {
-    DEFAULT: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
-    },
-    overlay: {
-      value: { base: "{colors.black/50}", _dark: "{colors.black/50}" },
-    },
-    floating: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
-    },
-    active: {
-      value: { base: "{colors.slate.50}", _dark: "{colors.slate.800}" },
-    },
-    foreground: {
-      DEFAULT: {
-        value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
-      },
-      muted: {
-        value: { base: "{colors.slate.400}", _dark: "{colors.slate.500}" },
-      },
-      emphasized: {
-        value: { base: "{colors.slate.700}", _dark: "{colors.slate.200}" },
-      },
-      primary: {
-        value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
-      },
+      value: { base: "{colors.white}", _dark: "{colors.slate.50}" },
     },
   },
   stroke: {
     DEFAULT: {
-      value: { base: "{colors.blue.200}", _dark: "{colors.blue.600}" },
+      value: { base: "{colors.slate.300}", _dark: "{colors.slate.50}" },
     },
-    border: {
+    subtle: {
       value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
     },
-    input: {
-      value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
+    interactive: {
+      value: { base: "{colors.blue.400}", _dark: "{colors.blue.500}" },
     },
-    ring: {
-      value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
-    },
+    ring: { value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" } },
     destructive: {
       value: { base: "{colors.red.500}", _dark: "{colors.red.400}" },
     },
@@ -120,9 +210,9 @@ export const semanticColors = defineSemanticTokens.colors({
 })
 
 const borders = defineSemanticTokens.borders({
-  base: { value: "1px solid {colors.stroke.border}" },
-  input: { value: "1px solid {colors.stroke.input}" },
-  primary: { value: "1px solid {colors.stroke}" },
+  base: { value: "1px solid {colors.stroke}" },
+  input: { value: "1px solid {colors.stroke.subtle}" },
+  primary: { value: "1px solid {colors.stroke.interactive}" },
   destructive: { value: "1px solid {colors.destructive}" },
 })
 
