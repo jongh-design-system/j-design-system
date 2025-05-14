@@ -1,15 +1,10 @@
-import { sva } from "@styled-system/css"
+import { type RecipeVariantProps, sva } from "@styled-system/css"
 
 export const recipe = sva({
   slots: ["root", "item", "header", "trigger", "content"],
   base: {
-    root: {
-      background: "neutral",
-      borderRadius: "sm",
-    },
-    item: {
-      borderBottom: "base",
-    },
+    root: {},
+    item: {},
     header: {
       display: "flex",
     },
@@ -23,11 +18,7 @@ export const recipe = sva({
       px: "1",
       py: "2",
       textStyle: "heading2",
-      transition: "all",
-
-      _hover: {
-        color: "primary",
-      },
+      transition: "colors",
 
       "& > svg": {
         flexShrink: "0",
@@ -56,6 +47,48 @@ export const recipe = sva({
         animationDuration: "normal",
         animationName: "accordion-down_radix",
       },
+
+      "& > :first-child": {
+        pb: "2",
+        pt: "1",
+      },
     },
   },
+  variants: {
+    variant: {
+      outline: {
+        trigger: {
+          _hover: {
+            color: "primary",
+          },
+        },
+        item: {
+          borderBottom: "base",
+        },
+      },
+      subtle: {
+        item: {
+          borderRadius: "md",
+          "&[data-state=open]": {
+            bg: "neutral",
+          },
+        },
+        header: {
+          borderRadius: "md",
+        },
+        trigger: {
+          borderRadius: "md",
+          _hover: {
+            bg: "neutral",
+            borderRadius: "md",
+          },
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    variant: "outline" as const,
+  },
 })
+
+export type AccordionVariants = RecipeVariantProps<typeof recipe>
