@@ -37,6 +37,7 @@ export const ContentPrimitive = forwardRef<
         ref={ref}
         position={position}
         data-position={position}
+        sideOffset={4}
         {...props}
       >
         <Viewport data-position={position}>{children}</Viewport>
