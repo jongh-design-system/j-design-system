@@ -24,7 +24,7 @@ export const Primary: Story = {
         <Slider.Track>
           <Slider.Range />
         </Slider.Track>
-        <Slider.Thumb />
+        <Slider.Thumb aria-label="volume" />
       </Slider.Root>
     )
   },
