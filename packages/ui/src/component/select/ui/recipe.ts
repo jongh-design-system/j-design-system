@@ -19,6 +19,7 @@ export const recipe = sva({
       display: "flex",
       h: "10",
       w: "full",
+      px: "2",
       alignItems: "center",
       justifyContent: "space-between",
       rounded: "md",
