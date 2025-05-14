@@ -30,10 +30,9 @@ export const recipe = sva({
       w: "5",
       cursor: "pointer",
       rounded: "full",
-      borderWidth: "2px",
-      borderColor: "neutral.foreground",
+      borderWidth: "2",
+      borderColor: "stroke.ring",
       bg: "neutral",
-      transition: "colors",
 
       _disabled: {
         pointerEvents: "none",

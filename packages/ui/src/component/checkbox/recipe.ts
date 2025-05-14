@@ -1,48 +1,41 @@
 import { sva } from "@styled-system/css"
 
-/**
- * 체크박스 컴포넌트의 스타일 레시피
- */
 export const checkboxRecipe = sva({
-  slots: [
-    "root", // 체크박스 컨테이너
-    "icon", // 체크 아이콘/인디케이터
-    "indeterminateLine", // indeterminate 상태일 때 보여지는 가로선
-  ],
+  slots: ["root", "icon", "indeterminateLine"],
   base: {
     root: {
+      alignItems: "center",
+      border: "input",
+      borderRadius: "sm",
+      cursor: "pointer",
       display: "inline-flex",
       justifyContent: "center",
-      alignItems: "center",
       position: "relative",
-      borderRadius: "sm",
-      border: "input",
-      cursor: "pointer",
       _disabled: {
         cursor: "not-allowed",
         opacity: "0.5",
       },
     },
     icon: {
-      display: "flex",
-      justifyContent: "center",
       alignItems: "center",
-      flexShrink: "0",
       color: "primary.foreground",
+      display: "flex",
+      flexShrink: "0",
+      justifyContent: "center",
     },
     indeterminateLine: {
-      width: "3",
-      height: "0.5",
       bg: "primary.foreground",
+      height: "0.5",
+      width: "3",
     },
   },
   variants: {
     size: {
       sm: {
         root: {
+          height: "4",
           p: "1",
           width: "4",
-          height: "4",
         },
         icon: {
           height: "3.5",
@@ -51,9 +44,9 @@ export const checkboxRecipe = sva({
       },
       md: {
         root: {
+          height: "5",
           p: "1.5",
           width: "5",
-          height: "5",
         },
         icon: {
           height: "3",
@@ -62,19 +55,10 @@ export const checkboxRecipe = sva({
       },
     },
     state: {
-      unchecked: {
-        root: {
-          bg: "transparent",
-          _hover: {
-            borderColor: "primary",
-            bg: "layer.active",
-          },
-        },
-      },
       checked: {
         root: {
-          borderColor: "primary",
           bg: "primary",
+          borderColor: "primary",
         },
       },
       indeterminate: {
@@ -83,6 +67,15 @@ export const checkboxRecipe = sva({
         },
         indeterminateLine: {
           display: "block",
+        },
+      },
+      unchecked: {
+        root: {
+          bg: "transparent",
+          _hover: {
+            bg: "layer.active",
+            borderColor: "primary",
+          },
         },
       },
     },

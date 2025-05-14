@@ -3,6 +3,10 @@ import { sva } from "@styled-system/css"
 export const recipe = sva({
   slots: ["root", "item", "header", "trigger", "content"],
   base: {
+    root: {
+      background: "neutral",
+      borderRadius: "sm",
+    },
     item: {
       borderBottom: "base",
     },
@@ -10,24 +14,27 @@ export const recipe = sva({
       display: "flex",
     },
     trigger: {
+      alignItems: "center",
+      color: "foreground.emphasized",
+      cursor: "pointer",
       display: "flex",
       flex: "1",
-      alignItems: "center",
       justifyContent: "space-between",
-      py: "4",
-      fontWeight: "medium",
+      px: "1",
+      py: "2",
+      textStyle: "heading2",
       transition: "all",
-      cursor: "pointer",
+
       _hover: {
-        textDecoration: "underline",
+        color: "primary",
       },
 
       "& > svg": {
-        h: "4",
-        w: "4",
         flexShrink: "0",
+        h: "4",
         transition: "transform",
         transitionDuration: "normal",
+        w: "4",
       },
 
       "&[data-state=open] > svg": {
@@ -35,30 +42,19 @@ export const recipe = sva({
       },
     },
     content: {
+      color: "foreground.muted",
       overflow: "hidden",
-      textStyle: "sm",
+      textStyle: "body2",
       transition: "all",
 
       "&[data-state=closed]": {
-        animationName: "accordion-up_radix",
         animationDuration: "normal",
+        animationName: "accordion-up_radix",
       },
 
       "&[data-state=open]": {
-        animationName: "accordion-down_radix",
         animationDuration: "normal",
-      },
-    },
-  },
-  variants: {
-    variant: {
-      sm: {
-        trigger: {
-          color: "amber.700",
-        },
-        content: {
-          color: "pink.300",
-        },
+        animationName: "accordion-down_radix",
       },
     },
   },
