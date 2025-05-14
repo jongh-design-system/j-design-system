@@ -29,25 +29,29 @@ export const Header = withContext<
   ComponentPropsWithoutRef<"div">
 >("div", "header")
 
-export const Close = withContext<
+const CloseIcon = withContext<
   ElementRef<typeof Dialog.Close>,
   Dialog.DialogCloseProps
 >(Dialog.Close, "close")
 
+export const Close = Dialog.Close //pure logic for close dialog
+
 export const ContentPrimitive = forwardRef<
   React.ElementRef<typeof Dialog.Content>,
-  React.ComponentPropsWithoutRef<typeof Dialog.Content>
->(({ children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof Dialog.Content> & {
+    closeIcon?: boolean
+  }
+>(({ children, closeIcon = true, ...props }, ref) => (
   <Portal>
     <Overlay />
     <Dialog.Content ref={ref} {...props}>
-      <Header>
-        {children}
-        <Close aria-label="Close Dialog">
+      {children}
+      {closeIcon && (
+        <CloseIcon aria-label="Close Dialog">
           <X />
           <span className={css({ srOnly: true })}>Close</span>
-        </Close>
-      </Header>
+        </CloseIcon>
+      )}
     </Dialog.Content>
   </Portal>
 ))
