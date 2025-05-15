@@ -16,7 +16,7 @@ export const checkboxRecipe = sva({
       position: "relative",
       maxWidth: "full",
       minHeight: "12",
-      paddingLeft: "12",
+      paddingLeft: "8",
       lineHeight: "relaxed",
     },
     input: {
@@ -39,8 +39,8 @@ export const checkboxRecipe = sva({
         },
       },
       _before: {
-        width: "8",
-        height: "8",
+        width: "6",
+        height: "6",
         left: "0",
         border: "base",
         content: '""',
@@ -53,8 +53,8 @@ export const checkboxRecipe = sva({
         content: '""',
         position: "absolute",
         transform: "translateY(-50%)",
-        width: "8",
-        height: "8",
+        width: "6",
+        height: "6",
         opacity: 0,
         backgroundImage: `${checkmarkIconSmallBase64}`,
         backgroundRepeat: "no-repeat",
@@ -67,10 +67,34 @@ export const checkboxRecipe = sva({
     text: {
       textStyle: "label1",
       cursor: "pointer",
+      paddingLeft: "1",
       _peerDisabled: {
         cursor: "not-allowed",
       },
     },
+  },
+  variants: {
+    size: {
+      md: {},
+      lg: {
+        input: {
+          _before: {
+            width: "7",
+            height: "7",
+          },
+          _after: {
+            width: "7",
+            height: "7",
+          },
+        },
+        text: {
+          paddingLeft: "2",
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: "md",
   },
 })
 
