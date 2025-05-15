@@ -1,87 +1,69 @@
 import { sva } from "@styled-system/css"
 
+const checkmarkIconSmallBase64 =
+  "url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cpath d=%27M10.41 17.854c-.34 0-.679-.113-.905-.453l-5.203-5.203c-.566-.565-.566-1.357 0-1.923.566-.565 1.357-.565 1.923 0l4.185 4.185 7.465-7.465c.566-.565 1.357-.565 1.923 0 .566.566.566 1.358 0 1.923l-8.37 8.37c-.34.453-.679.566-1.018.566z%27 fill=%27%23fff%27/%3E%3C/svg%3E')"
+
 export const checkboxRecipe = sva({
-  slots: ["root", "icon", "indeterminateLine"],
+  slots: ["root", "label", "input", "text"],
   base: {
     root: {
-      alignItems: "center",
-      border: "input",
-      borderRadius: "sm",
-      cursor: "pointer",
-      display: "inline-flex",
-      justifyContent: "center",
       position: "relative",
-      _disabled: {
-        cursor: "not-allowed",
-        opacity: "0.5",
-      },
-    },
-    icon: {
-      alignItems: "center",
-      color: "primary.foreground",
       display: "flex",
-      flexShrink: "0",
-      justifyContent: "center",
     },
-    indeterminateLine: {
-      bg: "primary.foreground",
-      height: "0.5",
-      width: "3",
+    label: {
+      display: "inline-flex",
+      alignItems: "center",
+      position: "relative",
+      maxWidth: "full",
+      minHeight: "12",
+      paddingLeft: "12",
+      lineHeight: "relaxed",
     },
-  },
-  variants: {
-    size: {
-      sm: {
-        root: {
-          height: "4",
-          p: "1",
-          width: "4",
-        },
-        icon: {
-          height: "3.5",
-          width: "3.5",
-        },
-      },
-      md: {
-        root: {
-          height: "5",
-          p: "1.5",
-          width: "5",
-        },
-        icon: {
-          height: "3",
-          width: "3",
-        },
-      },
-    },
-    state: {
-      checked: {
-        root: {
-          bg: "primary",
-          borderColor: "primary",
-        },
-      },
-      indeterminate: {
-        root: {
+    input: {
+      border: "none",
+      cursor: "pointer",
+      position: "absolute",
+      left: "0",
+      margin: "0",
+      padding: "0",
+      w: "0",
+      h: "0",
+      bg: "white",
+      top: "[50%]",
+      _checked: {
+        _before: {
           bg: "primary",
         },
-        indeterminateLine: {
-          display: "block",
+        _after: {
+          opacity: 1,
         },
       },
-      unchecked: {
-        root: {
-          bg: "transparent",
-          _hover: {
-            bg: "layer.active",
-            borderColor: "primary",
-          },
-        },
+      _before: {
+        width: "8",
+        height: "8",
+        left: "0",
+        border: "base",
+        content: '""',
+        position: "absolute",
+        transition: "colors",
+        transform: "translateY(-50%)",
+        borderRadius: "lg",
+      },
+      _after: {
+        content: '""',
+        position: "absolute",
+        transform: "translateY(-50%)",
+        width: "8",
+        height: "8",
+        opacity: 0,
+        backgroundImage: `${checkmarkIconSmallBase64}`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
       },
     },
-  },
-  defaultVariants: {
-    size: "md",
-    state: "unchecked",
+    text: {
+      textStyle: "label1",
+      cursor: "pointer",
+    },
   },
 })
