@@ -23,7 +23,7 @@ export const checkboxRecipe = sva({
       alignItems: "center",
       position: "relative",
       maxWidth: "full",
-      minHeight: "12",
+      minHeight: "9",
       paddingLeft: "8",
       lineHeight: "relaxed",
     },
