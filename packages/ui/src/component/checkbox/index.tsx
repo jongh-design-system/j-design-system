@@ -1,5 +1,5 @@
 import { cx } from "@styled-system/css"
-import { useControllableState } from "radix-ui/internal"
+import { useComposedRefs, useControllableState } from "radix-ui/internal"
 import {
   type ComponentPropsWithoutRef,
   forwardRef,
@@ -23,7 +23,7 @@ type CheckboxProps = CheckboxInputProps & CheckboxVariants & CheckboxLabelProps
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (props, ref) => {
-    const [variantProps, { label, ...inputProps }] =
+    const [variantProps, { label, indeterminate, ...inputProps }] =
       checkboxRecipe.splitVariantProps(props)
 
     const {
@@ -41,14 +41,29 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
     const inputRef = useRef<HTMLInputElement>(null)
 
+    const initialChecked = useRef(isChecked)
+
     const id = useId()
 
     useEffect(() => {
       if (!inputRef.current) {
         return
       }
-      inputRef.current.indeterminate = inputProps.indeterminate ?? false
-    }, [inputProps.indeterminate])
+      inputRef.current.indeterminate = indeterminate ?? false
+    }, [indeterminate])
+
+    useEffect(() => {
+      const form = inputRef.current?.form
+      if (form) {
+        const reset = () => setIsChecked(initialChecked.current)
+        form.addEventListener("reset", reset)
+        return () => {
+          form.removeEventListener("reset", reset)
+        }
+      }
+    }, [setIsChecked])
+
+    const composedRefs = useComposedRefs(ref, inputRef)
 
     return (
       <div className={root}>
@@ -57,12 +72,19 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             id={`checkbox-${id}`}
             className={cx(input, "peer")}
-            ref={ref}
+            ref={composedRefs}
             onChange={(e) => {
               setIsChecked(e.currentTarget.checked)
             }}
             checked={isChecked}
-            data-indeterminate={inputProps.indeterminate}
+            data-state={
+              indeterminate
+                ? "indeterminate"
+                : isChecked
+                  ? "checked"
+                  : "unchecked"
+            }
+            data-indeterminate={indeterminate ? "" : undefined}
             {...inputProps}
           />
           <span className={text}>{label}</span>
