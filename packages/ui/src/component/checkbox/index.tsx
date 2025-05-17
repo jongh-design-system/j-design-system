@@ -23,8 +23,10 @@ type CheckboxProps = CheckboxInputProps & CheckboxVariants & CheckboxLabelProps
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (props, ref) => {
-    const [variantProps, { label, indeterminate, ...inputProps }] =
-      checkboxRecipe.splitVariantProps(props)
+    const [
+      variantProps,
+      { label, indeterminate, onCheckedChange, ...inputProps },
+    ] = checkboxRecipe.splitVariantProps(props)
 
     const {
       root,
@@ -36,7 +38,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const [isChecked = false, setIsChecked] = useControllableState({
       prop: inputProps.checked,
       defaultProp: inputProps.defaultChecked,
-      onChange: inputProps.onCheckedChange,
+      onChange: onCheckedChange,
     })
 
     const inputRef = useRef<HTMLInputElement>(null)
