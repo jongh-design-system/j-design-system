@@ -19,19 +19,17 @@ export const recipe = sva({
       display: "flex",
       h: "10",
       w: "full",
+      px: "2",
       alignItems: "center",
       justifyContent: "space-between",
       rounded: "md",
       border: "input",
-      bg: "transparent",
-      px: "3",
-      py: "2",
-      textStyle: "sm",
-      cursor: "pointer",
-      ringColor: "background",
 
+      textStyle: "label1",
+      cursor: "pointer",
+      bg: "layer",
       _placeholder: {
-        color: "layer.foreground.emphasized",
+        color: "foreground.emphasized",
       },
 
       _disabled: {
@@ -48,16 +46,17 @@ export const recipe = sva({
     },
     content: {
       position: "relative",
-      zIndex: 50,
+      zIndex: "100",
       minW: "full",
       overflow: "hidden",
       rounded: "md",
       border: "base",
-      bg: "layer.floating",
-      color: "layer.foreground",
+      boxShadow: "lg",
+      bg: "layer",
+      color: "foreground.emphasized",
       shadow: "md",
       maxH: "96",
-
+      py: "1",
       "&:is([data-state=open])": {
         animationName: "fadeIn",
         animationState: "ease-in",
@@ -92,14 +91,11 @@ export const recipe = sva({
       py: "1.5",
       pl: "8",
       pr: "2",
-      textStyle: "sm",
-      fontWeight: "semibold",
+      textStyle: "label1",
     },
     item: {
       position: "relative",
       display: "flex",
-      cursor: "default",
-      userSelect: "none",
       alignItems: "center",
       rounded: "sm",
       py: "1.5",
@@ -107,9 +103,8 @@ export const recipe = sva({
       pr: "2",
       textStyle: "sm",
 
-      _focus: {
-        bg: "accent",
-        color: "accent.foreground",
+      _hover: {
+        bgColor: "layer.active",
       },
 
       ["&[data-disabled]"]: {
@@ -130,7 +125,7 @@ export const recipe = sva({
       mx: "-1",
       my: "1",
       h: "1",
-      bg: "stroke.border",
+      bg: "stroke",
     },
   },
 })

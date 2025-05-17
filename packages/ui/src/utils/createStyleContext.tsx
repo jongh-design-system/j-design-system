@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   createContext,
   type ElementType,
@@ -10,7 +11,7 @@ import {
 import { cx } from "styled-system/css"
 import { isCssProperty, styled, type StyledComponent } from "styled-system/jsx"
 
-type Props = Record<string, unknown>
+type Props = Record<PropertyKey, any>
 type Recipe = {
   (props?: Props): Props
   splitVariantProps: (props: Props) => [Props, Props]
@@ -29,25 +30,36 @@ const shouldForwardProp = (
 export const createStyleContext = <R extends Recipe>(recipe: R) => {
   const StyleContext = createContext<Record<Slot<R>, string> | null>(null)
 
-  const withRootProvider = (Component: ElementType) => {
-    const StyledComponent = (props: Props) => {
-      const [variantProps, otherProps] = recipe.splitVariantProps(props)
-      const slotStyles = recipe(variantProps) as Record<Slot<R>, string>
-
+  const withRootProvider = <OriginalProps extends Record<string, any>>(
+    Component: React.ComponentType<OriginalProps>,
+  ): React.ComponentType<OriginalProps> => {
+    const StyledComponent: React.ComponentType<OriginalProps> = (props) => {
+      const slotStyles = recipe(recipe) as Record<Slot<R>, string>
       return (
         <StyleContext.Provider value={slotStyles}>
-          <Component {...otherProps} />
+          <Component {...props} />
         </StyleContext.Provider>
       )
     }
     return StyledComponent
   }
 
-  const withProvider = <T, P extends { className?: string | undefined }>(
-    Component: ElementType,
-    slot: Slot<R>,
+  const withProvider = <
+    T,
+    OriginalProps extends Props,
+    HasClassName extends boolean = true,
+  >(
+    Component: ElementType<OriginalProps>,
+    slot?: Slot<R>,
     options?: Options,
-  ): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>> => {
+  ): ForwardRefExoticComponent<
+    PropsWithoutRef<
+      HasClassName extends true
+        ? OriginalProps & { className?: string }
+        : OriginalProps
+    > &
+      RefAttributes<T>
+  > => {
     const StyledComponent = styled(
       Component,
       {},
@@ -56,8 +68,14 @@ export const createStyleContext = <R extends Recipe>(recipe: R) => {
           shouldForwardProp(prop, variantKeys, options),
       },
     ) as StyledComponent<ElementType>
-    const StyledSlotProvider = forwardRef<T, P>((props, ref) => {
+    const StyledSlotProvider = forwardRef<
+      T,
+      HasClassName extends true
+        ? OriginalProps & { className?: string }
+        : OriginalProps
+    >((props, ref) => {
       const [variantProps, otherProps] = recipe.splitVariantProps(props)
+
       const slotStyles = recipe(variantProps) as Record<Slot<R>, string>
 
       return (
@@ -65,29 +83,33 @@ export const createStyleContext = <R extends Recipe>(recipe: R) => {
           <StyledComponent
             {...otherProps}
             ref={ref}
-            className={cx(slotStyles?.[slot], props.className)}
+            className={cx(slot && slotStyles?.[slot], props?.className)}
           />
         </StyleContext.Provider>
       )
     })
-    // @ts-expect-error '''
-    StyledSlotProvider.displayName = Component.displayName || Component.name
+
+    StyledSlotProvider.displayName =
+      typeof Component === "function"
+        ? Component.displayName || Component.name
+        : String(Component)
 
     return StyledSlotProvider
   }
 
-  const withContext = <T, P extends { className?: string | undefined }>(
+  const withContext = <T, P extends Props>(
     Component: ElementType,
-    slot: Slot<R>,
+    slot?: Slot<R>,
   ): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>> => {
     const StyledComponent = styled(Component)
     const StyledSlotComponent = forwardRef<T, P>((props, ref) => {
       const slotStyles = useContext(StyleContext)
+
       return (
         <StyledComponent
           {...props}
           ref={ref}
-          className={cx(slotStyles?.[slot], props.className)}
+          className={cx(slot && slotStyles?.[slot], props?.className)}
         />
       )
     })

@@ -11,7 +11,7 @@ export const recipe = sva({
       rounded: "md",
       bg: "layer.floating",
       p: "1",
-      color: "layer.foreground.emphasized",
+      color: "foreground.emphasized",
     },
     trigger: {
       display: "inline-flex",

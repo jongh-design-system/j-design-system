@@ -16,31 +16,21 @@ export const Primary: Story = {
       <div style={{ width: "500px" }}>
         <Accordion.Root type="single" collapsible>
           <Accordion.Item value="1">
-            <Accordion.Header>
-              <Accordion.Trigger
-                className={css({
-                  color: "red.100",
-                })}
-              >
-                1번
-              </Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Content>
-              <div>내용1</div>
-            </Accordion.Content>
+            <Accordion.Trigger
+              className={css({
+                color: "red.100",
+              })}
+            >
+              1번
+            </Accordion.Trigger>
+            <Accordion.Content>내용1</Accordion.Content>
           </Accordion.Item>
           <Accordion.Item value="2">
-            <Accordion.Header>
-              <Accordion.Trigger>2번</Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Content>
-              <div>내용1</div>
-            </Accordion.Content>
+            <Accordion.Trigger>2번</Accordion.Trigger>
+            <Accordion.Content>내용1</Accordion.Content>
           </Accordion.Item>
           <Accordion.Item value="3">
-            <Accordion.Header>
-              <Accordion.Trigger>3번</Accordion.Trigger>
-            </Accordion.Header>
+            <Accordion.Trigger>3번</Accordion.Trigger>
             <Accordion.Content>내용3</Accordion.Content>
           </Accordion.Item>
         </Accordion.Root>

@@ -11,33 +11,47 @@ import {
 
 import { recipe } from "./recipe"
 
-const { withRootProvider, withContext } = createStyleContext(recipe)
+const { withContext, withRootProvider } = createStyleContext(recipe)
 
-export const Root = withRootProvider(Dialog.Root)
+export const Root = withRootProvider<Dialog.DialogProps>(Dialog.Root)
 
-export const Portal = withRootProvider(Dialog.Portal)
+export const Portal = withContext<
+  ElementRef<typeof Dialog.Portal>,
+  Dialog.DialogPortalProps
+>(Dialog.Portal, "portal")
 export const Overlay = withContext<
   ElementRef<typeof Dialog.Overlay>,
   Dialog.DialogOverlayProps
 >(Dialog.Overlay, "overlay")
 
-export const Close = withContext<
+export const Header = withContext<
+  HTMLDivElement,
+  ComponentPropsWithoutRef<"div">
+>("div", "header")
+
+const CloseIcon = withContext<
   ElementRef<typeof Dialog.Close>,
   Dialog.DialogCloseProps
 >(Dialog.Close, "close")
 
+export const Close = Dialog.Close //pure logic for close dialog
+
 export const ContentPrimitive = forwardRef<
   React.ElementRef<typeof Dialog.Content>,
-  React.ComponentPropsWithoutRef<typeof Dialog.Content>
->(({ children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof Dialog.Content> & {
+    closeIcon?: boolean
+  }
+>(({ children, closeIcon = true, ...props }, ref) => (
   <Portal>
     <Overlay />
     <Dialog.Content ref={ref} {...props}>
       {children}
-      <Close>
-        <X />
-        <span className={css({ srOnly: true })}>Close</span>
-      </Close>
+      {closeIcon && (
+        <CloseIcon aria-label="Close Dialog">
+          <X />
+          <span className={css({ srOnly: true })}>Close</span>
+        </CloseIcon>
+      )}
     </Dialog.Content>
   </Portal>
 ))
@@ -51,11 +65,6 @@ export const Trigger = withContext<
   ElementRef<typeof Dialog.Trigger>,
   Dialog.DialogTriggerProps
 >(Dialog.Trigger, "trigger")
-
-export const Header = withContext<
-  HTMLDivElement,
-  ComponentPropsWithoutRef<"div">
->("div", "header")
 
 export const Footer = withContext<
   HTMLDivElement,
