@@ -11,7 +11,7 @@ This guide provides rules and best practices for using design tokens with Panda 
 
 ### Color Tokens
 - **Base tokens**: `colors.blue.600` → Actual value: `#2563eb`
-- **Semantic tokens**: `colors.primarl value: References base token (e.g., `var(--colors-blue-600)`)
+- **Semantic tokens**: `colors.primary` → References base token (e.g., `var(--colors-blue-600)`)
 - **Usage**: `bg: 'primary'`, `color: 'primary.foreground'`
 - **Opacity modifiers**: Add `/90`, `/10` for opacity variations: `bg: 'primary/90'`
 
@@ -19,40 +19,44 @@ This guide provides rules and best practices for using design tokens with Panda 
 Our design system defines the following semantic color tokens in `preset.ts`:
 
 - **background/foreground**: Base page colors
-  - `background`: Page background color
-  - `foreground`: Default text color
+  - `background`: Page background color (white in light mode, slate.950 in dark mode)
+  - `foreground`: Text color hierarchy
+    - `foreground.DEFAULT`: Primary text color (slate.700 in light mode, slate.300 in dark mode)
+    - `foreground.muted`: Secondary text color (slate.500 in light mode, slate.400 in dark mode)
+    - `foreground.emphasized`: Strong text color (slate.900 in light mode, slate.100 in dark mode)
+    - `foreground.primary`: Brand-aligned text color (blue.600 in light mode, blue.400 in dark mode)
+    - `foreground.destructive`: Error text color (red.600 in light mode, red.400 in dark mode)
+    - `foreground.inverted`: Inverted text color (white in light mode, slate.950 in dark mode)
 
-- **Component Colors**:
-  - `card`: Card component colors
-    - `card.DEFAULT`: Card background
-    - `card.foreground`: Text on cards
-  - `popover`: Popover/dropdown elements
-    - `popover.DEFAULT`: Popover background
-    - `popover.foreground`: Text in popovers
+- **Layer System**: For managing visual hierarchy
+  - `layer.DEFAULT`: Base layer background (white/slate.950)
+  - `layer.floating`: Floating element background (slate.50/slate.900)
+  - `layer.active`: Active state background (slate.100/slate.800)
+  - `layer.overlay`: Overlay background (black/50)
 
 - **Interactive Colors**:
   - `primary`: Main brand color for key actions
-    - `primary.DEFAULT`: Primary button background
-    - `primary.foreground`: Text on primary buttons
+    - `primary.DEFAULT`: Primary button background (blue.600/700)
+    - `primary.active`: Active state color (blue.700/300)
+    - `primary.foreground`: Text on primary buttons (white/slate.50)
   - `secondary`: Supporting color for secondary actions
-    - `secondary.DEFAULT`: Secondary button background
-    - `secondary.foreground`: Text on secondary buttons
-  - `accent`: Used for highlighting or emphasis
-    - `accent.DEFAULT`: Accent element background
-    - `accent.foreground`: Text on accent elements
-
-- **Utility Colors**:
-  - `muted`: Subdued visual elements
-    - `muted.DEFAULT`: Muted background
-    - `muted.foreground`: Subtle text, placeholders
+    - `secondary.DEFAULT`: Secondary button background (gray.700/500)
+    - `secondary.active`: Active state color (gray.800/400)
+    - `secondary.foreground`: Text on secondary buttons (white/slate.50)
+  - `neutral`: Neutral UI elements
+    - `neutral.DEFAULT`: Neutral background (slate.100/800)
+    - `neutral.active`: Active state color (slate.200/700)
   - `destructive`: Error states and dangerous actions
-    - `destructive.DEFAULT`: Delete button, error states
-    - `destructive.foreground`: Text on destructive elements
+    - `destructive.DEFAULT`: Delete button, error states (red.600/400)
+    - `destructive.active`: Active state color (red.700/300)
+    - `destructive.foreground`: Text on destructive elements (white/slate.50)
 
-- **Border styles**:
-  - `border`: Standard borders and dividers
-  - `input`: Form input field borders
-  - `ring`: Focus indicator outlines
+- **Stroke Colors**:
+  - `stroke.DEFAULT`: Default stroke color (slate.300/slate.50)
+  - `stroke.subtle`: Subtle borders (slate.200/slate.800)
+  - `stroke.interactive`: Interactive element borders (blue.400/blue.500)
+  - `stroke.ring`: Focus indicator outlines (blue.500/400)
+  - `stroke.destructive`: Destructive element borders (red.500/400)
 
 ### Spacing Tokens
 - **Number tokens**: `spacing.4` → Actual value: `1rem` (16px)
@@ -63,18 +67,18 @@ Our design system defines the following semantic color tokens in `preset.ts`:
 - **Usage**: `width: '10'`, `height: '9'`, `w: 'full'`
 
 ### Border Tokens
-- **Semantic borders**: `borders.primary` → Actual value: `1px solid var(--colors-primary)`
-- **Usage**: `border: 'primary'`, `borderColor: 'primary'`
+- **Semantic borders**: `borders.base` → Actual value: `1px solid var(--colors-stroke)`
+- **Usage**: `border: 'base'`, `border: 'input'`, `border: 'primary'`, `border: 'destructive'`
 
 ### Border Radius Tokens
 - **Size-based**: `radii.md` → Actual value: `0.375rem` (6px)
 - **Usage**: `borderRadius: 'md'`
 
 ### Text Style Tokens
-- **Size**: `fontSizes.sm` → Actual value: `0.875rem` (14px)
+- **Size**: `fontSizes.sm` → Actual value: `0.875rem`
 - **Weight**: `fontWeights.medium` → Actual value: `500`
 - **Usage**: `fontSize: 'sm'`, `fontWeight: 'medium'`
-- **Composite styles**: `textStyle: 'sm'` → combines font size, line height, etc.
+- **Composite styles**: `textStyle: 'body1'` → combines font size, line height, etc.
 
 #### Text Style Categories from preset.ts
 Our design system defines the following text styles in `preset.ts`:
@@ -122,6 +126,58 @@ Our design system defines the following text styles in `preset.ts`:
    - Use `variants` for varying styles
    - Define reasonable `defaultVariants`
 
+5. **Text Color Usage**
+   - For page background, use `foreground` variants:
+     - `foreground.DEFAULT`: Standard text
+     - `foreground.muted`: Secondary text
+     - `foreground.emphasized`: Strong text
+     - `foreground.primary`: Brand-colored text
+     - `foreground.destructive`: Error text
+   - For colored backgrounds, use their corresponding foreground colors:
+     - Use `primary.foreground` on `primary` background
+     - Use `secondary.foreground` on `secondary` background
+     - Use `destructive.foreground` on `destructive` background
+
+6. **Text Color Guidelines by Background Context**
+   - **Regular background**: Use `foreground` variants on page `background`
+     - `foreground.DEFAULT`: Standard text
+     - `foreground.muted`: Secondary or less important text
+     - `foreground.emphasized`: Strong, important text
+     - `foreground.primary`: Brand-aligned text for emphasis or links
+     - `foreground.destructive`: Error or warning text
+   - **Transparent background**:
+     - Use `foreground` variants when parent has the page background
+     - Use the corresponding `.foreground` when parent has a specific color background (primary, secondary, etc.)
+   - **Text colors for state changes**:
+     - Active state: Use appropriate `.foreground` with the color's `.active` background
+     - Hover/focus: Use opacity variations (e.g., `primary/90`)
+   **Example Code**:
+   ```tsx
+   // Basic text
+   <Text color="foreground">Basic text</Text>
+   <Text color="foreground.muted">Secondary text</Text>
+   <Text color="foreground.emphasized">Strong text</Text>
+
+   // Important text (on default background)
+   <Text color="foreground.primary">Brand text</Text>
+
+   // Button text (on primary background)
+   <Button bg="primary" color="primary.foreground">Button text</Button>
+
+   // Warning text
+   <Text color="foreground.destructive">Warning text</Text>
+
+   // Layer text (e.g., cards, panels)
+   <Card bg="layer.DEFAULT">
+     <Text color="foreground.emphasized">Card title</Text>
+     <Text color="foreground.muted">Card description</Text>
+     <Link color="foreground.primary">Learn more</Link>
+   </Card>
+
+   // Text on transparent background (parent has primary background)
+   <Box bg="transparent" color="primary.foreground">Text</Box>
+   ```
+
 ## Example Correct Implementation
 
 ```typescript
@@ -132,18 +188,18 @@ export const buttonRecipe = cva({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 'md',
-    bg: 'primary', // omit .Default
+    bg: 'primary',
     color: 'primary.foreground',
     
     _focus: {
       outline: 'none',
-      borderColor: 'primary',
+      borderColor: 'stroke.ring',
     },
     _disabled: {
       opacity: '0.5',
       cursor: 'not-allowed',
-      bg: 'muted',
-      color: 'muted.foreground',
+      bg: 'neutral',
+      color: 'neutral.foreground',
     }
   },
   variants: {
@@ -156,8 +212,8 @@ export const buttonRecipe = cva({
       outline: {
         bg: 'transparent',
         border: 'input',
-        color: 'foreground',
-        _hover: { bg: 'accent', color: 'accent.foreground' }
+        color: 'foreground.emphasized',
+        _hover: { bg: 'neutral', color: 'foreground' }
       },
       destructive: {
         bg: 'destructive',
@@ -172,5 +228,3 @@ export const buttonRecipe = cva({
   }
 });
 ```
-
-

@@ -8,6 +8,9 @@ import {
 } from "@storybook/test"
 import { css } from "@styled-system/css"
 
+import { Button } from "@/component/button/ui"
+import { TextField } from "@/component/textfield/ui"
+
 import * as Dialog from "../component/dialog/ui"
 
 const meta = {
@@ -25,20 +28,10 @@ export const Primary: Story = {
       <Dialog.Root>
         <Dialog.Trigger>Open</Dialog.Trigger>
         <Dialog.Content>
-          <Dialog.Header>
-            <Dialog.Title>Dialog</Dialog.Title>
-            <Dialog.Description>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              venenatis feugiat eros aliquam convallis. Donec tincidunt eros sed
-              ligula tincidunt, sit amet tristique purus pulvinar. Donec maximus
-              nunc vitae vestibulum cursus. Phasellus laoreet, velit non mollis
-              semper, nunc dui accumsan orci, consequat accumsan libero quam ac
-              est. Pellentesque habitant morbi tristique senectus et netus et
-              malesuada fames ac turpis egestas. Phasellus ac turpis neque.
-              Class aptent taciti sociosqu ad litora torquent per conubia
-              nostra, per inceptos himenaeos.
-            </Dialog.Description>
-          </Dialog.Header>
+          <Dialog.Title>제목</Dialog.Title>
+          <Dialog.Description>
+            <p>내용</p>
+          </Dialog.Description>
         </Dialog.Content>
       </Dialog.Root>
     )
@@ -64,71 +57,135 @@ export const Primary: Story = {
 export const LongText: Story = {
   render: () => {
     return (
-      <Dialog.Root>
-        <Dialog.Trigger
-          className={css({
-            textStyle: "6xl",
-          })}
-        >
-          Open
-        </Dialog.Trigger>
-        <Dialog.Content
-          className={css({
-            bg: "cyan.600",
-          })}
-        >
-          <Dialog.Header>
-            <Dialog.Title
-              className={css({
-                color: "red.100",
-              })}
-            >
-              Dialog
-            </Dialog.Title>
-            <Dialog.Description
-              className={css({
-                fontSize: "sm",
-              })}
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              venenatis feugiat eros aliquam convallis. Donec tincidunt eros sed
-              ligula tincidunt, sit amet tristique purus pulvinar. Donec maximus
-              nunc vitae vestibulum cursus. Phasellus laoreet, velit non mollis
-              semper, nunc dui accumsan orci, consequat accumsan libero quam ac
-              est. Pellentesque habitant morbi tristique senectus et netus et
-              malesuada fames ac turpis egestas. Phasellus ac turpis neque.
-              Class aptent taciti sociosqu ad litora torquent per conubia
-              nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit. Integer venenatis feugiat eros
-              aliquam convallis. Donec tincidunt eros sed ligula tincidunt, sit
-              amet tristique purus pulvinar. Donec maximus nunc vitae vestibulum
-              cursus. Phasellus laoreet, velit non mollis semper, nunc dui
-              accumsan orci, consequat accumsan libero quam ac est. Pellentesque
-              habitant morbi tristique senectus et netus et malesuada fames ac
-              turpis egestas. Phasellus ac turpis neque. Class aptent taciti
-              sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit. Integer venenatis feugiat eros aliquam convallis. Donec
-              tincidunt eros sed ligula tincidunt, sit amet tristique purus
-              pulvinar. Donec maximus nunc vitae vestibulum cursus. Phasellus
-              laoreet, velit non mollis semper, nunc dui accumsan orci,
-              consequat accumsan libero quam ac est. Pellentesque habitant morbi
-              tristique senectus et netus et malesuada fames ac turpis egestas.
-              Phasellus ac turpis neque. Class aptent taciti sociosqu ad litora
-              torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum
-              dolor sit amet, consectetur adipiscing elit. Integer venenatis
-              feugiat eros aliquam convallis. Donec tincidunt eros sed ligula
-              tincidunt, sit amet tristique purus pulvinar. Donec maximus nunc
-              vitae vestibulum cursus. Phasellus laoreet, velit non mollis
-              semper, nunc dui accumsan orci, consequat accumsan libero quam ac
-              est. Pellentesque habitant morbi tristique senectus et netus et
-              malesuada fames ac turpis egestas. Phasellus ac turpis neque.
-              Class aptent taciti sociosqu ad litora torquent per conubia
-              nostra, per inceptos himenaeos.
-            </Dialog.Description>
-          </Dialog.Header>
-        </Dialog.Content>
-      </Dialog.Root>
+      <>
+        <span>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+          venenatis feugiat eros aliquam convallis. Donec tincidunt eros sed
+          ligula tincidunt, sit amet tristique purus pulvinar. Donec maximus
+          nunc vitae vestibulum cursus. Phasellus laoreet, velit non mollis
+          semper, nunc dui accumsan orci, consequat accumsan libero quam ac est.
+          Pellentesque habitant morbi tristique senectus et netus et malesuada
+          fames ac turpis egestas. Phasellus ac turpis neque. Class aptent
+          taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+          himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Integer venenatis feugiat eros aliquam convallis. Donec tincidunt eros
+          sed ligula tincidunt, sit amet tristique purus pulvinar. Donec maximus
+          nunc vitae vestibulum cursus. Phasellus laoreet, velit non mollis
+          semper, nunc dui accumsan orci, consequat accumsan libero quam ac est.
+          Pellentesque habitant morbi tristique senectus et netus et malesuada
+          fames ac turpis egestas. Phasellus ac turpis neque. Class aptent
+          taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+          himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Integer venenatis feugiat eros aliquam convallis. Donec tincidunt eros
+          sed ligula tincidunt, sit amet tristique purus pulvinar. Donec maximus
+          nunc vitae vestibulum cursus. Phasellus laoreet, velit non mollis
+          semper, nunc dui accumsan orci, consequat accumsan libero quam ac est.
+          Pellentesque habitant morbi tristique senectus et netus et malesuada
+          fames ac turpis egestas. Phasellus ac turpis neque. Class aptent
+          taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+          himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Integer venenatis feugiat eros aliquam convallis. Donec tincidunt eros
+          sed ligula tincidunt, sit amet tristique purus pulvinar. Donec maximus
+          nunc vitae vestibulum cursus. Phasellus laoreet, velit non mollis
+          semper, nunc dui accumsan orci, consequat accumsan libero quam ac est.
+          Pellentesque habitant morbi tristique senectus et netus et malesuada
+          fames ac turpis egestas. Phasellus ac turpis neque. Class aptent
+          taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+          himenaeos.
+        </span>
+        <Dialog.Root>
+          <Dialog.Trigger
+            className={css({
+              textStyle: "6xl",
+            })}
+          >
+            Open
+          </Dialog.Trigger>
+          <Dialog.Content
+            className={css({
+              bg: "cyan.600",
+            })}
+          >
+            <Dialog.Header>
+              <Dialog.Title
+                className={css({
+                  color: "red.100",
+                })}
+              >
+                Dialog
+              </Dialog.Title>
+              <Dialog.Description
+                className={css({
+                  fontSize: "sm",
+                })}
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+                venenatis feugiat eros aliquam convallis. Donec tincidunt eros
+                sed ligula tincidunt, sit amet tristique purus pulvinar. Donec
+                maximus nunc vitae vestibulum cursus. Phasellus laoreet, velit
+                non mollis semper, nunc dui accumsan orci, consequat accumsan
+                libero quam ac est. Pellentesque habitant morbi tristique
+                senectus et netus et malesuada fames ac turpis egestas.
+                Phasellus ac turpis neque. Class aptent taciti sociosqu ad
+                litora torquent per conubia nostra, per inceptos himenaeos.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+                venenatis feugiat eros aliquam convallis. Donec tincidunt eros
+                sed ligula tincidunt, sit amet tristique purus pulvinar. Donec
+                maximus nunc vitae vestibulum cursus. Phasellus laoreet, velit
+                non mollis semper, nunc dui accumsan orci, consequat accumsan
+                libero quam ac est. Pellentesque habitant morbi tristique
+                senectus et netus et malesuada fames ac turpis egestas.
+                Phasellus ac turpis neque. Class aptent taciti sociosqu ad
+                litora torquent per conubia nostra, per inceptos himenaeos.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+                venenatis feugiat eros aliquam convallis. Donec tincidunt eros
+                sed ligula tincidunt, sit amet tristique purus pulvinar. Donec
+                maximus nunc vitae vestibulum cursus. Phasellus laoreet, velit
+                non mollis semper, nunc dui accumsan orci, consequat accumsan
+                libero quam ac est. Pellentesque habitant morbi tristique
+                senectus et netus et malesuada fames ac turpis egestas.
+                Phasellus ac turpis neque. Class aptent taciti sociosqu ad
+                litora torquent per conubia nostra, per inceptos himenaeos.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+                venenatis feugiat eros aliquam convallis. Donec tincidunt eros
+                sed ligula tincidunt, sit amet tristique purus pulvinar. Donec
+                maximus nunc vitae vestibulum cursus. Phasellus laoreet, velit
+                non mollis semper, nunc dui accumsan orci, consequat accumsan
+                libero quam ac est. Pellentesque habitant morbi tristique
+                senectus et netus et malesuada fames ac turpis egestas.
+                Phasellus ac turpis neque. Class aptent taciti sociosqu ad
+                litora torquent per conubia nostra, per inceptos himenaeos.
+              </Dialog.Description>
+            </Dialog.Header>
+          </Dialog.Content>
+        </Dialog.Root>
+      </>
+    )
+  },
+}
+
+export const SR: Story = {
+  render: () => {
+    return (
+      <>
+        <Dialog.Root>
+          <Dialog.Trigger>Open</Dialog.Trigger>
+          <Dialog.Content closeIcon>
+            <Dialog.Title>제목</Dialog.Title>
+            <div tabIndex={0} role="document">
+              <Dialog.Description>내용</Dialog.Description>
+              <Dialog.Description asChild>
+                <form onSubmit={(e) => e.preventDefault()}>
+                  <TextField id="test" label="test" helperText="test중" />
+                  <Dialog.Close asChild>
+                    <Button type="submit">제출</Button>
+                  </Dialog.Close>
+                </form>
+              </Dialog.Description>
+            </div>
+          </Dialog.Content>
+        </Dialog.Root>
+      </>
     )
   },
 }

@@ -3,22 +3,22 @@ import { cva, type RecipeVariantProps } from "@styled-system/css"
 export type ChipVariantProps = RecipeVariantProps<typeof recipe>
 export const recipe = cva({
   base: {
-    display: "inline-flex",
     alignItems: "center",
-    justifyContent: "center",
     borderRadius: "full",
-    transition: "colors",
     cursor: "pointer",
-    whiteSpace: "nowrap",
+    display: "inline-flex",
     flexShrink: 0,
+    justifyContent: "center",
+    transition: "colors",
+    whiteSpace: "nowrap",
 
     "& svg": {
       flexShrink: 0,
     },
 
     _disabled: {
-      opacity: 0.5,
       cursor: "not-allowed",
+      opacity: 0.5,
     },
   },
   variants: {
@@ -31,32 +31,31 @@ export const recipe = cva({
         },
       },
       outlined: {
+        bg: "layer",
         border: "base",
-        bg: "background",
-        color: "foreground",
+        color: "foreground.emphasized",
         "&:not(:disabled):hover": {
-          bg: "accent",
-          color: "accent.foreground",
+          bg: "neutral.active",
         },
       },
     },
     size: {
       sm: {
-        height: "7",
         fontSize: "sm",
+        height: "7",
         textStyle: "label2",
         "& svg": {
-          width: "3",
           height: "3",
+          width: "3",
         },
       },
       md: {
-        height: "9",
         fontSize: "lg",
+        height: "9",
         textStyle: "label1",
         "& svg": {
-          width: "4",
           height: "4",
+          width: "4",
         },
       },
     },
@@ -75,34 +74,34 @@ export const recipe = cva({
       layout: "iconOnly",
       size: "sm",
       css: {
-        width: "7",
         height: "7",
+        width: "7",
       },
     },
     {
       layout: "iconOnly",
       size: "md",
       css: {
-        width: "9",
         height: "9",
+        width: "9",
       },
     },
     {
       layout: "withText",
       size: "sm",
       css: {
+        gap: "1",
         px: "2",
         py: "1",
-        gap: "1",
       },
     },
     {
       layout: "withText",
       size: "md",
       css: {
+        gap: "2",
         px: "3",
         py: "2",
-        gap: "2",
       },
     },
   ],

@@ -4,16 +4,16 @@ export type ButtonVariantProps = RecipeVariantProps<typeof recipe>
 
 export const recipe = cva({
   base: {
-    display: "inline-flex",
     alignItems: "center",
-    justifyContent: "center",
+    cursor: "pointer",
+    display: "inline-flex",
     flexShrink: 0,
-    minH: "9",
     gap: "1",
+    justifyContent: "center",
+    minH: "9",
+    rounded: "md",
     textStyle: "label1",
     whiteSpace: "nowrap",
-    rounded: "md",
-    cursor: "pointer",
     "& svg": {
       flexShrink: 0,
     },
@@ -23,44 +23,6 @@ export const recipe = cva({
     },
   },
   variants: {
-    variant: {
-      primary: {
-        bg: "primary",
-        color: "primary.foreground",
-        "&:not(:disabled):hover": {
-          bg: "primary.active",
-        },
-      },
-      destructive: {
-        bg: "destructive",
-        color: "destructive.foreground",
-        "&:not(:disabled):hover": {
-          bg: "destructive.active",
-        },
-      },
-      outline: {
-        bg: "layer",
-        color: "layer.foreground",
-        border: "input",
-        "&:not(:disabled):hover": {
-          bg: "accent.active",
-        },
-      },
-      secondary: {
-        bg: "secondary",
-        color: "secondary.foreground",
-        "&:not(:disabled):hover": {
-          bg: "secondary.active",
-        },
-      },
-      link: {
-        color: "primary",
-        textUnderlineOffset: "2",
-        "&:not(:disabled):hover": {
-          textDecoration: "underline",
-        },
-      },
-    },
     size: {
       sm: {
         h: "9",
@@ -79,14 +41,52 @@ export const recipe = cva({
         py: "2",
       },
     },
+    variant: {
+      destructive: {
+        bg: "destructive",
+        color: "destructive.foreground",
+        "&:not(:disabled):hover": {
+          bg: "destructive.active",
+        },
+      },
+      link: {
+        color: "foreground.primary",
+        textUnderlineOffset: "2",
+        "&:not(:disabled):hover": {
+          textDecoration: "underline",
+        },
+      },
+      outline: {
+        bg: "layer",
+        border: "base",
+        color: "foreground.emphasized",
+        "&:not(:disabled):hover": {
+          bg: "neutral.active",
+        },
+      },
+      primary: {
+        bg: "primary",
+        color: "primary.foreground",
+        "&:not(:disabled):hover": {
+          bg: "primary.active",
+        },
+      },
+      secondary: {
+        bg: "secondary",
+        color: "secondary.foreground",
+        "&:not(:disabled):hover": {
+          bg: "secondary.active",
+        },
+      },
+    },
   },
   compoundVariants: [
     {
       size: "sm",
       css: {
         "& svg": {
-          width: "3.5",
           height: "3.5",
+          width: "3.5",
         },
       },
     },
@@ -94,8 +94,8 @@ export const recipe = cva({
       size: "md",
       css: {
         "& svg": {
-          width: "4",
           height: "4",
+          width: "4",
         },
       },
     },
@@ -103,14 +103,14 @@ export const recipe = cva({
       size: "lg",
       css: {
         "& svg": {
-          width: "5",
           height: "5",
+          width: "5",
         },
       },
     },
   ],
   defaultVariants: {
-    variant: "primary",
     size: "md",
+    variant: "primary",
   },
 })

@@ -1,8 +1,10 @@
-import { css, cx } from "@styled-system/css"
+import { createStyleContext } from "@utils/createStyleContext"
 import { Select as SelectPrimitive } from "radix-ui"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
 
 import { recipe } from "./recipe"
+
+const { withContext, withRootProvider } = createStyleContext(recipe)
 
 const BaseTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,
@@ -16,36 +18,26 @@ const BaseTrigger = forwardRef<
 
 BaseTrigger.displayName = SelectPrimitive.Trigger.displayName
 
-export const Root = SelectPrimitive.Root
+export const Root = withRootProvider(SelectPrimitive.Root)
 export const Group = SelectPrimitive.Group
 export const Value = SelectPrimitive.Value
 
-export const Trigger = forwardRef<
+export const Trigger = withContext<
   ElementRef<typeof BaseTrigger>,
   ComponentPropsWithoutRef<typeof BaseTrigger>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <BaseTrigger
-      ref={ref}
-      className={cx(css(styles.trigger), className)}
-      {...props}
-    />
-  )
-})
+>(BaseTrigger, "trigger")
 
-export const Content = forwardRef<
+export const ContentPrimitive = forwardRef<
   ElementRef<typeof SelectPrimitive.Content>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, position = "popper", children, ...props }, ref) => {
-  const styles = recipe.raw()
+>(({ position = "popper", children, ...props }, ref) => {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         ref={ref}
         position={position}
         data-position={position}
-        className={cx(css(styles.content), className)}
+        sideOffset={4}
         {...props}
       >
         <Viewport data-position={position}>{children}</Viewport>
@@ -54,75 +46,44 @@ export const Content = forwardRef<
   )
 })
 
-export const Viewport = forwardRef<
+export const Content = withContext<
+  ElementRef<typeof ContentPrimitive>,
+  ComponentPropsWithoutRef<typeof ContentPrimitive>
+>(ContentPrimitive, "content")
+
+export const Viewport = withContext<
   ElementRef<typeof SelectPrimitive.Viewport>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Viewport>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <SelectPrimitive.Viewport
-      ref={ref}
-      {...props}
-      className={cx(css(styles.viewport), className)}
-    />
-  )
-})
+>(SelectPrimitive.Viewport, "viewport")
 
-export const Item = forwardRef<
+export const ItemPrimitive = forwardRef<
   ElementRef<typeof SelectPrimitive.Item>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => {
-  const styles = recipe.raw()
+>(({ children, ...props }, ref) => {
   return (
-    <SelectPrimitive.Item
-      ref={ref}
-      className={cx(css(styles.item), className)}
-      {...props}
-    >
+    <SelectPrimitive.Item ref={ref} {...props}>
       <Indicator />
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   )
 })
 
-export const Label = forwardRef<
+export const Item = withContext<
+  ElementRef<typeof ItemPrimitive>,
+  ComponentPropsWithoutRef<typeof ItemPrimitive>
+>(ItemPrimitive, "item")
+
+export const Label = withContext<
   ElementRef<typeof SelectPrimitive.Label>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <SelectPrimitive.Label
-      ref={ref}
-      className={cx(css(styles.label), className)}
-      {...props}
-    />
-  )
-})
+>(SelectPrimitive.Label, "label")
 
-export const Separator = forwardRef<
+export const Separator = withContext<
   ElementRef<typeof SelectPrimitive.Separator>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <SelectPrimitive.Separator
-      ref={ref}
-      className={cx(css(styles.separator), className)}
-      {...props}
-    />
-  )
-})
+>(SelectPrimitive.Separator, "separator")
 
-export const Indicator = forwardRef<
+export const Indicator = withContext<
   ElementRef<typeof SelectPrimitive.ItemIndicator>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.ItemIndicator>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <SelectPrimitive.ItemIndicator
-      ref={ref}
-      className={cx(css(styles.itemIndicator), className)}
-      {...props}
-    />
-  )
-})
+>(SelectPrimitive.ItemIndicator, "itemIndicator")

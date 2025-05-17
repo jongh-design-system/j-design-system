@@ -1,61 +1,29 @@
-import { css, cx } from "@styled-system/css"
+import { createStyleContext } from "@utils/createStyleContext"
 import { Slider as SliderPrimitive } from "radix-ui"
-import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+import { ComponentPropsWithoutRef, ElementRef } from "react"
 
 import { recipe } from "./recipe"
 
-export const Root = forwardRef<
+const { withProvider, withContext } = createStyleContext(recipe)
+
+export const Root = withProvider<
   ElementRef<typeof SliderPrimitive.Root>,
   ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <SliderPrimitive.Root
-      ref={ref}
-      className={cx(css(styles.root), className)}
-      {...props}
-    />
-  )
-})
+>(SliderPrimitive.Root, "root")
 
-export const Track = forwardRef<
+export const Track = withContext<
   ElementRef<typeof SliderPrimitive.Track>,
   ComponentPropsWithoutRef<typeof SliderPrimitive.Track>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <SliderPrimitive.Track
-      ref={ref}
-      className={cx(css(styles.track), className)}
-      {...props}
-    />
-  )
-})
+>(SliderPrimitive.Track, "track")
 
-export const Range = forwardRef<
+export const Range = withContext<
   ElementRef<typeof SliderPrimitive.Range>,
   ComponentPropsWithoutRef<typeof SliderPrimitive.Range>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <SliderPrimitive.Range
-      ref={ref}
-      className={cx(css(styles.range), className)}
-      {...props}
-    />
-  )
-})
+>(SliderPrimitive.Range, "range")
 
-export const Thumb = forwardRef<
+export const Thumb = withContext<
   ElementRef<typeof SliderPrimitive.Thumb>,
-  ComponentPropsWithoutRef<typeof SliderPrimitive.Thumb>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <SliderPrimitive.Thumb
-      ref={ref}
-      className={cx(css(styles.thumb), className)}
-      {...props}
-    />
-  )
-})
+  ComponentPropsWithoutRef<typeof SliderPrimitive.Thumb> & {
+    "aria-label": string
+  }
+>(SliderPrimitive.Thumb, "thumb")

@@ -11,13 +11,11 @@ export const recipe = sva({
     },
     heading: {
       textStyle: "label1",
-      "& label.required": {
-        "&::after": {
-          color: "destructive",
-          content: "'*'",
-          fontSize: "sm",
-          marginLeft: "0.5",
-        },
+      "&::after": {
+        color: "destructive",
+        content: "'*'",
+        fontSize: "sm",
+        marginLeft: "0.5",
       },
     },
     container: {
@@ -56,7 +54,7 @@ export const recipe = sva({
     },
     helper: {
       alignSelf: "stretch",
-      color: "neutral.foreground",
+      color: "foreground.muted",
       textStyle: "caption2",
     },
   },

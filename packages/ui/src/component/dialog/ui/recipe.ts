@@ -21,7 +21,7 @@ export const recipe = sva({
     },
     content: {
       bg: "layer.floating",
-      color: "neutral.foreground",
+      color: "foreground",
       border: "input",
       borderRadius: "md",
       position: "fixed",
@@ -31,7 +31,9 @@ export const recipe = sva({
       width: "full",
       maxWidth: "[32rem]",
       maxHeight: "[85vh]",
+      zIndex: "1000",
       padding: "4",
+      overflow: "auto",
       "&[data-state=open]": {
         animationName: "contentShow",
         animationDuration: "slow",
@@ -62,16 +64,20 @@ export const recipe = sva({
       display: "flex",
       flexDirection: "column",
       gap: "1.5",
+      color: "foreground.emphasized",
+      textStyle: "heading2",
     },
     footer: {
       display: "flex",
       flexDirection: "column-reverse",
+      color: "foreground.muted",
     },
     title: {
       textStyle: "heading1",
     },
     description: {
       textStyle: "body1",
+      color: "foreground",
     },
   },
 })
