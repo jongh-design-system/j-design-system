@@ -23,10 +23,11 @@ type CheckboxProps = CheckboxInputProps & CheckboxVariants & CheckboxLabelProps
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (props, ref) => {
-    const [
-      variantProps,
-      { label, indeterminate, onCheckedChange, ...inputProps },
-    ] = checkboxRecipe.splitVariantProps(props)
+    const [variantProps, componentProps] =
+      checkboxRecipe.splitVariantProps(props)
+
+    const { label, indeterminate, onCheckedChange, onChange, ...inputProps } =
+      componentProps
 
     const {
       root,
@@ -77,6 +78,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             ref={composedRefs}
             onChange={(e) => {
               setIsChecked(e.currentTarget.checked)
+              onChange?.(e)
             }}
             checked={isChecked}
             data-state={
