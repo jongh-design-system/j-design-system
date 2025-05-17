@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from "@storybook/react"
+import { expect, userEvent, within } from "@storybook/test"
 import { type FormEvent, useCallback, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 
@@ -79,11 +80,17 @@ export const Primary: Story = {
     size: "md",
     variant: "square",
     disabled: false,
-    label: "기본 체크박스",
+    label: "체크박스",
   },
   render: (args) => {
     const [checked, setChecked] = useState(false)
     return <Checkbox {...args} checked={checked} onCheckedChange={setChecked} />
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const checkbox = canvas.getByLabelText("체크박스")
+    await userEvent.click(checkbox)
+    await expect(checkbox).toBeChecked()
   },
 }
 
@@ -96,6 +103,16 @@ export const Variants: Story = {
       <Checkbox variant="ghost" size="lg" label="Ghost 변형 (Large)" />
     </div>
   ),
+}
+
+export const Disabled: Story = {
+  render: () => <Checkbox disabled label="비활성화 상태" />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const checkbox = canvas.getByLabelText("비활성화 상태")
+    await userEvent.click(checkbox)
+    await expect(checkbox).not.toBeChecked()
+  },
 }
 
 export const Indeterminate: Story = {
@@ -118,11 +135,28 @@ export const Indeterminate: Story = {
           onCheckedChange={setChecked}
           label="Indeterminate 상태 (Ghost)"
         />
-        <Button onClick={() => setIndeterminate((prev) => !prev)}>
+        <Button
+          onClick={() => setIndeterminate((prev) => !prev)}
+          data-testid="toggle"
+        >
           Indeterminate 상태 토글
         </Button>
       </div>
     )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    const checkbox = canvas.getByLabelText(
+      "Indeterminate 상태 (Square)",
+    ) as HTMLInputElement
+    expect(checkbox.indeterminate).toBe(true)
+    await userEvent.click(checkbox)
+    await expect(checkbox).toBeChecked()
+
+    const toggleButton = canvas.getByTestId("toggle")
+    await userEvent.click(toggleButton)
+    await expect(checkbox.indeterminate).toBe(false)
   },
 }
 
@@ -195,6 +229,17 @@ export const WithReactHookForm: Story = {
         </div>
       </form>
     )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    //1. click apple checkbox
+    const appleCheckbox = canvas.getByLabelText("사과")
+    userEvent.click(appleCheckbox)
+    //2. click reset button
+    const resetButton = canvas.getByRole("button", { name: "초기화" })
+    userEvent.click(resetButton)
+    //3. check apple checkbox is not checked
+    await expect(appleCheckbox).not.toBeChecked()
   },
 }
 
