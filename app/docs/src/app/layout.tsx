@@ -32,7 +32,7 @@ export default function RootLayout({
         <ThemeProvider>
           <Container width="full" height="100vh">
             <Header
-              logo={<span>Design System</span>}
+              logo={<span aria-label="Design System">Design System</span>}
               navItems={navItems}
               icons={[
                 <Link
