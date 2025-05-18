@@ -147,15 +147,18 @@ export const Indeterminate: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
 
+    const event = userEvent.setup()
+
     const checkbox = canvas.getByLabelText(
       "Indeterminate 상태 (Square)",
     ) as HTMLInputElement
+
     expect(checkbox.indeterminate).toBe(true)
-    await userEvent.click(checkbox)
+    await event.click(checkbox)
     await expect(checkbox).toBeChecked()
 
     const toggleButton = canvas.getByTestId("toggle")
-    await userEvent.click(toggleButton)
+    await event.click(toggleButton)
     await expect(checkbox.indeterminate).toBe(false)
   },
 }
