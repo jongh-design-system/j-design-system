@@ -26,6 +26,16 @@ jobs:
       - name: build
         run: pnpm turbo build
 
+      - name: Check Build Outputs (Concise)
+        shell: bash
+        run: |
+          echo "=== Checking packages/ui/storybook-static ==="
+          ls -Rla packages/ui/storybook-static | head -n 30 || echo "Error: Directory 'packages/ui/storybook-static' not found or problem listing files."
+          echo ""
+          echo "=== Checking app/docs/out ==="
+          ls -Rla app/docs/out | head -n 30 || echo "Error: Directory 'app/docs/out' not found or problem listing files."
+          echo "=== End of Checks ==="
+
       - name: Upload Storybook artifact for Chromatic
         uses: actions/upload-artifact@v4
         with:
