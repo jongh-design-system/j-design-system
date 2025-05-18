@@ -26,6 +26,36 @@ jobs:
       - name: build
         run: pnpm turbo build
 
+      - name: Upload Storybook artifact for Chromatic
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-artifact
+          path: packages/ui/storybook-static
+
+      - name: Upload Docs artifact for AWS
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-artifact
+          path: app/docs/out
+
+  deploy-ui:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: setup pnpm
+        uses: ./.github/actions/setup
+
+      - name: Download Chromatic artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ui-artifact
+          path: packages/ui/storybook-static
+
       - name: deploy storybook using chromatic
         uses: ./.github/actions/chromatic
         with:
@@ -33,6 +63,24 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           workingDir: packages/ui
           storybookBuildDir: storybook-static
+
+  deploy-docs:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: setup pnpm
+        uses: ./.github/actions/setup
+
+      - name: Download AWS Docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-artifact
+          path: app/docs/out
 
       - name: deploy docs to AWS S3 + Cloudfront
         uses: ./.github/actions/aws
