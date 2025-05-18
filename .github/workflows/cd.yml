@@ -26,15 +26,48 @@ jobs:
       - name: build
         run: pnpm turbo build
 
-      - name: Check Build Outputs (Concise)
+      - name: Verify Directory Structure from Root
         shell: bash
         run: |
-          echo "=== Checking packages/ui/storybook-static ==="
-          ls -Rla packages/ui/storybook-static | head -n 30 || echo "Error: Directory 'packages/ui/storybook-static' not found or problem listing files."
+          echo "Current PWD (GITHUB_WORKSPACE): $(pwd)"
           echo ""
-          echo "=== Checking app/docs/out ==="
-          ls -Rla app/docs/out | head -n 30 || echo "Error: Directory 'app/docs/out' not found or problem listing files."
-          echo "=== End of Checks ==="
+          echo "=== Verifying path to packages/ui/storybook-static ==="
+          echo "Listing . (root of workspace):"
+          ls -la .
+          echo ""
+          echo "Listing ./packages:"
+          ls -la ./packages || echo "INFO: ./packages directory not found."
+          echo ""
+          echo "Listing ./packages/ui:"
+          ls -la ./packages/ui || echo "INFO: ./packages/ui directory not found."
+          echo ""
+          echo "Listing ./packages/ui/storybook-static (target):"
+          ls -la ./packages/ui/storybook-static || echo "INFO: ./packages/ui/storybook-static directory not found."
+          echo ""
+          echo "Recursive listing of ./packages/ui/storybook-static (first 20 lines, if exists):"
+          ls -Rla ./packages/ui/storybook-static 2>/dev/null | head -n 20 || echo "INFO: ./packages/ui/storybook-static not found, is empty, or error listing."
+
+          echo ""
+          echo "======================================================"
+          echo ""
+
+          echo "=== Verifying path to app/docs/out ==="
+          echo "Listing . (root of workspace again for clarity, if needed):"
+          ls -la . 
+          echo ""
+          echo "Listing ./app:"
+          ls -la ./app || echo "INFO: ./app directory not found."
+          echo ""
+          echo "Listing ./app/docs:"
+          ls -la ./app/docs || echo "INFO: ./app/docs directory not found."
+          echo ""
+          echo "Listing ./app/docs/out (target):"
+          ls -la ./app/docs/out || echo "INFO: ./app/docs/out directory not found."
+          echo ""
+          echo "Recursive listing of ./app/docs/out (first 20 lines, if exists):"
+          ls -Rla ./app/docs/out 2>/dev/null | head -n 20 || echo "INFO: ./app/docs/out not found, is empty, or error listing."
+          echo ""
+          echo "=== End of Directory Structure Verification ==="
 
       - name: Upload Storybook artifact for Chromatic
         uses: actions/upload-artifact@v4
