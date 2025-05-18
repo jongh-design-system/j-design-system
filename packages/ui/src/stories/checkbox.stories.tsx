@@ -6,7 +6,7 @@ import { useController, useForm } from "react-hook-form"
 
 import { Button } from "@/component/button/ui"
 
-import { Checkbox } from "../component/checkbox"
+import { Checkbox } from "../component/checkbox/ui"
 
 const meta = {
   title: "Components/Checkbox",
