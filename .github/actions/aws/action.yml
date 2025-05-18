@@ -17,10 +17,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: build docs
-      shell: bash
-      run: pnpm turbo build --filter=docs --force
-
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
