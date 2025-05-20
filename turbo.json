@@ -9,6 +9,11 @@
       "dependsOn": ["@jongh/cli#build"],
       "outputs": ["out/**"]
     },
+    "@jongh/cli#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "cache": false
+    },
     "check-type": {},
     "lint": {},
     "test": {
