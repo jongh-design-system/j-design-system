@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: build
-        run: pnpm turbo build
+        run: pnpm turbo build --force
 
       - name: Verify Directory Structure from Root
         shell: bash
@@ -60,6 +60,9 @@ jobs:
           echo ""
           echo "Listing ./app/docs:"
           ls -la ./app/docs || echo "INFO: ./app/docs directory not found."
+          echo ""
+          echo "Listing ./app/docs/public:"
+          ls -la ./app/docs/public || echo "INFO: ./app/docs/public directory not found."
           echo ""
           echo "Listing ./app/docs/out (target):"
           ls -la ./app/docs/out || echo "INFO: ./app/docs/out directory not found."
