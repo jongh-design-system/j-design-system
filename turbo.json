@@ -6,7 +6,8 @@
       "dependsOn": ["^build"]
     },
     "docs#build": {
-      "dependsOn": ["@jongh/cli#build"]
+      "dependsOn": ["@jongh/cli#build"],
+      "outputs": ["out/**"]
     },
     "check-type": {},
     "lint": {},
