@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: build
-        run: pnpm turbo build --force
+        run: pnpm turbo build
 
       - name: Verify Directory Structure from Root
         shell: bash
