@@ -1,61 +1,27 @@
-import { css, cx } from "@styled-system/css"
+import { createStyleContext } from "@utils/createStyleContext"
 import { Tabs as TabsPrimitive } from "radix-ui"
-import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+import { ComponentPropsWithoutRef, ElementRef } from "react"
 
 import { recipe } from "./recipe"
 
-export const Root = forwardRef<
+const { withProvider, withContext } = createStyleContext(recipe)
+
+export const Root = withProvider<
   ElementRef<typeof TabsPrimitive.Root>,
   ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <TabsPrimitive.Root
-      ref={ref}
-      className={cx(css(styles.root), className)}
-      {...props}
-    />
-  )
-})
+>(TabsPrimitive.Root, "root")
 
-export const List = forwardRef<
+export const List = withContext<
   ElementRef<typeof TabsPrimitive.List>,
   ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <TabsPrimitive.List
-      ref={ref}
-      className={cx(css(styles.list), className)}
-      {...props}
-    />
-  )
-})
+>(TabsPrimitive.List, "list")
 
-export const Trigger = forwardRef<
+export const Trigger = withContext<
   ElementRef<typeof TabsPrimitive.Trigger>,
   ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <TabsPrimitive.Trigger
-      ref={ref}
-      className={cx(css(styles.trigger), className)}
-      {...props}
-    />
-  )
-})
+>(TabsPrimitive.Trigger, "trigger")
 
-export const Content = forwardRef<
+export const Content = withContext<
   ElementRef<typeof TabsPrimitive.Content>,
   ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => {
-  const styles = recipe.raw()
-  return (
-    <TabsPrimitive.Content
-      ref={ref}
-      className={cx(css(styles.content), className)}
-      {...props}
-    />
-  )
-})
+>(TabsPrimitive.Content, "content")
