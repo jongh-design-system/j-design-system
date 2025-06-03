@@ -10,20 +10,6 @@ type SplitBy = "words" | "chars" | "lines"
 
 type AnimationType = "fadeUp" | "fadeDown" | "fadeLeft" | "fadeRight"
 
-function splitTextBySegment(children: ReactNode) {
-  if (typeof children === "string") {
-    return children
-  } else {
-    if (isValidElement(children)) {
-      return children.props.children as string
-    }
-  }
-}
-
-function splitByLines(children: ReactNode) {
-  return Children.toArray(children)
-}
-
 interface AnimateTextProps {
   children?: ReactNode
   by?: SplitBy
@@ -109,6 +95,16 @@ const createContainerVariants = (staggerDelay: number, itemDelay: number) => ({
   },
 })
 
+function extractTextFromChildren(children: ReactNode) {
+  if (typeof children === "string") {
+    return children
+  } else {
+    if (isValidElement(children)) {
+      return children.props.children as string
+    }
+  }
+}
+
 export function AnimateText({
   children,
   by = "lines",
@@ -134,7 +130,7 @@ export function AnimateText({
   const containerVariants = createContainerVariants(staggerDelay, itemDelay)
 
   const renderLineItems = () => {
-    const nodes = splitByLines(children)
+    const nodes = Children.toArray(children)
     return nodes.map((nodeContent, index) => {
       const key = `line-item-${index}`
       if (!isValidElement(nodeContent)) {
@@ -151,7 +147,7 @@ export function AnimateText({
   }
 
   const renderItems = (by: SplitBy) => {
-    const segment = splitTextBySegment(children)
+    const segment = extractTextFromChildren(children)
     if (!segment) {
       return null
     }
