@@ -172,12 +172,15 @@ export function AnimateTextBase({
     }
 
     if (by === "words") {
-      const nodes = segment.split(/\s+/)
+      const nodes = segment.split(/(\s+)/)
 
       return nodes?.map((nodeContent, index) => {
         const key = `segment-word-${index}`
-
         const MotionComponent = motion.create("span")
+
+        if (nodeContent.trim() === "") {
+          return <span key={key}>{nodeContent}</span>
+        }
 
         return (
           <MotionComponent key={key} variants={itemVariants}>
