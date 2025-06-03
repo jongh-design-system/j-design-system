@@ -8,80 +8,103 @@ import {
 
 type SplitBy = "words" | "chars" | "lines"
 
-function splitTextByNodes(childrenInput: ReactNode, by: SplitBy): ReactNode[] {
-  if (by === "lines") {
-    return Children.toArray(childrenInput)
-  }
+type AnimationType = "fadeUp" | "fadeDown" | "fadeLeft" | "fadeRight"
 
-  if (typeof childrenInput === "string") {
-    if (by === "words") {
-      return childrenInput.split(/\s+/).filter((word) => word.length > 0)
-    }
-    if (by === "chars") {
-      return childrenInput.split("")
+function splitTextBySegment(children: ReactNode) {
+  if (typeof children === "string") {
+    return children
+  } else {
+    if (isValidElement(children)) {
+      return children.props.children as string
     }
   }
+}
 
-  if (
-    isValidElement(childrenInput) &&
-    typeof childrenInput.props.children === "string" &&
-    (by === "words" || by === "chars")
-  ) {
-    const text = childrenInput.props.children
-    if (by === "words") {
-      return text.split(/\s+/).filter((word: string) => word.length > 0)
-    }
-    if (by === "chars") {
-      return text.split("")
-    }
-  }
-
-  return []
+function splitByLines(children: ReactNode) {
+  return Children.toArray(children)
 }
 
 interface AnimateTextProps {
   children?: ReactNode
   by?: SplitBy
   as?: ElementType
+  animation?: AnimationType
   staggerDelay?: number
   itemDelay?: number
   duration?: number
 }
 
-const createItemVariants = (duration: number): Variants => ({
-  hidden: {
-    opacity: 0,
-    x: 20,
-  },
-  show: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      type: "spring",
-      duration,
+const animationVariants = {
+  fadeUp: {
+    hidden: {
+      opacity: 0,
+      y: 30,
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        bounce: 0.4,
+      },
     },
   },
-})
-
-const createContainerVariants = (
-  staggerDelay: number,
-  itemDelay: number,
-): Variants => ({
-  hidden: {
-    opacity: 0,
+  fadeDown: {
+    hidden: {
+      opacity: 0,
+      y: -30,
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        bounce: 0.4,
+      },
+    },
   },
+  fadeLeft: {
+    hidden: {
+      opacity: 0,
+      x: 30,
+    },
+    show: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        bounce: 0.4,
+      },
+    },
+  },
+  fadeRight: {
+    hidden: {
+      opacity: 0,
+      x: -30,
+    },
+    show: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        bounce: 0.4,
+      },
+    },
+  },
+} as const
+
+const createContainerVariants = (staggerDelay: number, itemDelay: number) => ({
+  hidden: {},
   show: {
-    opacity: 1,
     transition: {
       staggerChildren: staggerDelay,
       delayChildren: itemDelay,
     },
   },
   exit: {
-    opacity: 0,
     transition: {
       staggerChildren: 0.05,
-      staggerDirection: -1,
+      staggerDirection: 1,
     },
   },
 })
@@ -90,62 +113,90 @@ export function AnimateText({
   children,
   by = "lines",
   as = "div",
+  animation = "fadeUp",
   staggerDelay = 0.1,
   itemDelay = 0,
   duration = 0.6,
 }: AnimateTextProps) {
-  const MotionContainer = motion(as)
-  const nodes = splitTextByNodes(children, by)
+  const MotionContainer = motion.create(as)
 
-  const itemVariants = createItemVariants(duration)
+  const itemVariants: Variants = {
+    hidden: animationVariants[animation].hidden,
+    show: {
+      ...animationVariants[animation].show,
+      transition: {
+        ...animationVariants[animation].show.transition,
+        duration,
+      },
+    },
+  }
+
   const containerVariants = createContainerVariants(staggerDelay, itemDelay)
 
   const renderLineItems = () => {
+    const nodes = splitByLines(children)
     return nodes.map((nodeContent, index) => {
       const key = `line-item-${index}`
-
-      if (isValidElement(nodeContent)) {
-        return (
-          <motion.div key={key} variants={itemVariants}>
-            {nodeContent}
-          </motion.div>
-        )
+      if (!isValidElement(nodeContent)) {
+        return null
       }
-
       return (
-        <motion.div key={key} variants={itemVariants}>
-          {nodeContent}
-        </motion.div>
+        <motion.div
+          key={key}
+          variants={itemVariants}
+          {...(nodeContent.props || {})}
+        />
       )
     })
   }
 
-  const renderItems = () => {
-    return nodes.map((nodeContent, index) => {
-      const key = `segment-item-${index}`
-      return (
-        <motion.span
-          key={key}
-          variants={itemVariants}
-          style={{
-            display: "inline-block",
-          }}
-        >
-          {nodeContent}
-        </motion.span>
-      )
-    })
+  const renderItems = (by: SplitBy) => {
+    const segment = splitTextBySegment(children)
+    if (!segment) {
+      return null
+    }
+    if (by === "chars") {
+      const nodes = segment.split("")
+
+      return nodes?.map((nodeContent, index) => {
+        const key = `segment-char-${index}`
+
+        const MotionComponent = motion.create("span")
+
+        return (
+          <MotionComponent key={key} variants={itemVariants}>
+            {nodeContent}
+          </MotionComponent>
+        )
+      })
+    }
+
+    if (by === "words") {
+      const nodes = segment.split(/\s+/)
+
+      return nodes?.map((nodeContent, index) => {
+        const key = `segment-word-${index}`
+
+        const MotionComponent = motion.create("span")
+
+        return (
+          <MotionComponent key={key} variants={itemVariants}>
+            {nodeContent}
+          </MotionComponent>
+        )
+      })
+    }
   }
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout">
       <MotionContainer
         variants={containerVariants}
         initial="hidden"
         animate="show"
         exit="exit"
       >
-        {by === "lines" ? renderLineItems() : renderItems()}
+        {by === "lines" ? renderLineItems() : renderItems(by)}
       </MotionContainer>
     </AnimatePresence>
   )
