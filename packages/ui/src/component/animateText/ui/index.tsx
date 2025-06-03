@@ -18,6 +18,7 @@ interface AnimateTextProps {
   staggerDelay?: number
   itemDelay?: number
   duration?: number
+  className?: string
 }
 
 const animationVariants = {
@@ -113,6 +114,7 @@ export function AnimateText({
   staggerDelay = 0.1,
   itemDelay = 0,
   duration = 0.6,
+  className,
 }: AnimateTextProps) {
   const MotionContainer = motion.create(as)
 
@@ -191,6 +193,7 @@ export function AnimateText({
         initial="hidden"
         animate="show"
         exit="exit"
+        className={className}
       >
         {by === "lines" ? renderLineItems() : renderItems(by)}
       </MotionContainer>
