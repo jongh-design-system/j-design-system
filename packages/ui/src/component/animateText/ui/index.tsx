@@ -4,6 +4,7 @@ import {
   type ElementType,
   isValidElement,
   memo,
+  type PropsWithChildren,
   type ReactNode,
 } from "react"
 
@@ -101,7 +102,7 @@ function extractTextFromChildren(children: ReactNode) {
   if (typeof children === "string") {
     return children
   } else {
-    if (isValidElement(children)) {
+    if (isValidElement<PropsWithChildren>(children)) {
       return children.props.children as string
     }
   }
@@ -151,7 +152,7 @@ export function AnimateTextBase({
 
   const renderItems = (by: SplitBy) => {
     const segment = extractTextFromChildren(children)
-    if (!segment) {
+    if (typeof segment !== "string" || !segment) {
       return null
     }
     if (by === "chars") {
