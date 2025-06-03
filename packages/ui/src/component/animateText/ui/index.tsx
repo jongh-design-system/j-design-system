@@ -3,6 +3,7 @@ import {
   Children,
   type ElementType,
   isValidElement,
+  memo,
   type ReactNode,
 } from "react"
 
@@ -106,7 +107,7 @@ function extractTextFromChildren(children: ReactNode) {
   }
 }
 
-export function AnimateText({
+export function AnimateTextBase({
   children,
   by = "lines",
   as = "div",
@@ -200,3 +201,5 @@ export function AnimateText({
     </AnimatePresence>
   )
 }
+
+export const AnimateText = memo(AnimateTextBase)
