@@ -1,9 +1,12 @@
 "use client"
 
 import { css } from "@styled-system/css"
+import { ArrowRightIcon } from "lucide-react"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 
 import { MemoizedAnimateText } from "@/components/animateText"
+import { Button } from "@/components/button"
 
 export default function MainPage() {
   const [scrollY, setScrollY] = useState(0)
@@ -23,19 +26,22 @@ export default function MainPage() {
   const drawerTransform = scrollY * 100
 
   return (
-    <>
+    <div className={css({ position: "relative" })}>
       <section
         className={css({
           position: "fixed",
           width: "full",
-          inset: 0,
-          zIndex: -1,
+          zIndex: 1,
+          top: 0,
+          left: 0,
+          h: "100vh",
         })}
       >
         <section
           className={css({
             h: "screen",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             bgColor: "background",
@@ -51,13 +57,16 @@ export default function MainPage() {
           >
             Create your project using CLI
           </MemoizedAnimateText>
+          <Button size="lg" style={{ position: "relative", bottom: "auto" }}>
+            <Link href="/docs">Get Started</Link>
+            <ArrowRightIcon size={16} />
+          </Button>
         </section>
       </section>
 
       <div
         className={css({
           display: "flex",
-          bg: "white",
           marginTop: "100vh",
           minH: "100vh",
           h: "200vh",
@@ -70,6 +79,8 @@ export default function MainPage() {
           },
           bgColor: "card",
           color: "card.foreground",
+          position: "relative",
+          zIndex: 2,
         })}
         style={{
           marginTop: `calc(100vh - ${drawerTransform}px)`,
@@ -85,6 +96,6 @@ export default function MainPage() {
           준비중입니다
         </MemoizedAnimateText>
       </div>
-    </>
+    </div>
   )
 }

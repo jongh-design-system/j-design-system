@@ -29,6 +29,7 @@ export function Header({ logo, navItems, icons }: HeaderProps) {
         width: "full",
         position: "sticky",
         top: 0,
+        zIndex: 10,
       })}
     >
       <Link
