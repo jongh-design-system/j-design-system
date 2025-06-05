@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, type Variants } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import {
   Children,
   type ElementType,
@@ -88,12 +88,6 @@ const createContainerVariants = (staggerDelay: number, itemDelay: number) => ({
     transition: {
       staggerChildren: staggerDelay,
       delayChildren: itemDelay,
-    },
-  },
-  exit: {
-    transition: {
-      staggerChildren: 0.05,
-      staggerDirection: 1,
     },
   },
 })
@@ -193,17 +187,14 @@ export function AnimateTextBase({
     }
   }
   return (
-    <AnimatePresence mode="popLayout">
-      <MotionContainer
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
-        exit="exit"
-        className={className}
-      >
-        {by === "lines" ? renderLineItems() : renderItems(by)}
-      </MotionContainer>
-    </AnimatePresence>
+    <MotionContainer
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className={className}
+    >
+      {by === "lines" ? renderLineItems() : renderItems(by)}
+    </MotionContainer>
   )
 }
 
