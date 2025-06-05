@@ -112,20 +112,22 @@ export function AnimateTextBase({
   children,
   by = "lines",
   as = "div",
-  animation = "fadeUp",
-  staggerDelay = 0.1,
+  animation = "fadeLeft",
+  staggerDelay = 0.05,
   itemDelay = 0,
-  duration = 0.6,
+  duration = 0.4,
   className,
 }: AnimateTextProps) {
   const MotionContainer = motion.create(as)
 
+  const selectedAnimationVariant = animationVariants[animation]
+
   const itemVariants: Variants = {
-    hidden: animationVariants[animation].hidden,
+    hidden: selectedAnimationVariant.hidden,
     show: {
-      ...animationVariants[animation].show,
+      ...selectedAnimationVariant.show,
       transition: {
-        ...animationVariants[animation].show.transition,
+        ...selectedAnimationVariant.show.transition,
         duration,
       },
     },
@@ -139,7 +141,7 @@ export function AnimateTextBase({
       const key = `line-item-${index}`
       if (!isValidElement(nodeContent)) {
         return null
-      }
+      } //for type safety
       return (
         <motion.div
           key={key}
@@ -190,7 +192,6 @@ export function AnimateTextBase({
       })
     }
   }
-
   return (
     <AnimatePresence mode="popLayout">
       <MotionContainer
@@ -206,4 +207,19 @@ export function AnimateTextBase({
   )
 }
 
+/**
+ * Children constraints depend on the 'by' prop value.
+ *
+ * ```tsx
+ * // by="lines": Array of React elements
+ * <AnimateText by="lines">
+ *   <div>First line</div>
+ *   <div>Second line</div>
+ * </AnimateText>
+ *
+ * // by="words" | "chars": String or single element containing string
+ * <AnimateText by="words">Split by words</AnimateText>
+ * <AnimateText by="chars"><p>Split by characters</p></AnimateText>
+ * ```
+ */
 export const AnimateText = memo(AnimateTextBase)
