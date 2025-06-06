@@ -4,7 +4,6 @@ import tseslint from "typescript-eslint"
 import pluginJs from "@eslint/js"
 import _import from "eslint-plugin-import"
 import simpleImportSort from "eslint-plugin-simple-import-sort"
-import storybook from "eslint-plugin-storybook"
 
 export const config = [
   {
@@ -28,7 +27,6 @@ export const config = [
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  ...storybook.configs["flat/recommended"],
   prettier,
   {
     plugins: {
