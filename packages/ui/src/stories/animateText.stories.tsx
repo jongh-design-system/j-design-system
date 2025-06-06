@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useMemo, useState } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
+import { motion } from "framer-motion"
 import { type ReactNode } from "react"
 
 import { Button } from "@/component/button/ui"
@@ -255,22 +256,72 @@ export const WordsWithLongSentence: Story = {
 }
 
 export const WordsWithDifferentAnimations: Story = {
-  render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-      <AnimateText by="words" animation="fadeUp" staggerDelay={0.1}>
-        위로 올라오는 단어들
-      </AnimateText>
-      <AnimateText by="words" animation="fadeDown" staggerDelay={0.1}>
-        아래로 내려오는 단어들
-      </AnimateText>
-      <AnimateText by="words" animation="fadeLeft" staggerDelay={0.1}>
-        왼쪽으로 나타나는 단어들
-      </AnimateText>
-      <AnimateText by="words" animation="fadeRight" staggerDelay={0.1}>
-        오른쪽으로 나타나는 단어들
-      </AnimateText>
-    </div>
-  ),
+  render: () => {
+    const [count, setCount] = useState(0)
+
+    return (
+      <div>
+        <Button onClick={() => setCount(count + 1)}>retry</Button>
+        <motion.div
+          style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
+          initial="hidden"
+          animate="show"
+          key={count}
+          variants={{
+            show: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.3,
+                delayChildren: 0.1,
+              },
+            },
+            hidden: {
+              opacity: 0,
+              color: "red",
+            },
+          }}
+          custom={0}
+        >
+          <AnimateText
+            by="words"
+            animation="fadeUp"
+            staggerDelay={0.1}
+            initial={false}
+            animate={false}
+          >
+            위로 올라오는 단어들
+          </AnimateText>
+          <AnimateText
+            by="words"
+            animation="fadeDown"
+            staggerDelay={0.1}
+            initial={false}
+            animate={false}
+          >
+            아래로 내려오는 단어들
+          </AnimateText>
+          <AnimateText
+            by="chars"
+            animation="fadeLeft"
+            staggerDelay={0.1}
+            initial={false}
+            animate={false}
+          >
+            왼쪽으로 나타나는 단어들
+          </AnimateText>
+          <AnimateText
+            by="words"
+            animation="fadeRight"
+            staggerDelay={0.1}
+            initial={false}
+            animate={false}
+          >
+            오른쪽으로 나타나는 단어들
+          </AnimateText>
+        </motion.div>
+      </div>
+    )
+  },
 }
 
 export const WordsWithSpaces: Story = {
