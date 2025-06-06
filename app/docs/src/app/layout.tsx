@@ -1,6 +1,5 @@
 import "./globals.css"
 
-import { Container } from "@styled-system/jsx"
 import localFont from "next/font/local"
 import Link from "next/link"
 
@@ -30,22 +29,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${pretendard.className}`}>
         <ThemeProvider>
-          <Container width="full" height="100vh">
-            <Header
-              logo={<span aria-label="Design System">Design System</span>}
-              navItems={navItems}
-              icons={[
-                <Link
-                  href="https://github.com/jongh-design-system/j-design-system/"
-                  key="github"
-                >
-                  <Github />
-                </Link>,
-                <ThemeToggleButton key="toggle" />,
-              ]}
-            />
-            {children}
-          </Container>
+          <Header
+            logo={<span aria-label="Design System">Design System</span>}
+            navItems={navItems}
+            icons={[
+              <Link
+                href="https://github.com/jongh-design-system/j-design-system/"
+                key="github"
+              >
+                <Github />
+              </Link>,
+              <ThemeToggleButton key="toggle" />,
+            ]}
+          />
+          {children}
         </ThemeProvider>
       </body>
     </html>

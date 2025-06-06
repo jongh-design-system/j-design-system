@@ -1,65 +1,101 @@
 "use client"
-import { css } from "@styled-system/css"
-import { motion, type Variants } from "motion/react"
-import Link from "next/link"
 
+import { css } from "@styled-system/css"
+import { ArrowRightIcon } from "lucide-react"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+
+import { MemoizedAnimateText } from "@/components/animateText"
 import { Button } from "@/components/button"
 
-const containerVariant: Variants = {
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05, delayChildren: 0.05 },
-  },
-  hidden: {
-    opacity: 0,
-  },
-}
-
-const letterVariant: Variants = {
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      damping: 15,
-      stiffness: 400,
-    },
-  },
-  hidden: {
-    opacity: 0,
-    y: 20,
-    transition: {
-      type: "spring",
-      damping: 15,
-      stiffness: 400,
-    },
-  },
-}
-
-const message = "Create your project using CLI"
-
 export default function MainPage() {
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      const windowHeight = window.innerHeight
+      const scrollPercent = Math.min(scrollTop / windowHeight, 1)
+      setScrollY(scrollPercent)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const drawerTransform = scrollY * 100
+
   return (
-    <>
-      <motion.h1
-        whileInView="visible"
-        initial="hidden"
-        variants={containerVariant}
+    <div className={css({ position: "relative" })}>
+      <section
         className={css({
-          textStyle: "4xl",
+          position: "fixed",
+          width: "full",
+          zIndex: 1,
+          top: 0,
+          left: 0,
+          h: "100vh",
         })}
       >
-        {Array.from(message).map((m, i) => {
-          return (
-            <motion.span key={i} variants={letterVariant}>
-              {m === " " ? "\u00A0" : m}
-            </motion.span>
-          )
+        <section
+          className={css({
+            h: "screen",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            bgColor: "background",
+            color: "foreground",
+          })}
+        >
+          <MemoizedAnimateText
+            by="chars"
+            staggerDelay={0.05}
+            duration={0.5}
+            animation="fadeRight"
+            className={css({ fontSize: "5xl", textAlign: "center" })}
+          >
+            Create your project using CLI
+          </MemoizedAnimateText>
+          <Button size="lg" style={{ position: "relative", bottom: "auto" }}>
+            <Link href="/docs">Get Started</Link>
+            <ArrowRightIcon size={16} />
+          </Button>
+        </section>
+      </section>
+
+      <div
+        className={css({
+          display: "flex",
+          marginTop: "100vh",
+          minH: "100vh",
+          h: "200vh",
+          borderTopRightRadius: "3xl",
+          borderTopLeftRadius: "3xl",
+          paddingTop: "16",
+          paddingX: {
+            base: "4",
+            md: "8",
+          },
+          bgColor: "card",
+          color: "card.foreground",
+          position: "relative",
+          zIndex: 2,
         })}
-      </motion.h1>
-      <Button size="lg">
-        <Link href="/docs/intro/introduction">Start</Link>
-      </Button>
-    </>
+        style={{
+          marginTop: `calc(100vh - ${drawerTransform}px)`,
+        }}
+      >
+        <MemoizedAnimateText
+          by="chars"
+          staggerDelay={0.05}
+          duration={0.5}
+          animation="fadeLeft"
+          className={css({ fontSize: "2xl", textAlign: "center" })}
+        >
+          준비중입니다
+        </MemoizedAnimateText>
+      </div>
+    </div>
   )
 }

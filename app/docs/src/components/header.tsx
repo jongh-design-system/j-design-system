@@ -1,5 +1,5 @@
 import { css } from "@styled-system/css"
-import { Flex, styled } from "@styled-system/jsx"
+import { Flex } from "@styled-system/jsx"
 import { flex } from "@styled-system/patterns"
 import Link from "next/link"
 import { ReactNode } from "react"
@@ -18,7 +18,7 @@ interface HeaderProps {
 
 export function Header({ logo, navItems, icons }: HeaderProps) {
   return (
-    <styled.header
+    <header
       className={flex({
         px: "4",
         py: "2",
@@ -28,6 +28,8 @@ export function Header({ logo, navItems, icons }: HeaderProps) {
         mx: "auto",
         width: "full",
         position: "sticky",
+        top: 0,
+        zIndex: 10,
       })}
     >
       <Link
@@ -68,7 +70,6 @@ export function Header({ logo, navItems, icons }: HeaderProps) {
         ))}
       </Flex>
       <Flex gap="2">{icons.map((icon) => icon)}</Flex>
-    </styled.header>
+    </header>
   )
 }
-//TODO: 화면이 작아졌을 경우 navItem에 대한 dropdown menu만들기
