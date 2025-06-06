@@ -1,4 +1,4 @@
-import { motion, type Variants } from "framer-motion"
+import { motion, type MotionProps, type Variants } from "framer-motion"
 import {
   Children,
   type ElementType,
@@ -12,7 +12,7 @@ type SplitBy = "words" | "chars" | "lines"
 
 type AnimationType = "fadeUp" | "fadeDown" | "fadeLeft" | "fadeRight"
 
-interface AnimateTextProps {
+interface AnimateTextProps extends MotionProps {
   children?: ReactNode
   by?: SplitBy
   as?: ElementType
@@ -83,8 +83,11 @@ const animationVariants = {
 } as const
 
 const createContainerVariants = (staggerDelay: number, itemDelay: number) => ({
-  hidden: {},
+  hidden: {
+    opacity: 0,
+  },
   show: {
+    opacity: 1,
     transition: {
       staggerChildren: staggerDelay,
       delayChildren: itemDelay,
@@ -111,6 +114,9 @@ export function AnimateTextBase({
   itemDelay = 0,
   duration = 0.4,
   className,
+  initial = "hidden",
+  animate = "show",
+  ...rest
 }: AnimateTextProps) {
   const MotionContainer = motion.create(as)
 
@@ -192,26 +198,27 @@ export function AnimateTextBase({
       })
     }
   }
+
   return (
     <MotionContainer
       variants={containerVariants}
-      initial="hidden"
-      animate="show"
+      initial={initial}
+      animate={animate}
       className={className}
+      {...rest}
     >
       {by === "lines" ? renderLineItems() : renderItems(by)}
     </MotionContainer>
   )
 }
-
 /**
  * Children constraints depend on the 'by' prop value.
  *
  * ```tsx
  * // by="lines": Array of React elements
  * <AnimateText by="lines">
- *   <div>First line</div>
- *   <div>Second line</div>
+ * <div>First line</div>
+ * <div>Second line</div>
  * </AnimateText>
  *
  * // by="words" | "chars": String or single element containing string
