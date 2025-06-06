@@ -1,12 +1,12 @@
 @layer reset, base, tokens, recipes, utilities;
 
-html,
+/* html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
   padding: 0;
   margin: 0;
-}
+} */
 
 body {
   -webkit-font-smoothing: antialiased;
