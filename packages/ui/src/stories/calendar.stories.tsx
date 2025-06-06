@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
 
 import * as Calendar from "../component/calendar/ui"

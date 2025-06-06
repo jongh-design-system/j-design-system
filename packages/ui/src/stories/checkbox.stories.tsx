@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import type { Meta, StoryObj } from "@storybook/react"
-import { expect, userEvent, within } from "@storybook/test"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { type FormEvent, useCallback, useState } from "react"
 import { useController, useForm } from "react-hook-form"
+import { expect, userEvent, within } from "storybook/test"
 
 import { Button } from "@/component/button/ui"
 

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from "@storybook/preview-api"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { useState } from "storybook/preview-api"
+import { expect, userEvent, within } from "storybook/test"
 
 import * as Tabs from "../component/tabs/ui"
 
@@ -36,6 +37,22 @@ export const Primary: Story = {
         ))}
       </Tabs.Root>
     )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // 초기 렌더링 테스트
+    expect(canvas.getByText("Tab 1")).toBeDefined()
+
+    // 클릭 테스트
+    const user = userEvent.setup()
+    await user.click(canvas.getByText("Tab 2"))
+    expect(canvas.getByText("2번")).toBeDefined()
+
+    // 키보드 테스트
+    await user.click(canvas.getByText("Tab 2"))
+    await user.keyboard("{ArrowLeft}")
+    expect(document.activeElement).toBe(canvas.getByText("Tab 1"))
   },
 }
 

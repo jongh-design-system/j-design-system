@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useMemo, useState } from "@storybook/preview-api"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { motion } from "framer-motion"
 import { type ReactNode } from "react"
+import { useMemo, useState } from "storybook/preview-api"
 
 import { Button } from "@/component/button/ui"
 
