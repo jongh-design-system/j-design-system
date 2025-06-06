@@ -179,7 +179,13 @@ export function AnimateTextBase({
         }
 
         return (
-          <MotionComponent key={key} variants={itemVariants}>
+          <MotionComponent
+            key={key}
+            variants={itemVariants}
+            style={{
+              display: "inline-block",
+            }}
+          >
             {nodeContent}
           </MotionComponent>
         )
