@@ -15,7 +15,6 @@ const variants = {
     scale: 1,
     y: 0,
     x: 0,
-    opacity: 1,
     transition: {
       ease: "easeIn",
     },
@@ -26,6 +25,29 @@ const variants = {
       duration: 0.3,
       ease: "easeInOut",
       times: [0, 0.25, 0.5, 0.75, 1],
+    },
+  },
+  bounce: {
+    y: [0, -6, 0, -3, 0],
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+      times: [0, 0.25, 0.5, 0.75, 1],
+    },
+  },
+  shake: {
+    x: [0, -6, 6, -3, 3, 0],
+    transition: {
+      duration: 0.4,
+      ease: "easeInOut",
+    },
+  },
+  press: {
+    scale: 0.95,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 15,
     },
   },
 } satisfies Variants
