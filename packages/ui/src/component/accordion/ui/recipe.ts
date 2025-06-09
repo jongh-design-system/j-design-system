@@ -1,7 +1,7 @@
 import { type RecipeVariantProps, sva } from "@styled-system/css"
 
 export const recipe = sva({
-  slots: ["root", "item", "header", "trigger", "content"],
+  slots: ["root", "item", "header", "trigger", "content", "contentWrapper"],
   base: {
     root: {},
     item: {},
@@ -47,11 +47,10 @@ export const recipe = sva({
         animationDuration: "normal",
         animationName: "accordion-down_radix",
       },
-
-      "& > :first-child": {
-        pb: "2",
-        pt: "1",
-      },
+    },
+    contentWrapper: {
+      px: "1",
+      py: "1",
     },
   },
   variants: {
@@ -87,7 +86,7 @@ export const recipe = sva({
     },
   },
   defaultVariants: {
-    variant: "outline" as const,
+    variant: "outline",
   },
 })
 
