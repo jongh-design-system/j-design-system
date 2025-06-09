@@ -17,7 +17,7 @@ const variants = {
     y: 0,
     x: 0,
     transition: {
-      ease: "easeIn",
+      ease: "easeInOut",
     },
   },
   pulse: {
