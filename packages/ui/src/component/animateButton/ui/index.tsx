@@ -1,3 +1,4 @@
+import { token } from "@styled-system/tokens"
 import { motion, type Variants } from "framer-motion"
 import type { ComponentProps, ComponentRef } from "react"
 import { forwardRef } from "react"
@@ -22,7 +23,7 @@ const variants = {
   pulse: {
     scale: [1, 1.05, 1, 1.05, 1],
     transition: {
-      duration: 0.3,
+      duration: parseFloat(token("durations.slower")) / 1000 || 0.5,
       ease: "easeInOut",
       times: [0, 0.25, 0.5, 0.75, 1],
     },
@@ -30,7 +31,7 @@ const variants = {
   bounce: {
     y: [0, -6, 0, -3, 0],
     transition: {
-      duration: 0.3,
+      duration: parseFloat(token("durations.slower")) / 1000 || 0.5,
       ease: "easeOut",
       times: [0, 0.25, 0.5, 0.75, 1],
     },
@@ -38,7 +39,7 @@ const variants = {
   shake: {
     x: [0, -6, 6, -3, 3, 0],
     transition: {
-      duration: 0.4,
+      duration: parseFloat(token("durations.slower")) / 1000 || 0.5,
       ease: "easeInOut",
     },
   },
