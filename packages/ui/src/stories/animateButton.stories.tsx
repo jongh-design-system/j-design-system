@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { AnimateButton } from "../component/animateButton/ui"
 
 const meta = {
-  title: "Components/AnimateButton",
+  title: "Animation/AnimateButton",
   component: AnimateButton,
   tags: ["autodocs"],
   argTypes: {

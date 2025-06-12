@@ -9,7 +9,7 @@ import { Button } from "@/component/button/ui"
 import { AnimateText } from "../component/animateText/ui"
 
 const meta = {
-  title: "Components/AnimateText",
+  title: "Animation/AnimateText",
   component: AnimateText,
   tags: ["autodocs"],
   parameters: {

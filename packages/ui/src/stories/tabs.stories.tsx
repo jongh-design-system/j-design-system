@@ -6,7 +6,7 @@ import { expect, userEvent, within } from "storybook/test"
 import * as Tabs from "../component/tabs/ui"
 
 const meta = {
-  title: "Tabs",
+  title: "Base/Tabs",
   tags: ["autodocs"],
 } satisfies Meta<typeof Tabs>
 

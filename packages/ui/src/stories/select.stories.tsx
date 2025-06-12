@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import * as Select from "../component/select/ui"
 
 export default {
-  title: "Select",
+  title: "Base/Select",
   tags: ["autodocs"],
 } satisfies Meta<typeof Select>
 

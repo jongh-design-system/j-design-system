@@ -8,7 +8,7 @@ import { expect, userEvent, within } from "storybook/test"
 import { TextField } from "../component/textfield/ui"
 
 const meta: Meta<typeof TextField> = {
-  title: "Components/TextField",
+  title: "Base/TextField",
   tags: ["autodocs"],
   component: TextField,
 }

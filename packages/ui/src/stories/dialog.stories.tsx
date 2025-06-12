@@ -14,7 +14,7 @@ import { TextField } from "@/component/textfield/ui"
 import * as Dialog from "../component/dialog/ui"
 
 const meta = {
-  title: "Dialog",
+  title: "Base/Dialog",
   tags: ["autodocs"],
 } satisfies Meta<typeof Dialog>
 

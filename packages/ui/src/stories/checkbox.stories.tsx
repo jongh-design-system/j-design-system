@@ -9,7 +9,7 @@ import { Button } from "@/component/button/ui"
 import { Checkbox } from "../component/checkbox/ui"
 
 const meta = {
-  title: "Components/Checkbox",
+  title: "Base/Checkbox",
   component: Checkbox,
   tags: ["autodocs"],
   argTypes: {

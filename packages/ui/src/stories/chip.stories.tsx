@@ -6,7 +6,7 @@ import { expect, fn, userEvent } from "storybook/test"
 import { Chip } from "../component/chip/ui"
 
 export default {
-  title: "Chip",
+  title: "Base/Chip",
   tags: ["autodocs"],
   component: Chip,
 } as Meta<typeof Chip>

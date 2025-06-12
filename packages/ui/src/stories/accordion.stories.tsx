@@ -6,7 +6,7 @@ import { expect, userEvent, waitFor, within } from "storybook/test"
 import * as Accordion from "../component/accordion/ui"
 
 export default {
-  title: "Accordion",
+  title: "Base/Accordion",
   tags: ["autodocs"],
 } satisfies Meta<typeof Accordion>
 

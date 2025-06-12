@@ -4,7 +4,7 @@ import { css } from "@styled-system/css"
 import * as Calendar from "../component/calendar/ui"
 
 const meta = {
-  title: "Calendar",
+  title: "Base/Calendar",
   tags: ["autodocs"],
 } satisfies Meta<typeof Calendar>
 
