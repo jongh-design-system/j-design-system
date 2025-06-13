@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
 import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"
-import { useState } from "storybook/preview-api"
+import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
 
 import { TextField } from "../component/textfield/ui"

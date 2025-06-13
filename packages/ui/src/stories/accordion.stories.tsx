@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
-import { useState } from "storybook/preview-api"
-import { expect, userEvent, waitFor, within } from "storybook/test"
+import { useState } from "react"
+import {
+  expect,
+  userEvent,
+  waitForElementToBeRemoved,
+  within,
+} from "storybook/test"
 
 import * as Accordion from "../component/accordion/ui"
 
@@ -39,54 +44,61 @@ export const Primary: Story = {
       </div>
     )
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
     const Item = canvas.getByText("1번")
-    expect(Item).toBeInTheDocument()
-    //토글로 내용이 열고 닫히는지 확인
-    await userEvent.click(Item)
-    await expect(canvas.getByText("내용1")).toBeInTheDocument()
+    expect(Item).toBeVisible()
+    //1번 아이템을 클릭하면 내용1이 열림
 
     await userEvent.click(Item)
-    await waitFor(async () => {
-      const Content = canvas.queryByText("내용1")
-      expect(Content).toBeNull()
-    })
+
+    const Content = canvas.queryByText("내용1")
+
+    await expect(Content).toBeVisible()
+
+    await userEvent.click(Item)
+
+    await waitForElementToBeRemoved(Content)
+    expect(canvas.queryByText("내용1")).toBeNull()
   },
 }
 
-const StateExample = () => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
-
+const ControlledAccordion = () => {
+  const [value, setValue] = useState<string[]>(["1"])
   return (
-    <Accordion.Root
-      type="multiple"
-      value={selectedItems}
-      onValueChange={(items) => setSelectedItems(items)}
-    >
+    <Accordion.Root type="multiple" value={value} onValueChange={setValue}>
       <Accordion.Item value="1">
-        <Accordion.Header>
-          <Accordion.Trigger data-testid="1">1번</Accordion.Trigger>
-        </Accordion.Header>
+        <Accordion.Trigger>1번</Accordion.Trigger>
         <Accordion.Content>내용1</Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="2">
+        <Accordion.Trigger>2번</Accordion.Trigger>
+        <Accordion.Content>내용2</Accordion.Content>
       </Accordion.Item>
     </Accordion.Root>
   )
 }
 
-export const WithState: Story = {
-  render: () => <StateExample />,
+export const Controlled: Story = {
+  render: () => <ControlledAccordion />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
+    // 1번 내용이 처음에 열려있어야 함
+    expect(canvas.getByText("내용1")).toBeVisible()
 
-    // 초기 상태 확인
-    expect(canvas.queryByText("내용1")).toBeDefined()
+    const trigger1 = canvas.getByRole("button", { name: "1번" })
+    const trigger2 = canvas.getByRole("button", { name: "2번" })
 
-    // 트리거 클릭
-    const trigger = canvas.getByTestId("1")
-    await userEvent.click(trigger)
+    await userEvent.click(trigger2)
+    expect(canvas.getByText("내용1")).toBeVisible()
+    expect(canvas.getByText("내용2")).toBeVisible()
 
-    // 상태 변경 후 내용 표시 확인
-    expect(canvas.getByText("내용1")).toBeDefined()
+    await userEvent.click(trigger1)
+
+    await waitForElementToBeRemoved(canvas.getByText("내용1"))
+    // console.log(canvas.getByText("내용1"))
+    expect(canvas.queryByText("내용1")).toBeNull()
+    expect(canvas.getByText("내용2")).toBeVisible()
   },
 }
 
@@ -105,10 +117,10 @@ export const ControlledState: Story = {
     const canvas = within(canvasElement)
 
     // 트리거 찾기 및 클릭
-    const trigger = canvas.getByTestId("trigger-1")
+    const trigger = canvas.getByRole("button", { name: "1번" })
     await userEvent.click(trigger)
 
     // 내용이 보이는지 확인
-    expect(canvas.getByText("내용1")).toBeInTheDocument()
+    expect(canvas.getByText("내용1")).toBeVisible()
   },
 }
