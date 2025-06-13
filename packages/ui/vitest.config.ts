@@ -1,7 +1,7 @@
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin"
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin"
 import { defineConfig, defineProject, mergeConfig } from "vitest/config"
 
 const dirname =
@@ -9,8 +9,6 @@ const dirname =
     ? __dirname
     : path.dirname(fileURLToPath(import.meta.url))
 
-// 👇 If you're using Next.js, apply this framework plugin as well
-// import { storybookNextJsPlugin } from '@storybook/experimental-nextjs-vite/vite-plugin';
 import viteConfig from "./vite.config"
 
 export default defineProject(

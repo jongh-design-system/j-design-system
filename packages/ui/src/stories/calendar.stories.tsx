@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
 
 import * as Calendar from "../component/calendar/ui"
 
 const meta = {
-  title: "Calendar",
+  title: "Base/Calendar",
   tags: ["autodocs"],
 } satisfies Meta<typeof Calendar>
 

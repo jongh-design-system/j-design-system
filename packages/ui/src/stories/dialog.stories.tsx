@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { css } from "@styled-system/css"
 import {
   expect,
   screen,
   userEvent,
   waitForElementToBeRemoved,
   within,
-} from "@storybook/test"
-import { css } from "@styled-system/css"
+} from "storybook/test"
 
 import { Button } from "@/component/button/ui"
 import { TextField } from "@/component/textfield/ui"
@@ -14,7 +14,7 @@ import { TextField } from "@/component/textfield/ui"
 import * as Dialog from "../component/dialog/ui"
 
 const meta = {
-  title: "Dialog",
+  title: "Base/Dialog",
   tags: ["autodocs"],
 } satisfies Meta<typeof Dialog>
 

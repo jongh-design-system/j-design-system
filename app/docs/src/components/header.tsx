@@ -63,6 +63,7 @@ export function Header({ logo, navItems, icons }: HeaderProps) {
                 px: 2,
                 py: 1,
               })}
+              prefetch={false}
             >
               {item.label}
             </Link>

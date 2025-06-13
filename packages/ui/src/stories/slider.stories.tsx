@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
 
 import * as Slider from "../component/slider/ui"
 
 export default {
-  title: "Slider",
+  title: "Base/Slider",
   tags: ["autodocs"],
 } satisfies Meta<typeof Slider>
 

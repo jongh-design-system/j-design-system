@@ -1,15 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useMemo, useState } from "@storybook/preview-api"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { motion } from "framer-motion"
-import { type ReactNode } from "react"
+import { type ReactNode, useMemo, useState } from "react"
 
 import { Button } from "@/component/button/ui"
 
 import { AnimateText } from "../component/animateText/ui"
 
 const meta = {
-  title: "Components/AnimateText",
+  title: "Animation/AnimateText",
   component: AnimateText,
   tags: ["autodocs"],
   parameters: {
