@@ -2,5 +2,8 @@
   "onlyChanged": true,
   "projectId": "Project:6683c8acf34b923f7227be4a",
   "storybookBaseDir": "packages/ui",
-  "zip": true
+  "zip": true,
+  "storybookBuildDir": "storybook-static",
+  "buildCommand": "pnpm run build",
+  "outputDir": "storybook-static"
 }

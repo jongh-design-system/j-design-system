@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 
 import * as Avatar from "../component/avatar/ui"
 
 export default {
-  title: "Avatar",
+  title: "Base/Avatar",
   tags: ["autodocs"],
 } satisfies Meta<typeof Avatar>
 

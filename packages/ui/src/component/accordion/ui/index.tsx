@@ -22,13 +22,15 @@ export const Header = withContext<
   ComponentPropsWithoutRef<typeof AccordionPrimitive.Header>
 >(AccordionPrimitive.Header, "header")
 
-export const ContentPrimitive = forwardRef<
+const ContentWrapper = withContext("div", "contentWrapper")
+
+const ContentPrimitive = forwardRef<
   ElementRef<typeof AccordionPrimitive.Content>,
   ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 >(({ children, ...props }, ref) => {
   return (
     <AccordionPrimitive.Content ref={ref} {...props}>
-      <div>{children}</div>
+      <ContentWrapper>{children}</ContentWrapper>
     </AccordionPrimitive.Content>
   )
 })

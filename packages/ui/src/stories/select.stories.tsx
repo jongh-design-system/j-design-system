@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 
 import * as Select from "../component/select/ui"
 
 export default {
-  title: "Select",
+  title: "Base/Select",
   tags: ["autodocs"],
 } satisfies Meta<typeof Select>
 
@@ -17,7 +17,7 @@ export const Primary: Story = {
       <div style={{ width: "300px" }}>
         <Select.Root>
           <Select.Trigger>
-            <Select.Value placeholder="Select a frui" />
+            <Select.Value placeholder="Select a fruit" />
           </Select.Trigger>
           <Select.Content>
             <Select.Group>
