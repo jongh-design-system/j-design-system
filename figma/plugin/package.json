@@ -37,8 +37,8 @@
   },
   "plugma": {
     "manifest": {
-      "id": "test-replace",
-      "name": "test",
+      "id": "@jongh/figma-plugin/dev",
+      "name": "@jongh/figma-plugin/dev",
       "main": "src/main.ts",
       "ui": "src/ui.tsx",
       "editorType": [
