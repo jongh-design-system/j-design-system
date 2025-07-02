@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "TalkToFigma": {
+    "@jongh/figma-plugin": {
       "command": "npx",
       "args": ["cursor-talk-to-figma-mcp@latest"]
     },

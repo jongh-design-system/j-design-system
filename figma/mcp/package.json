@@ -36,6 +36,7 @@
     "@types/ws": "^8.5.10",
     "figma-api": "2.0.2-beta",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "styled-components": "^6.1.8",
     "uuid": "latest",
     "ws": "latest",

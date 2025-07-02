@@ -1,0 +1,59 @@
+{
+  "name": "@jongh/figma-plugin",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "plugma dev",
+    "build": "plugma build",
+    "preview": "plugma preview",
+    "release": "plugma release",
+    "socket": "npx tsx src/socket.ts",
+    "start": "concurrently \"npm run socket\" \"npm run dev\" --names \"SOCKET,MCP\" --prefix-colors \"blue,green\"",
+    "lint": "eslint --fix",
+    "format": "prettier --write"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "latest",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "uuid": "latest",
+    "ws": "latest",
+    "xml-js": "^1.6.11",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.100.2",
+    "@jongh/eslint": "workspace:*",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/uuid": "^9.0.8",
+    "@types/ws": "^8.5.10",
+    "@vitejs/plugin-react": "^4.3.3",
+    "concurrently": "^8",
+    "plugma": "^1.2.9",
+    "tsx": "^4.7.0",
+    "typescript": "^5",
+    "vite": "^5.4.10"
+  },
+  "plugma": {
+    "manifest": {
+      "id": "@jongh/figma-plugin/dev",
+      "name": "@jongh/figma-plugin/dev",
+      "main": "src/main.ts",
+      "ui": "src/ui.tsx",
+      "editorType": [
+        "figma",
+        "figjam"
+      ],
+      "networkAccess": {
+        "allowedDomains": [
+          "none"
+        ],
+        "devAllowedDomains": [
+          "http://localhost:*",
+          "ws://localhost:9001"
+        ]
+      }
+    }
+  }
+}
