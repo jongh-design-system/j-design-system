@@ -42,7 +42,8 @@
   "workspaces": [
     "packages/*",
     "app/*",
-    "configs/*"
+    "configs/*",
+    "figma/*"
   ],
   "config": {
     "commitizen": {
