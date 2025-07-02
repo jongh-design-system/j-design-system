@@ -13,26 +13,27 @@
     "format": "prettier --write"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "latest",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "uuid": "latest",
     "ws": "latest",
-    "@modelcontextprotocol/sdk": "latest",
-    "zod": "latest",
-    "uuid": "latest"
+    "xml-js": "^1.6.11",
+    "zod": "latest"
   },
   "devDependencies": {
+    "@figma/plugin-typings": "^1.100.2",
+    "@jongh/eslint": "workspace:*",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@types/ws": "^8.5.10",
     "@types/uuid": "^9.0.8",
+    "@types/ws": "^8.5.10",
     "@vitejs/plugin-react": "^4.3.3",
+    "concurrently": "^8",
+    "plugma": "^1.2.9",
     "tsx": "^4.7.0",
     "typescript": "^5",
-    "vite": "^5.4.10",
-    "@figma/plugin-typings": "^1.100.2",
-    "plugma": "^1.2.9",
-    "@jongh/eslint": "workspace:*",
-    "concurrently": "^8"
+    "vite": "^5.4.10"
   },
   "plugma": {
     "manifest": {
@@ -44,7 +45,6 @@
         "figma",
         "figjam"
       ],
-      "documentAccess": "dynamic-page",
       "networkAccess": {
         "allowedDomains": [
           "none"
