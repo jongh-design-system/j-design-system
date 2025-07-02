@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
 interface ConnectionState {
   connected: boolean
@@ -51,6 +51,7 @@ const App = () => {
 
     window.addEventListener("message", handleMessage)
     return () => window.removeEventListener("message", handleMessage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectionState.socket, connectionState.channel])
 
   // WebSocket 연결
@@ -234,8 +235,10 @@ const App = () => {
               backgroundColor: "#f3f4f6",
               padding: "8px",
               borderRadius: "4px",
+              maxHeight: "400px",
               overflow: "auto",
-              maxHeight: "200px",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
             }}
           >
             {JSON.stringify(designData, null, 2)}
