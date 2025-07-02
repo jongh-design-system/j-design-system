@@ -4,9 +4,6 @@
   "type": "module",
   "scripts": {
     "dev": "plugma dev",
-    "build": "plugma build",
-    "preview": "plugma preview",
-    "release": "plugma release",
     "socket": "npx tsx src/socket.ts",
     "start": "concurrently \"npm run socket\" \"npm run dev\" --names \"SOCKET,MCP\" --prefix-colors \"blue,green\"",
     "lint": "eslint --fix",
