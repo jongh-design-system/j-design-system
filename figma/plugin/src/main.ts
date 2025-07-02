@@ -1,11 +1,11 @@
 // Read the docs https://plugma.dev/docs
-import { readMyDesignWithCSS } from "./utils/readDesign"
+import { convertNodeToXML } from "./utils/convertNodeToXML"
 
 // WebSocket 상태 관리
 const state = {
   serverPort: 3055,
   connected: false,
-  socket: null as any,
+  socket: null,
   pendingRequests: new Map(),
   channel: null as string | null,
 }
@@ -44,11 +44,10 @@ export default function () {
     }
   }
 
-  // 선택된 노드가 변경될 때마다 디자인 정보를 읽어서 UI로 전송
   async function handleSelectionChange() {
     try {
       const selectedNodes = figma.currentPage.selection
-      const designData = await readMyDesignWithCSS(selectedNodes)
+      const designData = await convertNodeToXML(selectedNodes)
 
       figma.ui.postMessage({
         type: "DESIGN_DATA",
@@ -81,8 +80,6 @@ export default function () {
       }
 
       state.serverPort = port
-      // 참고: Figma 플러그인에서는 WebSocket을 직접 사용할 수 없으므로
-      // UI에서 WebSocket 연결을 관리해야 합니다.
       figma.ui.postMessage({
         type: "connection-status",
         connected: false,
@@ -149,6 +146,8 @@ export default function () {
 
   async function getSelection() {
     const selection = figma.currentPage.selection
+    const designData = await convertNodeToXML(selection)
+
     return {
       selectionCount: selection.length,
       selection: selection.map((node) => ({
@@ -157,6 +156,7 @@ export default function () {
         type: node.type,
         visible: node.visible,
       })),
+      designData: designData,
     }
   }
 
@@ -168,17 +168,16 @@ export default function () {
 
     // exportAsync를 지원하는 노드인지 확인
     if ("exportAsync" in node) {
-      const response = await (node as any).exportAsync({
+      const response: any = await node.exportAsync({
         format: "JSON_REST_V1",
       })
-      return response.document
+      return response?.document
     } else {
-      // exportAsync를 지원하지 않는 노드의 경우 기본 정보 반환
       return {
         id: node.id,
         name: node.name,
         type: node.type,
-        ...("visible" in node ? { visible: (node as any).visible } : {}),
+        ...("visible" in node ? { visible: node.visible } : {}),
       }
     }
   }
