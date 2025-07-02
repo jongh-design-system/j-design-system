@@ -1,10 +1,8 @@
-#!/usr/bin/env node
-
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
-import { z } from "zod"
-import WebSocket from "ws"
 import { v4 as uuidv4 } from "uuid"
+import WebSocket from "ws"
+import { z } from "zod"
 
 // Define TypeScript interfaces for Figma responses
 interface FigmaResponse {
@@ -381,7 +379,7 @@ server.tool(
 server.prompt(
   "design_strategy",
   "Best practices for working with Figma designs",
-  (extra) => {
+  () => {
     return {
       messages: [
         {
@@ -479,7 +477,7 @@ type FigmaCommand =
   | "get_component_set_styles"
 
 // Update the connectToFigma function
-function connectToFigma(port: number = 3055) {
+function connectToFigma(port = 3055) {
   // If already connected, do nothing
   if (ws && ws.readyState === WebSocket.OPEN) {
     logger.info("Already connected to Figma")
