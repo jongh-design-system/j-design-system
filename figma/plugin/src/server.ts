@@ -38,7 +38,7 @@ let currentChannel: string | null = null
 
 // Create MCP server
 const server = new McpServer({
-  name: "TalkToFigmaMCP",
+  name: "@jongh/figma-plugin",
   version: "1.0.0",
 })
 // Add command line argument parsing
