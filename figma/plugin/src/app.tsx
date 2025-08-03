@@ -1,11 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react"
 
 interface ConnectionState {
   connected: boolean
   port: number
   socket: WebSocket | null
-  channel: string | null
-  pendingRequests: Map<string, any>
 }
 
 const App = () => {
@@ -13,10 +12,8 @@ const App = () => {
     connected: false,
     port: 3055,
     socket: null,
-    channel: null,
-    pendingRequests: new Map(),
   })
-  const [designData, setDesignData] = useState<any>(null)
+  const [selectionData, setSelectionData] = useState<any>(null)
   const [status, setStatus] = useState("Disconnected")
 
   // 플러그인으로부터 메시지 받기
@@ -26,8 +23,8 @@ const App = () => {
       if (!message) return
 
       switch (message.type) {
-        case "DESIGN_DATA":
-          setDesignData(message.data)
+        case "SELECTION_DATA":
+          setSelectionData(message.data)
           break
         case "connection-status":
           setStatus(message.connected ? "Connected" : message.message)
@@ -51,8 +48,7 @@ const App = () => {
 
     window.addEventListener("message", handleMessage)
     return () => window.removeEventListener("message", handleMessage)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connectionState.socket, connectionState.channel])
+  }, [connectionState.socket])
 
   // WebSocket 연결
   const connectToServer = async () => {
@@ -66,21 +62,12 @@ const App = () => {
 
       ws.onopen = () => {
         console.log("Connected to WebSocket server")
-        const channelName = generateChannelName()
-
-        // 채널 조인
-        ws.send(
-          JSON.stringify({
-            type: "join",
-            channel: channelName,
-          }),
-        )
-
         setConnectionState((prev) => ({
           ...prev,
           socket: ws,
-          channel: channelName,
+          connected: true,
         }))
+        setStatus("Connected to server")
       }
 
       ws.onmessage = (event) => {
@@ -88,11 +75,7 @@ const App = () => {
           const data = JSON.parse(event.data)
           console.log("Received WebSocket message:", data)
 
-          if (data.type === "system" && data.message?.result) {
-            // 채널 조인 성공
-            setConnectionState((prev) => ({ ...prev, connected: true }))
-            setStatus(`Connected to channel: ${data.channel}`)
-          } else if (data.type === "broadcast" && data.message?.command) {
+          if (data.type === "broadcast" && data.message?.command) {
             // MCP 서버로부터 명령 받음
             parent.postMessage(
               {
@@ -116,7 +99,6 @@ const App = () => {
           ...prev,
           connected: false,
           socket: null,
-          channel: null,
         }))
         setStatus("Disconnected")
       }
@@ -140,36 +122,25 @@ const App = () => {
 
   // WebSocket으로 메시지 전송
   const sendToWebSocket = (message: any) => {
-    if (connectionState.socket && connectionState.channel) {
+    if (connectionState.socket) {
       connectionState.socket.send(
         JSON.stringify({
           type: "message",
-          channel: connectionState.channel,
           message,
         }),
       )
     }
   }
 
-  // 랜덤 채널명 생성
-  const generateChannelName = () => {
-    const characters = "abcdefghijklmnopqrstuvwxyz0123456789"
-    let result = ""
-    for (let i = 0; i < 8; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length))
-    }
-    return result
-  }
-
   return (
     <div style={{ padding: "16px", fontFamily: "Arial, sans-serif" }}>
-      <h1 style={{ fontSize: "16px", marginBottom: "16px" }}>
+      <h1 style={{ fontSize: "16px", marginBottom: "18px" }}>
         Figma MCP Plugin
       </h1>
 
       <div style={{ marginBottom: "16px" }}>
         <label
-          style={{ display: "block", marginBottom: "4px", fontSize: "12px" }}
+          style={{ display: "block", marginBottom: "8px", fontSize: "12px" }}
         >
           WebSocket Server Port
         </label>
@@ -184,10 +155,20 @@ const App = () => {
               }))
             }
             style={{
+              margin: "1px 0",
+              display: "flex",
+              backgroundColor: "var(--figma-color-bg-secondary)",
+              border: "1px solid transparent",
+              height: "var(--spacer-4)",
+              borderRadius: "var(--radius-medium)",
+              alignItems: "center",
               flex: 1,
-              padding: "6px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
+              padding: "0 7px",
+              borderLeft: 0,
+              borderRight: 0,
+              backgroundClip: "padding-box",
+              marginLeft: 0,
+              width: "100%",
               fontSize: "12px",
             }}
             disabled={connectionState.connected}
@@ -195,15 +176,18 @@ const App = () => {
           <button
             onClick={connectionState.connected ? disconnect : connectToServer}
             style={{
-              padding: "6px 12px",
+              display: "block",
+              borderRadius: "5px",
+              border: "1px solid var(--figma-color-border)",
+              padding: "0 7px",
+              lineHeight: "22px",
+              textDecoration: "none",
+              color: "var(--figma-color-text)",
               backgroundColor: connectionState.connected
                 ? "#dc2626"
                 : "#2563eb",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              fontSize: "12px",
               cursor: "pointer",
+              fontSize: "12px",
             }}
           >
             {connectionState.connected ? "Disconnect" : "Connect"}
@@ -216,32 +200,99 @@ const App = () => {
           padding: "12px",
           borderRadius: "4px",
           backgroundColor: connectionState.connected ? "#dcfce7" : "#fee2e2",
-          color: connectionState.connected ? "#eeeeee" : "#dedede",
-          fontSize: "16px",
+          color: connectionState.connected ? "#166534" : "#991b1b",
+          fontSize: "12px",
           marginBottom: "16px",
         }}
       >
         Status: {status}
       </div>
 
-      {designData && (
+      {selectionData && (
         <div style={{ marginTop: "16px" }}>
-          <h3 style={{ fontSize: "14px", marginBottom: "8px" }}>
-            Selection Data:
+          <h3
+            style={{
+              fontSize: "14px",
+              marginBottom: "8px",
+              color: "var(--figma-color-text)",
+            }}
+          >
+            XML Output:
+          </h3>
+          <pre
+            style={{
+              fontSize: "11px",
+              backgroundColor: "var(--figma-color-bg-secondary)",
+              border: "1px solid var(--figma-color-border)",
+              padding: "12px",
+              borderRadius: "var(--radius-medium)",
+              maxHeight: "150px",
+              overflow: "auto",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              fontFamily: "monospace",
+              margin: 0,
+            }}
+          >
+            {selectionData.xml?.join("\n\n")}
+          </pre>
+
+          <h3
+            style={{
+              fontSize: "14px",
+              marginBottom: "8px",
+              marginTop: "16px",
+              color: "var(--figma-color-text)",
+            }}
+          >
+            React Nodes:
           </h3>
           <pre
             style={{
               fontSize: "10px",
-              backgroundColor: "#f3f4f6",
-              padding: "8px",
-              borderRadius: "4px",
-              maxHeight: "400px",
+              backgroundColor: "var(--figma-color-bg-secondary)",
+              border: "1px solid var(--figma-color-border)",
+              padding: "12px",
+              borderRadius: "var(--radius-medium)",
+              maxHeight: "150px",
               overflow: "auto",
               whiteSpace: "pre-wrap",
               wordBreak: "break-word",
+              fontFamily: "monospace",
+              color: "var(--figma-color-text-secondary)",
+              margin: 0,
             }}
           >
-            {JSON.stringify(designData, null, 2)}
+            {JSON.stringify(selectionData.reactNodes, null, 2)}
+          </pre>
+
+          <h3
+            style={{
+              fontSize: "14px",
+              marginBottom: "8px",
+              marginTop: "16px",
+              color: "var(--figma-color-text)",
+            }}
+          >
+            Variables:
+          </h3>
+          <pre
+            style={{
+              fontSize: "10px",
+              backgroundColor: "var(--figma-color-bg-secondary)",
+              border: "1px solid var(--figma-color-border)",
+              padding: "12px",
+              borderRadius: "var(--radius-medium)",
+              maxHeight: "150px",
+              overflow: "auto",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              fontFamily: "monospace",
+              color: "var(--figma-color-text-secondary)",
+              margin: 0,
+            }}
+          >
+            {JSON.stringify(selectionData.variables, null, 2)}
           </pre>
         </div>
       )}
