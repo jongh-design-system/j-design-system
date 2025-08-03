@@ -1,12 +1,15 @@
 {
   "mcpServers": {
-    "@jongh/figma-plugin": {
-      "command": "npx",
-      "args": ["cursor-talk-to-figma-mcp@latest"]
+    "jds-figma-plugin": {
+      "command": "pnpm",
+      "args": ["dlx", "jds-figma-plugin@latest"]
     },
     "@jongh/cli": {
       "command": "pnpx",
       "args": ["@jongh/cli", "mcp"]
+    },
+    "Figma": {
+      "url": "http://127.0.0.1:3845/mcp"
     }
   }
 }
