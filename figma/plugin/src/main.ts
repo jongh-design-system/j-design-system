@@ -1,5 +1,11 @@
 // Read the docs https://plugma.dev/docs
-import { convertNodeToXML } from "./utils/convertNodeToXML"
+import {
+  frameNodeToReactNode,
+  groupNodeToReactNode,
+  instanceNodeToReactNode,
+  rectangleNodeToReactNode,
+  textNodeToReactNode,
+} from "./utils/node"
 
 // WebSocket 상태 관리
 const state = {
@@ -37,7 +43,7 @@ export default function () {
           figma.ui.postMessage({
             type: "command-error",
             id: msg.id,
-            error: errorMessage,
+            error: errorMessage || null,
           })
         }
         break
@@ -46,19 +52,80 @@ export default function () {
 
   async function handleSelectionChange() {
     try {
-      const selectedNodes = figma.currentPage.selection
-      const designData = await convertNodeToXML(selectedNodes)
+      const selection = figma.currentPage.selection
 
+      let reactNodes: any[] = []
+      const allUsedVariables = new Map<string, any>()
+
+      if (selection.length > 0) {
+        reactNodes = await Promise.all(
+          selection.map((node) => figmaNodeToReactNode(node)),
+        )
+
+        for (const node of selection) {
+          await collectUsedVariables(node, allUsedVariables)
+        }
+      }
+
+      const variablesData = Object.fromEntries(allUsedVariables)
+
+      // React Node를 XML로 변환하는 함수
+      const reactNodeToXML = (node: any, indent = 0): string => {
+        const { type, props, children } = node
+        const spaces = "  ".repeat(indent)
+        let xml = `${spaces}<${type}`
+
+        // props를 attributes로 변환
+        if (props) {
+          Object.entries(props).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && key !== "children") {
+              let strValue = ""
+              if (typeof value === "string") {
+                strValue = value
+              } else if (typeof value === "object") {
+                strValue = JSON.stringify(value)
+              } else {
+                strValue = String(value)
+              }
+              xml += `\n${spaces}  ${key}="${strValue}"`
+            }
+          })
+        }
+
+        if (!children || (Array.isArray(children) && children.length === 0)) {
+          xml += " />"
+        } else {
+          xml += ">"
+
+          if (typeof children === "string") {
+            xml += `\n${spaces}  ${children}\n${spaces}`
+          } else if (Array.isArray(children)) {
+            xml += "\n"
+            children.forEach((child) => {
+              xml += reactNodeToXML(child, indent + 1) + "\n"
+            })
+            xml += spaces
+          }
+
+          xml += `</${type}>`
+        }
+
+        return xml
+      }
+
+      const xmlData = reactNodes.map((node) => reactNodeToXML(node))
       figma.ui.postMessage({
-        type: "DESIGN_DATA",
-        data: designData,
+        type: "SELECTION_DATA",
+        data: {
+          reactNodes,
+          variables: variablesData,
+          xml: xmlData,
+        },
       })
-
-      console.log("디자인 데이터:", designData)
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error"
-      console.error("디자인 읽기 오류:", errorMessage)
+      console.error("선택 읽기 오류:", errorMessage)
 
       figma.ui.postMessage({
         type: "ERROR",
@@ -66,6 +133,8 @@ export default function () {
       })
     }
   }
+
+  figma.on("selectionchange", handleSelectionChange)
 
   // WebSocket 서버 연결
   async function connectToServer(port: number) {
@@ -146,7 +215,67 @@ export default function () {
 
   async function getSelection() {
     const selection = figma.currentPage.selection
-    const designData = await convertNodeToXML(selection)
+
+    let reactNodes: any[] = []
+    const allUsedVariables = new Map<string, any>()
+
+    if (selection.length > 0) {
+      reactNodes = await Promise.all(
+        selection.map((node) => figmaNodeToReactNode(node)),
+      )
+
+      for (const node of selection) {
+        await collectUsedVariables(node, allUsedVariables)
+      }
+    }
+
+    const variablesData = Object.fromEntries(allUsedVariables)
+
+    // React Node를 XML로 변환하는 함수
+    const reactNodeToXML = (node: any, indent = 0): string => {
+      const { type, props, children } = node
+      const spaces = "  ".repeat(indent)
+      let xml = `${spaces}<${type}`
+
+      // props를 attributes로 변환
+      if (props) {
+        Object.entries(props).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && key !== "children") {
+            let strValue = ""
+            if (typeof value === "string") {
+              strValue = value
+            } else if (typeof value === "object") {
+              strValue = JSON.stringify(value)
+            } else {
+              strValue = String(value)
+            }
+            xml += `\n${spaces}  ${key}="${strValue}"`
+          }
+        })
+      }
+
+      if (!children || (Array.isArray(children) && children.length === 0)) {
+        xml += " />"
+      } else {
+        xml += ">"
+
+        if (typeof children === "string") {
+          xml += `\n${spaces}  ${children}\n${spaces}`
+        } else if (Array.isArray(children)) {
+          xml += "\n"
+          children.forEach((child) => {
+            xml += reactNodeToXML(child, indent + 1) + "\n"
+          })
+          xml += spaces
+        }
+
+        xml += `</${type}>`
+      }
+
+      return xml
+    }
+
+    const xmlData = reactNodes.map((node) => reactNodeToXML(node))
 
     return {
       selectionCount: selection.length,
@@ -156,7 +285,9 @@ export default function () {
         type: node.type,
         visible: node.visible,
       })),
-      designData: designData,
+      reactNodes,
+      variables: variablesData,
+      xml: xmlData,
     }
   }
 
@@ -182,9 +313,100 @@ export default function () {
     }
   }
 
-  // 노드 선택 변경 이벤트 리스너
-  figma.on("selectionchange", handleSelectionChange)
+  const figmaNodeToReactNode = async (figmaNode: SceneNode): Promise<any> => {
+    let node: any
+    switch (figmaNode.type) {
+      case "INSTANCE": // 아이콘도 이 타입에 포함
+        node = await instanceNodeToReactNode(figmaNode)
+        break
+      case "FRAME":
+        node = await frameNodeToReactNode(figmaNode)
+        break
+      case "TEXT":
+        node = await textNodeToReactNode(figmaNode)
+        break
+      case "RECTANGLE":
+        node = await rectangleNodeToReactNode(figmaNode)
+        break
+      case "GROUP":
+        node = await groupNodeToReactNode(figmaNode)
+        break
 
-  // 초기 로드 시에도 실행
-  handleSelectionChange()
+      default:
+        node = {
+          type: figmaNode.type,
+          props: {
+            id: figmaNode.id,
+            name: figmaNode.name,
+          },
+          children:
+            "children" in figmaNode && figmaNode.children
+              ? figmaNode.children
+              : [],
+        }
+    }
+
+    if (
+      node.children &&
+      Array.isArray(node.children) &&
+      node.children.length > 0
+    ) {
+      node.children = await Promise.all(
+        node.children
+          .filter((child: SceneNode) => child.visible)
+          .map((child: SceneNode) => figmaNodeToReactNode(child)),
+      )
+    }
+
+    return node
+  }
+
+  const resolveVariableValue = async (variableId: string) => {
+    try {
+      const variable = await figma.variables.getVariableByIdAsync(variableId)
+      if (!variable) return null
+
+      return {
+        id: variable.id,
+        name: variable.codeSyntax.WEB,
+      }
+    } catch (error) {
+      return { error: `Error resolving variable: ${error}` }
+    }
+  }
+
+  const collectUsedVariables = async (
+    node: SceneNode,
+    variableMap: Map<string, any> = new Map(),
+  ): Promise<Map<string, any>> => {
+    if (!node.boundVariables) return variableMap
+
+    for (const [property, aliases] of Object.entries(node.boundVariables)) {
+      const aliasList = Array.isArray(aliases) ? aliases : [aliases]
+
+      for (const alias of aliasList) {
+        if (alias?.type === "VARIABLE_ALIAS" && alias.id) {
+          const variable = await resolveVariableValue(alias.id as string)
+          if (variable?.id && variable.name) {
+            const existing = variableMap.get(variable.id)
+            variableMap.set(variable.id, {
+              id: variable.id,
+              name: variable.name,
+              usedIn: [...(existing?.usedIn || []), `${node.name}.${property}`],
+            })
+          }
+        }
+      }
+    }
+
+    if ("children" in node && node.children) {
+      for (const child of node.children) {
+        if (child.visible) {
+          await collectUsedVariables(child, variableMap)
+        }
+      }
+    }
+
+    return variableMap
+  }
 }
