@@ -1,0 +1,22 @@
+name: "Vercel Deploy"
+description: "Temporary JS action that prepares Vercel deployment inputs."
+inputs:
+  vercel-token:
+    description: "Vercel access token."
+    required: true
+  github-token:
+    description: "GitHub token used for authenticated API calls."
+    required: true
+  vercel-org-id:
+    description: "Vercel organization ID."
+    required: true
+  vercel-project-id:
+    description: "Vercel project ID."
+    required: true
+  vercel-args:
+    description: "Additional arguments passed to the Vercel CLI."
+    required: false
+    default: "--prod"
+runs:
+  using: "node20"
+  main: "index.js"
