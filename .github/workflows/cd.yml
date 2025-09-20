@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - dev
+  workflow_dispatch:
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
@@ -26,52 +27,6 @@ jobs:
       - name: build
         run: pnpm turbo build
 
-      - name: Verify Directory Structure from Root
-        shell: bash
-        run: |
-          echo "Current PWD (GITHUB_WORKSPACE): $(pwd)"
-          echo ""
-          echo "=== Verifying path to packages/ui/storybook-static ==="
-          echo "Listing . (root of workspace):"
-          ls -la .
-          echo ""
-          echo "Listing ./packages:"
-          ls -la ./packages || echo "INFO: ./packages directory not found."
-          echo ""
-          echo "Listing ./packages/ui:"
-          ls -la ./packages/ui || echo "INFO: ./packages/ui directory not found."
-          echo ""
-          echo "Listing ./packages/ui/storybook-static (target):"
-          ls -la ./packages/ui/storybook-static || echo "INFO: ./packages/ui/storybook-static directory not found."
-          echo ""
-          echo "Recursive listing of ./packages/ui/storybook-static (first 20 lines, if exists):"
-          ls -Rla ./packages/ui/storybook-static 2>/dev/null | head -n 20 || echo "INFO: ./packages/ui/storybook-static not found, is empty, or error listing."
-
-          echo ""
-          echo "======================================================"
-          echo ""
-
-          echo "=== Verifying path to app/docs/out ==="
-          echo "Listing . (root of workspace again for clarity, if needed):"
-          ls -la . 
-          echo ""
-          echo "Listing ./app:"
-          ls -la ./app || echo "INFO: ./app directory not found."
-          echo ""
-          echo "Listing ./app/docs:"
-          ls -la ./app/docs || echo "INFO: ./app/docs directory not found."
-          echo ""
-          echo "Listing ./app/docs/public:"
-          ls -la ./app/docs/public || echo "INFO: ./app/docs/public directory not found."
-          echo ""
-          echo "Listing ./app/docs/out (target):"
-          ls -la ./app/docs/out || echo "INFO: ./app/docs/out directory not found."
-          echo ""
-          echo "Recursive listing of ./app/docs/out (first 20 lines, if exists):"
-          ls -Rla ./app/docs/out 2>/dev/null | head -n 20 || echo "INFO: ./app/docs/out not found, is empty, or error listing."
-          echo ""
-          echo "=== End of Directory Structure Verification ==="
-
       - name: Upload Storybook artifact for Chromatic
         uses: actions/upload-artifact@v4
         with:
@@ -84,31 +39,31 @@ jobs:
           name: docs-artifact
           path: app/docs/out
 
-  deploy-ui:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout branch
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # deploy-ui:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout branch
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: setup pnpm
-        uses: ./.github/actions/setup
+  #     - name: setup pnpm
+  #       uses: ./.github/actions/setup
 
-      - name: Download Chromatic artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ui-artifact
-          path: packages/ui/storybook-static
+  #     - name: Download Chromatic artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: ui-artifact
+  #         path: packages/ui/storybook-static
 
-      - name: deploy storybook using chromatic
-        uses: ./.github/actions/chromatic
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workingDir: packages/ui
-          storybookBuildDir: storybook-static
+  #     - name: deploy storybook using chromatic
+  #       uses: ./.github/actions/chromatic
+  #       with:
+  #         projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         workingDir: packages/ui
+  #         storybookBuildDir: storybook-static
 
   deploy-docs:
     needs: build
@@ -122,19 +77,28 @@ jobs:
       - name: setup pnpm
         uses: ./.github/actions/setup
 
-      - name: Download AWS Docs artifact
+      - name: Download  Docs artifact
         uses: actions/download-artifact@v4
         with:
           name: docs-artifact
           path: app/docs/out
 
-      - name: deploy docs to AWS S3 + Cloudfront
-        uses: ./.github/actions/aws
+      - name: deploy docs to vercel
+        uses: ./.github/actions/vercel
         with:
-          aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          aws_s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
-          aws_cloudfront_id: ${{ secrets.AWS_CLOUDFRONT_ID }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: --prod
+
+      # - name: deploy docs to AWS S3 + Cloudfront
+      #   uses: ./.github/actions/aws
+      #   with:
+      #     aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      #     aws_region: ${{ secrets.AWS_REGION }}
+      #     aws_s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
+      #     aws_cloudfront_id: ${{ secrets.AWS_CLOUDFRONT_ID }}
 
       - name: cache playwright
         uses: ./.github/actions/playwright
