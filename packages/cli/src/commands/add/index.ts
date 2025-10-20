@@ -23,7 +23,7 @@ export const addSchema = z.object({
   cwd: z.string(),
 })
 
-const BASE_URL = "https://whdgur.shop"
+const BASE_URL = "https://jds-docs.vercel.app"
 
 const error = chalk.bold.red
 const info = chalk.bold.blue
