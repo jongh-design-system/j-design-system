@@ -3,3 +3,6 @@ packages:
   - "app/*"
   - "configs/*"
   - "figma/*"
+
+catalog:
+  "@pandacss/dev": ^1

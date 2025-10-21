@@ -27,7 +27,7 @@
     "@chromatic-com/storybook": "^4.0.0",
     "@jongh/eslint": "workspace:*",
     "@jongh/tsconfig": "workspace:*",
-    "@pandacss/studio": "^0.46.0",
+    "@pandacss/studio": "^0.46.1",
     "@storybook/addon-a11y": "^9.0.5",
     "@storybook/addon-docs": "^9.0.5",
     "@storybook/addon-links": "^9.0.5",
@@ -46,7 +46,8 @@
     "vite": "^5.4.10",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^3.9.1",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "@pandacss/dev": "catalog:"
   },
   "keywords": [],
   "author": "",
