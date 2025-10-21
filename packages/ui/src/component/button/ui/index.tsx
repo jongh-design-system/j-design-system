@@ -16,7 +16,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const styles = recipe.raw(variantProps)
     return (
       <Comp
-        role="button"
         ref={ref}
         className={cx(css(styles), className)}
         {...componentProps}
