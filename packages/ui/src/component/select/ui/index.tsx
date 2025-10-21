@@ -1,6 +1,10 @@
-import { createStyleContext } from "@utils/createStyleContext"
+import { createStyleContext } from "@styled-system/jsx"
 import { Select as SelectPrimitive } from "radix-ui"
-import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+import {
+  type ComponentPropsWithoutRef,
+  type ElementRef,
+  forwardRef,
+} from "react"
 
 import { recipe } from "./recipe"
 
@@ -22,10 +26,7 @@ export const Root = withRootProvider(SelectPrimitive.Root)
 export const Group = SelectPrimitive.Group
 export const Value = SelectPrimitive.Value
 
-export const Trigger = withContext<
-  ElementRef<typeof BaseTrigger>,
-  ComponentPropsWithoutRef<typeof BaseTrigger>
->(BaseTrigger, "trigger")
+export const Trigger = withContext(BaseTrigger, "trigger")
 
 export const ContentPrimitive = forwardRef<
   ElementRef<typeof SelectPrimitive.Content>,
@@ -46,15 +47,9 @@ export const ContentPrimitive = forwardRef<
   )
 })
 
-export const Content = withContext<
-  ElementRef<typeof ContentPrimitive>,
-  ComponentPropsWithoutRef<typeof ContentPrimitive>
->(ContentPrimitive, "content")
+export const Content = withContext(ContentPrimitive, "content")
 
-export const Viewport = withContext<
-  ElementRef<typeof SelectPrimitive.Viewport>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Viewport>
->(SelectPrimitive.Viewport, "viewport")
+export const Viewport = withContext(SelectPrimitive.Viewport, "viewport")
 
 export const ItemPrimitive = forwardRef<
   ElementRef<typeof SelectPrimitive.Item>,
@@ -68,22 +63,13 @@ export const ItemPrimitive = forwardRef<
   )
 })
 
-export const Item = withContext<
-  ElementRef<typeof ItemPrimitive>,
-  ComponentPropsWithoutRef<typeof ItemPrimitive>
->(ItemPrimitive, "item")
+export const Item = withContext(ItemPrimitive, "item")
 
-export const Label = withContext<
-  ElementRef<typeof SelectPrimitive.Label>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
->(SelectPrimitive.Label, "label")
+export const Label = withContext(SelectPrimitive.Label, "label")
 
-export const Separator = withContext<
-  ElementRef<typeof SelectPrimitive.Separator>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
->(SelectPrimitive.Separator, "separator")
+export const Separator = withContext(SelectPrimitive.Separator, "separator")
 
-export const Indicator = withContext<
-  ElementRef<typeof SelectPrimitive.ItemIndicator>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.ItemIndicator>
->(SelectPrimitive.ItemIndicator, "itemIndicator")
+export const Indicator = withContext(
+  SelectPrimitive.ItemIndicator,
+  "itemIndicator",
+)

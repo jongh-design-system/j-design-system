@@ -1,26 +1,17 @@
-import { createStyleContext } from "@utils/createStyleContext"
+import { createStyleContext } from "@styled-system/jsx"
 import { ChevronDown } from "lucide-react"
 import { Accordion as AccordionPrimitive } from "radix-ui"
 import { type ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
 
-import { type AccordionVariants, recipe } from "./recipe"
+import { recipe } from "./recipe"
 
-const { withProvider, withContext } = createStyleContext(recipe)
+const { withContext, withProvider } = createStyleContext(recipe)
 
-export const Root = withProvider<
-  ElementRef<typeof AccordionPrimitive.Root>,
-  ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & AccordionVariants
->(AccordionPrimitive.Root, "root")
+export const Root = withProvider(AccordionPrimitive.Root, "root")
 
-export const Item = withContext<
-  ElementRef<typeof AccordionPrimitive.Item>,
-  ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(AccordionPrimitive.Item, "item")
+export const Item = withContext(AccordionPrimitive.Item, "item")
 
-export const Header = withContext<
-  ElementRef<typeof AccordionPrimitive.Header>,
-  ComponentPropsWithoutRef<typeof AccordionPrimitive.Header>
->(AccordionPrimitive.Header, "header")
+export const Header = withContext(AccordionPrimitive.Header, "header")
 
 const ContentWrapper = withContext("div", "contentWrapper")
 
@@ -35,10 +26,7 @@ const ContentPrimitive = forwardRef<
   )
 })
 
-export const Content = withContext<
-  ElementRef<typeof ContentPrimitive>,
-  ComponentPropsWithoutRef<typeof ContentPrimitive>
->(ContentPrimitive, "content")
+export const Content = withContext(ContentPrimitive, "content")
 
 const TriggerPrimitive = forwardRef<
   ElementRef<typeof AccordionPrimitive.Trigger>,
@@ -54,7 +42,4 @@ const TriggerPrimitive = forwardRef<
   )
 })
 
-export const Trigger = withContext<
-  ElementRef<typeof TriggerPrimitive>,
-  ComponentPropsWithoutRef<typeof TriggerPrimitive>
->(TriggerPrimitive, "trigger")
+export const Trigger = withContext(TriggerPrimitive, "trigger")
