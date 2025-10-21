@@ -27,13 +27,45 @@ TextField 컴포넌트는 입력 필드, 라벨, 도움말 텍스트를 포함�
 
 ### Props
 
-- `id` (`string`): 필드의 고유 ID (필수)
-- `label` (`string`): 입력 필드 위에 표시되는 라벨
-- `helperText` (`string`): 입력 필드 아래에 표시되는 도움말 텍스트
-- `required` (`boolean`): 필수 입력 필드 여부 설정 (라벨 옆에 \* 표시)
-- `status` (`"normal" | "negative"`): 입력 필드의 상태
-- `leadingAddon` (`ReactNode`): 입력 필드 앞에 표시할 요소
-- `trailingAddon` (`ReactNode`): 입력 필드 뒤에 표시할 요소
+<PropsTable>
+  <PropRow
+    name="id"
+    type="string"
+    description="필드의 고유 ID"
+    required
+  />
+  <PropRow
+    name="label"
+    type="string"
+    description="입력 필드 위에 표시되는 라벨"
+  />
+  <PropRow
+    name="helperText"
+    type="string"
+    description="입력 필드 아래에 표시되는 도움말 텍스트"
+  />
+  <PropRow
+    name="required"
+    type="boolean"
+    description="필수 입력 필드 여부 설정 (라벨 옆에 * 표시)"
+  />
+  <PropRow
+    name="status"
+    type='"normal" | "negative"'
+    description="입력 필드의 상태"
+    defaultValue='"normal"'
+  />
+  <PropRow
+    name="leadingAddon"
+    type="ReactNode"
+    description="입력 필드 앞에 표시할 요소"
+  />
+  <PropRow
+    name="trailingAddon"
+    type="ReactNode"
+    description="입력 필드 뒤에 표시할 요소"
+  />
+</PropsTable>
 
 TextField는 일반적인 HTML input 요소의 모든 속성도 지원합니다 (`size`, `width` 제외).
 

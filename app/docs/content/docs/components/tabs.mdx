@@ -36,13 +36,34 @@ Tabs 컴포넌트는 Radix UI의 Tabs 컴포넌트를 기반으로 구현되었�
 
 #### Tabs.Root
 
-- `defaultValue` (`string`): 초기 선택된 탭의 값입니다 (비제어 모드).
-- `value` (`string`): 현재 선택된 탭의 값입니다 (제어 모드).
-- `onValueChange` (`(value: string) => void`): 탭 선택이 변경될 때 호출되는 함수입니다 (제어 모드).
+<PropsTable>
+  <PropRow
+    name="defaultValue"
+    type="string"
+    description="초기 선택된 탭의 값입니다 (비제어 모드)."
+  />
+  <PropRow
+    name="value"
+    type="string"
+    description="현재 선택된 탭의 값입니다 (제어 모드)."
+  />
+  <PropRow
+    name="onValueChange"
+    type="(value: string) => void"
+    description="탭 선택이 변경될 때 호출되는 함수입니다 (제어 모드)."
+  />
+</PropsTable>
 
 #### Tabs.Trigger / Tabs.Content
 
-- `value` (`string`): 이 탭/콘텐츠와 연결된 고유한 값입니다. Trigger와 Content 간의 매핑을 담당합니다.
+<PropsTable>
+  <PropRow
+    name="value"
+    type="string"
+    description="이 탭/콘텐츠와 연결된 고유한 값입니다. Trigger와 Content 간의 매핑을 담당합니다."
+    required
+  />
+</PropsTable>
 
 ### CSS 클래스 적용
 
