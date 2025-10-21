@@ -9,6 +9,7 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
+  output: "export",
   pageExtensions: ["js", "md", "mdx", "ts", "tsx"],
   trailingSlash: true,
   reactStrictMode: false,
