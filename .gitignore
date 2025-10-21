@@ -2,7 +2,7 @@
 dist-ssr
 **/dist/
 .turbo
-packages/ui/styled-system/*
+**/styled-system/
 styled-system
 styled-system-static
 panda
@@ -11,6 +11,7 @@ outdir
 ts-import-map-outdir
 .eslintcache
 tsconfig.tsbuildinfo
+**/.velite/
 # Dependencies
 node_modules
 .pnpm-store/
@@ -43,3 +44,4 @@ lerna-debug.log*
 *.sln
 *.sw?
 //
+
