@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: docs-artifact
-          path: app/docs/.next
+          path: app/docs/out
 
   deploy-docs:
     needs: build
@@ -54,7 +54,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docs-artifact
-          path: app/docs/.next
+          path: app/docs/out
 
       - name: deploy docs to vercel
         uses: ./.github/actions/vercel
