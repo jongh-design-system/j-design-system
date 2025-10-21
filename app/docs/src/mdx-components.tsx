@@ -10,7 +10,10 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     h1: (props) => (
       <h1
         className={css({
-          textStyle: "heading1",
+          textStyle: "title1",
+          mt: "8",
+          mb: "4",
+          color: "foreground",
         })}
         {...props}
       />
@@ -19,11 +22,11 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
       <h2
         className={css({
           textStyle: "title2",
-          mt: "4",
-          mb: "2",
-          borderBottom: "2px solid",
-          borderBottomColor: "gray.100",
-          pb: "2",
+          mt: "12",
+          mb: "4",
+          borderBottom: "base",
+          pb: "3",
+          color: "foreground",
         })}
         {...props}
       />
@@ -32,8 +35,9 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
       <h3
         className={css({
           textStyle: "title3",
-          mt: "4",
-          mb: "2",
+          mt: "8",
+          mb: "3",
+          color: "foreground",
         })}
         {...props}
       />
@@ -42,8 +46,10 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
       <p
         className={css({
           textStyle: "body1",
-          mt: "2",
-          mb: "2",
+          mt: "4",
+          mb: "4",
+          lineHeight: "1.8",
+          color: "foreground",
         })}
         {...props}
       />
@@ -59,9 +65,99 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     a: (props) => (
       <a
         className={css({
-          textStyle: "label1",
+          textStyle: "body1",
+          color: "primary",
           textDecoration: "underline",
-          _hover: { opacity: 0.8 },
+          textUnderlineOffset: "2px",
+          _hover: { color: "primary/80" },
+        })}
+        {...props}
+      />
+    ),
+    ul: (props) => (
+      <ul
+        className={css({
+          mt: "4",
+          mb: "4",
+          ml: "6",
+          listStyle: "none",
+          "& li": {
+            mt: "2",
+            mb: "2",
+            pl: "6",
+            color: "foreground",
+            position: "relative",
+            _before: {
+              content: '""',
+              position: "absolute",
+              left: "0",
+              top: "0.4em",
+              width: "1em",
+              height: "1em",
+              backgroundImage: "checkmark",
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              color: "primary",
+            },
+          },
+        })}
+        {...props}
+      />
+    ),
+    ol: (props) => (
+      <ol
+        className={css({
+          mt: "4",
+          mb: "4",
+          ml: "6",
+          "& li": {
+            mt: "2",
+            mb: "2",
+            pl: "2",
+            color: "foreground",
+          },
+        })}
+        {...props}
+      />
+    ),
+    blockquote: (props) => (
+      <blockquote
+        className={css({
+          mt: "6",
+          mb: "6",
+          pl: "4",
+          pr: "4",
+          py: "3",
+          borderLeft: "4px solid",
+          borderLeftColor: "primary",
+          bg: "muted",
+          color: "muted.foreground",
+          rounded: "md",
+          fontStyle: "italic",
+        })}
+        {...props}
+      />
+    ),
+    code: (props) => (
+      <code
+        className={css({
+          bg: "muted",
+          color: "foreground",
+          px: "1.5",
+          py: "0.5",
+          rounded: "sm",
+          fontSize: "0.9em",
+          fontFamily: "mono",
+        })}
+        {...props}
+      />
+    ),
+    hr: (props) => (
+      <hr
+        className={css({
+          my: "8",
+          border: "none",
+          borderTop: "base",
         })}
         {...props}
       />

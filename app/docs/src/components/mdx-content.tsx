@@ -6,6 +6,7 @@ import * as Avatar from "./avatar"
 import { Button } from "./button"
 import { CommandCodeBlock } from "./commandCodeBlock"
 import * as Dialog from "./dialog"
+import { PropRow, PropsTable } from "./propsTable"
 import * as Select from "./select"
 import * as Tabs from "./tabs"
 import { TextField } from "./textfield"
@@ -18,6 +19,8 @@ const sharedComponents = {
   Select,
   Dialog,
   CommandCodeBlock,
+  PropsTable,
+  PropRow,
   ...MDXComponents(),
 }
 

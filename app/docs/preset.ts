@@ -9,6 +9,16 @@ const radii = defineTokens.radii({
   radius: { value: "0.5rem" },
 })
 
+const assets = defineTokens.assets({
+  checkmark: {
+    value: {
+      type: "svg",
+      value:
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+    },
+  },
+})
+
 export const semanticColors = defineSemanticTokens.colors({
   background: {
     value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
@@ -34,18 +44,18 @@ export const semanticColors = defineSemanticTokens.colors({
   },
   primary: {
     DEFAULT: {
-      value: { base: "{colors.slate.800}", _dark: "{colors.slate.400}" },
+      value: { base: "{colors.blue.600}", _dark: "{colors.blue.400}" },
     },
     foreground: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+      value: { base: "{colors.white}", _dark: "{colors.blue.950}" },
     },
   },
   secondary: {
     DEFAULT: {
-      value: { base: "{colors.gray.600}", _dark: "{colors.gray.400}" },
+      value: { base: "{colors.indigo.600}", _dark: "{colors.indigo.400}" },
     },
     foreground: {
-      value: { base: "{colors.white}", _dark: "{colors.gray.950}" },
+      value: { base: "{colors.white}", _dark: "{colors.indigo.950}" },
     },
   },
   muted: {
@@ -53,15 +63,15 @@ export const semanticColors = defineSemanticTokens.colors({
       value: { base: "{colors.slate.100}", _dark: "{colors.slate.800}" },
     },
     foreground: {
-      value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
+      value: { base: "{colors.slate.600}", _dark: "{colors.slate.400}" },
     },
   },
   accent: {
     DEFAULT: {
-      value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" },
+      value: { base: "{colors.sky.100}", _dark: "{colors.sky.800}" },
     },
     foreground: {
-      value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" },
+      value: { base: "{colors.sky.900}", _dark: "{colors.sky.50}" },
     },
   },
   destructive: {
@@ -69,17 +79,17 @@ export const semanticColors = defineSemanticTokens.colors({
       value: { base: "{colors.red.600}", _dark: "{colors.red.400}" },
     },
     foreground: {
-      value: { base: "{colors.white}", _dark: "{colors.slate.950}" },
+      value: { base: "{colors.white}", _dark: "{colors.red.950}" },
     },
   },
   border: {
     value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
   },
   input: {
-    value: { base: "{colors.gray.200}", _dark: "{colors.gray.800}" },
+    value: { base: "{colors.slate.200}", _dark: "{colors.slate.800}" },
   },
   ring: {
-    value: { base: "{colors.slate.500}", _dark: "{colors.slate.400}" },
+    value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
   },
 })
 
@@ -215,6 +225,7 @@ export const defaultPreset = definePreset({
       textStyles,
       tokens: {
         radii,
+        assets,
       },
       semanticTokens: {
         colors: semanticColors,
