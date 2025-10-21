@@ -34,6 +34,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "velite": "^0.2.2"
+    "velite": "^0.2.2",
+    "@pandacss/dev": "catalog:"
   }
 }
