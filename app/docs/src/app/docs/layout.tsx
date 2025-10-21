@@ -19,7 +19,14 @@ export default function Layout({ children }: { children: ReactNode }) {
       })}
     >
       <Aside data={aside} />
-      <styled.main width="100%" pos="relative" px="4">
+      <styled.main
+        width="100%"
+        maxW="48rem"
+        mx="auto"
+        pos="relative"
+        px="6"
+        py="8"
+      >
         {children}
       </styled.main>
     </div>
