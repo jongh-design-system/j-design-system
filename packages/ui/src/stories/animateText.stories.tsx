@@ -223,13 +223,20 @@ export const CharacterAnimation: Story = {
 }
 
 export const LineByLineAnimation: Story = {
-  render: () => (
-    <AnimateText by="lines" animation="fadeUp" staggerDelay={0.2}>
-      <div>첫 번째 줄입니다</div>
-      <div>두 번째 줄이에요</div>
-      <div>세 번째 줄까지!</div>
-    </AnimateText>
-  ),
+  args: {
+    animation: "fadeUp",
+    staggerDelay: 3.0,
+    duration: 0.6,
+  },
+  render: ({ ...args }) => {
+    return (
+      <AnimateText by="lines" {...args}>
+        <div>First line</div>
+        <div>Second line</div>
+        <div>Third line</div>
+      </AnimateText>
+    )
+  },
 }
 
 export const WordByWordAnimation: Story = {
@@ -243,15 +250,21 @@ export const WordByWordAnimation: Story = {
 }
 
 export const WordsWithLongSentence: Story = {
-  render: () => (
-    <div style={{ maxWidth: "600px", padding: "20px" }}>
-      <AnimateText by="words" animation="fadeLeft" staggerDelay={0.1}>
-        긴 문장에서 각 단어들이 순차적으로 나타나는 것을 보여주는 예시입니다.
-        단어 단위로 분리되어 애니메이션이 적용되며, 자연스러운 읽기 흐름을
-        만들어냅니다.
-      </AnimateText>
-    </div>
-  ),
+  args: {
+    by: "words",
+    animation: "fadeLeft",
+    staggerDelay: 0.1,
+    duration: 0.6,
+    children:
+      "긴 문장에서 각 단어들이 순차적으로 나타나는 것을 보여주는 예시입니다. 단어 단위로 분리되어 애니메이션이 적용되며, 자연스러운 읽기 흐름을 만들어냅니다.",
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: "600px", padding: "20px" }}>
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export const WordsWithDifferentAnimations: Story = {
@@ -324,16 +337,13 @@ export const WordsWithDifferentAnimations: Story = {
 }
 
 export const WordsWithSpaces: Story = {
-  render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-      <AnimateText by="words" animation="fadeUp" staggerDelay={0.15}>
-        단어 사이에 여러 공백이 있어도 보존됩니다
-      </AnimateText>
-      <AnimateText by="words" animation="fadeLeft" staggerDelay={0.15}>
-        탭이나 스페이스가 모두 잘 동작합니다
-      </AnimateText>
-    </div>
-  ),
+  args: {
+    by: "words",
+    animation: "fadeUp",
+    staggerDelay: 0.15,
+    duration: 0.6,
+    children: "단어 사이에 여러 공백이 있어도 보존됩니다",
+  },
 }
 
 export const WithMemo: Story = {
@@ -368,15 +378,25 @@ export const WithMemo: Story = {
 }
 
 export const EdgeCaseWithLongText: Story = {
-  render: () => (
-    <div
-      style={{ maxWidth: "300px", border: "1px dashed #ccc", padding: "16px" }}
-    >
-      <AnimateText by="words" animation="fadeUp" staggerDelay={0.1}>
-        이것은 매우 긴 텍스트를 포함하는 케이스입니다. 각 단어별로 애니메이션이
-        적용되며, 컨테이너의 너비가 제한된 상황에서도 올바르게 작동하는지
-        테스트합니다.
-      </AnimateText>
-    </div>
-  ),
+  args: {
+    by: "words",
+    animation: "fadeUp",
+    staggerDelay: 0.1,
+    duration: 0.6,
+    children:
+      "이것은 매우 긴 텍스트를 포함하는 케이스입니다. 각 단어별로 애니메이션이 적용되며, 컨테이너의 너비가 제한된 상황에서도 올바르게 작동하는지 테스트합니다.",
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          maxWidth: "300px",
+          border: "1px dashed #ccc",
+          padding: "16px",
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
 }
