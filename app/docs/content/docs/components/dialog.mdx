@@ -42,46 +42,145 @@ Dialog는 Radix UI의 컴포넌트를 기반으로 구현되었으며, 여러 �
 
 #### Dialog.Root
 
-- `defaultOpen` (`boolean`): 초기 렌더링 시 다이얼로그의 열림 상태를 설정합니다.
-- `open` (`boolean`): 다이얼로그의 표시 여부를 제어합니다.
-- `onOpenChange` (`(open: boolean) => void`): 다이얼로그의 표시 상태가 변경될 때 호출될 콜백 함수입니다.
-- `modal` (`boolean`): 모달 모드 활성화 여부를 설정합니다. 기본값은 `true`입니다.
+<PropsTable>
+  <PropRow
+    name="defaultOpen"
+    type="boolean"
+    description="초기 렌더링 시 다이얼로그의 열림 상태를 설정합니다."
+  />
+  <PropRow
+    name="open"
+    type="boolean"
+    description="다이얼로그의 표시 여부를 제어합니다."
+  />
+  <PropRow
+    name="onOpenChange"
+    type="(open: boolean) => void"
+    description="다이얼로그의 표시 상태가 변경될 때 호출될 콜백 함수입니다."
+  />
+  <PropRow
+    name="modal"
+    type="boolean"
+    description="모달 모드 활성화 여부를 설정합니다."
+    defaultValue="true"
+  />
+</PropsTable>
 
 #### Dialog.Trigger
 
-- `asChild` (`boolean`): 트리거 요소를 자식 요소로 대체합니다. 기본값은 `false`입니다.
+<PropsTable>
+  <PropRow
+    name="asChild"
+    type="boolean"
+    description="트리거 요소를 자식 요소로 대체합니다."
+    defaultValue="false"
+  />
+</PropsTable>
 
 #### Dialog.Portal
 
-- `forceMount` (`boolean`): 포탈 컴포넌트를 강제로 마운트합니다.
-- `container` (`HTMLElement`): 포탈링할 컨테이너 요소를 지정합니다.
+<PropsTable>
+  <PropRow
+    name="forceMount"
+    type="boolean"
+    description="포탈 컴포넌트를 강제로 마운트합니다."
+  />
+  <PropRow
+    name="container"
+    type="HTMLElement"
+    description="포탈링할 컨테이너 요소를 지정합니다."
+  />
+</PropsTable>
 
 #### Dialog.Overlay
 
-- `forceMount` (`boolean`): 오버레이 컴포넌트를 강제로 마운트합니다.
-- `asChild` (`boolean`): 오버레이 요소를 자식 요소로 대체합니다. 기본값은 `false`입니다.
+<PropsTable>
+  <PropRow
+    name="forceMount"
+    type="boolean"
+    description="오버레이 컴포넌트를 강제로 마운트합니다."
+  />
+  <PropRow
+    name="asChild"
+    type="boolean"
+    description="오버레이 요소를 자식 요소로 대체합니다."
+    defaultValue="false"
+  />
+</PropsTable>
 
 #### Dialog.Content
 
-- `forceMount` (`boolean`): 컨텐츠 컴포넌트를 강제로 마운트합니다.
-- `asChild` (`boolean`): 컨텐츠 요소를 자식 요소로 대체합니다. 기본값은 `false`입니다.
-- `onOpenAutoFocus` (`(event: Event) => void`): 다이얼로그가 열릴 때 자동 포커스 이벤트를 처리합니다.
-- `onCloseAutoFocus` (`(event: Event) => void`): 다이얼로그가 닫힐 때 자동 포커스 이벤트를 처리합니다.
-- `onEscapeKeyDown` (`(event: KeyboardEvent) => void`): ESC 키가 눌렸을 때 이벤트를 처리합니다.
-- `onPointerDownOutside` (`(event: PointerDownOutsideEvent) => void`): 외부 클릭 이벤트를 처리합니다.
-- `onInteractOutside` (`(event: InteractOutsideEvent) => void`): 외부 상호작용 이벤트를 처리합니다.
+<PropsTable>
+  <PropRow
+    name="forceMount"
+    type="boolean"
+    description="컨텐츠 컴포넌트를 강제로 마운트합니다."
+  />
+  <PropRow
+    name="asChild"
+    type="boolean"
+    description="컨텐츠 요소를 자식 요소로 대체합니다."
+    defaultValue="false"
+  />
+  <PropRow
+    name="onOpenAutoFocus"
+    type="(event: Event) => void"
+    description="다이얼로그가 열릴 때 자동 포커스 이벤트를 처리합니다."
+  />
+  <PropRow
+    name="onCloseAutoFocus"
+    type="(event: Event) => void"
+    description="다이얼로그가 닫힐 때 자동 포커스 이벤트를 처리합니다."
+  />
+  <PropRow
+    name="onEscapeKeyDown"
+    type="(event: KeyboardEvent) => void"
+    description="ESC 키가 눌렸을 때 이벤트를 처리합니다."
+  />
+  <PropRow
+    name="onPointerDownOutside"
+    type="(event: PointerDownOutsideEvent) => void"
+    description="외부 클릭 이벤트를 처리합니다."
+  />
+  <PropRow
+    name="onInteractOutside"
+    type="(event: InteractOutsideEvent) => void"
+    description="외부 상호작용 이벤트를 처리합니다."
+  />
+</PropsTable>
 
 #### Dialog.Title
 
-- `asChild` (`boolean`): 제목 요소를 자식 요소로 대체합니다. 기본값은 `false`입니다.
+<PropsTable>
+  <PropRow
+    name="asChild"
+    type="boolean"
+    description="제목 요소를 자식 요소로 대체합니다."
+    defaultValue="false"
+  />
+</PropsTable>
 
 #### Dialog.Description
 
-- `asChild` (`boolean`): 설명 요소를 자식 요소로 대체합니다. 기본값은 `false`입니다.
+<PropsTable>
+  <PropRow
+    name="asChild"
+    type="boolean"
+    description="설명 요소를 자식 요소로 대체합니다."
+    defaultValue="false"
+  />
+</PropsTable>
 
 #### Dialog.Close
 
-- `asChild` (`boolean`): 닫기 버튼 요소를 자식 요소로 대체합니다. 기본값은 `false`입니다.
+<PropsTable>
+  <PropRow
+    name="asChild"
+    type="boolean"
+    description="닫기 버튼 요소를 자식 요소로 대체합니다."
+    defaultValue="false"
+  />
+</PropsTable>
 
 ## Accessibility
 

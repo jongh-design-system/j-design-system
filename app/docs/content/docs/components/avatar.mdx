@@ -35,12 +35,30 @@ Avatar 컴포넌트는 Radix UI의 Avatar 컴포넌트를 기반으로 구현되
 
 #### Avatar.Image
 
-- `src` (`string`): 이미지의 URL입니다.
-- `alt` (`string`): 이미지에 대한 대체 텍스트입니다. 접근성을 위해 제공하는 것이 좋습니다.
+<PropsTable>
+  <PropRow
+    name="src"
+    type="string"
+    description="이미지의 URL입니다."
+    required
+  />
+  <PropRow
+    name="alt"
+    type="string"
+    description="이미지에 대한 대체 텍스트입니다. 접근성을 위해 제공하는 것이 좋습니다."
+  />
+</PropsTable>
 
 #### Avatar.Fallback
 
-- `delayMs` (`number`): 대체 콘텐츠가 표시되기 전의 지연 시간(밀리초)입니다. 기본값은 0입니다.
+<PropsTable>
+  <PropRow
+    name="delayMs"
+    type="number"
+    description="대체 콘텐츠가 표시되기 전의 지연 시간(밀리초)입니다."
+    defaultValue="0"
+  />
+</PropsTable>
 
 ## Example
 

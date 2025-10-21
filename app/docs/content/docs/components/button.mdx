@@ -31,9 +31,26 @@ Button 컴포넌트는 다양한 variant와 size 옵션을 제공하여 버튼�
 
 기본적인 HTML button 태그의 모든 속성을 지원하며, 추가로 다음 Props를 제공합니다:
 
-- `variant` (`"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"`): 버튼의 시각적 스타일을 설정합니다. 기본값: `"default"`
-- `size` (`"default" | "sm" | "lg" | "icon"`): 버튼의 크기를 설정합니다. 기본값: `"default"`
-- `asChild` (`boolean`): true일 경우, 버튼의 스타일을 자식 요소에 적용합니다. Radix UI의 Slot 패턴을 사용합니다. 기본값: `false`
+<PropsTable>
+  <PropRow
+    name="variant"
+    type='"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"'
+    description="버튼의 시각적 스타일을 설정합니다."
+    defaultValue='"default"'
+  />
+  <PropRow
+    name="size"
+    type='"default" | "sm" | "lg" | "icon"'
+    description="버튼의 크기를 설정합니다."
+    defaultValue='"default"'
+  />
+  <PropRow
+    name="asChild"
+    type="boolean"
+    description="true일 경우, 버튼의 스타일을 자식 요소에 적용합니다. Radix UI의 Slot 패턴을 사용합니다."
+    defaultValue="false"
+  />
+</PropsTable>
 
 ### Variant
 
