@@ -10,7 +10,10 @@ import Copy from "@/components/icons/copy"
 const PreContent = memo(
   ({ children, className, ...props }: ComponentProps<"pre">) => {
     return (
-      <pre {...props} className={className}>
+      <pre
+        {...props}
+        className={`${className} ${css({ p: "4", overflow: "auto" })}`}
+      >
         {children}
       </pre>
     )
@@ -48,6 +51,12 @@ export const CodeBlock = ({
     <div
       className={css({
         position: "relative",
+        mt: "4",
+        mb: "4",
+        bg: "muted",
+        border: "base",
+        rounded: "lg",
+        overflow: "hidden",
       })}
     >
       <button
@@ -56,21 +65,31 @@ export const CodeBlock = ({
         onClick={handleClickCopy}
         className={css({
           position: "absolute",
-          right: "1",
-          top: "1",
+          right: "2",
+          top: "2",
           display: "flex",
           h: "fit-content",
           w: "fit-content",
           alignItems: "center",
-          borderRadius: "lg",
+          rounded: "md",
           px: "2",
           py: "2",
-          color: "black",
+          bg: "muted/80",
+          color: "foreground",
           cursor: "pointer",
           zIndex: 10,
+          transition: "all",
+          transitionDuration: "fast",
+          _hover: {
+            bg: "muted",
+          },
+          _disabled: {
+            opacity: 0.6,
+            cursor: "default",
+          },
         })}
       >
-        {isCopied ? <Check style={{ color: "black" }} /> : <Copy />}
+        {isCopied ? <Check /> : <Copy />}
       </button>
       <PreContent ref={preRef} {...props} className={className}>
         {children}
