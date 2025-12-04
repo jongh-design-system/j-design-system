@@ -1,9 +1,4 @@
-import {
-  type CallExpression,
-  Node,
-  SyntaxKind,
-  type VariableDeclaration,
-} from "ts-morph"
+import { Node, SyntaxKind, type VariableDeclaration } from "ts-morph"
 
 /**
  * React 컴포넌트 감지 클래스
@@ -55,8 +50,7 @@ export class ComponentDetector {
     const name = varDecl.getName()
     const startsWithCapital = /^[A-Z]/.test(name)
 
-    const callExpr = initializer as CallExpression
-    const expression = callExpr.getExpression()
+    const expression = initializer.getExpression()
     const hocName = expression.getText()
 
     return (
@@ -81,8 +75,7 @@ export class ComponentDetector {
     const name = varDecl.getName()
     const startsWithCapital = /^[A-Z]/.test(name)
 
-    const callExpr = initializer as CallExpression
-    const expression = callExpr.getExpression()
+    const expression = initializer.getExpression()
     const text = expression.getText()
 
     return startsWithCapital && (text === "React.memo" || text === "memo")
@@ -104,8 +97,7 @@ export class ComponentDetector {
     const name = varDecl.getName()
     const startsWithCapital = /^[A-Z]/.test(name)
 
-    const callExpr = initializer as CallExpression
-    const expression = callExpr.getExpression()
+    const expression = initializer.getExpression()
     const text = expression.getText()
 
     return (
@@ -130,8 +122,7 @@ export class ComponentDetector {
     const name = varDecl.getName()
     const startsWithCapital = /^[A-Z]/.test(name)
 
-    const callExpr = initializer as CallExpression
-    const expression = callExpr.getExpression()
+    const expression = initializer.getExpression()
     const text = expression.getText()
 
     return startsWithCapital && (text === "React.lazy" || text === "lazy")

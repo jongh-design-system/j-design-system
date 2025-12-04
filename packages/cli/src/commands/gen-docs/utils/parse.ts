@@ -1,12 +1,23 @@
 import { Node, Project } from "ts-morph"
 
+import type { PropsInfo } from "../types"
 import { ComponentDetector } from "./componentDetector"
+import { extractPropsTypeInfo } from "./extractFromProps"
+import { hasJSDocTag } from "./jsdoc"
 
 interface ComponentInfo {
   name: string
   kind: string
   jsDoc: string | null
   node: Node
+}
+
+export interface ParsedComponent {
+  name: string
+  kind: string
+  filePath: string
+  hasGenerateTag: boolean
+  props: PropsInfo | null
 }
 
 export async function parseFile({
@@ -22,7 +33,6 @@ export async function parseFile({
   const components: ComponentInfo[] = []
   const detector = new ComponentDetector()
 
-  // 1. 함수 선언 컴포넌트
   sourceFile.getFunctions().forEach((func) => {
     if (detector.isBasicComponent(func)) {
       const jsDocComments = func.getJsDocs()
@@ -62,7 +72,7 @@ export async function parseFile({
     }
   })
 
-  // 4. default export
+  // 3. default export
   sourceFile.getExportAssignments().forEach((exportAssignment) => {
     if (detector.isDefaultExportComponent(exportAssignment)) {
       components.push({
@@ -73,4 +83,22 @@ export async function parseFile({
       })
     }
   })
+
+  // 4. @generate만 찾아서 Props 정보 수집 (파일에 주석은 추가하지 않음)
+  const results: ParsedComponent[] = []
+  for (const component of components) {
+    const targetNode = component.node
+    const hasGenerate = hasJSDocTag(targetNode, "generate")
+    const info = hasGenerate ? extractPropsTypeInfo(targetNode) : null
+
+    results.push({
+      name: component.name,
+      kind: component.kind,
+      filePath,
+      hasGenerateTag: hasGenerate,
+      props: info,
+    })
+  }
+
+  return results
 }
