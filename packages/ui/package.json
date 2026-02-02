@@ -10,7 +10,7 @@
     "test-storybook": "vitest",
     "storybook": "storybook dev -p 6006",
     "build": "storybook build",
-    "check-type": "tsc --noEmit"
+    "check-type": "tsgo --noEmit"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.2",

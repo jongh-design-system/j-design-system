@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint --fix",
     "build": "next build",
-    "check-type": "tsc --noEmit",
+    "check-type": "tsgo --noEmit",
     "transform-icon": "npx tsx ./scripts/transformIcon.ts && npx prettier --write ./src/components/icons/*.tsx"
   },
   "dependencies": {
