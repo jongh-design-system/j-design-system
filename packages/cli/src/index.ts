@@ -3,6 +3,7 @@
 import { Command } from "commander"
 
 import { addCommand } from "@/commands/add"
+import { genDocsCommand } from "@/commands/gen-docs"
 import { initCommand } from "@/commands/init"
 import { mcpCommand } from "@/commands/mcp"
 import { codemodCommand } from "@/commands/radix-import"
@@ -16,6 +17,7 @@ async function main() {
   cmd
     .addCommand(initCommand)
     .addCommand(addCommand)
+    .addCommand(genDocsCommand)
     .addCommand(codemodCommand)
     .addCommand(mcpCommand)
     .parse()

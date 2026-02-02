@@ -34,7 +34,7 @@
     "prettier": "^3.5.2",
     "token-transformer": "^0.0.33",
     "turbo": "^2.0.9",
-    "typescript": "^5.7.2",
+    "@typescript/native-preview": "latest",
     "vite": "^5.4.10",
     "vitest": "^3.0.5"
   },

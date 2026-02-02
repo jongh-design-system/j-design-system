@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/app/*"],
       "fake/*": ["/a/b/c/d/*"],

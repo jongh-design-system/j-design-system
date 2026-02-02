@@ -20,9 +20,9 @@ export function Header({ logo, navItems, icons }: HeaderProps) {
   return (
     <header
       className={flex({
-        px: "4",
-        py: "2",
-        h: "14",
+        px: "6",
+        py: "3",
+        h: "16",
         justify: "space-between",
         align: "center",
         mx: "auto",
@@ -30,17 +30,15 @@ export function Header({ logo, navItems, icons }: HeaderProps) {
         position: "sticky",
         top: 0,
         zIndex: 10,
+        bg: "background/80",
+        backdropFilter: "blur(8px)",
+        borderBottom: "base",
       })}
     >
       <Link
         href="/"
         className={css({
-          textStyle: "2xl",
-          _hover: {
-            animationName: "tada",
-            animationDuration: "faster",
-            animationTimingFunction: "ease-in",
-          },
+          textStyle: "heading1",
         })}
       >
         {logo}
@@ -58,10 +56,17 @@ export function Header({ logo, navItems, icons }: HeaderProps) {
             <Link
               href={item.href}
               className={css({
-                color: "foreground",
+                color: "muted.foreground",
                 fontWeight: "medium",
-                px: 2,
-                py: 1,
+                px: 3,
+                py: 1.5,
+                rounded: "md",
+                transition: "colors",
+                transitionDuration: "fast",
+                _hover: {
+                  color: "foreground",
+                  bg: "muted/50",
+                },
               })}
               prefetch={false}
             >

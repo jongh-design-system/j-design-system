@@ -21,11 +21,11 @@ export default function Layout({ children }: { children: ReactNode }) {
       <Aside data={aside} />
       <styled.main
         width="100%"
-        maxW="48rem"
+        maxW="52rem"
         mx="auto"
         pos="relative"
-        px="6"
-        py="8"
+        px={{ base: "4", md: "6", lg: "8" }}
+        py={{ base: "6", md: "8", lg: "10" }}
       >
         {children}
       </styled.main>

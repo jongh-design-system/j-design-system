@@ -1,3 +1,4 @@
 *.hbs
 pnpm-lock.yaml
 ./app/docs/.velite/*
+./app/docs/public/*

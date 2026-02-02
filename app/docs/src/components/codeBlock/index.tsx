@@ -53,10 +53,11 @@ export const CodeBlock = ({
         position: "relative",
         mt: "4",
         mb: "4",
-        bg: "muted",
+        bg: "code",
         border: "base",
-        rounded: "lg",
+        rounded: "xl",
         overflow: "hidden",
+        shadow: "card",
       })}
     >
       <button
@@ -65,8 +66,8 @@ export const CodeBlock = ({
         onClick={handleClickCopy}
         className={css({
           position: "absolute",
-          right: "2",
-          top: "2",
+          right: "3",
+          top: "3",
           display: "flex",
           h: "fit-content",
           w: "fit-content",
@@ -74,18 +75,25 @@ export const CodeBlock = ({
           rounded: "md",
           px: "2",
           py: "2",
-          bg: "muted/80",
-          color: "foreground",
+          bg: "background/80",
+          color: "muted.foreground",
           cursor: "pointer",
           zIndex: 10,
           transition: "all",
           transitionDuration: "fast",
+          border: "base",
           _hover: {
-            bg: "muted",
+            bg: "background",
+            color: "foreground",
           },
           _disabled: {
             opacity: 0.6,
             cursor: "default",
+          },
+          _focusVisible: {
+            outline: "2px solid",
+            outlineColor: "primary",
+            outlineOffset: "2px",
           },
         })}
       >
