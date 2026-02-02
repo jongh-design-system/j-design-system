@@ -34,7 +34,7 @@
     "release": "pnpm build && pnpm publish --no-git-checks",
     "prepack": "clean-package",
     "postpack": "clean-package restore",
-    "check-type": "tsc --noEmit",
+    "check-type": "tsgo --noEmit",
     "lint": "eslint --max-warnings 0 --fix",
     "build": "tsup"
   },

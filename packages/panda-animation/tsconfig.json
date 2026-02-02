@@ -1,9 +1,7 @@
 {
   "extends": "@jongh/tsconfig/base.json",
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "baseUrl": "."
+    "resolveJsonModule": true
   },
-
   "include": ["src"]
 }

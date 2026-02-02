@@ -2,12 +2,11 @@
   "extends": "@jongh/tsconfig/react.json",
   "compilerOptions": {
     "outDir": "dist",
-    "baseUrl": "./",
     "paths": {
-      "@styled-system/*": ["styled-system/*"],
+      "@styled-system/*": ["./styled-system/*"],
       "@utils/*": ["./src/utils/*"],
       "@/*": ["./src/*"],
-      "react": ["node_modules/@types/react"]
+      "react": ["./node_modules/@types/react"]
     }
   },
   "exclude": ["node_modules", "dist"]

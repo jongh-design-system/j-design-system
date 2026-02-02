@@ -44,10 +44,12 @@ const WS_URL =
   serverUrl === "localhost" ? `ws://${serverUrl}` : `wss://${serverUrl}`
 
 // Document Info Tool
-server.tool(
+server.registerTool(
   "get_document_info",
-  "Get detailed information about the current Figma document",
-  {},
+  {
+    description: "Get detailed information about the current Figma document",
+    inputSchema: {},
+  },
   async () => {
     try {
       const result = await sendCommandToFigma("get_document_info")
@@ -73,10 +75,12 @@ server.tool(
 )
 
 // Selection Tool
-server.tool(
+server.registerTool(
   "get_selection",
-  "Get information about the current selection in Figma",
-  {},
+  {
+    description: "Get information about the current selection in Figma",
+    inputSchema: {},
+  },
   async () => {
     try {
       const result = await sendCommandToFigma("get_selection")
@@ -102,11 +106,15 @@ server.tool(
 )
 
 // Node Info Tool
-server.tool(
+server.registerTool(
   "get_node_info",
-  "Get detailed information about a specific node in Figma",
   {
-    nodeId: z.string().describe("The ID of the node to get information about"),
+    description: "Get detailed information about a specific node in Figma",
+    inputSchema: {
+      nodeId: z
+        .string()
+        .describe("The ID of the node to get information about"),
+    },
   },
   async ({ nodeId }) => {
     try {
