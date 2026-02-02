@@ -91,6 +91,22 @@ export const semanticColors = defineSemanticTokens.colors({
   ring: {
     value: { base: "{colors.blue.500}", _dark: "{colors.blue.400}" },
   },
+  overlay: {
+    value: { base: "rgba(0, 0, 0, 0.08)", _dark: "rgba(0, 0, 0, 0.5)" },
+  },
+  code: {
+    DEFAULT: {
+      value: { base: "{colors.slate.50}", _dark: "{colors.slate.900}" },
+    },
+    foreground: {
+      value: { base: "{colors.slate.700}", _dark: "{colors.slate.300}" },
+    },
+  },
+  subtle: {
+    DEFAULT: {
+      value: { base: "{colors.slate.50}", _dark: "{colors.slate.900/50}" },
+    },
+  },
 })
 
 const borders = defineSemanticTokens.borders({
@@ -98,6 +114,21 @@ const borders = defineSemanticTokens.borders({
   input: { value: "1px solid {colors.input}" },
   primary: { value: "1px solid {colors.primary}" },
   destructive: { value: "1px solid {colors.destructive}" },
+})
+
+const shadows = defineSemanticTokens.shadows({
+  card: {
+    value: {
+      base: "0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04)",
+      _dark: "0 1px 3px 0 rgb(0 0 0 / 0.2)",
+    },
+  },
+  elevated: {
+    value: {
+      base: "0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.06)",
+      _dark: "0 4px 6px -1px rgb(0 0 0 / 0.3)",
+    },
+  },
 })
 
 export const textStyles = defineTextStyles({
@@ -230,6 +261,7 @@ export const defaultPreset = definePreset({
       semanticTokens: {
         colors: semanticColors,
         borders,
+        shadows,
       },
     },
   },

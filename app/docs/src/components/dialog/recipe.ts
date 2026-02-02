@@ -17,7 +17,7 @@ export const recipe = sva({
     overlay: {
       position: "fixed",
       inset: "0",
-      bg: "#00000020",
+      bg: "black/8",
     },
     content: {
       bg: "background",

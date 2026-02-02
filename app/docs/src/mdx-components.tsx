@@ -10,9 +10,9 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     h1: (props) => (
       <h1
         className={css({
-          textStyle: "title1",
+          textStyle: "display2",
           mt: "8",
-          mb: "4",
+          mb: "6",
           color: "foreground",
         })}
         {...props}
@@ -21,12 +21,13 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     h2: (props) => (
       <h2
         className={css({
-          textStyle: "title2",
+          textStyle: "title1",
           mt: "12",
           mb: "4",
           borderBottom: "base",
           pb: "3",
           color: "foreground",
+          scrollMarginTop: "5rem",
         })}
         {...props}
       />
@@ -34,10 +35,11 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     h3: (props) => (
       <h3
         className={css({
-          textStyle: "title3",
+          textStyle: "title2",
           mt: "8",
           mb: "3",
           color: "foreground",
+          scrollMarginTop: "5rem",
         })}
         {...props}
       />
@@ -48,8 +50,9 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
           textStyle: "body1",
           mt: "4",
           mb: "4",
-          lineHeight: "1.8",
+          lineHeight: "1.85",
           color: "foreground",
+          maxW: "65ch",
         })}
         {...props}
       />
@@ -67,9 +70,15 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
         className={css({
           textStyle: "body1",
           color: "primary",
-          textDecoration: "underline",
-          textUnderlineOffset: "2px",
-          _hover: { color: "primary/80" },
+          textDecoration: "none",
+          borderBottom: "1px solid",
+          borderBottomColor: "primary/40",
+          transition: "all",
+          transitionDuration: "fast",
+          _hover: {
+            color: "primary/80",
+            borderBottomColor: "primary",
+          },
         })}
         {...props}
       />
@@ -82,22 +91,21 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
           ml: "6",
           listStyle: "none",
           "& li": {
-            mt: "2",
-            mb: "2",
-            pl: "6",
+            mt: "2.5",
+            mb: "2.5",
+            pl: "5",
             color: "foreground",
             position: "relative",
+            lineHeight: "1.7",
             _before: {
               content: '""',
               position: "absolute",
               left: "0",
-              top: "0.4em",
-              width: "1em",
-              height: "1em",
-              backgroundImage: "checkmark",
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              color: "primary",
+              top: "0.6em",
+              width: "6px",
+              height: "6px",
+              bg: "primary",
+              rounded: "full",
             },
           },
         })}
@@ -132,8 +140,7 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
           borderLeftColor: "primary",
           bg: "muted",
           color: "muted.foreground",
-          rounded: "md",
-          fontStyle: "italic",
+          rounded: "lg",
         })}
         {...props}
       />
@@ -141,13 +148,15 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
     code: (props) => (
       <code
         className={css({
-          bg: "muted",
-          color: "foreground",
+          bg: "code",
+          color: "primary",
           px: "1.5",
           py: "0.5",
           rounded: "sm",
           fontSize: "0.9em",
           fontFamily: "mono",
+          border: "1px solid",
+          borderColor: "border",
         })}
         {...props}
       />

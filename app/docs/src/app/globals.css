@@ -8,6 +8,10 @@ body {
   margin: 0;
 } */
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -15,6 +19,29 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  background-color: var(--colors-primary);
+  color: var(--colors-primary-foreground);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--colors-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--colors-muted-foreground);
 }
 
 pre.shiki {

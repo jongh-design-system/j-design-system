@@ -16,11 +16,11 @@ export const recipe = sva({
     root: {
       display: "block",
       position: "sticky",
-      top: "3.5",
+      top: "16",
       width: "full",
       left: 0,
-      zIndex: 40,
-      height: "100vh",
+      zIndex: 5,
+      height: "calc(100vh - 4rem)",
       borderRight: "base",
       overflow: "hidden",
       mdDown: {
@@ -32,6 +32,16 @@ export const recipe = sva({
       px: 4,
       py: 6,
       overflowY: "auto",
+      "&::-webkit-scrollbar": {
+        width: "6px",
+      },
+      "&::-webkit-scrollbar-track": {
+        background: "transparent",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        background: "var(--colors-border)",
+        borderRadius: "3px",
+      },
     },
     section: {
       display: "flex",
@@ -43,9 +53,11 @@ export const recipe = sva({
       rounded: "md",
       px: 2,
       py: 1,
-      fontSize: "sm",
-      fontWeight: "medium",
-      color: "foreground",
+      fontSize: "xs",
+      fontWeight: "semibold",
+      color: "muted.foreground",
+      textTransform: "uppercase",
+      letterSpacing: "wider",
     },
     navItems: {
       display: "grid",
@@ -126,6 +138,17 @@ export const recipe = sva({
           bg: "primary/10",
           color: "primary",
           fontWeight: "medium",
+          _before: {
+            content: '""',
+            position: "absolute",
+            left: 0,
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "3px",
+            height: "60%",
+            bg: "primary",
+            rounded: "full",
+          },
           _hover: {
             bg: "primary/20",
             color: "primary",

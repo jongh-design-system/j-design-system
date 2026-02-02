@@ -11,6 +11,7 @@ export const propsTableRecipe = sva({
       borderColor: "border",
       rounded: "lg",
       overflow: "hidden",
+      shadow: "card",
     },
     table: {
       width: "100%",
@@ -26,8 +27,13 @@ export const propsTableRecipe = sva({
     tr: {
       borderBottom: "1px solid",
       borderBottomColor: "border",
+      transition: "background",
+      transitionDuration: "fast",
       _last: {
         borderBottom: "none",
+      },
+      _hover: {
+        bg: "muted/30",
       },
     },
     th: {
@@ -37,11 +43,6 @@ export const propsTableRecipe = sva({
       fontWeight: "semibold",
       color: "foreground",
       textStyle: "label1",
-      borderRight: "1px solid",
-      borderRightColor: "border",
-      _last: {
-        borderRight: "none",
-      },
     },
     td: {
       px: "4",
@@ -49,11 +50,6 @@ export const propsTableRecipe = sva({
       color: "foreground",
       textStyle: "body2",
       verticalAlign: "top",
-      borderRight: "1px solid",
-      borderRightColor: "border",
-      _last: {
-        borderRight: "none",
-      },
     },
     code: {
       bg: "muted",

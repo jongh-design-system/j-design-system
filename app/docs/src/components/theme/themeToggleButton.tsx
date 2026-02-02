@@ -24,6 +24,7 @@ export const ThemeToggleButton = () => {
       onClick={handleToggle}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
+      style={{ cursor: "pointer" }}
     >
       <Darkmode />
     </motion.button>
@@ -33,6 +34,7 @@ export const ThemeToggleButton = () => {
       onClick={handleToggle}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
+      style={{ cursor: "pointer" }}
     >
       <Lightmode />
     </motion.button>
