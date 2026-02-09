@@ -1,4 +1,4 @@
-import { createStyleContext } from "@styled-system/jsx"
+import { createStyleContext } from "@utils/createStyleContext"
 import { Select as SelectPrimitive } from "radix-ui"
 import {
   type ComponentPropsWithoutRef,

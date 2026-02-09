@@ -1,4 +1,4 @@
-import { createStyleContext } from "@styled-system/jsx"
+import { createStyleContext } from "@utils/createStyleContext"
 import { Tabs as TabsPrimitive } from "radix-ui"
 
 import { recipe } from "./recipe"

@@ -1,6 +1,6 @@
 "use client"
 
-import { css, cx } from "@styled-system/css"
+import { cn } from "@utils/cn"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Context, useControllableState } from "radix-ui/internal"
 import {
@@ -48,9 +48,9 @@ interface CalendarBaseProps extends ComponentPropsWithoutRef<"div"> {
 }
 
 interface CalendarViewProps {
-  viewDate?: Date // 제어: 현재 보여지는 월/년 기준 날짜
-  defaultViewDate?: Date // 비제어: 초기 보여지는 월/년 기준 날짜
-  onViewDateChange?: (date: Date) => void // viewDate 변경 시 콜백
+  viewDate?: Date
+  defaultViewDate?: Date
+  onViewDateChange?: (date: Date) => void
 }
 
 export interface CalendarRootProps
@@ -66,10 +66,10 @@ export interface CalendarRootProps
 export interface CalendarRangeProps
   extends CalendarBaseProps,
     CalendarViewProps {
-  type: "range" // 구별자
-  range?: RangeDate // 제어: 선택된 날짜 범위
-  defaultRange?: RangeDate // 비제어: 초기 선택된 날짜 범위
-  onRangeChange?: (range: RangeDate | undefined) => void // range 변경 시 콜백
+  type: "range"
+  range?: RangeDate
+  defaultRange?: RangeDate
+  onRangeChange?: (range: RangeDate | undefined) => void
 }
 
 export const Root = (props: CalendarRootProps | CalendarRangeProps) => {
@@ -168,37 +168,26 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
 
     const handleDayClick = useCallback(
       (clickedDate: Date) => {
-        // 시간을 0으로 설정하여 날짜만 비교 (정확한 비교 위함)
         const normalizedClickedDate = new Date(clickedDate)
         normalizedClickedDate.setHours(0, 0, 0, 0)
-        // 현재 상태(prevRange)를 받아 다음 상태를 반환하는 함수형 업데이트 사용
         setRangeValue((prevRange) => {
           const [start, end] = prevRange || [null, null]
 
-          // 시작 날짜의 시간도 0으로 설정 (비교를 위해)
           const normalizedStart = start ? new Date(start) : null
           if (normalizedStart) normalizedStart.setHours(0, 0, 0, 0)
 
-          // 1. 시작 날짜가 없는 경우: 클릭한 날짜를 새 시작 날짜로 설정
           if (!normalizedStart) {
-            return [clickedDate, null] // 원본 Date 객체 저장
+            return [clickedDate, null]
           }
 
-          // 2. 시작 날짜만 있고 종료 날짜는 없는 경우:
           if (normalizedStart && !end) {
-            // 클릭한 날짜가 시작 날짜보다 이전이면 -> 클릭한 날짜를 새 시작 날짜로 설정 (범위 리셋)
             if (normalizedClickedDate < normalizedStart) {
               return [clickedDate, null]
-            }
-            // 클릭한 날짜가 시작 날짜와 같거나 이후면 -> 클릭한 날짜를 종료 날짜로 설정
-            else {
-              // 시작 날짜와 동일한 날짜를 클릭하면 종료 날짜도 시작 날짜와 동일하게 설정할지,
-              // 아니면 아무것도 안할지 정책 결정 필요 (여기선 종료로 설정)
-              return [start, clickedDate] // 원본 Date 객체 저장
+            } else {
+              return [start, clickedDate]
             }
           }
 
-          // 3. 시작 날짜와 종료 날짜가 모두 있는 경우: 클릭한 날짜를 새 시작 날짜로 설정 (범위 리셋)
           if (normalizedStart && end) {
             return [clickedDate, null]
           }
@@ -247,7 +236,7 @@ export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
       prop: viewDate,
       defaultProp: defaultViewDate,
       onChange: onViewDateChange,
-    }) //화면에 보여지는 날짜
+    })
 
     const [selectedValue = null, setSelectedValue] = useControllableState({
       prop: date,
@@ -306,7 +295,7 @@ export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
       }
     }, [dateValue, weekStart])
 
-    const styles = recipe.raw()
+    const styles = recipe()
     return (
       <CalendarProvider
         value={dateFormat}
@@ -317,7 +306,7 @@ export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
         selectedValue={selectedValue ? [selectedValue] : []}
         handleDayClick={(clickedDate: Date) => setSelectedValue(clickedDate)}
       >
-        <div ref={ref} className={cx(css(styles.root), className)} {...props}>
+        <div ref={ref} className={cn(styles.root(), className)} {...props}>
           {children}
         </div>
       </CalendarProvider>
@@ -339,7 +328,7 @@ export const Header = ({
   render,
 }: HeaderProps) => {
   const { value, onMonthChange, locale } = useCalendarContext(contextScopeName)
-  const styles = recipe.raw()
+  const styles = recipe()
 
   const monthAndYear = new Intl.DateTimeFormat(locale, {
     month: month,
@@ -347,21 +336,21 @@ export const Header = ({
   }).format(new Date(value.year, value.month - 1))
 
   return (
-    <div className={cx(css(styles.header), className)}>
+    <div className={cn(styles.header(), className)}>
       <button
-        className={cx(css(styles.navButton))}
+        className={styles.navButton()}
         onClick={() => onMonthChange(-1)}
         aria-label="Go To Previous month"
       >
         <ChevronLeft />
       </button>
-      <div className={cx(css(styles.title))}>
+      <div className={styles.title()}>
         {render
           ? render(new Date(value.year, value.month - 1), locale)
           : `${monthAndYear}`}
       </div>
       <button
-        className={cx(css(styles.navButton))}
+        className={styles.navButton()}
         onClick={() => onMonthChange(1)}
         aria-label="Go To Next month"
       >
@@ -378,12 +367,12 @@ interface WeekdayProps {
 
 export const Weekday = ({ className, format = "short" }: WeekdayProps) => {
   const { weekStart, locale } = useCalendarContext(contextScopeName)
-  const styles = recipe.raw()
+  const styles = recipe()
 
   return (
-    <div className={cx(css(styles.weekday), className)}>
+    <div className={cn(styles.weekday(), className)}>
       {getWeekdays(weekStart, locale, format).map((day, index) => (
-        <div key={index} className={cx(css(styles.weekday))}>
+        <div key={index} className={styles.weekday()}>
           {day}
         </div>
       ))}
@@ -414,11 +403,11 @@ const DayButton = ({
   isOutsideMonth,
   ...props
 }: DayButtonProps) => {
-  const styles = recipe.raw()
+  const styles = recipe()
 
   return (
     <button
-      className={cx(css(styles.dayCell), className)}
+      className={cn(styles.dayCell(), className)}
       data-day={day}
       data-month={month}
       data-year={year}
@@ -434,7 +423,7 @@ const DayButton = ({
 
 export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
   const { value, handleDayClick } = useCalendarContext(contextScopeName)
-  const styles = recipe.raw()
+  const styles = recipe()
   const weeks = useMemo(() => {
     const days: Array<{ day: number; isCurrentMonth: boolean }> = []
 
@@ -473,10 +462,10 @@ export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
   ])
 
   return (
-    <table className={cx(css(styles.daysGrid), className)}>
+    <table className={cn(styles.daysGrid(), className)}>
       <tbody>
         {weeks.map((week, weekIndex) => (
-          <tr key={weekIndex} className={cx(css(styles.weekRow))}>
+          <tr key={weekIndex} className={styles.weekRow()}>
             {week.map((day, dayIndex) => {
               const isHidden = !showOutsideDays && !day.isCurrentMonth
               const month = day.isCurrentMonth
@@ -488,7 +477,7 @@ export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
               return (
                 <td
                   key={`${weekIndex}-${dayIndex}`}
-                  className={cx(css(styles.daysGrid))}
+                  className={styles.daysGrid()}
                 >
                   <DayButton
                     day={day.day}

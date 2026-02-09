@@ -1,4 +1,4 @@
-import { createStyleContext } from "@styled-system/jsx"
+import { createStyleContext } from "@utils/createStyleContext"
 import { ChevronDown } from "lucide-react"
 import { Accordion as AccordionPrimitive } from "radix-ui"
 import { type ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"

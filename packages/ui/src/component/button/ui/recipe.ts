@@ -1,114 +1,33 @@
-import { cva, type RecipeVariantProps } from "@styled-system/css"
+import { tv, type VariantProps } from "tailwind-variants"
 
-export type ButtonVariantProps = RecipeVariantProps<typeof recipe>
+export type ButtonVariantProps = VariantProps<typeof recipe>
 
-export const recipe = cva({
-  base: {
-    alignItems: "center",
-    cursor: "pointer",
-    display: "inline-flex",
-    flexShrink: 0,
-    gap: "1",
-    justifyContent: "center",
-    minH: "9",
-    rounded: "md",
-    textStyle: "label1",
-    whiteSpace: "nowrap",
-    "& svg": {
-      flexShrink: 0,
-    },
-    _disabled: {
-      cursor: "not-allowed",
-      opacity: "0.5",
-    },
-  },
+export const recipe = tv({
+  base: [
+    "inline-flex items-center justify-center gap-1 shrink-0",
+    "min-h-9 rounded-md whitespace-nowrap cursor-pointer",
+    "text-sm font-semibold leading-snug tracking-wide",
+    "[&_svg]:shrink-0",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+  ],
   variants: {
     size: {
-      sm: {
-        h: "9",
-        px: "3",
-        py: "1.5",
-        textStyle: "label2",
-      },
-      md: {
-        h: "10",
-        px: "4",
-        py: "2",
-      },
-      lg: {
-        h: "11",
-        px: "5",
-        py: "2",
-      },
+      sm: "h-9 px-3 py-1.5 text-xs font-semibold [&_svg]:size-3.5",
+      md: "h-10 px-4 py-2 [&_svg]:size-4",
+      lg: "h-11 px-5 py-2 [&_svg]:size-5",
     },
     variant: {
-      destructive: {
-        bg: "destructive",
-        color: "destructive.foreground",
-        "&:not(:disabled):hover": {
-          bg: "destructive.active",
-        },
-      },
-      link: {
-        color: "foreground.primary",
-        textUnderlineOffset: "2",
-        "&:not(:disabled):hover": {
-          textDecoration: "underline",
-        },
-      },
-      outline: {
-        bg: "layer",
-        border: "base",
-        color: "foreground.emphasized",
-        "&:not(:disabled):hover": {
-          bg: "neutral.active",
-        },
-      },
-      primary: {
-        bg: "primary",
-        color: "primary.foreground",
-        "&:not(:disabled):hover": {
-          bg: "primary.active",
-        },
-      },
-      secondary: {
-        bg: "secondary",
-        color: "secondary.foreground",
-        "&:not(:disabled):hover": {
-          bg: "secondary.active",
-        },
-      },
+      primary:
+        "bg-primary text-primary-content hover:not-disabled:brightness-90",
+      secondary:
+        "bg-secondary text-secondary-content hover:not-disabled:brightness-90",
+      destructive:
+        "bg-error text-error-content hover:not-disabled:brightness-90",
+      outline:
+        "bg-base-100 border border-base-300 text-base-content hover:not-disabled:bg-base-200",
+      link: "text-primary underline-offset-2 hover:not-disabled:underline",
     },
   },
-  compoundVariants: [
-    {
-      size: "sm",
-      css: {
-        "& svg": {
-          height: "3.5",
-          width: "3.5",
-        },
-      },
-    },
-    {
-      size: "md",
-      css: {
-        "& svg": {
-          height: "4",
-          width: "4",
-        },
-      },
-    },
-    {
-      size: "lg",
-      css: {
-        "& svg": {
-          height: "5",
-          width: "5",
-        },
-      },
-    },
-  ],
   defaultVariants: {
     size: "md",
     variant: "primary",

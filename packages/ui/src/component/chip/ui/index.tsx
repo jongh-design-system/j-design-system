@@ -1,4 +1,4 @@
-import { css, cx } from "@styled-system/css"
+import { cn } from "@utils/cn"
 import { Slot } from "radix-ui"
 import { type ComponentPropsWithoutRef, forwardRef } from "react"
 
@@ -10,16 +10,13 @@ export type ChipProps = ComponentPropsWithoutRef<"button"> &
   }
 
 export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
-  ({ asChild, className, children, ...props }, ref) => {
+  ({ asChild, className, children, size, variant, layout, ...props }, ref) => {
     const Comp = asChild ? Slot.Root : "button"
-    const [variantProps, componentProps] = recipe.splitVariantProps(props)
-    const styles = recipe.raw(variantProps)
-
     return (
       <Comp
         ref={ref}
-        className={cx(css(styles), className)}
-        {...componentProps}
+        className={cn(recipe({ size, variant, layout }), className)}
+        {...props}
       >
         {children}
       </Comp>

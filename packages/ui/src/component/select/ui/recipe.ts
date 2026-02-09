@@ -1,131 +1,35 @@
-import { sva } from "@styled-system/css"
+import { tv } from "tailwind-variants"
 
-export const recipe = sva({
-  className: "select",
-  slots: [
-    "root",
-    "group",
-    "value",
-    "trigger",
-    "viewport",
-    "content",
-    "label",
-    "item",
-    "itemIndicator",
-    "separator",
-  ],
-  base: {
-    trigger: {
-      display: "flex",
-      h: "10",
-      w: "full",
-      px: "2",
-      alignItems: "center",
-      justifyContent: "space-between",
-      rounded: "md",
-      border: "input",
-
-      textStyle: "label1",
-      cursor: "pointer",
-      bg: "layer",
-      _placeholder: {
-        color: "foreground.emphasized",
-      },
-
-      _disabled: {
-        cursor: "not-allowed",
-        opacity: "0.5",
-      },
-    },
-    viewport: {
-      "&:is([data-position=popper])": {
-        h: "var(--radix-select-trigger-height)",
-        w: "full",
-        minW: "var(--radix-select-trigger-width)",
-      },
-    },
-    content: {
-      position: "relative",
-      zIndex: "100",
-      minW: "full",
-      overflow: "hidden",
-      rounded: "md",
-      border: "base",
-      boxShadow: "lg",
-      bg: "layer",
-      color: "foreground.emphasized",
-      shadow: "md",
-      maxH: "96",
-      py: "1",
-      "&:is([data-state=open])": {
-        animationName: "fadeIn",
-        animationState: "ease-in",
-        animationDuration: "slowest",
-      },
-
-      "&:is(&[data-state=closed])": {
-        animationName: "slideInDown",
-        animationState: "ease-in",
-        animationDuration: "slowest",
-      },
-
-      "&:is([data-position=popper])": {
-        "&:is([data-side=top])": {
-          translateY: "-1",
-        },
-
-        "&:is([data-side=bottom])": {
-          translateY: "1",
-        },
-
-        "&:is([data-side=left])": {
-          translateX: "-1",
-        },
-
-        "&:is([data-side=right])": {
-          translateX: "1",
-        },
-      },
-    },
-    label: {
-      py: "1.5",
-      pl: "8",
-      pr: "2",
-      textStyle: "label1",
-    },
-    item: {
-      position: "relative",
-      display: "flex",
-      alignItems: "center",
-      rounded: "sm",
-      py: "1.5",
-      pl: "8",
-      pr: "2",
-      textStyle: "sm",
-
-      _hover: {
-        bgColor: "layer.active",
-      },
-
-      ["&[data-disabled]"]: {
-        pointerEvents: "none",
-        opacity: "0.5",
-      },
-    },
-    itemIndicator: {
-      position: "absolute",
-      left: "2",
-      display: "flex",
-      h: "3.5",
-      w: "3.5",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    separator: {
-      mx: "-1",
-      my: "1",
-      h: "1",
-      bg: "stroke",
-    },
+export const recipe = tv({
+  slots: {
+    root: "",
+    group: "",
+    value: "",
+    trigger: [
+      "flex h-10 w-full items-center justify-between px-2",
+      "rounded-md border border-base-200 cursor-pointer",
+      "text-sm font-semibold leading-snug tracking-wide",
+      "bg-base-100 placeholder:text-base-content",
+      "disabled:cursor-not-allowed disabled:opacity-50",
+    ],
+    viewport:
+      "data-[position=popper]:h-[var(--radix-select-trigger-height)] data-[position=popper]:w-full data-[position=popper]:min-w-[var(--radix-select-trigger-width)]",
+    content: [
+      "relative z-100 min-w-full overflow-hidden",
+      "rounded-md border border-base-300 shadow-md",
+      "bg-base-100 text-base-content max-h-96 py-1",
+      "data-[position=popper]:data-[side=top]:-translate-y-1",
+      "data-[position=popper]:data-[side=bottom]:translate-y-1",
+      "data-[position=popper]:data-[side=left]:-translate-x-1",
+      "data-[position=popper]:data-[side=right]:translate-x-1",
+    ],
+    label: "py-1.5 pl-8 pr-2 text-sm font-semibold leading-snug tracking-wide",
+    item: [
+      "relative flex items-center rounded-sm py-1.5 pl-8 pr-2 text-sm",
+      "hover:bg-base-300",
+      "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+    ],
+    itemIndicator: "absolute left-2 flex size-3.5 items-center justify-center",
+    separator: "-mx-1 my-1 h-px bg-base-300",
   },
 })
