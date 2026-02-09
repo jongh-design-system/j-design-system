@@ -9,11 +9,6 @@ export default [
     },
   },
   {
-    ignores: [
-      "styled-system/*",
-      ".storybook/*",
-      "postcss.config.*",
-      "storybook-static/*",
-    ],
+    ignores: [".storybook/*", "storybook-static/*"],
   },
 ]

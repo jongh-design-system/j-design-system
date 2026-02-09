@@ -2,6 +2,7 @@ import { dirname, join } from "path"
 import type { StorybookConfig } from "@storybook/react-vite"
 import { mergeConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
+import tailwindcss from "@tailwindcss/vite"
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -29,7 +30,7 @@ const config: StorybookConfig = {
   },
   async viteFinal(config) {
     return mergeConfig(config, {
-      plugins: [tsconfigPaths({ root: "./" })],
+      plugins: [tsconfigPaths({ root: "./" }), tailwindcss()],
     })
   },
 }
