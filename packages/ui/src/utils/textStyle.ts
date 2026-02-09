@@ -1,0 +1,15 @@
+export const textStyle = {
+  display1: "text-7xl font-bold leading-loose tracking-tight",
+  display2: "text-6xl font-bold leading-relaxed tracking-tight",
+  title1: "text-4xl font-semibold leading-normal tracking-tight",
+  title2: "text-2xl font-semibold leading-snug tracking-tight",
+  title3: "text-xl font-bold leading-snug tracking-tight",
+  heading1: "text-lg font-semibold leading-normal",
+  heading2: "text-base font-semibold leading-normal",
+  body1: "text-base leading-relaxed",
+  body2: "text-sm leading-normal",
+  label1: "text-sm font-semibold leading-snug tracking-wide",
+  label2: "text-xs font-semibold leading-snug tracking-wide",
+  caption1: "text-xs font-semibold leading-tight tracking-wide",
+  caption2: "text-[0.625rem] font-semibold leading-tight tracking-wide",
+} as const
