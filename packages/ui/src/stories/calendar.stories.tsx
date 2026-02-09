@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { css } from "@styled-system/css"
 
 import * as Calendar from "../component/calendar/ui"
 
@@ -20,9 +19,7 @@ export const Primary: Story = {
         type="range"
         weekStart={1}
         locale="en-US"
-        className={css({
-          p: "10",
-        })}
+        className="p-10"
       >
         <Calendar.Header month="long" year="numeric" />
         <Calendar.Weekday />

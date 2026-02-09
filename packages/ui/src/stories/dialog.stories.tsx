@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { css } from "@styled-system/css"
 import {
   expect,
   screen,
@@ -94,31 +93,11 @@ export const LongText: Story = {
           himenaeos.
         </span>
         <Dialog.Root>
-          <Dialog.Trigger
-            className={css({
-              textStyle: "6xl",
-            })}
-          >
-            Open
-          </Dialog.Trigger>
-          <Dialog.Content
-            className={css({
-              bg: "cyan.600",
-            })}
-          >
+          <Dialog.Trigger className="text-6xl">Open</Dialog.Trigger>
+          <Dialog.Content className="bg-cyan-600">
             <Dialog.Header>
-              <Dialog.Title
-                className={css({
-                  color: "red.100",
-                })}
-              >
-                Dialog
-              </Dialog.Title>
-              <Dialog.Description
-                className={css({
-                  fontSize: "sm",
-                })}
-              >
+              <Dialog.Title className="text-red-100">Dialog</Dialog.Title>
+              <Dialog.Description className="text-sm">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
                 venenatis feugiat eros aliquam convallis. Donec tincidunt eros
                 sed ligula tincidunt, sit amet tristique purus pulvinar. Donec
