@@ -1,0 +1,22 @@
+{
+  "name": "@jongh/theme-plugin",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Tailwind v4 theme plugin with light/dark support",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint --max-warnings 0 --no-warn-ignored --fix",
+    "check-type": "tsgo --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@jongh/eslint": "workspace:*",
+    "@jongh/tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "tailwindcss": "^4.1.12"
+  }
+}
