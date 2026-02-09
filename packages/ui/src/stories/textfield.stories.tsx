@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { css } from "@styled-system/css"
 import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"
 import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
@@ -137,13 +136,7 @@ export const AllVariants: Story = {
         width: "300px",
       }}
     >
-      <p
-        className={css({
-          fluidFontSize: "[1.5rem]",
-        })}
-      >
-        기본 상태
-      </p>
+      <p className="text-2xl">기본 상태</p>
       <input title="test"></input>
       <TextField
         label="기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태"

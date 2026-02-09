@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { css } from "@styled-system/css"
 
 import * as Slider from "../component/slider/ui"
 
@@ -17,9 +16,7 @@ export const Primary: Story = {
         defaultValue={[50, 100]}
         max={100}
         step={2}
-        className={css({
-          width: "[100px]",
-        })}
+        className="w-[100px]"
       >
         <Slider.Track>
           <Slider.Range />
