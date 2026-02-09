@@ -1,60 +1,22 @@
 {
-  "name": "panda-animation",
+  "name": "@jongh/animation-plugin",
   "version": "0.1.0",
-  "description": "animation preset for pandacss",
   "type": "module",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "Tailwind v4 animation plugin with animate.css keyframes",
   "main": "./src/index.ts",
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "dist",
-    "package.json"
-  ],
-  "clean-package": {
-    "replace": {
-      "exports": {
-        ".": {
-          "import": {
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
-          },
-          "require": {
-            "types": "./dist/index.d.cts",
-            "default": "./dist/index.cjs"
-          }
-        }
-      }
-    }
+  "exports": {
+    ".": "./src/index.ts"
   },
   "scripts": {
-    "release": "pnpm build && pnpm publish --no-git-checks",
-    "prepack": "clean-package",
-    "postpack": "clean-package restore",
+    "lint": "eslint --max-warnings 0 --no-warn-ignored --fix",
     "check-type": "tsgo --noEmit",
-    "lint": "eslint --max-warnings 0 --fix",
-    "build": "tsup"
-  },
-  "tsup": {
-    "entry": [
-      "src/preset.ts"
-    ],
-    "clean": true,
-    "dts": true,
-    "sourcemap": true,
-    "format": [
-      "esm",
-      "cjs"
-    ]
+    "test": "vitest run"
   },
   "devDependencies": {
-    "clean-package": "^2.2.0",
-    "tsup": "^8.3.0",
-    "@jongh/tsconfig": "workspace:*",
     "@jongh/eslint": "workspace:*",
-    "@pandacss/dev": "catalog:"
+    "@jongh/tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "tailwindcss": "^4.1.12"
   }
 }
