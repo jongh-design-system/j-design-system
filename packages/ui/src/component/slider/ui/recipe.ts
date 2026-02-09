@@ -1,43 +1,13 @@
-import { sva } from "@styled-system/css"
+import { tv } from "tailwind-variants"
 
-export const recipe = sva({
-  slots: ["root", "track", "range", "thumb"],
-  base: {
-    root: {
-      position: "relative",
-      display: "flex",
-      touchAction: "none",
-      userSelect: "none",
-      alignItems: "center",
-    },
-    track: {
-      position: "relative",
-      h: "2",
-      w: "full",
-      flexGrow: "1",
-      overflow: "hidden",
-      rounded: "full",
-      bg: "neutral",
-    },
-    range: {
-      position: "absolute",
-      h: "full",
-      bg: "primary",
-    },
-    thumb: {
-      display: "block",
-      h: "5",
-      w: "5",
-      cursor: "pointer",
-      rounded: "full",
-      borderWidth: "2",
-      borderColor: "stroke.ring",
-      bg: "neutral",
-
-      _disabled: {
-        pointerEvents: "none",
-        opacity: "0.5",
-      },
-    },
+export const recipe = tv({
+  slots: {
+    root: "relative flex touch-none select-none items-center",
+    track: "relative h-2 w-full grow overflow-hidden rounded-full bg-neutral",
+    range: "absolute h-full bg-primary",
+    thumb: [
+      "block size-5 cursor-pointer rounded-full border-2 border-primary bg-neutral",
+      "disabled:pointer-events-none disabled:opacity-50",
+    ],
   },
 })

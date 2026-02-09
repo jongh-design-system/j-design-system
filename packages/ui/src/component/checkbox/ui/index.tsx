@@ -1,4 +1,4 @@
-import { cx } from "@styled-system/css"
+import { cn } from "@utils/cn"
 import { useComposedRefs, useControllableState } from "radix-ui/internal"
 import {
   type ComponentPropsWithoutRef,
@@ -23,18 +23,17 @@ type CheckboxProps = CheckboxInputProps & CheckboxVariants & CheckboxLabelProps
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (props, ref) => {
-    const [variantProps, componentProps] =
-      checkboxRecipe.splitVariantProps(props)
-
-    const { label, indeterminate, onCheckedChange, onChange, ...inputProps } =
-      componentProps
-
     const {
-      root,
-      label: labelClassName,
-      input,
-      text,
-    } = checkboxRecipe(variantProps)
+      label,
+      indeterminate,
+      onCheckedChange,
+      onChange,
+      size,
+      variant,
+      ...inputProps
+    } = props
+
+    const styles = checkboxRecipe({ size, variant })
 
     const [isChecked = false, setIsChecked] = useControllableState({
       prop: inputProps.checked,
@@ -69,12 +68,12 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const composedRefs = useComposedRefs(ref, inputRef)
 
     return (
-      <div className={root}>
-        <label htmlFor={`checkbox-${id}`} className={labelClassName}>
+      <div className={styles.root()}>
+        <label htmlFor={`checkbox-${id}`} className={styles.label()}>
           <input
             type="checkbox"
             id={`checkbox-${id}`}
-            className={cx(input, "peer")}
+            className={cn(styles.input(), "peer")}
             ref={composedRefs}
             onChange={(e) => {
               setIsChecked(e.currentTarget.checked)
@@ -91,7 +90,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             data-indeterminate={indeterminate ? "" : undefined}
             {...inputProps}
           />
-          <span className={text}>{label}</span>
+          <span className={styles.text()}>{label}</span>
         </label>
       </div>
     )

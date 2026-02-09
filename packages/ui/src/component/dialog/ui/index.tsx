@@ -1,5 +1,4 @@
-import { css } from "@styled-system/css"
-import { createStyleContext } from "@styled-system/jsx"
+import { createStyleContext } from "@utils/createStyleContext"
 import { X } from "lucide-react"
 import { Dialog } from "radix-ui"
 import { forwardRef } from "react"
@@ -33,7 +32,7 @@ export const ContentPrimitive = forwardRef<
       {closeIcon && (
         <CloseIcon aria-label="Close Dialog">
           <X />
-          <span className={css({ srOnly: true })}>Close</span>
+          <span className="sr-only">Close</span>
         </CloseIcon>
       )}
     </Dialog.Content>

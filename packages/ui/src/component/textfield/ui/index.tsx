@@ -1,8 +1,8 @@
-import { css, cx } from "@styled-system/css"
+import { cn } from "@utils/cn"
 import type { ComponentPropsWithoutRef, ReactNode } from "react"
 import { forwardRef } from "react"
 
-import { recipe, TextFieldVariantProps } from "./recipe"
+import { recipe, type TextFieldVariantProps } from "./recipe"
 
 const getHelperText = (id: string) => `${id}-helper-text`
 
@@ -20,8 +20,6 @@ type TextFieldProps = Omit<
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (props, ref) => {
-    const [variantProps, componentProps] = recipe.splitVariantProps(props)
-
     const {
       className,
       leadingAddon,
@@ -30,41 +28,42 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       helperText,
       id,
       required = false,
+      status,
       ...rest
-    } = componentProps
+    } = props
 
-    const styles = recipe.raw(variantProps)
+    const styles = recipe({ status })
     return (
-      <div className={css(styles.root)}>
+      <div className={styles.root()}>
         {label && (
-          <div className={css(styles.heading)}>
+          <div className={styles.heading()}>
             <label className={required ? "required" : ""} htmlFor={id}>
               {label}
             </label>
           </div>
         )}
 
-        <div className={css(styles.container)}>
+        <div className={styles.container()}>
           {leadingAddon && <div>{leadingAddon}</div>}
 
           <input
             ref={ref}
-            className={cx(css(styles.input), className)}
+            className={cn(styles.input(), className)}
             required={required}
             id={id}
             aria-describedby={getHelperText(id)}
-            aria-invalid={variantProps.status === "negative" ? true : false}
+            aria-invalid={status === "negative" ? true : false}
             {...rest}
           />
 
           {trailingAddon && (
-            <div className={css(styles.trailingButton)}>{trailingAddon}</div>
+            <div className={styles.trailingButton()}>{trailingAddon}</div>
           )}
         </div>
 
         {helperText && (
           <div
-            className={css(styles.helper)}
+            className={styles.helper()}
             id={getHelperText(id)}
             aria-live="polite"
           >

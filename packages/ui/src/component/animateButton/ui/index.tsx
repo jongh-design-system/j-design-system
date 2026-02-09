@@ -1,4 +1,3 @@
-import { token } from "@styled-system/tokens"
 import { motion, type Variants } from "framer-motion"
 import type { ComponentProps, ComponentRef } from "react"
 import { forwardRef } from "react"
@@ -10,6 +9,8 @@ export type AnimateButtonProps = {
   trigger?: "hover" | "click"
   initialAnimation?: keyof typeof variants
 } & ComponentProps<typeof Button>
+
+const DURATION = 0.5
 
 const variants = {
   initial: {
@@ -23,7 +24,7 @@ const variants = {
   pulse: {
     scale: [1, 1.05, 1, 1.05, 1],
     transition: {
-      duration: parseFloat(token("durations.slower")) / 1000 || 0.5,
+      duration: DURATION,
       ease: "easeInOut",
       times: [0, 0.25, 0.5, 0.75, 1],
     },
@@ -31,7 +32,7 @@ const variants = {
   bounce: {
     y: [0, -6, 0, -3, 0],
     transition: {
-      duration: parseFloat(token("durations.slower")) / 1000 || 0.5,
+      duration: DURATION,
       ease: "easeOut",
       times: [0, 0.25, 0.5, 0.75, 1],
     },
@@ -39,7 +40,7 @@ const variants = {
   shake: {
     x: [0, -6, 6, -3, 3, 0],
     transition: {
-      duration: parseFloat(token("durations.slower")) / 1000 || 0.5,
+      duration: DURATION,
       ease: "easeInOut",
     },
   },

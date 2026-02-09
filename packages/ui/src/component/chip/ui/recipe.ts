@@ -1,109 +1,35 @@
-import { cva, type RecipeVariantProps } from "@styled-system/css"
+import { tv, type VariantProps } from "tailwind-variants"
 
-export type ChipVariantProps = RecipeVariantProps<typeof recipe>
-export const recipe = cva({
-  base: {
-    alignItems: "center",
-    borderRadius: "full",
-    cursor: "pointer",
-    display: "inline-flex",
-    flexShrink: 0,
-    justifyContent: "center",
-    transition: "colors",
-    whiteSpace: "nowrap",
+export type ChipVariantProps = VariantProps<typeof recipe>
 
-    "& svg": {
-      flexShrink: 0,
-    },
-
-    _disabled: {
-      cursor: "not-allowed",
-      opacity: 0.5,
-    },
-  },
+export const recipe = tv({
+  base: [
+    "inline-flex items-center justify-center shrink-0",
+    "rounded-full cursor-pointer whitespace-nowrap transition-colors",
+    "[&_svg]:shrink-0",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+  ],
   variants: {
     variant: {
-      filled: {
-        bg: "secondary",
-        color: "secondary.foreground",
-        "&:not(:disabled):hover": {
-          bg: "secondary.active",
-        },
-      },
-      outlined: {
-        bg: "layer",
-        border: "base",
-        color: "foreground.emphasized",
-        "&:not(:disabled):hover": {
-          bg: "neutral.active",
-        },
-      },
+      filled:
+        "bg-secondary text-secondary-content hover:not-disabled:brightness-90",
+      outlined:
+        "bg-base-100 border border-base-300 text-base-content hover:not-disabled:bg-base-200",
     },
     size: {
-      sm: {
-        fontSize: "sm",
-        height: "7",
-        textStyle: "label2",
-        "& svg": {
-          height: "3",
-          width: "3",
-        },
-      },
-      md: {
-        fontSize: "lg",
-        height: "9",
-        textStyle: "label1",
-        "& svg": {
-          height: "4",
-          width: "4",
-        },
-      },
+      sm: "h-7 text-xs font-semibold leading-snug tracking-wide [&_svg]:size-3",
+      md: "h-9 text-sm font-semibold leading-snug tracking-wide [&_svg]:size-4",
     },
     layout: {
-      withText: {},
-      iconOnly: {
-        px: "2",
-        "& svg": {
-          m: "0",
-        },
-      },
+      withText: "",
+      iconOnly: "px-2 [&_svg]:m-0",
     },
   },
   compoundVariants: [
-    {
-      layout: "iconOnly",
-      size: "sm",
-      css: {
-        height: "7",
-        width: "7",
-      },
-    },
-    {
-      layout: "iconOnly",
-      size: "md",
-      css: {
-        height: "9",
-        width: "9",
-      },
-    },
-    {
-      layout: "withText",
-      size: "sm",
-      css: {
-        gap: "1",
-        px: "2",
-        py: "1",
-      },
-    },
-    {
-      layout: "withText",
-      size: "md",
-      css: {
-        gap: "2",
-        px: "3",
-        py: "2",
-      },
-    },
+    { layout: "iconOnly", size: "sm", class: "size-7" },
+    { layout: "iconOnly", size: "md", class: "size-9" },
+    { layout: "withText", size: "sm", class: "gap-1 px-2 py-1" },
+    { layout: "withText", size: "md", class: "gap-2 px-3 py-2" },
   ],
   defaultVariants: {
     variant: "filled",

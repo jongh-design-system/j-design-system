@@ -1,4 +1,4 @@
-import { type RecipeVariantProps, sva } from "@styled-system/css"
+import { tv, type VariantProps } from "tailwind-variants"
 
 const checkmark = {
   square:
@@ -11,156 +11,47 @@ const checkmark = {
     "url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox%3D%220 0 24 24%22%3E%3Crect x%3D%226%22 y%3D%2210.5%22 width%3D%2212%22 height%3D%223%22 fill%3D%22%23808080%22/%3E%3C/svg%3E')",
 }
 
-export const checkboxRecipe = sva({
-  slots: ["root", "label", "input", "text"],
-  base: {
-    root: {
-      position: "relative",
-      display: "flex",
-    },
-    label: {
-      display: "inline-flex",
-      alignItems: "center",
-      position: "relative",
-      maxWidth: "full",
-      minHeight: "9",
-      paddingLeft: "8",
-      lineHeight: "relaxed",
-    },
-    input: {
-      border: "none",
-      cursor: "pointer",
-      position: "absolute",
-      left: "0",
-      margin: "0",
-      padding: "0",
-      w: "0",
-      h: "0",
-      top: "[50%]",
-      _before: {
-        left: "0",
-        content: '""',
-        position: "absolute",
-        transition: "colors",
-        transform: "translateY(-50%)",
-      },
-      _after: {
-        content: '""',
-        position: "absolute",
-        transform: "translateY(-50%)",
-      },
-      _disabled: {
-        cursor: "not-allowed",
-      },
-    },
-    text: {
-      textStyle: "label1",
-      cursor: "pointer",
-      _peerDisabled: {
-        cursor: "not-allowed",
-      },
-    },
+export const checkboxRecipe = tv({
+  slots: {
+    root: "relative flex",
+    label:
+      "inline-flex items-center relative max-w-full min-h-9 pl-8 leading-relaxed",
+    input: [
+      "border-none cursor-pointer absolute left-0 m-0 p-0 w-0 h-0 top-1/2",
+      "before:left-0 before:content-[''] before:absolute before:transition-colors before:-translate-y-1/2",
+      "after:content-[''] after:absolute after:-translate-y-1/2",
+      "disabled:cursor-not-allowed",
+    ],
+    text: "text-sm font-semibold leading-snug tracking-wide cursor-pointer peer-disabled:cursor-not-allowed",
   },
   variants: {
     size: {
       md: {
-        input: {
-          _before: {
-            width: "6",
-            height: "6",
-          },
-          _after: {
-            width: "6",
-            height: "6",
-          },
-        },
-        text: {
-          paddingLeft: "1",
-        },
+        input: "before:size-6 after:size-6",
+        text: "pl-1",
       },
       lg: {
-        input: {
-          _before: {
-            width: "7",
-            height: "7",
-          },
-          _after: {
-            width: "7",
-            height: "7",
-          },
-        },
-        text: {
-          paddingLeft: "2",
-        },
+        input: "before:size-7 after:size-7",
+        text: "pl-2",
       },
     },
     variant: {
       square: {
-        input: {
-          _before: {
-            border: "base",
-            borderRadius: "lg",
-            bgColor: "background",
-          },
-          _after: {
-            backgroundImage: checkmark.square,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            opacity: 0,
-          },
-          _checked: {
-            _before: {
-              bg: "primary",
-              border: "none",
-            },
-            _after: {
-              opacity: 1,
-            },
-          },
-          _indeterminate: {
-            _before: {
-              bg: "primary",
-              border: "none",
-            },
-            _after: {
-              backgroundImage: checkmark.indeterminate_square,
-              opacity: 1,
-            },
-          },
-        },
+        input: [
+          `before:border before:border-base-300 before:rounded-lg before:bg-base-100`,
+          `after:bg-[${checkmark.square}] after:bg-no-repeat after:bg-center after:opacity-0`,
+          `checked:before:bg-primary checked:before:border-none checked:after:opacity-100`,
+          `indeterminate:before:bg-primary indeterminate:before:border-none`,
+          `indeterminate:after:bg-[${checkmark.indeterminate_square}] indeterminate:after:opacity-100`,
+        ],
       },
       ghost: {
-        input: {
-          _before: {
-            border: "none",
-            bgColor: "transparent",
-          },
-          _after: {
-            backgroundImage: "none",
-            maskImage: checkmark.ghost,
-            bgColor: "foreground.muted",
-            opacity: 1,
-          },
-          _checked: {
-            _before: {
-              bgColor: "transparent",
-            },
-            _after: {
-              bgColor: "foreground.primary",
-            },
-          },
-          _indeterminate: {
-            _before: {
-              bgColor: "transparent",
-            },
-            _after: {
-              backgroundImage: "none",
-              maskImage: checkmark.indeterminate_ghost,
-              bgColor: "foreground.primary",
-              opacity: 1,
-            },
-          },
-        },
+        input: [
+          "before:border-none before:bg-transparent",
+          `after:bg-none after:[mask-image:${checkmark.ghost}] after:bg-base-content/60 after:opacity-100`,
+          "checked:before:bg-transparent checked:after:bg-primary",
+          `indeterminate:before:bg-transparent indeterminate:after:bg-none indeterminate:after:[mask-image:${checkmark.indeterminate_ghost}] indeterminate:after:bg-primary indeterminate:after:opacity-100`,
+        ],
       },
     },
   },
@@ -170,4 +61,4 @@ export const checkboxRecipe = sva({
   },
 })
 
-export type CheckboxVariants = RecipeVariantProps<typeof checkboxRecipe>
+export type CheckboxVariants = VariantProps<typeof checkboxRecipe>
