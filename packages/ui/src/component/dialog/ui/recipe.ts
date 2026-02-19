@@ -7,20 +7,24 @@ export const recipe = tv({
     portal: "",
     overlay: "fixed inset-0 bg-black/50",
     close: [
-      "absolute right-4 top-4 rounded-sm opacity-70 cursor-pointer",
-      "transition-opacity hover:opacity-100",
+      "absolute top-4 right-4 cursor-pointer rounded-sm opacity-70",
+      `
+        transition-opacity
+        hover:opacity-100
+      `,
       "disabled:pointer-events-none",
     ],
     content: [
       "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-      "w-full max-w-[32rem] max-h-[85vh] z-[1000]",
-      "bg-base-200 text-base-content border border-base-200",
-      "rounded-md p-4 overflow-auto",
+      "z-1000 max-h-[85vh] w-full max-w-lg",
+      "border border-base-200 bg-base-200 text-base-content",
+      "overflow-auto rounded-md p-4",
     ],
-    header:
-      "flex flex-col gap-1.5 text-base-content text-base font-semibold leading-normal",
+    header: `
+      flex flex-col gap-1.5 text-base/normal font-semibold text-base-content
+    `,
     footer: "flex flex-col-reverse text-base-content/60",
-    title: "text-lg font-semibold leading-normal",
-    description: "text-base leading-relaxed text-base-content",
+    title: "text-lg/normal font-semibold",
+    description: "text-base/relaxed text-base-content",
   },
 })
