@@ -14,13 +14,13 @@ const BUTTON_JSON = {
     {
       name: "index.tsx",
       content:
-        'import { styled, type HTMLStyledProps } from "@styled-system/jsx"\nimport { button } from "@styled-system/recipes"\nimport type { ComponentPropsWithoutRef } from "react"\nimport { forwardRef } from "react"\nimport { Slot } from "@radix-ui/react-slot"\n\nexport type BaseButtonProps = ComponentPropsWithoutRef<"button"> & {\n  asChild?: boolean\n}\n\nexport const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(\n  ({ asChild, ...props }, ref) => {\n    const Comp = asChild ? Slot : "button"\n\n    return <Comp role="button" ref={ref} {...props}></Comp>\n  },\n)\n\nBaseButton.displayName = "Button"\n\nexport const Button = styled(BaseButton, button)\nexport type ButtonProps = HTMLStyledProps<typeof Button>\n',
+        'import { forwardRef, type ComponentPropsWithoutRef } from "react"\nimport { Slot } from "@radix-ui/react-slot"\nimport { cn } from "@utils/cn"\nimport { buttonVariants } from "./recipe"\n\nexport type ButtonProps = ComponentPropsWithoutRef<"button"> & {\n  asChild?: boolean\n  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"\n  size?: "default" | "sm" | "lg" | "icon"\n}\n\nexport const Button = forwardRef<HTMLButtonElement, ButtonProps>(\n  ({ className, variant, size, asChild, ...props }, ref) => {\n    const Comp = asChild ? Slot : "button"\n    return <Comp className={cn(buttonVariants({ variant, size }), className)} ref={ref} {...props} />\n  },\n)\n\nButton.displayName = "Button"\n',
       type: "ui",
     },
     {
       name: "recipe.ts",
       content:
-        'import { defineSafe } from "@utils/defineSafe"\n\nexport const buttonRecipe = defineSafe.recipe({\n  className: "button",\n  description: "Styles for the Button component",\n  base: {\n    display: "inline-flex",\n    alignItems: "center",\n    justifyContent: "center",\n    rounded: "md",\n    textStyle: "sm",\n    fontWeight: "medium",\n    transition: "colors",\n    cursor: "pointer",\n    gap: "2",\n    _focusVisible: {\n      ringWidth: "1",\n      ringColor: "ring",\n      ringOffset: "1",\n    },\n\n    _disabled: {\n      cursor: "not-allowed",\n      opacity: "50%",\n    },\n  },\n  variants: {\n    variant: {\n      default: {\n        bg: "primary",\n        color: "primary.foreground",\n\n        _hover: {\n          bg: "primary/90",\n        },\n      },\n      destructive: {\n        bg: "destructive",\n        color: "destructive.foreground",\n\n        _hover: {\n          bg: "destructive/90",\n        },\n      },\n      outline: {\n        border: "input",\n        bg: "background",\n\n        _hover: {\n          bg: "accent",\n          color: "accent.foreground",\n        },\n      },\n      secondary: {\n        bg: "secondary",\n        color: "secondary.foreground",\n\n        _hover: {\n          bga: "secondary/90",\n        },\n      },\n      ghost: {\n        _hover: {\n          bg: "accent",\n          color: "accent.foreground",\n        },\n      },\n      link: {\n        color: "primary",\n        textUnderlineOffset: "4px",\n\n        _hover: {\n          textDecoration: "underline",\n        },\n      },\n    },\n    size: {\n      default: {\n        h: "10",\n        px: "4",\n        py: "2",\n      },\n      sm: {\n        h: "9",\n        rounded: "md",\n        px: "3",\n      },\n      lg: {\n        h: "11",\n        rounded: "md",\n        px: "8",\n      },\n      icon: {\n        h: "10",\n        w: "10",\n      },\n    },\n  },\n  defaultVariants: {\n    variant: "default",\n    size: "default",\n  },\n})\n',
+        'import { tv } from "tailwind-variants"\n\nexport const buttonVariants = tv({\n  base: "inline-flex items-center justify-center rounded-md text-sm font-medium cursor-pointer gap-2 focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50",\n  variants: {\n    variant: {\n      default: "bg-primary text-primary-foreground hover:bg-primary/90",\n      destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",\n      outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",\n      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",\n      ghost: "hover:bg-accent hover:text-accent-foreground",\n      link: "text-primary underline-offset-4 hover:underline",\n    },\n    size: {\n      default: "h-10 px-4 py-2",\n      sm: "h-9 rounded-md px-3",\n      lg: "h-11 rounded-md px-8",\n      icon: "h-10 w-10",\n    },\n  },\n  defaultVariants: {\n    variant: "default",\n    size: "default",\n  },\n})\n',
       type: "ui",
     },
   ],
@@ -30,7 +30,6 @@ const COMPONENTS_JSON = {
   utils: "@/utils",
   components: "@/components",
   hooks: "@/hooks",
-  styledsystem: "@styled-system",
 }
 
 const TSCONFIG_JSON = {
@@ -38,7 +37,6 @@ const TSCONFIG_JSON = {
     baseUrl: ".",
     paths: {
       "@/*": ["./src/*"],
-      "@styled-system/*": ["./styled-system/*"],
     },
   },
 }
