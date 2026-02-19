@@ -37,8 +37,9 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       <div className={styles.root()}>
         {label && (
           <div className={styles.heading()}>
-            <label className={required ? "required" : ""} htmlFor={id}>
+            <label htmlFor={id}>
               {label}
+              {required && <span className="ml-0.5 text-sm text-error">*</span>}
             </label>
           </div>
         )}
