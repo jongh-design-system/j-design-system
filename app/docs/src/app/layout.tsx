@@ -27,7 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${pretendard.className}`}>
+      <body
+        className={`
+          ${pretendard.className}
+        `}
+      >
         <ThemeProvider>
           <Header
             logo={<span aria-label="Design System">Design System</span>}

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { css } from "@styled-system/css"
 import type { ComponentType } from "react"
 
 import { CodeBlock } from "./components/codeBlock"
@@ -9,167 +8,91 @@ export function MDXComponents(): Record<string, ComponentType<any>> {
   return {
     h1: (props) => (
       <h1
-        className={css({
-          textStyle: "display2",
-          mt: "8",
-          mb: "6",
-          color: "foreground",
-        })}
+        className="
+          mt-8 mb-6 text-6xl/relaxed font-bold tracking-tight text-base-content
+        "
         {...props}
       />
     ),
     h2: (props) => (
       <h2
-        className={css({
-          textStyle: "title1",
-          mt: "12",
-          mb: "4",
-          borderBottom: "base",
-          pb: "3",
-          color: "foreground",
-          scrollMarginTop: "5rem",
-        })}
+        className="
+          mt-12 mb-4 scroll-mt-20 border-b border-base-300 pb-3 text-4xl/normal
+          font-semibold tracking-tight text-base-content
+        "
         {...props}
       />
     ),
     h3: (props) => (
       <h3
-        className={css({
-          textStyle: "title2",
-          mt: "8",
-          mb: "3",
-          color: "foreground",
-          scrollMarginTop: "5rem",
-        })}
+        className="
+          mt-8 mb-3 scroll-mt-20 text-2xl/snug font-semibold tracking-tight
+          text-base-content
+        "
         {...props}
       />
     ),
     p: (props) => (
       <p
-        className={css({
-          textStyle: "body1",
-          mt: "4",
-          mb: "4",
-          lineHeight: "1.85",
-          color: "foreground",
-          maxW: "65ch",
-        })}
+        className="
+          mt-4 mb-4 max-w-[65ch] text-base leading-[1.85] text-base-content
+        "
         {...props}
       />
     ),
-    span: (props) => (
-      <span
-        className={css({
-          textStyle: "body2",
-        })}
-        {...props}
-      />
-    ),
+    span: (props) => <span className="text-sm/normal" {...props} />,
     a: (props) => (
       <a
-        className={css({
-          textStyle: "body1",
-          color: "primary",
-          textDecoration: "none",
-          borderBottom: "1px solid",
-          borderBottomColor: "primary/40",
-          transition: "all",
-          transitionDuration: "fast",
-          _hover: {
-            color: "primary/80",
-            borderBottomColor: "primary",
-          },
-        })}
+        className="
+          border-b border-primary/40 text-base/relaxed text-primary no-underline
+          transition-all duration-150
+          hover:border-primary hover:text-primary/80
+        "
         {...props}
       />
     ),
     ul: (props) => (
       <ul
-        className={css({
-          mt: "4",
-          mb: "4",
-          ml: "6",
-          listStyle: "none",
-          "& li": {
-            mt: "2.5",
-            mb: "2.5",
-            pl: "5",
-            color: "foreground",
-            position: "relative",
-            lineHeight: "1.7",
-            _before: {
-              content: '""',
-              position: "absolute",
-              left: "0",
-              top: "0.6em",
-              width: "6px",
-              height: "6px",
-              bg: "primary",
-              rounded: "full",
-            },
-          },
-        })}
+        className="
+          mt-4 mb-4 ml-6 list-none
+          [&_li]:relative [&_li]:mt-2.5 [&_li]:mb-2.5 [&_li]:pl-5
+          [&_li]:leading-[1.7] [&_li]:text-base-content
+          [&_li]:before:absolute [&_li]:before:top-[0.6em] [&_li]:before:left-0
+          [&_li]:before:h-1.5 [&_li]:before:w-1.5 [&_li]:before:rounded-full
+          [&_li]:before:bg-primary [&_li]:before:content-['']
+        "
         {...props}
       />
     ),
     ol: (props) => (
       <ol
-        className={css({
-          mt: "4",
-          mb: "4",
-          ml: "6",
-          "& li": {
-            mt: "2",
-            mb: "2",
-            pl: "2",
-            color: "foreground",
-          },
-        })}
+        className="
+          mt-4 mb-4 ml-6
+          [&_li]:mt-2 [&_li]:mb-2 [&_li]:pl-2 [&_li]:text-base-content
+        "
         {...props}
       />
     ),
     blockquote: (props) => (
       <blockquote
-        className={css({
-          mt: "6",
-          mb: "6",
-          pl: "4",
-          pr: "4",
-          py: "3",
-          borderLeft: "4px solid",
-          borderLeftColor: "primary",
-          bg: "muted",
-          color: "muted.foreground",
-          rounded: "lg",
-        })}
+        className="
+          mt-6 mb-6 rounded-lg border-l-4 border-primary bg-base-200 py-3 pr-4
+          pl-4 text-base-content/60
+        "
         {...props}
       />
     ),
     code: (props) => (
       <code
-        className={css({
-          bg: "code",
-          color: "primary",
-          px: "1.5",
-          py: "0.5",
-          rounded: "sm",
-          fontSize: "0.9em",
-          fontFamily: "mono",
-          border: "1px solid",
-          borderColor: "border",
-        })}
+        className="
+          rounded-sm border border-base-300 bg-base-200 px-1.5 py-0.5 font-mono
+          text-[0.9em] text-primary
+        "
         {...props}
       />
     ),
     hr: (props) => (
-      <hr
-        className={css({
-          my: "8",
-          border: "none",
-          borderTop: "base",
-        })}
-        {...props}
-      />
+      <hr className="my-8 border-t border-none border-base-300" {...props} />
     ),
     pre: (props) => <CodeBlock {...props} />,
   }

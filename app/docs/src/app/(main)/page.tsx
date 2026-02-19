@@ -1,6 +1,5 @@
 "use client"
 
-import { css } from "@styled-system/css"
 import { ArrowRightIcon, Terminal } from "lucide-react"
 import Link from "next/link"
 
@@ -9,99 +8,54 @@ import { Button } from "@/components/button"
 export default function MainPage() {
   return (
     <section
-      className={css({
-        minH: "calc(100vh - 4rem)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        bgColor: "background",
-        color: "foreground",
-        position: "relative",
-        overflow: "hidden",
-        py: { base: "16", md: "24" },
-        _before: {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "200%",
-          height: "100%",
-          background:
-            "radial-gradient(ellipse 50% 80% at 50% -20%, token(colors.primary/15), transparent)",
-          pointerEvents: "none",
-          zIndex: 0,
-        },
-      })}
+      className="
+        relative flex min-h-[calc(100vh-4rem)] flex-col items-center
+        justify-center overflow-hidden bg-base-100 py-16 text-base-content
+        before:pointer-events-none before:absolute before:top-0 before:left-1/2
+        before:z-0 before:h-full before:w-[200%] before:-translate-x-1/2
+        before:bg-[radial-gradient(ellipse_50%_80%_at_50%_-20%,oklch(var(--p)/0.15),transparent)]
+        before:content-['']
+        md:py-24
+      "
     >
       <div
-        className={css({
-          display: "flex",
-          flexDir: "column",
-          alignItems: "center",
-          gap: 6,
-          maxW: "3xl",
-          px: 4,
-          textAlign: "center",
-          position: "relative",
-          zIndex: 1,
-        })}
+        className="
+          relative z-1 flex max-w-3xl flex-col items-center gap-6 px-4
+          text-center
+        "
       >
         {/* Badge */}
         <span
-          className={css({
-            px: 3,
-            py: 1,
-            rounded: "full",
-            bg: "primary/10",
-            color: "primary",
-            fontSize: "sm",
-            fontWeight: "medium",
-          })}
+          className="
+            rounded-full bg-primary/10 px-3 py-1 text-sm font-medium
+            text-primary
+          "
         >
           Design System CLI
         </span>
 
         {/* Title */}
         <h1
-          className={css({
-            textStyle: { base: "title1", md: "display2" },
-            color: "foreground",
-            letterSpacing: "tight",
-          })}
+          className="
+            text-4xl/normal font-semibold tracking-tight text-base-content
+            md:text-6xl/relaxed md:font-bold
+          "
         >
           Create your project using CLI
         </h1>
 
         {/* Subtitle */}
-        <p
-          className={css({
-            textStyle: "body1",
-            color: "muted.foreground",
-            maxW: "xl",
-            lineHeight: "relaxed",
-          })}
-        >
+        <p className="max-w-xl text-base/relaxed text-base-content/60">
           PandaCSS 기반의 타입 세이프한 컴포넌트를 CLI로 쉽게 설치하세요.
           shadcn/ui 스타일의 개발 경험을 제공합니다.
         </p>
 
         {/* CLI Command */}
         <div
-          className={css({
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            bg: "muted",
-            border: "base",
-            rounded: "lg",
-            px: 4,
-            py: 2.5,
-            fontFamily: "mono",
-            fontSize: "sm",
-            color: "muted.foreground",
-          })}
+          className="
+            flex items-center gap-2 rounded-lg border border-base-300
+            bg-base-200 px-4 py-2.5 font-mono text-sm text-base-content/60
+          "
         >
           <Terminal size={16} />
           <span>npx @jongh/cli init</span>
@@ -109,12 +63,10 @@ export default function MainPage() {
 
         {/* Button Group */}
         <div
-          className={css({
-            display: "flex",
-            flexDirection: { base: "column", sm: "row" },
-            gap: 3,
-            mt: 2,
-          })}
+          className="
+            mt-2 flex flex-col gap-3
+            sm:flex-row
+          "
         >
           <Button asChild>
             <Link href="/docs/intro/introduction">
