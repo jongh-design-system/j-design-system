@@ -1,92 +1,28 @@
-import { sva } from "@styled-system/css"
+import { tv } from "tailwind-variants"
 
-export const recipe = sva({
-  slots: [
-    "root",
-    "trigger",
-    "portal",
-    "overlay",
-    "close",
-    "content",
-    "header",
-    "footer",
-    "title",
-    "description",
-  ],
-  base: {
-    overlay: {
-      position: "fixed",
-      inset: "0",
-      bg: "black/8",
-    },
-    content: {
-      bg: "background",
-      border: "input",
-      borderRadius: "md",
-      position: "fixed",
-      top: "[50%]",
-      left: "[50%]",
-      transform: "translate(-50%,-50%)",
-      width: "[100%]",
-      maxWidth: "[32rem]",
-      maxHeight: "[85vh]",
-      padding: "4",
-      "&[data-state=open]": {
-        animationName: "contentShow",
-        animationDuration: "slow",
-      },
-
-      "&[data-state=closed]": {
-        animationName: "fadeOut",
-        animationDuration: "slow",
-      },
-    },
-    close: {
-      position: "absolute",
-      right: "4",
-      top: "4",
-      rounded: "sm",
-      opacity: "0.7",
-      transition: "opacity",
-      cursor: "pointer",
-
-      _hover: {
-        opacity: "1",
-      },
-
-      _focus: {
-        ringWidth: "1",
-        ringColor: "ring",
-        ringOffset: "1",
-      },
-
-      _disabled: {
-        pointerEvents: "none",
-      },
-
-      "&[data-state=open]": {
-        bg: "accent",
-        color: "muted.foreground",
-      },
-    },
-    header: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "1.5",
-    },
-    footer: {
-      display: "flex",
-      flexDirection: "column-reverse",
-    },
-    title: {
-      fontSize: "lg",
-      fontWeight: "semibold",
-      lineHeight: "none",
-      letterSpacing: "tight",
-    },
-    description: {
-      fontSize: "sm",
-      color: "foreground",
-    },
+export const recipe = tv({
+  slots: {
+    root: "",
+    trigger: "",
+    portal: "",
+    overlay: "fixed inset-0 bg-black/8",
+    close: [
+      "absolute top-4 right-4 cursor-pointer rounded-sm opacity-70",
+      `
+        transition-opacity
+        hover:opacity-100
+      `,
+      "disabled:pointer-events-none",
+      "data-[state=open]:bg-accent data-[state=open]:text-base-content",
+    ],
+    content: [
+      "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+      "max-h-[85vh] w-full max-w-lg",
+      "rounded-md border border-base-300 bg-base-100 p-4",
+    ],
+    header: "flex flex-col gap-1.5",
+    footer: "flex flex-col-reverse",
+    title: "text-lg leading-none font-semibold tracking-tight",
+    description: "text-sm text-base-content",
   },
 })

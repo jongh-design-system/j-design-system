@@ -1,44 +1,13 @@
-import { css, cx } from "@styled-system/css"
 import { Avatar as AvatarPrimitive } from "radix-ui"
-import type { ComponentProps } from "react"
+
+import { createStyleContext } from "@/utils/createStyleContext"
 
 import { recipe } from "./recipe"
 
-export const Root = ({
-  className,
-  ...props
-}: ComponentProps<typeof AvatarPrimitive.Root>) => {
-  const styles = recipe.raw()
-  return (
-    <AvatarPrimitive.Root
-      className={cx(css(styles.root), className)}
-      {...props}
-    />
-  )
-}
+const { withContext, withProvider } = createStyleContext(recipe)
 
-export const Image = ({
-  className,
-  ...props
-}: ComponentProps<typeof AvatarPrimitive.Image>) => {
-  const styles = recipe.raw()
-  return (
-    <AvatarPrimitive.Image
-      className={cx(css(styles.image), className)}
-      {...props}
-    />
-  )
-}
+export const Root = withProvider(AvatarPrimitive.Root, "root")
 
-export const Fallback = ({
-  className,
-  ...props
-}: ComponentProps<typeof AvatarPrimitive.Fallback>) => {
-  const styles = recipe.raw()
-  return (
-    <AvatarPrimitive.Fallback
-      className={cx(css(styles.fallback), className)}
-      {...props}
-    />
-  )
-}
+export const Image = withContext(AvatarPrimitive.Image, "image")
+
+export const Fallback = withContext(AvatarPrimitive.Fallback, "fallback")

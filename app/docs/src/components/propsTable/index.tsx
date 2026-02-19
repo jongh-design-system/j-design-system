@@ -19,16 +19,16 @@ export function PropsTable({ children, data }: PropsTableProps) {
   const styles = propsTableRecipe()
 
   return (
-    <div className={styles.container}>
-      <table className={styles.table}>
-        <thead className={styles.thead}>
-          <tr className={styles.tr}>
-            <th className={styles.th}>Prop</th>
-            <th className={styles.th}>Type</th>
-            <th className={styles.th}>Description</th>
+    <div className={styles.container()}>
+      <table className={styles.table()}>
+        <thead className={styles.thead()}>
+          <tr className={styles.tr()}>
+            <th className={styles.th()}>Prop</th>
+            <th className={styles.th()}>Type</th>
+            <th className={styles.th()}>Description</th>
           </tr>
         </thead>
-        <tbody className={styles.tbody}>
+        <tbody className={styles.tbody()}>
           {data
             ? data.map((prop) => (
                 <PropRowInternal key={prop.name} {...prop} styles={styles} />
@@ -53,22 +53,22 @@ function PropRowInternal({
   styles,
 }: PropRowInternalProps) {
   return (
-    <tr className={styles.tr}>
-      <td className={styles.td}>
-        <code className={styles.code}>
+    <tr className={styles.tr()}>
+      <td className={styles.td()}>
+        <code className={styles.code()}>
           {name}
           {required && <span style={{ color: "red" }}>*</span>}
         </code>
         {defaultValue && (
           <div style={{ marginTop: "4px", fontSize: "0.75rem", opacity: 0.7 }}>
-            Default: <code className={styles.code}>{defaultValue}</code>
+            Default: <code className={styles.code()}>{defaultValue}</code>
           </div>
         )}
       </td>
-      <td className={styles.td}>
-        <code className={styles.code}>{type}</code>
+      <td className={styles.td()}>
+        <code className={styles.code()}>{type}</code>
       </td>
-      <td className={styles.td}>{description}</td>
+      <td className={styles.td()}>{description}</td>
     </tr>
   )
 }
@@ -82,22 +82,22 @@ export function PropRow({
 }: PropRowProps) {
   const styles = propsTableRecipe()
   return (
-    <tr className={styles.tr}>
-      <td className={styles.td}>
-        <code className={styles.code}>
+    <tr className={styles.tr()}>
+      <td className={styles.td()}>
+        <code className={styles.code()}>
           {name}
           {required && <span style={{ color: "red" }}>*</span>}
         </code>
         {defaultValue && (
           <div style={{ marginTop: "4px", fontSize: "0.75rem", opacity: 0.7 }}>
-            Default: <code className={styles.code}>{defaultValue}</code>
+            Default: <code className={styles.code()}>{defaultValue}</code>
           </div>
         )}
       </td>
-      <td className={styles.td}>
-        <code className={styles.code}>{type}</code>
+      <td className={styles.td()}>
+        <code className={styles.code()}>{type}</code>
       </td>
-      <td className={styles.td}>{description}</td>
+      <td className={styles.td()}>{description}</td>
     </tr>
   )
 }

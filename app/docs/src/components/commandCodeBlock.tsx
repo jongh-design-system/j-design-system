@@ -1,6 +1,3 @@
-import { css, cx } from "@styled-system/css"
-import { flex } from "@styled-system/patterns"
-
 import * as Tabs from "@/components/tabs"
 
 const packageManagers = ["npm", "pnpm", "yarn"] as const
@@ -12,23 +9,12 @@ interface CommandCodeBlockProps {
 export function CommandCodeBlock({ command }: CommandCodeBlockProps) {
   return (
     <Tabs.Root
-      className={css({
-        position: "relative",
-        w: "full",
-        maxH: "650px",
-        overflow: "hidden",
-      })}
+      className="relative max-h-[650px] w-full overflow-hidden"
       defaultValue="npm"
     >
-      <Tabs.List
-        className={flex({
-          w: "full",
-          display: "flex",
-          justifyContent: "flex-start",
-        })}
-      >
+      <Tabs.List className="flex w-full justify-start">
         {packageManagers.map((pm) => (
-          <Tabs.Trigger value={pm} key={pm} className={css({})}>
+          <Tabs.Trigger value={pm} key={pm}>
             {pm}
           </Tabs.Trigger>
         ))}
@@ -37,19 +23,10 @@ export function CommandCodeBlock({ command }: CommandCodeBlockProps) {
         <Tabs.Content
           value={pm}
           key={pm}
-          className={css({
-            bg: "card",
-            color: "card.foreground",
-          })}
+          className="bg-base-200 text-base-content"
         >
-          <pre
-            className={cx(
-              css({
-                textStyle: "body2",
-              }),
-              "shiki github-dark",
-            )}
-          >
+          {/* eslint-disable-next-line better-tailwindcss/no-unknown-classes */}
+          <pre className="shiki github-dark text-sm/normal">
             <code dangerouslySetInnerHTML={{ __html: `${command[pm]}` }} />
           </pre>
         </Tabs.Content>

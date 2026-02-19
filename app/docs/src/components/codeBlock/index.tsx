@@ -1,6 +1,5 @@
 "use client"
 
-import { css } from "@styled-system/css"
 import { type ComponentProps, memo, useRef, useState } from "react"
 
 import Check from "@/components/icons/check"
@@ -12,7 +11,10 @@ const PreContent = memo(
     return (
       <pre
         {...props}
-        className={`${className} ${css({ p: "4", overflow: "auto" })}`}
+        className={`
+          ${className}
+          overflow-auto p-4
+        `}
       >
         {children}
       </pre>
@@ -49,53 +51,24 @@ export const CodeBlock = ({
 
   return (
     <div
-      className={css({
-        position: "relative",
-        mt: "4",
-        mb: "4",
-        bg: "code",
-        border: "base",
-        rounded: "xl",
-        overflow: "hidden",
-        shadow: "card",
-      })}
+      className="
+        relative mt-4 mb-4 overflow-hidden rounded-xl border border-base-300
+        bg-base-200 shadow-md
+      "
     >
       <button
         disabled={isCopied || isLoading}
         aria-label={isCopied ? "Copied!" : "Copy code"}
         onClick={handleClickCopy}
-        className={css({
-          position: "absolute",
-          right: "3",
-          top: "3",
-          display: "flex",
-          h: "fit-content",
-          w: "fit-content",
-          alignItems: "center",
-          rounded: "md",
-          px: "2",
-          py: "2",
-          bg: "background/80",
-          color: "muted.foreground",
-          cursor: "pointer",
-          zIndex: 10,
-          transition: "all",
-          transitionDuration: "fast",
-          border: "base",
-          _hover: {
-            bg: "background",
-            color: "foreground",
-          },
-          _disabled: {
-            opacity: 0.6,
-            cursor: "default",
-          },
-          _focusVisible: {
-            outline: "2px solid",
-            outlineColor: "primary",
-            outlineOffset: "2px",
-          },
-        })}
+        className="
+          absolute top-3 right-3 z-10 flex h-fit w-fit cursor-pointer
+          items-center rounded-md border border-base-300 bg-base-100/80 px-2
+          py-2 text-base-content/60 transition-all duration-150
+          hover:bg-base-100 hover:text-base-content
+          focus-visible:outline-2 focus-visible:outline-offset-2
+          focus-visible:outline-primary
+          disabled:cursor-default disabled:opacity-60
+        "
       >
         {isCopied ? <Check /> : <Copy />}
       </button>

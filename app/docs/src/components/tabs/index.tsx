@@ -1,65 +1,19 @@
-import { css, cx } from "@styled-system/css"
 import { Tabs as TabsPrimitive } from "radix-ui"
-import type { ComponentProps } from "react"
+
+import { createStyleContext } from "@/utils/createStyleContext"
 
 import { recipe } from "./recipe"
 
-export const Root = ({
-  className,
-  ...props
-}: ComponentProps<typeof TabsPrimitive.Root>) => {
-  const styles = recipe.raw()
-  return (
-    <TabsPrimitive.Root
-      className={cx(css(styles.root), className)}
-      {...props}
-    />
-  )
-}
+const { withContext, withProvider } = createStyleContext(recipe)
 
+export const Root = withProvider(TabsPrimitive.Root, "root")
 Root.displayName = "Tabs"
 
-export const List = ({
-  className,
-  ...props
-}: ComponentProps<typeof TabsPrimitive.List>) => {
-  const styles = recipe.raw()
-  return (
-    <TabsPrimitive.List
-      className={cx(css(styles.list), className)}
-      {...props}
-    />
-  )
-}
-
+export const List = withContext(TabsPrimitive.List, "list")
 List.displayName = "Tabs.List"
 
-export const Trigger = ({
-  className,
-  ...props
-}: ComponentProps<typeof TabsPrimitive.Trigger>) => {
-  const styles = recipe.raw()
-  return (
-    <TabsPrimitive.Trigger
-      className={cx(css(styles.trigger), className)}
-      {...props}
-    />
-  )
-}
-
+export const Trigger = withContext(TabsPrimitive.Trigger, "trigger")
 Trigger.displayName = "Tabs.Trigger"
 
-export const Content = ({
-  className,
-  ...props
-}: ComponentProps<typeof TabsPrimitive.Content>) => {
-  const styles = recipe.raw()
-  return (
-    <TabsPrimitive.Content
-      className={cx(css(styles.content), className)}
-      {...props}
-    />
-  )
-}
-
+export const Content = withContext(TabsPrimitive.Content, "content")
 Content.displayName = "Tabs.Content"

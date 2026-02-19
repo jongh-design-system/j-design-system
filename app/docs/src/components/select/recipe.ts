@@ -1,142 +1,39 @@
-import { sva } from "@styled-system/css"
+import { tv } from "tailwind-variants"
 
-export const recipe = sva({
-  className: "select",
-  slots: [
-    "root",
-    "group",
-    "value",
-    "trigger",
-    "viewport",
-    "content",
-    "label",
-    "item",
-    "itemIndicator",
-    "separator",
-  ],
-  base: {
-    trigger: {
-      display: "flex",
-      h: "10",
-      w: "full",
-      alignItems: "center",
-      justifyContent: "space-between",
-      rounded: "md",
-      border: "input",
-      bg: "transparent",
-      px: "3",
-      py: "2",
-      textStyle: "sm",
-      cursor: "pointer",
-      ringColor: "background",
-
-      _placeholder: {
-        color: "muted.foreground",
-      },
-
-      _focus: {
-        ringWidth: "1",
-        ringColor: "ring",
-        outlineOffset: "1",
-      },
-
-      _disabled: {
-        cursor: "not-allowed",
-        opacity: "0.5",
-      },
-    },
-    viewport: {
-      "&:is([data-position=popper])": {
-        h: "var(--radix-select-trigger-height)",
-        w: "full",
-        minW: "var(--radix-select-trigger-width)",
-      },
-    },
-    content: {
-      position: "relative",
-      zIndex: 50,
-      minW: "full",
-      overflow: "hidden",
-      rounded: "md",
-      border: "base",
-      bg: "popover",
-      color: "popover.foreground",
-      shadow: "md",
-      maxH: "96",
-
-      "&:is([data-state=open])": {
-        animationName: "fadeIn",
-        animationState: "ease-in",
-        animationDuration: "slowest",
-      },
-
-      "&:is(&[data-state=closed])": {
-        animationName: "slideInDown",
-        animationState: "ease-in",
-        animationDuration: "slowest",
-      },
-
-      "&:is([data-position=popper])": {
-        "&:is([data-side=top])": {
-          translateY: "-1",
-        },
-
-        "&:is([data-side=bottom])": {
-          translateY: "1",
-        },
-
-        "&:is([data-side=left])": {
-          translateX: "-1",
-        },
-
-        "&:is([data-side=right])": {
-          translateX: "1",
-        },
-      },
-    },
-    label: {
-      py: "1.5",
-      pl: "8",
-      pr: "2",
-      textStyle: "sm",
-      fontWeight: "semibold",
-    },
-    item: {
-      position: "relative",
-      display: "flex",
-      cursor: "default",
-      userSelect: "none",
-      alignItems: "center",
-      rounded: "sm",
-      py: "1.5",
-      pl: "8",
-      pr: "2",
-      textStyle: "sm",
-
-      _focus: {
-        bg: "accent",
-        color: "accent.foreground",
-      },
-
-      ["&[data-disabled]"]: {
-        pointerEvents: "none",
-        opacity: "0.5",
-      },
-    },
-    itemIndicator: {
-      position: "absolute",
-      left: "2",
-      display: "flex",
-      h: "3.5",
-      w: "3.5",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    separator: {
-      mx: "-1",
-      my: "1",
-      h: "1",
-      bg: "muted",
-    },
+export const recipe = tv({
+  slots: {
+    root: "",
+    group: "",
+    value: "",
+    trigger: [
+      "flex h-10 w-full items-center justify-between px-3 py-2",
+      "cursor-pointer rounded-md border border-base-300 bg-transparent",
+      "text-sm",
+      "placeholder:text-base-content/60",
+      "disabled:cursor-not-allowed disabled:opacity-50",
+    ],
+    viewport: `
+      data-[position=popper]:h-(--radix-select-trigger-height)
+      data-[position=popper]:w-full
+      data-[position=popper]:min-w-(--radix-select-trigger-width)
+    `,
+    content: [
+      "relative z-50 min-w-full overflow-hidden",
+      "rounded-md border border-base-300 shadow-md",
+      "max-h-96 bg-base-100 text-base-content",
+      "data-[position=popper]:data-[side=top]:-translate-y-1",
+      "data-[position=popper]:data-[side=bottom]:translate-y-1",
+      "data-[position=popper]:data-[side=left]:-translate-x-1",
+      "data-[position=popper]:data-[side=right]:translate-x-1",
+    ],
+    label: "py-1.5 pr-2 pl-8 text-sm font-semibold",
+    item: [
+      "relative flex items-center rounded-sm py-1.5 pr-2 pl-8 text-sm",
+      "cursor-default select-none",
+      "focus:bg-accent focus:text-accent-content",
+      "data-disabled:pointer-events-none data-disabled:opacity-50",
+    ],
+    itemIndicator: "absolute left-2 flex size-3.5 items-center justify-center",
+    separator: "-mx-1 my-1 h-px bg-base-200",
   },
 })
