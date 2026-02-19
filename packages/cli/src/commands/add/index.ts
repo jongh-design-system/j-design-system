@@ -8,12 +8,8 @@ import path from "path"
 import { z } from "zod"
 
 import { CommandError, ErrorMap } from "@/common/error"
-import {
-  getPandacssConfigPath,
-  loadComponentConfig,
-  loadTSConfig,
-} from "@/common/get-config"
-import { resolveImport, resolvePandaConfig } from "@/common/resolve"
+import { loadComponentConfig, loadTSConfig } from "@/common/get-config"
+import { resolveImport } from "@/common/resolve"
 import { transformImports } from "@/common/transform"
 import { configSchema, registrySchema } from "@/common/types"
 import { getPackageManagerCommand } from "@/common/utils/packageManager"
@@ -49,30 +45,14 @@ export const addCommand = new Command()
       )
       //2. tsconfig.json 파일을 읽어온다
       const tsconfig = loadTSConfig(options.cwd)
-      //3. panda.config.* 파일을 읽어온다
-      const pandaConfigPath = await getPandacssConfigPath(options.cwd)
 
-      const config = await fs.readFile(
-        path.resolve(options.cwd, pandaConfigPath),
-        "utf-8",
-      )
-
-      const { outdir } = await resolvePandaConfig(config)
       //최종 경로
+      const paths = {
+        utils: await resolveImport(componentsJson.utils, tsconfig),
+        components: await resolveImport(componentsJson.components, tsconfig),
+        hooks: await resolveImport(componentsJson.hooks, tsconfig),
+      }
 
-      const paths = configSchema.schema.parse(
-        {
-          utils: await resolveImport(componentsJson.utils, tsconfig),
-          components: await resolveImport(componentsJson.components, tsconfig),
-          hooks: await resolveImport(componentsJson.hooks, tsconfig),
-          styledsystem: path.join(options.cwd, outdir || "styled-system"),
-        },
-        {
-          errorMap: () => ({
-            message: `validation failed at components.json`,
-          }),
-        },
-      )
       //fetch
       const componentList = options.components?.map((c) => c.toLowerCase())
 

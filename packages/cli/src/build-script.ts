@@ -15,7 +15,6 @@ const program = new Command()
 
 const UI_WORKSPACE_PATH = path.resolve(__dirname, "../../ui/src/component") //ui 경로
 const TARGET_PATH = path.resolve(__dirname, "../../../app/docs/public") //registry 파일이 생성될 경로
-const UI_PRESET_PATH = path.resolve(__dirname, "../../ui")
 
 const registryOptionSchema = z.object({
   component: z.string().optional(),
@@ -27,7 +26,6 @@ const WHITE_LIST = [
   /^next\/.+/, // next/image, next/link 등
   "react", // react, react-dom, @types/react 등
   "react-dom",
-  /^@styled-system\/.+/, //내부 패키지들
   /^@utils\/.+/,
   /^@components\/.+/,
   /^@hooks\/.+/,
@@ -56,7 +54,6 @@ export async function handleRegistryCommand(
         console.log(`\n🔄 ${component} 처리 중...`)
         await createRegistryFile(component)
       }
-      await createPresetFile()
       console.log("\n✅ 모든 컴포넌트의 Registry 파일 생성이 완료되었습니다!")
     } else {
       console.log(`🔄 ${component} 컴포넌트의 Registry 파일을 생성합니다.`)
@@ -129,21 +126,4 @@ export async function createRegistryFile(component: string) {
       stringifiedFileContent,
     )
   }
-}
-
-export async function createPresetFile() {
-  //TODO: 다양한 preset파일을 폴더형태로 제공
-  const content = await fs.readFile(
-    path.join(UI_PRESET_PATH, "preset.ts"),
-    "utf-8",
-  )
-  const fileContent = {
-    name: "preset.ts",
-    dependencies: [],
-    file: JSON.stringify(content),
-  }
-  fs.writeFile(
-    path.join(TARGET_PATH, "preset.json"),
-    JSON.stringify(fileContent),
-  )
 }

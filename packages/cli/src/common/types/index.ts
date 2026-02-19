@@ -7,7 +7,6 @@ export const configSchema = {
       utils: z.string(),
       components: z.string(),
       hooks: z.string(),
-      styledsystem: z.string(),
     })
     .strict(),
 } as const
@@ -26,10 +25,4 @@ export const registrySchema = z.object({
   name: z.string(),
   dependencies: z.array(z.string()).optional(),
   files: z.array(fileSchema).optional(),
-})
-
-export const presetSchema = z.object({
-  name: z.string(),
-  dependencies: z.array(z.string()).optional(),
-  file: z.string(),
 })
