@@ -35,9 +35,15 @@ export const TextField = (props: TextFieldProps) => {
     <div className={styles.root()}>
       {label && (
         <div className={styles.heading()}>
-          <label htmlFor={id}>
+          <label
+            htmlFor={id}
+            className={
+              required
+                ? "after:ml-0.5 after:text-error after:content-['*']"
+                : ""
+            }
+          >
             {label}
-            {required && <span className="ml-0.5 text-sm text-error">*</span>}
           </label>
         </div>
       )}
