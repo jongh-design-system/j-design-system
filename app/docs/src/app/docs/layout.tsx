@@ -1,5 +1,3 @@
-import { css } from "@styled-system/css"
-import { styled } from "@styled-system/jsx"
 import type { ReactNode } from "react"
 
 import { Aside } from "@/components/aside"
@@ -8,27 +6,21 @@ import aside from "@/components/aside/aside.json"
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div
-      className={css({
-        display: "flex",
-        flexDirection: "column",
-        md: {
-          display: "grid",
-          gridTemplateColumns: "200px minmax(0,1fr)",
-          gap: "2.5",
-        },
-      })}
+      className="
+        flex flex-col
+        md:grid md:grid-cols-[200px_minmax(0,1fr)] md:gap-2.5
+      "
     >
       <Aside data={aside} />
-      <styled.main
-        width="100%"
-        maxW="52rem"
-        mx="auto"
-        pos="relative"
-        px={{ base: "4", md: "6", lg: "8" }}
-        py={{ base: "6", md: "8", lg: "10" }}
+      <main
+        className="
+          relative mx-auto w-full max-w-208 px-4 py-6
+          md:px-6 md:py-8
+          lg:px-8 lg:py-10
+        "
       >
         {children}
-      </styled.main>
+      </main>
     </div>
   )
 }
