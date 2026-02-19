@@ -28,8 +28,8 @@ export function Aside({ data }: AsideProps) {
   const { root, content } = recipe()
 
   return (
-    <aside className={root}>
-      <div className={content}>
+    <aside className={root()}>
+      <div className={content()}>
         {Object.entries(data).map(([key, category]) => (
           <AsideCategory key={key} category={category} />
         ))}
@@ -42,9 +42,9 @@ function AsideCategory({ category }: { category: AsideCategory }) {
   const { section, sectionTitle, navItems } = recipe()
 
   return (
-    <div className={section}>
-      <h3 className={sectionTitle}>{category.title}</h3>
-      <div className={navItems}>
+    <div className={section()}>
+      <h3 className={sectionTitle()}>{category.title}</h3>
+      <div className={navItems()}>
         {category.items.map((item) => (
           <AsideNavItem key={item.slug} item={item} />
         ))}
@@ -68,7 +68,7 @@ function AsideNavItem({
 
   return (
     <div style={{ paddingLeft: level > 1 ? `${8 * level}px` : 0 }}>
-      <Link href={href} className={navItem}>
+      <Link href={href} className={navItem()}>
         {item.title}
       </Link>
     </div>

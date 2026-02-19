@@ -1,8 +1,7 @@
 "use client"
-import { css } from "@styled-system/css"
 import { X } from "lucide-react"
 import { Dialog } from "radix-ui"
-import { type ComponentProps } from "react"
+import { type ComponentProps, forwardRef } from "react"
 
 import { createStyleContext } from "@/utils/createStyleContext"
 
@@ -12,60 +11,38 @@ const { withRootProvider, withContext } = createStyleContext(recipe)
 
 export const Root = withRootProvider(Dialog.Root)
 
-export const Portal = withRootProvider(Dialog.Portal)
-export const Overlay = withContext<
-  React.ComponentType<typeof Dialog.Overlay>,
-  Dialog.DialogOverlayProps
->(Dialog.Overlay, "overlay")
+export const Portal = withContext(Dialog.Portal, "portal")
 
-export const Close = withContext<
-  React.ComponentType<typeof Dialog.Close>,
-  Dialog.DialogCloseProps
->(Dialog.Close, "close")
+export const Overlay = withContext(Dialog.Overlay, "overlay")
 
-export const ContentPrimitive = ({
-  children,
-  ref,
-  ...props
-}: ComponentProps<typeof Dialog.Content>) => (
+export const Close = withContext(Dialog.Close, "close")
+
+export const ContentPrimitive = forwardRef<
+  HTMLDivElement,
+  ComponentProps<typeof Dialog.Content>
+>(({ children, ...props }, ref) => (
   <Portal>
     <Overlay />
     <Dialog.Content ref={ref} {...props}>
       {children}
       <Close>
         <X />
-        <span className={css({ srOnly: true })}>Close</span>
+        <span className="sr-only">Close</span>
       </Close>
     </Dialog.Content>
   </Portal>
-)
+))
 
-export const Content = withContext<
-  React.ComponentType<typeof ContentPrimitive>,
-  ComponentProps<typeof ContentPrimitive>
->(ContentPrimitive, "content")
+ContentPrimitive.displayName = "ContentPrimitive"
 
-export const Trigger = withContext<
-  React.ComponentType<typeof Dialog.Trigger>,
-  Dialog.DialogTriggerProps
->(Dialog.Trigger, "trigger")
+export const Content = withContext(ContentPrimitive, "content")
 
-export const Header = withContext<HTMLDivElement, ComponentProps<"div">>(
-  "div",
-  "header",
-)
+export const Trigger = withContext(Dialog.Trigger, "trigger")
 
-export const Footer = withContext<HTMLDivElement, ComponentProps<"div">>(
-  "div",
-  "footer",
-)
+export const Header = withContext("div", "header")
 
-export const Title = withContext<
-  React.ComponentType<typeof Dialog.Title>,
-  Dialog.DialogTitleProps
->(Dialog.Title, "title")
+export const Footer = withContext("div", "footer")
 
-export const Description = withContext<
-  React.ComponentType<typeof Dialog.Description>,
-  Dialog.DialogDescriptionProps
->(Dialog.Description, "description")
+export const Title = withContext(Dialog.Title, "title")
+
+export const Description = withContext(Dialog.Description, "description")

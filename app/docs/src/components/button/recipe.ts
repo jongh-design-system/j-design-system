@@ -1,98 +1,44 @@
-import { cva, type RecipeVariantProps } from "@styled-system/css"
+import { tv, type VariantProps } from "tailwind-variants"
 
-export type ButtonVariantProps = RecipeVariantProps<typeof recipe>
-export const recipe = cva({
-  base: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    rounded: "md",
-    textStyle: "sm",
-    fontWeight: "medium",
-    transition: "colors",
-    cursor: "pointer",
-    gap: "2",
-    _focusVisible: {
-      ringWidth: "1",
-      ringColor: "ring",
-      ringOffset: "1",
-    },
+export type ButtonVariantProps = VariantProps<typeof recipe>
 
-    _disabled: {
-      cursor: "not-allowed",
-      opacity: "50%",
-    },
-  },
+export const recipe = tv({
+  base: [
+    "inline-flex items-center justify-center gap-2",
+    "cursor-pointer rounded-md text-sm font-medium",
+    "transition-colors",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+  ],
   variants: {
     variant: {
-      default: {
-        bg: "primary",
-        color: "primary.foreground",
-
-        _hover: {
-          bg: "primary/90",
-        },
-      },
-      destructive: {
-        bg: "destructive",
-        color: "destructive.foreground",
-
-        _hover: {
-          bg: "destructive/90",
-        },
-      },
-      outline: {
-        border: "input",
-        bg: "background",
-
-        _hover: {
-          bg: "accent",
-          color: "accent.foreground",
-        },
-      },
-      secondary: {
-        bg: "secondary",
-        color: "secondary.foreground",
-
-        _hover: {
-          bga: "secondary/90",
-        },
-      },
-      ghost: {
-        _hover: {
-          bg: "accent",
-          color: "accent.foreground",
-        },
-      },
-      link: {
-        color: "primary",
-        textUnderlineOffset: "4px",
-
-        _hover: {
-          textDecoration: "underline",
-        },
-      },
+      default: `
+        bg-primary text-primary-content
+        hover:not-disabled:brightness-90
+      `,
+      destructive: `
+        bg-error text-error-content
+        hover:not-disabled:brightness-90
+      `,
+      outline: `
+        border border-base-300 bg-base-100
+        hover:not-disabled:bg-accent hover:not-disabled:text-accent-content
+      `,
+      secondary: `
+        bg-secondary text-secondary-content
+        hover:not-disabled:brightness-90
+      `,
+      ghost:
+        "hover:not-disabled:bg-accent hover:not-disabled:text-accent-content",
+      link: `
+        text-primary underline-offset-4
+        hover:not-disabled:underline
+      `,
     },
     size: {
-      default: {
-        h: "10",
-        px: "4",
-        py: "2",
-      },
-      sm: {
-        h: "9",
-        rounded: "md",
-        px: "3",
-      },
-      lg: {
-        h: "11",
-        rounded: "md",
-        px: "8",
-      },
-      icon: {
-        h: "10",
-        w: "10",
-      },
+      default: "h-10 px-4 py-2",
+      sm: "h-9 rounded-md px-3",
+      lg: "h-11 rounded-md px-8",
+      icon: "h-10 w-10",
     },
   },
   defaultVariants: {

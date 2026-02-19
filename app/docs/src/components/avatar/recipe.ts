@@ -1,30 +1,10 @@
-import { sva } from "@styled-system/css"
+import { tv } from "tailwind-variants"
 
-export const recipe = sva({
-  slots: ["root", "image", "fallback"],
-  base: {
-    root: {
-      position: "relative",
-      display: "flex",
-      h: "12",
-      w: "12",
-      flexShrink: "0",
-      overflow: "hidden",
-      rounded: "full",
-    },
-    image: {
-      aspectRatio: "square",
-      h: "full",
-      w: "full",
-    },
-    fallback: {
-      display: "flex",
-      h: "full",
-      w: "full",
-      alignItems: "center",
-      justifyContent: "center",
-      rounded: "full",
-      bg: "muted",
-    },
+export const recipe = tv({
+  slots: {
+    root: "relative flex size-12 shrink-0 overflow-hidden rounded-full",
+    image: "aspect-square h-full w-full",
+    fallback:
+      "flex h-full w-full items-center justify-center rounded-full bg-base-200",
   },
 })

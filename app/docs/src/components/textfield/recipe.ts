@@ -1,78 +1,41 @@
-import { RecipeVariantProps, sva } from "@styled-system/css"
+import { tv, type VariantProps } from "tailwind-variants"
 
-export const recipe = sva({
-  slots: ["root", "heading", "container", "input", "trailingButton", "helper"],
-  base: {
-    root: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "1.5",
-      width: "full",
-    },
-    heading: {
-      textStyle: "label1",
-      "& label.required": {
-        "&::after": {
-          color: "destructive",
-          content: "'*'",
-          fontSize: "sm",
-          marginLeft: "0.5",
-        },
-      },
-    },
-    container: {
-      alignItems: "center",
-      border: "input",
-      borderRadius: "md",
-      shadow: "sm",
-      display: "flex",
-      gap: "1.5",
-      minHeight: "12",
-      padding: "3",
-      width: "full",
-      transition: "colors",
-      transitionTimingFunction: "in",
-      transitionDuration: "fast",
-      _disabled: {
-        cursor: "not-allowed",
-      },
-      _focusWithin: {
-        borderColor: "primary",
-      },
-    },
-    input: {
-      border: "none",
-      outline: "none",
-      flex: "1",
-      _disabled: {
-        cursor: "not-allowed",
-      },
-    },
-    trailingButton: {
-      display: "flex",
-      alignItems: "center",
-      whiteSpace: "nowrap",
-      maxHeight: "2",
-    },
-    helper: {
-      alignSelf: "stretch",
-      color: "muted.foreground",
-      textStyle: "caption2",
-    },
+export const recipe = tv({
+  slots: {
+    root: "flex w-full flex-col gap-1.5",
+    heading: [
+      "text-sm/snug font-semibold tracking-wide",
+      `
+        [&_label.required]:after:ml-0.5 [&_label.required]:after:text-sm
+        [&_label.required]:after:text-error
+        [&_label.required]:after:content-['*']
+      `,
+    ],
+    container: [
+      "flex min-h-12 w-full items-center gap-1.5 p-3",
+      "rounded-md border border-base-300 shadow-sm",
+      "transition-colors duration-150 ease-in",
+      "has-disabled:cursor-not-allowed",
+      "focus-within:border-primary",
+    ],
+    input: `
+      flex-1 border-none outline-none
+      disabled:cursor-not-allowed
+    `,
+    trailingButton: "flex max-h-2 items-center whitespace-nowrap",
+    helper: `
+      self-stretch text-xs/snug font-semibold tracking-wide text-base-content/60
+    `,
   },
   variants: {
     status: {
       normal: {},
       negative: {
-        container: {
-          borderColor: "destructive",
-          _focusWithin: {
-            borderColor: "destructive",
-          },
-        },
-        helper: {
-          color: "destructive",
-        },
+        container: `
+          border-error
+          focus-within:border-error
+        `,
+        helper: "text-error",
       },
     },
   },
@@ -81,4 +44,4 @@ export const recipe = sva({
   },
 })
 
-export type TextFieldVariantProps = RecipeVariantProps<typeof recipe>
+export type TextFieldVariantProps = VariantProps<typeof recipe>
