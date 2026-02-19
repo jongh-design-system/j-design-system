@@ -16,7 +16,7 @@
     "@jongh/eslint": "workspace:*",
     "@jongh/tsconfig": "workspace:*"
   },
-  "dependencies": {
-    "tailwindcss": "^4.1.12"
+  "peerDependencies": {
+    "tailwindcss": ">=4"
   }
 }
