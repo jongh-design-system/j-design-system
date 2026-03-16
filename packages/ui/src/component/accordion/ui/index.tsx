@@ -1,4 +1,4 @@
-import { createStyleContext } from "@styled-system/jsx"
+import { createStyleContext } from "@jongh/new-system-output/react"
 import { ChevronDown } from "lucide-react"
 import { Accordion as AccordionPrimitive } from "radix-ui"
 import { type ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
@@ -13,7 +13,12 @@ export const Item = withContext(AccordionPrimitive.Item, "item")
 
 export const Header = withContext(AccordionPrimitive.Header, "header")
 
-const ContentWrapper = withContext("div", "contentWrapper")
+const ContentWrapperPrimitive = forwardRef<
+  HTMLDivElement,
+  ComponentPropsWithoutRef<"div">
+>((props, ref) => <div ref={ref} {...props} />)
+
+const ContentWrapper = withContext(ContentWrapperPrimitive, "contentWrapper")
 
 const ContentPrimitive = forwardRef<
   ElementRef<typeof AccordionPrimitive.Content>,

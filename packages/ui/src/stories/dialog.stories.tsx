@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
-import {
-  expect,
-  screen,
-  userEvent,
-  waitForElementToBeRemoved,
-  within,
-} from "storybook/test"
+import { expect, userEvent, waitFor, within } from "storybook/test"
 
 import { Button } from "@/component/button/ui"
 import { TextField } from "@/component/textfield/ui"
@@ -39,18 +33,19 @@ export const Primary: Story = {
   play: async ({ canvasElement }) => {
     //canvasElement -> storybook의 #storybook-root
     //React portal API를 사용할 경우 다른곳에 렌더링
-    //더 넓은 범위의 screen으로 테스트하는게 더 올바른 방법이라고 생각
+    //canvas 바깥의 body 기준으로 확인해야 portal로 렌더된 dialog를 잡을 수 있다.
     const canvas = within(canvasElement)
+    const portal = within(canvasElement.ownerDocument.body)
     const ButtonElement = canvas.getByRole("button")
     await userEvent.click(ButtonElement)
-    const CloseElement = screen.getByText("Close")
+    const CloseElement = portal.getByText("Close")
     expect(CloseElement).not.toBeNull()
 
     await userEvent.click(CloseElement)
 
-    waitForElementToBeRemoved(CloseElement).then(() =>
-      expect(CloseElement).not.toBeInTheDocument(),
-    )
+    await waitFor(() => {
+      expect(portal.queryByText("Close")).not.toBeInTheDocument()
+    })
   },
 }
 

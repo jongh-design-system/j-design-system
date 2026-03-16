@@ -18,10 +18,12 @@ export default mergeConfig(
       storybookTest({
         configDir: path.join(dirname, ".storybook"),
         storybookScript: "pnpm storybook --ci",
+        tags: {
+          include: ["packed"],
+        },
       }),
     ],
     test: {
-      name: "storybook",
       browser: {
         enabled: true,
         api: {
@@ -37,9 +39,6 @@ export default mergeConfig(
         provider: "playwright",
         headless: true,
       },
-      // Speed up tests and better match how they run in Storybook itself
-      // https://vitest.dev/config/#isolate
-      // Consider removing this if you have flaky tests
       isolate: false,
       setupFiles: ["./.storybook/vitest.setup.ts"],
     },
