@@ -2,21 +2,22 @@ declare interface ChipVariant {
   /**
    * @default "filled"
    */
-  variant: "filled" | "outlined"
+  variant: "filled" | "outlined";
   /**
    * @default "md"
    */
-  size: "sm" | "md"
+  size: "sm" | "md";
   /**
    * @default "withText"
    */
-  layout: "withText" | "iconOnly"
+  layout: "withText" | "iconOnly";
 }
 
 export declare type ChipVariantProps = Partial<ChipVariant>
 
 export declare const chip: ((props?: ChipVariantProps) => string) & {
-  splitVariantProps: <T extends Record<string, unknown>>(
-    props: T,
-  ) => [ChipVariantProps, Omit<T, keyof ChipVariantProps>]
+  splitVariantProps: <T extends Record<string, unknown>>(props: T) => [
+    ChipVariantProps,
+    Omit<T, keyof ChipVariantProps>
+  ]
 }

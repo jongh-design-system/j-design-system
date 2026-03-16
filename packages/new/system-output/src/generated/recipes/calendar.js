@@ -1,18 +1,38 @@
-import {
-  createClassName,
-  mergeVariants,
-  splitVariantProps,
-} from "@jongh/new-system-runtime/recipe"
+import { createClassName, mergeVariants, splitVariantProps } from "../../internal/recipe.js"
 
 const calendarSlots = [
-  ["root", "jds-calendar__root"],
-  ["header", "jds-calendar__header"],
-  ["title", "jds-calendar__title"],
-  ["navButton", "jds-calendar__navButton"],
-  ["weekday", "jds-calendar__weekday"],
-  ["daysGrid", "jds-calendar__daysGrid"],
-  ["weekRow", "jds-calendar__weekRow"],
-  ["dayCell", "jds-calendar__dayCell"],
+  [
+    "root",
+    "jds-calendar__root"
+  ],
+  [
+    "header",
+    "jds-calendar__header"
+  ],
+  [
+    "title",
+    "jds-calendar__title"
+  ],
+  [
+    "navButton",
+    "jds-calendar__navButton"
+  ],
+  [
+    "weekday",
+    "jds-calendar__weekday"
+  ],
+  [
+    "daysGrid",
+    "jds-calendar__daysGrid"
+  ],
+  [
+    "weekRow",
+    "jds-calendar__weekRow"
+  ],
+  [
+    "dayCell",
+    "jds-calendar__dayCell"
+  ]
 ]
 const defaultVariants = {}
 const compoundVariants = []
@@ -26,11 +46,11 @@ export function calendar(props = {}) {
   return Object.fromEntries(
     calendarSlots.map(([slot, className]) => [
       slot,
-      createClassName(className, variants, compoundVariants),
-    ]),
+      createClassName(className, variants, compoundVariants)
+    ])
   )
 }
 
 Object.assign(calendar, {
-  splitVariantProps: (props) => splitVariantProps(props, calendarVariantMap),
+  splitVariantProps: (props) => splitVariantProps(props, calendarVariantMap)
 })

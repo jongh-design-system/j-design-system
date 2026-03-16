@@ -2,9 +2,9 @@ import fs from "node:fs/promises"
 import os from "node:os"
 import path from "node:path"
 
-import { resetCssPath } from "@jongh/new-system-spec/reset"
 import { afterEach, describe, expect, it } from "vitest"
 
+import { resetCssPath } from "../../system-spec/src/reset.ts"
 import { buildSystemOutput } from "../scripts/build.ts"
 
 const tempDirs: string[] = []
@@ -44,10 +44,6 @@ describe("buildSystemOutput", () => {
       path.join(outputDir, "generated/recipes/avatar.js"),
       "utf8",
     )
-    const themingJs = await fs.readFile(
-      path.join(outputDir, "generated/theming.js"),
-      "utf8",
-    )
     const tokenDts = await fs.readFile(
       path.join(outputDir, "generated/tokens/index.d.ts"),
       "utf8",
@@ -61,9 +57,8 @@ describe("buildSystemOutput", () => {
     expect(baseCss).toContain("--jds-primitive-color-slate-50:")
     expect(baseCss).toContain("--jds-color-bg-surface:")
     expect(allCss).toContain(".jds-avatar__root")
-    expect(avatarJs).toContain('from "@jongh/new-system-runtime/recipe"')
+    expect(avatarJs).toContain('from "../../internal/recipe.js"')
     expect(avatarJs).toContain("export function avatar(props = {})")
-    expect(themingJs).toContain('from "@jongh/new-system-runtime/theme"')
     expect(tokenDts).toContain("export declare type ColorTokenPath =")
     expect(resetCss).toBe(sourceResetCss)
   })

@@ -20,8 +20,7 @@
   flex-shrink: 0;
 }
 
-.jds-chip:disabled,
-.jds-chip[data-disabled] {
+.jds-chip:disabled, .jds-chip[data-disabled] {
   cursor: not-allowed;
   opacity: 0.5;
 }

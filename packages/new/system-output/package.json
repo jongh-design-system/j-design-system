@@ -4,34 +4,47 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "node scripts/build.ts && pnpm exec tsdown --config tsdown.config.ts",
     "lint": "eslint --max-warnings 0 --no-warn-ignored .",
     "check-type": "tsgo --noEmit",
     "test": "pnpm exec vitest run"
   },
+  "files": [
+    "dist"
+  ],
   "exports": {
     "./tokens": {
-      "types": "./src/generated/tokens/index.d.ts",
-      "import": "./src/generated/tokens/index.js"
+      "types": "./dist/generated/tokens/index.d.ts",
+      "import": "./dist/generated/tokens/index.js"
     },
     "./recipes/*": {
-      "types": "./src/generated/recipes/*.d.ts",
-      "import": "./src/generated/recipes/*.js"
+      "types": "./dist/generated/recipes/*.d.ts",
+      "import": "./dist/generated/recipes/*.js"
     },
-    "./styles/reset.css": "./src/generated/styles/reset.css",
-    "./styles/base.css": "./src/generated/styles/base.css",
-    "./styles/all.css": "./src/generated/styles/all.css",
-    "./theming": "./src/generated/theming.js",
+    "./styles/reset.css": "./dist/generated/styles/reset.css",
+    "./styles/base.css": "./dist/generated/styles/base.css",
+    "./styles/all.css": "./dist/generated/styles/all.css",
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
+    "./theme": {
+      "types": "./dist/theme/index.d.ts",
+      "import": "./dist/theme/index.js"
+    },
     "./package.json": "./package.json"
   },
-  "dependencies": {
-    "@jongh/new-system-runtime": "workspace:*"
+  "peerDependencies": {
+    "react": "^18.2.0 || ^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.8.6",
+    "@types/react": "^19.0.8",
     "@jongh/eslint": "workspace:*",
     "@jongh/new-system-core": "workspace:*",
     "@jongh/new-system-spec": "workspace:*",
     "@jongh/tsconfig": "workspace:*",
-    "tsx": "^4.19.2"
+    "react": "^19.0.0",
+    "tsdown": "catalog:"
   }
 }

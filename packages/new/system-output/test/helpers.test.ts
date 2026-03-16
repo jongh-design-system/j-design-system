@@ -1,23 +1,18 @@
 import { describe, expect, it } from "vitest"
 
 import {
-  applyTheme,
   createClassName,
-  createVarName,
   cx,
-  generateThemeScript,
   mergeVariants,
   splitVariantProps,
-  tokenVar,
-} from "../src/index.ts"
+} from "../src/internal/recipe.js"
+import { applyTheme, generateThemeScript } from "../src/theme/index.js"
 
-describe("cx", () => {
+describe("react helpers", () => {
   it("joins truthy class names only", () => {
     expect(cx("base", false, null, undefined, "accent")).toBe("base accent")
   })
-})
 
-describe("variant helpers", () => {
   it("merges defaults and ignores nullish overrides", () => {
     expect(
       mergeVariants(
@@ -73,14 +68,7 @@ describe("variant helpers", () => {
   })
 })
 
-describe("token and theme helpers", () => {
-  it("creates prefixed css variable names", () => {
-    expect(createVarName("primitive.color.blue.500")).toBe(
-      "--jds-primitive-color-blue-500",
-    )
-    expect(tokenVar("color.bg.surface")).toBe("var(--jds-color-bg-surface)")
-  })
-
+describe("theme helpers", () => {
   it("applies the theme mode to a root element", () => {
     const root = {
       dataset: {},

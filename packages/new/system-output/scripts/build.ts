@@ -2,9 +2,9 @@ import fs from "node:fs/promises"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-import { writeSystemFiles } from "@jongh/new-system-core/build"
-import { system } from "@jongh/new-system-spec"
-import { resetCssPath as defaultResetCssPath } from "@jongh/new-system-spec/reset"
+import { writeSystemFiles } from "../../system-core/src/build.ts"
+import { resetCssPath as defaultResetCssPath } from "../../system-spec/src/reset.ts"
+import { system } from "../../system-spec/src/system.ts"
 
 export async function buildSystemOutput({
   outputDir,

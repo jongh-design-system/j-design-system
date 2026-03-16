@@ -36,6 +36,14 @@ export const accordionRecipe = defineSlotRecipe({
       overflow: "hidden",
       color: "color.fg.muted",
       textStyle: "typography.body.sm",
+      "&[data-state='closed']": {
+        animationDuration: "motion.duration.normal",
+        animationName: "accordion-up_radix",
+      },
+      "&[data-state='open']": {
+        animationDuration: "motion.duration.normal",
+        animationName: "accordion-down_radix",
+      },
     },
     contentWrapper: {
       paddingInline: "spacing.1",

@@ -32,7 +32,7 @@
   transition-timing-function: var(--jds-primitive-motion-easing-standard);
 }
 
-.jds-tabs__trigger[data-state="active"] {
+.jds-tabs__trigger[data-state='active'] {
   background-color: var(--jds-color-bg-canvas);
   color: var(--jds-color-fg-default);
   box-shadow: var(--jds-primitive-shadow-sm);
@@ -56,6 +56,6 @@
   letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
 }
 
-.jds-tabs__trigger--tone_accent[data-state="active"] {
+.jds-tabs__trigger--tone_accent[data-state='active'] {
   color: var(--jds-color-fg-accent);
 }
