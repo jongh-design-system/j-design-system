@@ -15,3 +15,30 @@ await fs.copyFile(
   path.join(distDir, declarationFile),
   path.join(distDir, "index.d.ts"),
 )
+
+const facadeEntries = {
+  recipe: ["createClassName", "mergeVariants", "splitVariantProps"],
+  theme: ["applyTheme", "generateThemeScript"],
+  react: [
+    "createRecipeContext",
+    "createSlotRecipeContext",
+    "createStyleContext",
+  ],
+  tokens: ["createVarName", "tokenVar"],
+}
+
+for (const [entryName, exports] of Object.entries(facadeEntries)) {
+  const exportList = exports.join(", ")
+
+  await fs.writeFile(
+    path.join(distDir, `${entryName}.js`),
+    `export { ${exportList} } from "./index.js"\n`,
+    "utf8",
+  )
+
+  await fs.writeFile(
+    path.join(distDir, `${entryName}.d.ts`),
+    `export { ${exportList} } from "./index.js"\n`,
+    "utf8",
+  )
+}

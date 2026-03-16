@@ -1,4 +1,4 @@
-import { config } from "../../../configs/eslint/base.js"
+import { config } from "@jongh/eslint/base"
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [

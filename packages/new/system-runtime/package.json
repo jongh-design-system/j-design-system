@@ -6,12 +6,29 @@
   "scripts": {
     "build": "tsdown && node ./scripts/postbuild.mjs",
     "lint": "eslint --max-warnings 0 --no-warn-ignored .",
-    "check-type": "tsgo --noEmit"
+    "check-type": "tsgo --noEmit",
+    "test": "pnpm exec vitest run"
   },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./recipe": {
+      "types": "./dist/recipe.d.ts",
+      "import": "./dist/recipe.js"
+    },
+    "./theme": {
+      "types": "./dist/theme.d.ts",
+      "import": "./dist/theme.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js"
     },
     "./package.json": "./package.json"
   },

@@ -5,15 +5,21 @@
   "type": "module",
   "scripts": {
     "lint": "eslint --max-warnings 0 --no-warn-ignored .",
-    "check-type": "tsgo --noEmit"
+    "check-type": "tsgo --noEmit",
+    "test": "pnpm exec vitest run"
   },
   "exports": {
     ".": "./src/index.ts",
+    "./build": "./src/build.ts",
+    "./define": "./src/define.ts",
+    "./types": "./src/types/index.ts",
     "./package.json": "./package.json"
   },
   "devDependencies": {
     "@types/node": "^22.8.6",
     "@jongh/eslint": "workspace:*",
-    "@jongh/tsconfig": "workspace:*"
+    "@jongh/new-system-spec": "workspace:*",
+    "@jongh/tsconfig": "workspace:*",
+    "csstype": "^3.1.3"
   }
 }

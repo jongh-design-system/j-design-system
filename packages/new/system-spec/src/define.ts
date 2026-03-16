@@ -2,7 +2,8 @@ import {
   createRecipeFactory,
   createSemanticTokensFactory,
   definePrimitiveTokens,
-} from "../../system-core/src/define.ts"
+} from "@jongh/new-system-core/define"
+
 import type { NativeThemeContract } from "./theme-contract.ts"
 import type { NativePrimitiveTokens } from "./tokens/primitive.ts"
 

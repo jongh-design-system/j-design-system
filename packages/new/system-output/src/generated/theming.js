@@ -1,1 +1,4 @@
-export { applyTheme, generateThemeScript } from "@jongh/new-system-runtime"
+export {
+  applyTheme,
+  generateThemeScript,
+} from "@jongh/new-system-runtime/theme"

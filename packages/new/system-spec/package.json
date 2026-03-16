@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "lint": "eslint --max-warnings 0 --no-warn-ignored .",
-    "check-type": "tsgo --noEmit"
+    "check-type": "tsgo --noEmit",
+    "test:types": "tsgo --noEmit"
   },
   "exports": {
     ".": "./src/index.ts",
+    "./define": "./src/define.ts",
+    "./reset": "./src/reset.ts",
+    "./reset.css": "./src/reset.css",
     "./package.json": "./package.json"
   },
   "dependencies": {

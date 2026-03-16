@@ -1,4 +1,4 @@
-import { config } from "../../../configs/eslint/react-internal.js"
+import { config } from "@jongh/eslint/react-internal"
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [

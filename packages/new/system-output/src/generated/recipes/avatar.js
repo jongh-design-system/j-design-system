@@ -2,7 +2,7 @@ import {
   createClassName,
   mergeVariants,
   splitVariantProps,
-} from "@jongh/new-system-runtime"
+} from "@jongh/new-system-runtime/recipe"
 
 const avatarSlots = [
   ["root", "jds-avatar__root"],

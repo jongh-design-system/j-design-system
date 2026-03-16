@@ -81,7 +81,7 @@ export class SystemArtifactGenerator<TTheme extends ThemeContract> {
       {
         path: "generated/theming.js",
         contents:
-          'export { applyTheme, generateThemeScript } from "@jongh/new-system-runtime"\n',
+          'export { applyTheme, generateThemeScript } from "@jongh/new-system-runtime/theme"\n',
       },
     ]
   }

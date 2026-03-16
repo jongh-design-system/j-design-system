@@ -2,7 +2,7 @@ import {
   createClassName,
   mergeVariants,
   splitVariantProps,
-} from "@jongh/new-system-runtime"
+} from "@jongh/new-system-runtime/recipe"
 
 const dialogSlots = [
   ["trigger", "jds-dialog__trigger"],

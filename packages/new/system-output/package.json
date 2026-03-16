@@ -6,10 +6,10 @@
   "scripts": {
     "build": "node --experimental-strip-types ./scripts/build.ts && prettier --write ./src/generated",
     "lint": "eslint --max-warnings 0 --no-warn-ignored .",
-    "check-type": "tsgo --noEmit"
+    "check-type": "tsgo --noEmit",
+    "test": "pnpm exec vitest run"
   },
   "exports": {
-    ".": "./src/index.ts",
     "./tokens": {
       "types": "./src/generated/tokens/index.d.ts",
       "import": "./src/generated/tokens/index.js"
