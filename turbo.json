@@ -14,6 +14,15 @@
       "outputs": ["dist/**"],
       "cache": false
     },
+    "@jongh/ui#build": {
+      "dependsOn": ["@jongh/new-system-output#build"]
+    },
+    "@jongh/ui#check-type": {
+      "dependsOn": ["@jongh/new-system-output#build"]
+    },
+    "@jongh/ui#test": {
+      "dependsOn": ["@jongh/new-system-output#build"]
+    },
     "check-type": {},
     "lint": {},
     "test": {
