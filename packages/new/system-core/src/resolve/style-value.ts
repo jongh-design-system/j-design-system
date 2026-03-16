@@ -1,5 +1,10 @@
 import type { SystemDefinition } from "../types/recipe.ts"
-import type { StyleObject, StyleScalar, ThemeContract } from "../types/style.ts"
+import {
+  type StyleObject,
+  type StyleScalar,
+  styleTokenPropertyGroups,
+  type ThemeContract,
+} from "../types/style.ts"
 import { resolveStyleToken, resolveTokenVarPath, tokenVar } from "./tokens.ts"
 
 const pseudoSelectors: Record<string, string> = {
@@ -35,11 +40,19 @@ const shorthandProperties: Record<string, string[]> = {
   rounded: ["border-radius"],
 }
 
-const spacingPropertyPattern =
-  /^(gap|padding(?:-.+)?|margin(?:-.+)?|inset|top|right|bottom|left|min-width|max-width|width|min-height|max-height|height)$/
-
 function kebabCase(value: string): string {
   return value.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)
+}
+
+const tokenPropertySets = {
+  color: new Set(styleTokenPropertyGroups.color.map(kebabCase)),
+  spacing: new Set(styleTokenPropertyGroups.spacing.map(kebabCase)),
+  radius: new Set(styleTokenPropertyGroups.radius.map(kebabCase)),
+  shadow: new Set(styleTokenPropertyGroups.shadow.map(kebabCase)),
+  motionDuration: new Set(
+    styleTokenPropertyGroups.motionDuration.map(kebabCase),
+  ),
+  motionEasing: new Set(styleTokenPropertyGroups.motionEasing.map(kebabCase)),
 }
 
 function isNestedValue(value: unknown): value is StyleObject {
@@ -68,29 +81,28 @@ function stringifyValue<TTheme extends ThemeContract>(
     return resolveStyleToken(value, system)
   }
 
-  if (value.startsWith("spacing.") && spacingPropertyPattern.test(property)) {
+  if (value.startsWith("spacing.") && tokenPropertySets.spacing.has(property)) {
     return resolveStyleToken(value, system)
   }
 
-  if (value.startsWith("radius.") && property.includes("radius")) {
+  if (value.startsWith("radius.") && tokenPropertySets.radius.has(property)) {
     return resolveStyleToken(value, system)
   }
 
-  if (value.startsWith("shadow.") && property === "box-shadow") {
+  if (value.startsWith("shadow.") && tokenPropertySets.shadow.has(property)) {
     return resolveStyleToken(value, system)
   }
 
   if (
     value.startsWith("motion.duration.") &&
-    (property === "transition-duration" || property === "animation-duration")
+    tokenPropertySets.motionDuration.has(property)
   ) {
     return resolveStyleToken(value, system)
   }
 
   if (
     value.startsWith("motion.easing.") &&
-    (property === "transition-timing-function" ||
-      property === "animation-timing-function")
+    tokenPropertySets.motionEasing.has(property)
   ) {
     return resolveStyleToken(value, system)
   }

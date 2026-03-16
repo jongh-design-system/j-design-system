@@ -1,4 +1,4 @@
-import { definePrimitiveTokens } from "../../../system-core/src/define.ts"
+import { definePrimitiveTokens } from "@jongh/new-system-core/define"
 
 export const radius = definePrimitiveTokens.radius({
   none: "0px",

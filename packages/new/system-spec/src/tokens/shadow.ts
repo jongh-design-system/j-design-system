@@ -1,4 +1,4 @@
-import { definePrimitiveTokens } from "../../../system-core/src/define.ts"
+import { definePrimitiveTokens } from "@jongh/new-system-core/define"
 
 export const shadow = definePrimitiveTokens.shadow({
   sm: "0 1px 2px oklch(0 0 0 / 0.08)",

@@ -1,4 +1,5 @@
-import { definePrimitiveTokens } from "../../../system-core/src/define.ts"
+import { definePrimitiveTokens } from "@jongh/new-system-core/define"
+
 import { palette } from "./color/palette.ts"
 import { motion } from "./motion.ts"
 import { radius } from "./radius.ts"

@@ -1,4 +1,5 @@
-import { definePrimitiveTokens } from "../../system-core/src/define.ts"
+import { definePrimitiveTokens } from "@jongh/new-system-core/define"
+
 import {
   defineRecipe,
   defineSemanticTokens,
@@ -94,16 +95,16 @@ export const typeSafetyInvalidPrimitiveTypographyTokens =
 
 export const typeSafetyValidSemanticColorTokens = defineSemanticTokens.color({
   surface: {
-    light: "color.neutral.2",
-    dark: "color.neutral.11",
+    light: "color.slate.100",
+    dark: "color.slate.900",
   },
 })
 
 export const typeSafetyInvalidSemanticColorPath = defineSemanticTokens.color({
   broken: {
     // @ts-expect-error unknown primitive color token must fail at authoring time
-    light: "color.info.999",
-    dark: "color.info.8",
+    light: "color.sky.999",
+    dark: "color.sky.500",
   },
 })
 

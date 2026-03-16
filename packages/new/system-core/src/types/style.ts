@@ -364,6 +364,43 @@ export interface StyleValueMap<TTheme extends ThemeContract> {
 
 export type StyleProperty = keyof StyleValueMap<ThemeContract> & string
 
+export const styleTokenPropertyGroups = {
+  color: ["backgroundColor", "borderBottomColor", "borderColor", "color"],
+  spacing: [
+    "bottom",
+    "gap",
+    "height",
+    "inset",
+    "left",
+    "margin",
+    "marginBlock",
+    "marginBottom",
+    "marginInline",
+    "marginLeft",
+    "marginRight",
+    "marginTop",
+    "maxHeight",
+    "maxWidth",
+    "minHeight",
+    "minWidth",
+    "padding",
+    "paddingBlock",
+    "paddingBottom",
+    "paddingInline",
+    "paddingLeft",
+    "paddingRight",
+    "paddingTop",
+    "right",
+    "top",
+    "width",
+  ],
+  radius: ["borderRadius"],
+  shadow: ["boxShadow"],
+  motionDuration: ["animationDuration", "transitionDuration"],
+  motionEasing: ["animationTimingFunction", "transitionTimingFunction"],
+  typography: ["textStyle"],
+} as const satisfies Record<string, readonly StyleProperty[]>
+
 export type StyleValueByProperty<
   TTheme extends ThemeContract,
   TProperty extends StyleProperty,

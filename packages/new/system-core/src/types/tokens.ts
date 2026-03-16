@@ -1,3 +1,5 @@
+import type * as CSS from "csstype"
+
 export type ThemeMode = "light" | "dark"
 
 type PrimitiveKey = string | number
@@ -6,25 +8,37 @@ type StringifyKey<T> = T extends PrimitiveKey ? `${T}` : never
 type Join<Head extends string, Tail extends string> = `${Head}.${Tail}`
 
 export interface TextStyleDefinition {
-  fontSize: string
-  lineHeight: string
-  fontWeight: string
-  letterSpacing?: string
+  fontSize: CSS.Property.FontSize
+  lineHeight: CSS.Property.LineHeight
+  fontWeight: CSS.Property.FontWeight
+  letterSpacing?: CSS.Property.LetterSpacing
 }
 
 export type TypographyTree = {
   readonly [key: string]: TypographyTree | TextStyleDefinition
 }
 
+export type PrimitiveColorValue = CSS.Property.Color
+
+export type PrimitiveSpacingValue = CSS.Property.Margin
+
+export type PrimitiveRadiusValue = CSS.Property.BorderRadius
+
+export type PrimitiveShadowValue = CSS.Property.BoxShadow
+
+export type PrimitiveDurationValue = CSS.Property.TransitionDuration
+
+export type PrimitiveEasingValue = CSS.Property.TransitionTimingFunction
+
 export interface PrimitiveTokensDefinition {
-  color: Record<string, Record<string | number, string>>
-  spacing: Record<string | number, string>
-  radius: Record<string, string>
+  color: Record<string, Record<string | number, PrimitiveColorValue>>
+  spacing: Record<string | number, PrimitiveSpacingValue>
+  radius: Record<string, PrimitiveRadiusValue>
   typography: TypographyTree
-  shadow: Record<string, string>
+  shadow: Record<string, PrimitiveShadowValue>
   motion: {
-    duration: Record<string, string>
-    easing: Record<string, string>
+    duration: Record<string, PrimitiveDurationValue>
+    easing: Record<string, PrimitiveEasingValue>
   }
 }
 
