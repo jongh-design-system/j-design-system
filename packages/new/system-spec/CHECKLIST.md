@@ -1,0 +1,47 @@
+# Native System Checklist
+
+- [x] `packages/new/system-spec` 생성
+- [x] `packages/new/system-core` 생성
+- [x] `packages/new/system-runtime` 생성
+- [x] `packages/new/system-output` 생성
+- [x] 각 신규 패키지에 `@jongh/eslint`, `@jongh/tsconfig` 설정 추가
+- [x] OKLCH 기반 palette family 정의
+- [x] semantic color role 정의
+- [x] spacing/radius/typography/shadow/motion token 정의
+- [x] 단일 recipe DSL 추가
+- [x] slot recipe DSL 추가
+- [x] token validator 추가
+- [x] recipe validator 추가
+- [x] style value resolver 추가
+- [x] base/all CSS generator 추가
+- [x] recipe CSS/JS/DTS generator 추가
+- [x] runtime helper (`cx`, `splitVariantProps`) 추가
+- [x] recipe context helper 추가
+- [x] slot recipe context helper 추가
+- [x] output build script 추가
+- [x] generated output 생성 확인
+- [x] 새 패키지 typecheck 완전 통과
+- [x] generic `primitiveTokens` / `semanticTokens` 엔진 재구성
+- [x] `definePrimitiveTokens.*` / `defineSemanticTokens.*` family authoring API 추가
+- [x] semantic token primitive ref authoring-time type safety 강제
+- [x] recipe authoring token/CSS literal 타입 세이프 강제
+- [x] 잘못된 token/CSS literal compile-time regression test 추가
+- [x] 새 패키지 lint 통과
+- [x] 새 패키지 prettier 통과
+- [x] output token typings 정밀화
+- [x] recipe coverage 확대
+- [x] `packages/ui` workspace wiring 및 typecheck 복구
+- [x] `packages/ui` `avatar`/`tabs`/`select` 새 시스템 연결
+- [x] `packages/ui` `button`/`dialog`/`chip`/`textfield` 새 시스템 연결
+- [x] `packages/ui` `accordion`/`calendar`/`checkbox`/`slider`/`toast` 새 시스템 연결
+- [x] `packages/ui` React 19 타입 정렬 및 스토리 타입 복구
+- [x] `packages/ui` 컴포넌트 레벨 Panda 직접 의존 제거
+- [x] `packages/ui` 스토리 레벨 Panda 정리
+- [x] `packages/ui` Storybook에 `reset.css` / `all.css` / `data-theme` 적용
+- [x] `packages/ui` Storybook 정적 빌드 통과
+- [x] `app/docs` workspace wiring 및 typecheck 복구
+- [x] `app/docs` `dialog` 새 시스템 연결
+- [x] `app/docs` `button`/`avatar`/`select`/`tabs`/`textfield` 새 시스템 연결
+- [ ] `app/docs` 레이아웃/문서 전용 컴포넌트 Panda 정리
+- [ ] `packages/cli` 연결
+- [ ] Panda 제거

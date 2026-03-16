@@ -1,0 +1,126 @@
+.jds-calendar__root {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--jds-primitive-radius-md);
+  background-color: var(--jds-color-bg-elevated);
+  color: var(--jds-color-fg-default);
+  box-shadow: var(--jds-primitive-shadow-sm);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-subtle);
+}
+
+.jds-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--jds-primitive-spacing-3);
+}
+
+.jds-calendar__title {
+  font-size: var(--jds-primitive-typography-title-sm-fontSize);
+  line-height: var(--jds-primitive-typography-title-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-title-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-title-sm-letterSpacing);
+}
+
+.jds-calendar__navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--jds-primitive-radius-full);
+  color: var(--jds-color-icon-muted);
+  cursor: pointer;
+  transition-property: opacity, background-color, color;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-calendar__navButton:hover {
+  opacity: 0.85;
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-calendar__navButton:active {
+  opacity: 0.65;
+}
+
+.jds-calendar__navButton:disabled,
+.jds-calendar__navButton[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.jds-calendar__navButton:disabled:hover {
+  background-color: transparent;
+}
+
+.jds-calendar__navButton svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.jds-calendar__weekday {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--jds-primitive-spacing-2);
+  color: var(--jds-color-fg-muted);
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-calendar__daysGrid {
+  display: flex;
+  flex-direction: column;
+  padding: var(--jds-primitive-spacing-2);
+}
+
+.jds-calendar__weekRow {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: var(--jds-primitive-spacing-1);
+}
+
+.jds-calendar__weekRow:last-child {
+  margin-bottom: 0;
+}
+
+.jds-calendar__dayCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  border-radius: var(--jds-primitive-radius-md);
+  cursor: pointer;
+  font-size: var(--jds-primitive-typography-body-sm-fontSize);
+  line-height: var(--jds-primitive-typography-body-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
+  transition-property: opacity, background-color, color;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-calendar__dayCell:hover {
+  opacity: 0.85;
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-calendar__dayCell:active {
+  opacity: 0.65;
+}
+
+.jds-calendar__dayCell[data-hidden="true"] {
+  visibility: hidden;
+}
+
+.jds-calendar__dayCell[data-outside-month="true"] {
+  color: var(--jds-color-fg-subtle);
+}

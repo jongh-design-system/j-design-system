@@ -1,0 +1,38 @@
+{
+  "name": "@jongh/new-system-output",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node --experimental-strip-types ./scripts/build.ts && prettier --write ./src/generated",
+    "lint": "eslint --max-warnings 0 --no-warn-ignored .",
+    "check-type": "tsgo --noEmit",
+    "test": "pnpm exec vitest run"
+  },
+  "exports": {
+    "./tokens": {
+      "types": "./src/generated/tokens/index.d.ts",
+      "import": "./src/generated/tokens/index.js"
+    },
+    "./recipes/*": {
+      "types": "./src/generated/recipes/*.d.ts",
+      "import": "./src/generated/recipes/*.js"
+    },
+    "./styles/reset.css": "./src/generated/styles/reset.css",
+    "./styles/base.css": "./src/generated/styles/base.css",
+    "./styles/all.css": "./src/generated/styles/all.css",
+    "./theming": "./src/generated/theming.js",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@jongh/new-system-runtime": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.6",
+    "@jongh/eslint": "workspace:*",
+    "@jongh/new-system-core": "workspace:*",
+    "@jongh/new-system-spec": "workspace:*",
+    "@jongh/tsconfig": "workspace:*",
+    "tsx": "^4.19.2"
+  }
+}

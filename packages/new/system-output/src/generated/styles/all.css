@@ -1,0 +1,1600 @@
+:root {
+  --jds-primitive-color-red-50: oklch(97.1% 0.013 17.38);
+  --jds-primitive-color-red-100: oklch(93.6% 0.032 17.717);
+  --jds-primitive-color-red-200: oklch(88.5% 0.062 18.334);
+  --jds-primitive-color-red-300: oklch(80.8% 0.114 19.571);
+  --jds-primitive-color-red-400: oklch(70.4% 0.191 22.216);
+  --jds-primitive-color-red-500: oklch(63.7% 0.237 25.331);
+  --jds-primitive-color-red-600: oklch(57.7% 0.245 27.325);
+  --jds-primitive-color-red-700: oklch(50.5% 0.213 27.518);
+  --jds-primitive-color-red-800: oklch(44.4% 0.177 26.899);
+  --jds-primitive-color-red-900: oklch(39.6% 0.141 25.723);
+  --jds-primitive-color-red-950: oklch(25.8% 0.092 26.042);
+  --jds-primitive-color-orange-50: oklch(98% 0.016 73.684);
+  --jds-primitive-color-orange-100: oklch(95.4% 0.038 75.164);
+  --jds-primitive-color-orange-200: oklch(90.1% 0.076 70.697);
+  --jds-primitive-color-orange-300: oklch(83.7% 0.128 66.29);
+  --jds-primitive-color-orange-400: oklch(75% 0.183 55.934);
+  --jds-primitive-color-orange-500: oklch(70.5% 0.213 47.604);
+  --jds-primitive-color-orange-600: oklch(64.6% 0.222 41.116);
+  --jds-primitive-color-orange-700: oklch(55.3% 0.195 38.402);
+  --jds-primitive-color-orange-800: oklch(47% 0.157 37.304);
+  --jds-primitive-color-orange-900: oklch(40.8% 0.123 38.172);
+  --jds-primitive-color-orange-950: oklch(26.6% 0.079 36.259);
+  --jds-primitive-color-amber-50: oklch(98.7% 0.022 95.277);
+  --jds-primitive-color-amber-100: oklch(96.2% 0.059 95.617);
+  --jds-primitive-color-amber-200: oklch(92.4% 0.12 95.746);
+  --jds-primitive-color-amber-300: oklch(87.9% 0.169 91.605);
+  --jds-primitive-color-amber-400: oklch(82.8% 0.189 84.429);
+  --jds-primitive-color-amber-500: oklch(76.9% 0.188 70.08);
+  --jds-primitive-color-amber-600: oklch(66.6% 0.179 58.318);
+  --jds-primitive-color-amber-700: oklch(55.5% 0.163 48.998);
+  --jds-primitive-color-amber-800: oklch(47.3% 0.137 46.201);
+  --jds-primitive-color-amber-900: oklch(41.4% 0.112 45.904);
+  --jds-primitive-color-amber-950: oklch(27.9% 0.077 45.635);
+  --jds-primitive-color-yellow-50: oklch(98.7% 0.026 102.212);
+  --jds-primitive-color-yellow-100: oklch(97.3% 0.071 103.193);
+  --jds-primitive-color-yellow-200: oklch(94.5% 0.129 101.54);
+  --jds-primitive-color-yellow-300: oklch(90.5% 0.182 98.111);
+  --jds-primitive-color-yellow-400: oklch(85.2% 0.199 91.936);
+  --jds-primitive-color-yellow-500: oklch(79.5% 0.184 86.047);
+  --jds-primitive-color-yellow-600: oklch(68.1% 0.162 75.834);
+  --jds-primitive-color-yellow-700: oklch(55.4% 0.135 66.442);
+  --jds-primitive-color-yellow-800: oklch(47.6% 0.114 61.907);
+  --jds-primitive-color-yellow-900: oklch(42.1% 0.095 57.708);
+  --jds-primitive-color-yellow-950: oklch(28.6% 0.066 53.813);
+  --jds-primitive-color-lime-50: oklch(98.6% 0.031 120.757);
+  --jds-primitive-color-lime-100: oklch(96.7% 0.067 122.328);
+  --jds-primitive-color-lime-200: oklch(93.8% 0.127 124.321);
+  --jds-primitive-color-lime-300: oklch(89.7% 0.196 126.665);
+  --jds-primitive-color-lime-400: oklch(84.1% 0.238 128.85);
+  --jds-primitive-color-lime-500: oklch(76.8% 0.233 130.85);
+  --jds-primitive-color-lime-600: oklch(64.8% 0.2 131.684);
+  --jds-primitive-color-lime-700: oklch(53.2% 0.157 131.589);
+  --jds-primitive-color-lime-800: oklch(45.3% 0.124 130.933);
+  --jds-primitive-color-lime-900: oklch(40.5% 0.101 131.063);
+  --jds-primitive-color-lime-950: oklch(27.4% 0.072 132.109);
+  --jds-primitive-color-green-50: oklch(98.2% 0.018 155.826);
+  --jds-primitive-color-green-100: oklch(96.2% 0.044 156.743);
+  --jds-primitive-color-green-200: oklch(92.5% 0.084 155.995);
+  --jds-primitive-color-green-300: oklch(87.1% 0.15 154.449);
+  --jds-primitive-color-green-400: oklch(79.2% 0.209 151.711);
+  --jds-primitive-color-green-500: oklch(72.3% 0.219 149.579);
+  --jds-primitive-color-green-600: oklch(62.7% 0.194 149.214);
+  --jds-primitive-color-green-700: oklch(52.7% 0.154 150.069);
+  --jds-primitive-color-green-800: oklch(44.8% 0.119 151.328);
+  --jds-primitive-color-green-900: oklch(39.3% 0.095 152.535);
+  --jds-primitive-color-green-950: oklch(26.6% 0.065 152.934);
+  --jds-primitive-color-emerald-50: oklch(97.9% 0.021 166.113);
+  --jds-primitive-color-emerald-100: oklch(95% 0.052 163.051);
+  --jds-primitive-color-emerald-200: oklch(90.5% 0.093 164.15);
+  --jds-primitive-color-emerald-300: oklch(84.5% 0.143 164.978);
+  --jds-primitive-color-emerald-400: oklch(76.5% 0.177 163.223);
+  --jds-primitive-color-emerald-500: oklch(69.6% 0.17 162.48);
+  --jds-primitive-color-emerald-600: oklch(59.6% 0.145 163.225);
+  --jds-primitive-color-emerald-700: oklch(50.8% 0.118 165.612);
+  --jds-primitive-color-emerald-800: oklch(43.2% 0.095 166.913);
+  --jds-primitive-color-emerald-900: oklch(37.8% 0.077 168.94);
+  --jds-primitive-color-emerald-950: oklch(26.2% 0.051 172.552);
+  --jds-primitive-color-teal-50: oklch(98.4% 0.014 180.72);
+  --jds-primitive-color-teal-100: oklch(95.3% 0.051 180.801);
+  --jds-primitive-color-teal-200: oklch(91% 0.096 180.426);
+  --jds-primitive-color-teal-300: oklch(85.5% 0.138 181.071);
+  --jds-primitive-color-teal-400: oklch(77.7% 0.152 181.912);
+  --jds-primitive-color-teal-500: oklch(70.4% 0.14 182.503);
+  --jds-primitive-color-teal-600: oklch(60% 0.118 184.704);
+  --jds-primitive-color-teal-700: oklch(51.1% 0.096 186.391);
+  --jds-primitive-color-teal-800: oklch(43.7% 0.078 188.216);
+  --jds-primitive-color-teal-900: oklch(38.6% 0.063 188.416);
+  --jds-primitive-color-teal-950: oklch(27.7% 0.046 192.524);
+  --jds-primitive-color-cyan-50: oklch(98.4% 0.019 200.873);
+  --jds-primitive-color-cyan-100: oklch(95.6% 0.045 203.388);
+  --jds-primitive-color-cyan-200: oklch(91.7% 0.08 205.041);
+  --jds-primitive-color-cyan-300: oklch(86.5% 0.127 207.078);
+  --jds-primitive-color-cyan-400: oklch(78.9% 0.154 211.53);
+  --jds-primitive-color-cyan-500: oklch(71.5% 0.143 215.221);
+  --jds-primitive-color-cyan-600: oklch(60.9% 0.126 221.723);
+  --jds-primitive-color-cyan-700: oklch(52% 0.105 223.128);
+  --jds-primitive-color-cyan-800: oklch(45% 0.085 224.283);
+  --jds-primitive-color-cyan-900: oklch(39.8% 0.07 227.392);
+  --jds-primitive-color-cyan-950: oklch(30.2% 0.056 229.695);
+  --jds-primitive-color-sky-50: oklch(97.7% 0.013 236.62);
+  --jds-primitive-color-sky-100: oklch(95.1% 0.026 236.824);
+  --jds-primitive-color-sky-200: oklch(90.1% 0.058 230.902);
+  --jds-primitive-color-sky-300: oklch(82.8% 0.111 230.318);
+  --jds-primitive-color-sky-400: oklch(74.6% 0.16 232.661);
+  --jds-primitive-color-sky-500: oklch(68.5% 0.169 237.323);
+  --jds-primitive-color-sky-600: oklch(58.8% 0.158 241.966);
+  --jds-primitive-color-sky-700: oklch(50% 0.134 242.749);
+  --jds-primitive-color-sky-800: oklch(44.3% 0.11 240.79);
+  --jds-primitive-color-sky-900: oklch(39.1% 0.09 240.876);
+  --jds-primitive-color-sky-950: oklch(29.3% 0.066 243.157);
+  --jds-primitive-color-blue-50: oklch(97% 0.014 254.604);
+  --jds-primitive-color-blue-100: oklch(93.2% 0.032 255.585);
+  --jds-primitive-color-blue-200: oklch(88.2% 0.059 254.128);
+  --jds-primitive-color-blue-300: oklch(80.9% 0.105 251.813);
+  --jds-primitive-color-blue-400: oklch(70.7% 0.165 254.624);
+  --jds-primitive-color-blue-500: oklch(62.3% 0.214 259.815);
+  --jds-primitive-color-blue-600: oklch(54.6% 0.245 262.881);
+  --jds-primitive-color-blue-700: oklch(48.8% 0.243 264.376);
+  --jds-primitive-color-blue-800: oklch(42.4% 0.199 265.638);
+  --jds-primitive-color-blue-900: oklch(37.9% 0.146 265.522);
+  --jds-primitive-color-blue-950: oklch(28.2% 0.091 267.935);
+  --jds-primitive-color-indigo-50: oklch(96.2% 0.018 272.314);
+  --jds-primitive-color-indigo-100: oklch(93% 0.034 272.788);
+  --jds-primitive-color-indigo-200: oklch(87% 0.065 274.039);
+  --jds-primitive-color-indigo-300: oklch(78.5% 0.115 274.713);
+  --jds-primitive-color-indigo-400: oklch(67.3% 0.182 276.935);
+  --jds-primitive-color-indigo-500: oklch(58.5% 0.233 277.117);
+  --jds-primitive-color-indigo-600: oklch(51.1% 0.262 276.966);
+  --jds-primitive-color-indigo-700: oklch(45.7% 0.24 277.023);
+  --jds-primitive-color-indigo-800: oklch(39.8% 0.195 277.366);
+  --jds-primitive-color-indigo-900: oklch(35.9% 0.144 278.697);
+  --jds-primitive-color-indigo-950: oklch(25.7% 0.09 281.288);
+  --jds-primitive-color-violet-50: oklch(96.9% 0.016 293.756);
+  --jds-primitive-color-violet-100: oklch(94.3% 0.029 294.588);
+  --jds-primitive-color-violet-200: oklch(89.4% 0.057 293.283);
+  --jds-primitive-color-violet-300: oklch(81.1% 0.111 293.571);
+  --jds-primitive-color-violet-400: oklch(70.2% 0.183 293.541);
+  --jds-primitive-color-violet-500: oklch(60.6% 0.25 292.717);
+  --jds-primitive-color-violet-600: oklch(54.1% 0.281 293.009);
+  --jds-primitive-color-violet-700: oklch(49.1% 0.27 292.581);
+  --jds-primitive-color-violet-800: oklch(43.2% 0.232 292.759);
+  --jds-primitive-color-violet-900: oklch(38% 0.189 293.745);
+  --jds-primitive-color-violet-950: oklch(28.3% 0.141 291.089);
+  --jds-primitive-color-purple-50: oklch(97.7% 0.014 308.299);
+  --jds-primitive-color-purple-100: oklch(94.6% 0.033 307.174);
+  --jds-primitive-color-purple-200: oklch(90.2% 0.063 306.703);
+  --jds-primitive-color-purple-300: oklch(82.7% 0.119 306.383);
+  --jds-primitive-color-purple-400: oklch(71.4% 0.203 305.504);
+  --jds-primitive-color-purple-500: oklch(62.7% 0.265 303.9);
+  --jds-primitive-color-purple-600: oklch(55.8% 0.288 302.321);
+  --jds-primitive-color-purple-700: oklch(49.6% 0.265 301.924);
+  --jds-primitive-color-purple-800: oklch(43.8% 0.218 303.724);
+  --jds-primitive-color-purple-900: oklch(38.1% 0.176 304.987);
+  --jds-primitive-color-purple-950: oklch(29.1% 0.149 302.717);
+  --jds-primitive-color-fuchsia-50: oklch(97.7% 0.017 320.058);
+  --jds-primitive-color-fuchsia-100: oklch(95.2% 0.037 318.852);
+  --jds-primitive-color-fuchsia-200: oklch(90.3% 0.076 319.62);
+  --jds-primitive-color-fuchsia-300: oklch(83.3% 0.145 321.434);
+  --jds-primitive-color-fuchsia-400: oklch(74% 0.238 322.16);
+  --jds-primitive-color-fuchsia-500: oklch(66.7% 0.295 322.15);
+  --jds-primitive-color-fuchsia-600: oklch(59.1% 0.293 322.896);
+  --jds-primitive-color-fuchsia-700: oklch(51.8% 0.253 323.949);
+  --jds-primitive-color-fuchsia-800: oklch(45.2% 0.211 324.591);
+  --jds-primitive-color-fuchsia-900: oklch(40.1% 0.17 325.612);
+  --jds-primitive-color-fuchsia-950: oklch(29.3% 0.136 325.661);
+  --jds-primitive-color-pink-50: oklch(97.1% 0.014 343.198);
+  --jds-primitive-color-pink-100: oklch(94.8% 0.028 342.258);
+  --jds-primitive-color-pink-200: oklch(89.9% 0.061 343.231);
+  --jds-primitive-color-pink-300: oklch(82.3% 0.12 346.018);
+  --jds-primitive-color-pink-400: oklch(71.8% 0.202 349.761);
+  --jds-primitive-color-pink-500: oklch(65.6% 0.241 354.308);
+  --jds-primitive-color-pink-600: oklch(59.2% 0.249 0.584);
+  --jds-primitive-color-pink-700: oklch(52.5% 0.223 3.958);
+  --jds-primitive-color-pink-800: oklch(45.9% 0.187 3.815);
+  --jds-primitive-color-pink-900: oklch(40.8% 0.153 2.432);
+  --jds-primitive-color-pink-950: oklch(28.4% 0.109 3.907);
+  --jds-primitive-color-rose-50: oklch(96.9% 0.015 12.422);
+  --jds-primitive-color-rose-100: oklch(94.1% 0.03 12.58);
+  --jds-primitive-color-rose-200: oklch(89.2% 0.058 10.001);
+  --jds-primitive-color-rose-300: oklch(81% 0.117 11.638);
+  --jds-primitive-color-rose-400: oklch(71.2% 0.194 13.428);
+  --jds-primitive-color-rose-500: oklch(64.5% 0.246 16.439);
+  --jds-primitive-color-rose-600: oklch(58.6% 0.253 17.585);
+  --jds-primitive-color-rose-700: oklch(51.4% 0.222 16.935);
+  --jds-primitive-color-rose-800: oklch(45.5% 0.188 13.697);
+  --jds-primitive-color-rose-900: oklch(41% 0.159 10.272);
+  --jds-primitive-color-rose-950: oklch(27.1% 0.105 12.094);
+  --jds-primitive-color-slate-50: oklch(98.4% 0.003 247.858);
+  --jds-primitive-color-slate-100: oklch(96.8% 0.007 247.896);
+  --jds-primitive-color-slate-200: oklch(92.9% 0.013 255.508);
+  --jds-primitive-color-slate-300: oklch(86.9% 0.022 252.894);
+  --jds-primitive-color-slate-400: oklch(70.4% 0.04 256.788);
+  --jds-primitive-color-slate-500: oklch(55.4% 0.046 257.417);
+  --jds-primitive-color-slate-600: oklch(44.6% 0.043 257.281);
+  --jds-primitive-color-slate-700: oklch(37.2% 0.044 257.287);
+  --jds-primitive-color-slate-800: oklch(27.9% 0.041 260.031);
+  --jds-primitive-color-slate-900: oklch(20.8% 0.042 265.755);
+  --jds-primitive-color-slate-950: oklch(12.9% 0.042 264.695);
+  --jds-primitive-color-gray-50: oklch(98.5% 0.002 247.839);
+  --jds-primitive-color-gray-100: oklch(96.7% 0.003 264.542);
+  --jds-primitive-color-gray-200: oklch(92.8% 0.006 264.531);
+  --jds-primitive-color-gray-300: oklch(87.2% 0.01 258.338);
+  --jds-primitive-color-gray-400: oklch(70.7% 0.022 261.325);
+  --jds-primitive-color-gray-500: oklch(55.1% 0.027 264.364);
+  --jds-primitive-color-gray-600: oklch(44.6% 0.03 256.802);
+  --jds-primitive-color-gray-700: oklch(37.3% 0.034 259.733);
+  --jds-primitive-color-gray-800: oklch(27.8% 0.033 256.848);
+  --jds-primitive-color-gray-900: oklch(21% 0.034 264.665);
+  --jds-primitive-color-gray-950: oklch(13% 0.028 261.692);
+  --jds-primitive-color-zinc-50: oklch(98.5% 0 0);
+  --jds-primitive-color-zinc-100: oklch(96.7% 0.001 286.375);
+  --jds-primitive-color-zinc-200: oklch(92% 0.004 286.32);
+  --jds-primitive-color-zinc-300: oklch(87.1% 0.006 286.286);
+  --jds-primitive-color-zinc-400: oklch(70.5% 0.015 286.067);
+  --jds-primitive-color-zinc-500: oklch(55.2% 0.016 285.938);
+  --jds-primitive-color-zinc-600: oklch(44.2% 0.017 285.786);
+  --jds-primitive-color-zinc-700: oklch(37% 0.013 285.805);
+  --jds-primitive-color-zinc-800: oklch(27.4% 0.006 286.033);
+  --jds-primitive-color-zinc-900: oklch(21% 0.006 285.885);
+  --jds-primitive-color-zinc-950: oklch(14.1% 0.005 285.823);
+  --jds-primitive-color-neutral-50: oklch(98.5% 0 0);
+  --jds-primitive-color-neutral-100: oklch(97% 0 0);
+  --jds-primitive-color-neutral-200: oklch(92.2% 0 0);
+  --jds-primitive-color-neutral-300: oklch(87% 0 0);
+  --jds-primitive-color-neutral-400: oklch(70.8% 0 0);
+  --jds-primitive-color-neutral-500: oklch(55.6% 0 0);
+  --jds-primitive-color-neutral-600: oklch(43.9% 0 0);
+  --jds-primitive-color-neutral-700: oklch(37.1% 0 0);
+  --jds-primitive-color-neutral-800: oklch(26.9% 0 0);
+  --jds-primitive-color-neutral-900: oklch(20.5% 0 0);
+  --jds-primitive-color-neutral-950: oklch(14.5% 0 0);
+  --jds-primitive-color-stone-50: oklch(98.5% 0.001 106.423);
+  --jds-primitive-color-stone-100: oklch(97% 0.001 106.424);
+  --jds-primitive-color-stone-200: oklch(92.3% 0.003 48.717);
+  --jds-primitive-color-stone-300: oklch(86.9% 0.005 56.366);
+  --jds-primitive-color-stone-400: oklch(70.9% 0.01 56.259);
+  --jds-primitive-color-stone-500: oklch(55.3% 0.013 58.071);
+  --jds-primitive-color-stone-600: oklch(44.4% 0.011 73.639);
+  --jds-primitive-color-stone-700: oklch(37.4% 0.01 67.558);
+  --jds-primitive-color-stone-800: oklch(26.8% 0.007 34.298);
+  --jds-primitive-color-stone-900: oklch(21.6% 0.006 56.043);
+  --jds-primitive-color-stone-950: oklch(14.7% 0.004 49.25);
+  --jds-primitive-color-mauve-50: oklch(98.5% 0 0);
+  --jds-primitive-color-mauve-100: oklch(96% 0.003 325.6);
+  --jds-primitive-color-mauve-200: oklch(92.2% 0.005 325.62);
+  --jds-primitive-color-mauve-300: oklch(86.5% 0.012 325.68);
+  --jds-primitive-color-mauve-400: oklch(71.1% 0.019 323.02);
+  --jds-primitive-color-mauve-500: oklch(54.2% 0.034 322.5);
+  --jds-primitive-color-mauve-600: oklch(43.5% 0.029 321.78);
+  --jds-primitive-color-mauve-700: oklch(36.4% 0.029 323.89);
+  --jds-primitive-color-mauve-800: oklch(26.3% 0.024 320.12);
+  --jds-primitive-color-mauve-900: oklch(21.2% 0.019 322.12);
+  --jds-primitive-color-mauve-950: oklch(14.5% 0.008 326);
+  --jds-primitive-color-olive-50: oklch(98.8% 0.003 106.5);
+  --jds-primitive-color-olive-100: oklch(96.6% 0.005 106.5);
+  --jds-primitive-color-olive-200: oklch(93% 0.007 106.5);
+  --jds-primitive-color-olive-300: oklch(88% 0.011 106.6);
+  --jds-primitive-color-olive-400: oklch(73.7% 0.021 106.9);
+  --jds-primitive-color-olive-500: oklch(58% 0.031 107.3);
+  --jds-primitive-color-olive-600: oklch(46.6% 0.025 107.3);
+  --jds-primitive-color-olive-700: oklch(39.4% 0.023 107.4);
+  --jds-primitive-color-olive-800: oklch(28.6% 0.016 107.4);
+  --jds-primitive-color-olive-900: oklch(22.8% 0.013 107.4);
+  --jds-primitive-color-olive-950: oklch(15.3% 0.006 107.1);
+  --jds-primitive-color-mist-50: oklch(98.7% 0.002 197.1);
+  --jds-primitive-color-mist-100: oklch(96.3% 0.002 197.1);
+  --jds-primitive-color-mist-200: oklch(92.5% 0.005 214.3);
+  --jds-primitive-color-mist-300: oklch(87.2% 0.007 219.6);
+  --jds-primitive-color-mist-400: oklch(72.3% 0.014 214.4);
+  --jds-primitive-color-mist-500: oklch(56% 0.021 213.5);
+  --jds-primitive-color-mist-600: oklch(45% 0.017 213.2);
+  --jds-primitive-color-mist-700: oklch(37.8% 0.015 216);
+  --jds-primitive-color-mist-800: oklch(27.5% 0.011 216.9);
+  --jds-primitive-color-mist-900: oklch(21.8% 0.008 223.9);
+  --jds-primitive-color-mist-950: oklch(14.8% 0.004 228.8);
+  --jds-primitive-color-taupe-50: oklch(98.6% 0.002 67.8);
+  --jds-primitive-color-taupe-100: oklch(96% 0.002 17.2);
+  --jds-primitive-color-taupe-200: oklch(92.2% 0.005 34.3);
+  --jds-primitive-color-taupe-300: oklch(86.8% 0.007 39.5);
+  --jds-primitive-color-taupe-400: oklch(71.4% 0.014 41.2);
+  --jds-primitive-color-taupe-500: oklch(54.7% 0.021 43.1);
+  --jds-primitive-color-taupe-600: oklch(43.8% 0.017 39.3);
+  --jds-primitive-color-taupe-700: oklch(36.7% 0.016 35.7);
+  --jds-primitive-color-taupe-800: oklch(26.8% 0.011 36.5);
+  --jds-primitive-color-taupe-900: oklch(21.4% 0.009 43.1);
+  --jds-primitive-color-taupe-950: oklch(14.7% 0.004 49.3);
+  --jds-primitive-color-common-black: #000;
+  --jds-primitive-color-common-white: #fff;
+  --jds-primitive-spacing-0: 0rem;
+  --jds-primitive-spacing-1: 0.25rem;
+  --jds-primitive-spacing-2: 0.5rem;
+  --jds-primitive-spacing-3: 0.75rem;
+  --jds-primitive-spacing-4: 1rem;
+  --jds-primitive-spacing-5: 1.25rem;
+  --jds-primitive-spacing-6: 1.5rem;
+  --jds-primitive-spacing-8: 2rem;
+  --jds-primitive-spacing-10: 2.5rem;
+  --jds-primitive-spacing-12: 3rem;
+  --jds-primitive-spacing-0-5: 0.125rem;
+  --jds-primitive-spacing-1-5: 0.375rem;
+  --jds-primitive-spacing-2-5: 0.625rem;
+  --jds-primitive-spacing-3-5: 0.875rem;
+  --jds-primitive-radius-none: 0px;
+  --jds-primitive-radius-xs: 0.125rem;
+  --jds-primitive-radius-sm: 0.25rem;
+  --jds-primitive-radius-md: 0.5rem;
+  --jds-primitive-radius-lg: 0.75rem;
+  --jds-primitive-radius-xl: 1rem;
+  --jds-primitive-radius-full: 9999px;
+  --jds-primitive-shadow-sm: 0 1px 2px oklch(0 0 0 / 0.08);
+  --jds-primitive-shadow-md: 0 8px 24px oklch(0 0 0 / 0.12);
+  --jds-primitive-shadow-lg: 0 16px 40px oklch(0 0 0 / 0.18);
+  --jds-primitive-motion-duration-fast: 120ms;
+  --jds-primitive-motion-duration-normal: 180ms;
+  --jds-primitive-motion-duration-slow: 280ms;
+  --jds-primitive-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --jds-primitive-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1.1);
+  --jds-primitive-typography-body-sm-fontSize: 0.875rem;
+  --jds-primitive-typography-body-sm-lineHeight: 1.25rem;
+  --jds-primitive-typography-body-sm-fontWeight: 400;
+  --jds-primitive-typography-body-sm-letterSpacing: normal;
+  --jds-primitive-typography-body-md-fontSize: 1rem;
+  --jds-primitive-typography-body-md-lineHeight: 1.5rem;
+  --jds-primitive-typography-body-md-fontWeight: 400;
+  --jds-primitive-typography-body-md-letterSpacing: normal;
+  --jds-primitive-typography-label-sm-fontSize: 0.875rem;
+  --jds-primitive-typography-label-sm-lineHeight: 1.25rem;
+  --jds-primitive-typography-label-sm-fontWeight: 500;
+  --jds-primitive-typography-label-sm-letterSpacing: normal;
+  --jds-primitive-typography-label-md-fontSize: 1rem;
+  --jds-primitive-typography-label-md-lineHeight: 1.5rem;
+  --jds-primitive-typography-label-md-fontWeight: 600;
+  --jds-primitive-typography-label-md-letterSpacing: normal;
+  --jds-primitive-typography-title-sm-fontSize: 1.125rem;
+  --jds-primitive-typography-title-sm-lineHeight: 1.5rem;
+  --jds-primitive-typography-title-sm-fontWeight: 600;
+  --jds-primitive-typography-title-sm-letterSpacing: normal;
+  --jds-primitive-typography-title-md-fontSize: 1.25rem;
+  --jds-primitive-typography-title-md-lineHeight: 1.75rem;
+  --jds-primitive-typography-title-md-fontWeight: 700;
+  --jds-primitive-typography-title-md-letterSpacing: normal;
+  --jds-primitive-typography-title-lg-fontSize: 1.5rem;
+  --jds-primitive-typography-title-lg-lineHeight: 2rem;
+  --jds-primitive-typography-title-lg-fontWeight: 700;
+  --jds-primitive-typography-title-lg-letterSpacing: normal;
+}
+
+:root,
+:root[data-theme="light"] {
+  --jds-color-bg-canvas: var(--jds-primitive-color-slate-50);
+  --jds-color-bg-surface: var(--jds-primitive-color-slate-100);
+  --jds-color-bg-subtle: var(--jds-primitive-color-slate-200);
+  --jds-color-bg-elevated: var(--jds-primitive-color-common-white);
+  --jds-color-bg-accent: var(--jds-primitive-color-blue-600);
+  --jds-color-bg-accent-hovered: var(--jds-primitive-color-blue-700);
+  --jds-color-bg-accent-active: var(--jds-primitive-color-blue-800);
+  --jds-color-fg-default: var(--jds-primitive-color-slate-950);
+  --jds-color-fg-muted: var(--jds-primitive-color-slate-700);
+  --jds-color-fg-subtle: var(--jds-primitive-color-slate-600);
+  --jds-color-fg-inverse: var(--jds-primitive-color-common-white);
+  --jds-color-fg-accent: var(--jds-primitive-color-blue-700);
+  --jds-color-stroke-default: var(--jds-primitive-color-slate-300);
+  --jds-color-stroke-subtle: var(--jds-primitive-color-slate-200);
+  --jds-color-stroke-strong: var(--jds-primitive-color-slate-400);
+  --jds-color-stroke-accent: var(--jds-primitive-color-blue-500);
+  --jds-color-icon-default: var(--jds-primitive-color-slate-800);
+  --jds-color-icon-muted: var(--jds-primitive-color-slate-600);
+  --jds-color-icon-accent: var(--jds-primitive-color-blue-600);
+  --jds-color-focus-ring: var(--jds-primitive-color-blue-500);
+  --jds-color-overlay-default: var(--jds-primitive-color-common-black);
+  --jds-color-success-default: var(--jds-primitive-color-green-600);
+  --jds-color-warning-default: var(--jds-primitive-color-amber-600);
+  --jds-color-danger-default: var(--jds-primitive-color-red-600);
+  --jds-color-info-default: var(--jds-primitive-color-sky-600);
+}
+
+:root[data-theme="dark"] {
+  --jds-color-bg-canvas: var(--jds-primitive-color-slate-950);
+  --jds-color-bg-surface: var(--jds-primitive-color-slate-900);
+  --jds-color-bg-subtle: var(--jds-primitive-color-slate-800);
+  --jds-color-bg-elevated: var(--jds-primitive-color-slate-900);
+  --jds-color-bg-accent: var(--jds-primitive-color-blue-500);
+  --jds-color-bg-accent-hovered: var(--jds-primitive-color-blue-400);
+  --jds-color-bg-accent-active: var(--jds-primitive-color-blue-300);
+  --jds-color-fg-default: var(--jds-primitive-color-slate-50);
+  --jds-color-fg-muted: var(--jds-primitive-color-slate-300);
+  --jds-color-fg-subtle: var(--jds-primitive-color-slate-400);
+  --jds-color-fg-inverse: var(--jds-primitive-color-slate-950);
+  --jds-color-fg-accent: var(--jds-primitive-color-blue-300);
+  --jds-color-stroke-default: var(--jds-primitive-color-slate-700);
+  --jds-color-stroke-subtle: var(--jds-primitive-color-slate-800);
+  --jds-color-stroke-strong: var(--jds-primitive-color-slate-600);
+  --jds-color-stroke-accent: var(--jds-primitive-color-blue-400);
+  --jds-color-icon-default: var(--jds-primitive-color-slate-200);
+  --jds-color-icon-muted: var(--jds-primitive-color-slate-400);
+  --jds-color-icon-accent: var(--jds-primitive-color-blue-400);
+  --jds-color-focus-ring: var(--jds-primitive-color-blue-400);
+  --jds-color-overlay-default: var(--jds-primitive-color-common-black);
+  --jds-color-success-default: var(--jds-primitive-color-green-500);
+  --jds-color-warning-default: var(--jds-primitive-color-amber-500);
+  --jds-color-danger-default: var(--jds-primitive-color-red-500);
+  --jds-color-info-default: var(--jds-primitive-color-sky-500);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.jds-accordion__header {
+  display: flex;
+}
+
+.jds-accordion__trigger {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--jds-primitive-spacing-1);
+  padding-block: var(--jds-primitive-spacing-2);
+  color: var(--jds-color-fg-default);
+  cursor: pointer;
+  font-size: var(--jds-primitive-typography-title-sm-fontSize);
+  line-height: var(--jds-primitive-typography-title-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-title-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-title-sm-letterSpacing);
+  transition-property: color, background-color;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-accordion__trigger > svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  transition: transform 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.jds-accordion__trigger[data-state="open"] > svg {
+  transform: rotate(180deg);
+}
+
+.jds-accordion__content {
+  overflow: hidden;
+  color: var(--jds-color-fg-muted);
+  font-size: var(--jds-primitive-typography-body-sm-fontSize);
+  line-height: var(--jds-primitive-typography-body-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
+}
+
+.jds-accordion__contentWrapper {
+  padding-inline: var(--jds-primitive-spacing-1);
+  padding-block: var(--jds-primitive-spacing-2);
+}
+
+.jds-accordion__item--variant_outline {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--jds-color-stroke-subtle);
+}
+
+.jds-accordion__trigger--variant_outline:hover {
+  color: var(--jds-color-fg-accent);
+}
+
+.jds-accordion__item--variant_subtle {
+  border-radius: var(--jds-primitive-radius-md);
+}
+
+.jds-accordion__item--variant_subtle[data-state="open"] {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-accordion__header--variant_subtle {
+  border-radius: var(--jds-primitive-radius-md);
+}
+
+.jds-accordion__trigger--variant_subtle {
+  border-radius: var(--jds-primitive-radius-md);
+}
+
+.jds-accordion__trigger--variant_subtle:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-avatar__root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-subtle);
+  border-radius: var(--jds-primitive-radius-full);
+  background-color: var(--jds-color-bg-subtle);
+  color: var(--jds-color-fg-default);
+}
+
+.jds-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.jds-avatar__fallback {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--jds-color-bg-subtle);
+  color: var(--jds-color-fg-muted);
+  font-size: var(--jds-primitive-typography-label-md-fontSize);
+  line-height: var(--jds-primitive-typography-label-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-md-letterSpacing);
+}
+
+.jds-avatar__root--size_sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+.jds-avatar__fallback--size_sm {
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-avatar__root--size_md {
+  width: 3rem;
+  height: 3rem;
+}
+
+.jds-avatar__root--size_lg {
+  width: 4rem;
+  height: 4rem;
+}
+
+.jds-avatar__fallback--size_lg {
+  font-size: var(--jds-primitive-typography-title-sm-fontSize);
+  line-height: var(--jds-primitive-typography-title-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-title-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-title-sm-letterSpacing);
+}
+
+.jds-avatar__root--shape_rounded {
+  border-radius: var(--jds-primitive-radius-lg);
+}
+
+.jds-avatar__fallback--shape_rounded {
+  border-radius: var(--jds-primitive-radius-lg);
+}
+
+.jds-avatar__root--tone_accent {
+  border-color: var(--jds-color-stroke-accent);
+  background-color: var(--jds-color-bg-accent);
+  color: var(--jds-color-fg-inverse);
+}
+
+.jds-avatar__fallback--tone_accent {
+  background-color: var(--jds-color-bg-accent);
+  color: var(--jds-color-fg-inverse);
+}
+
+.jds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--jds-primitive-spacing-2);
+  min-height: 2.5rem;
+  padding-inline: var(--jds-primitive-spacing-4);
+  border-radius: var(--jds-primitive-radius-md);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-default);
+  background-color: var(--jds-color-bg-surface);
+  color: var(--jds-color-fg-default);
+  font-size: var(--jds-primitive-typography-label-md-fontSize);
+  line-height: var(--jds-primitive-typography-label-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-md-letterSpacing);
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+  transition-property: background-color, border-color, color, box-shadow;
+}
+
+.jds-button:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-button:focus-visible {
+  outline: 2px solid var(--jds-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.jds-button:disabled,
+.jds-button[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.jds-button--size_sm {
+  min-height: 2.25rem;
+  padding-inline: var(--jds-primitive-spacing-3);
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-button--size_sm svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.jds-button--size_md svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.jds-button--size_lg {
+  min-height: 3rem;
+  padding-inline: var(--jds-primitive-spacing-5);
+}
+
+.jds-button--size_lg svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.jds-button--variant_primary {
+  background-color: var(--jds-color-bg-accent);
+  color: var(--jds-color-fg-inverse);
+  border-color: var(--jds-color-bg-accent);
+}
+
+.jds-button--variant_primary:hover {
+  background-color: var(--jds-color-bg-accent-hovered);
+}
+
+.jds-button--variant_secondary {
+  background-color: var(--jds-color-bg-surface);
+  color: var(--jds-color-fg-default);
+  border-color: var(--jds-color-stroke-default);
+}
+
+.jds-button--variant_secondary:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-button--variant_destructive {
+  background-color: var(--jds-color-danger-default);
+  color: var(--jds-color-fg-inverse);
+  border-color: var(--jds-color-danger-default);
+}
+
+.jds-button--variant_destructive:hover {
+  opacity: 0.92;
+}
+
+.jds-button--variant_outline {
+  background-color: transparent;
+  color: var(--jds-color-fg-default);
+  border-color: var(--jds-color-stroke-default);
+}
+
+.jds-button--variant_outline:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-button--variant_link {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--jds-color-fg-accent);
+  min-height: auto;
+  padding-inline: 0;
+  text-decoration: none;
+}
+
+.jds-button--variant_link:hover {
+  text-decoration: underline;
+}
+
+.jds-calendar__root {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--jds-primitive-radius-md);
+  background-color: var(--jds-color-bg-elevated);
+  color: var(--jds-color-fg-default);
+  box-shadow: var(--jds-primitive-shadow-sm);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-subtle);
+}
+
+.jds-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--jds-primitive-spacing-3);
+}
+
+.jds-calendar__title {
+  font-size: var(--jds-primitive-typography-title-sm-fontSize);
+  line-height: var(--jds-primitive-typography-title-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-title-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-title-sm-letterSpacing);
+}
+
+.jds-calendar__navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--jds-primitive-radius-full);
+  color: var(--jds-color-icon-muted);
+  cursor: pointer;
+  transition-property: opacity, background-color, color;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-calendar__navButton:hover {
+  opacity: 0.85;
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-calendar__navButton:active {
+  opacity: 0.65;
+}
+
+.jds-calendar__navButton:disabled,
+.jds-calendar__navButton[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.jds-calendar__navButton:disabled:hover {
+  background-color: transparent;
+}
+
+.jds-calendar__navButton svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.jds-calendar__weekday {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--jds-primitive-spacing-2);
+  color: var(--jds-color-fg-muted);
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-calendar__daysGrid {
+  display: flex;
+  flex-direction: column;
+  padding: var(--jds-primitive-spacing-2);
+}
+
+.jds-calendar__weekRow {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: var(--jds-primitive-spacing-1);
+}
+
+.jds-calendar__weekRow:last-child {
+  margin-bottom: 0;
+}
+
+.jds-calendar__dayCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  border-radius: var(--jds-primitive-radius-md);
+  cursor: pointer;
+  font-size: var(--jds-primitive-typography-body-sm-fontSize);
+  line-height: var(--jds-primitive-typography-body-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
+  transition-property: opacity, background-color, color;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-calendar__dayCell:hover {
+  opacity: 0.85;
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-calendar__dayCell:active {
+  opacity: 0.65;
+}
+
+.jds-calendar__dayCell[data-hidden="true"] {
+  visibility: hidden;
+}
+
+.jds-calendar__dayCell[data-outside-month="true"] {
+  color: var(--jds-color-fg-subtle);
+}
+
+.jds-checkbox__root {
+  position: relative;
+  display: flex;
+}
+
+.jds-checkbox__label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 2.25rem;
+  padding-left: 2rem;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.jds-checkbox__label > input:disabled + span {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.jds-checkbox__input {
+  appearance: none;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.jds-checkbox__input::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transition:
+    background-color 120ms cubic-bezier(0.2, 0, 0, 1),
+    border-color 120ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.jds-checkbox__input::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+}
+
+.jds-checkbox__input:disabled,
+.jds-checkbox__input[data-disabled] {
+  cursor: not-allowed;
+}
+
+.jds-checkbox__text {
+  color: var(--jds-color-fg-default);
+  font-size: var(--jds-primitive-typography-label-md-fontSize);
+  line-height: var(--jds-primitive-typography-label-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-md-letterSpacing);
+  cursor: pointer;
+}
+
+.jds-checkbox__input--size_md {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.jds-checkbox__text--size_md {
+  padding-left: var(--jds-primitive-spacing-1);
+}
+
+.jds-checkbox__input--size_lg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.jds-checkbox__text--size_lg {
+  padding-left: var(--jds-primitive-spacing-2);
+}
+
+.jds-checkbox__input--variant_square::before {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-default);
+  border-radius: var(--jds-primitive-radius-lg);
+  background-color: var(--jds-color-bg-elevated);
+}
+
+.jds-checkbox__input--variant_square::after {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10.41 17.854c-.34 0-.679-.113-.905-.453l-5.203-5.203c-.566-.565-.566-1.357 0-1.923.566-.565 1.357-.565 1.923 0l4.185 4.185 7.465-7.465c.566-.565 1.357-.565 1.923 0 .566.566.566 1.358 0 1.923l-8.37 8.37c-.34.453-.679.566-1.018.566z' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+.jds-checkbox__input--variant_square:checked::before,
+.jds-checkbox__input--variant_square[data-checked]::before {
+  background-color: var(--jds-color-bg-accent);
+  border-color: var(--jds-color-bg-accent);
+}
+
+.jds-checkbox__input--variant_square:checked::after,
+.jds-checkbox__input--variant_square[data-checked]::after {
+  opacity: 1;
+}
+
+.jds-checkbox__input--variant_square:indeterminate::before,
+.jds-checkbox__input--variant_square[data-indeterminate]::before {
+  background-color: var(--jds-color-bg-accent);
+  border-color: var(--jds-color-bg-accent);
+}
+
+.jds-checkbox__input--variant_square:indeterminate::after,
+.jds-checkbox__input--variant_square[data-indeterminate]::after {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='10.5' width='12' height='3' fill='%23fff'/%3E%3C/svg%3E");
+  opacity: 1;
+}
+
+.jds-checkbox__input--variant_ghost::before {
+  border: none;
+  background-color: transparent;
+}
+
+.jds-checkbox__input--variant_ghost::after {
+  background-image: none;
+  mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10.41 17.854c-.34 0-.679-.113-.905-.453l-5.203-5.203c-.566-.565-.566-1.357 0-1.923.566-.565 1.357-.565 1.923 0l4.185 4.185 7.465-7.465c.566-.565 1.357-.565 1.923 0 .566.566.566 1.358 0 1.923l-8.37 8.37c-.34.453-.679.566-1.018.566z' fill='%23808080'/%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-position: center;
+  background-color: var(--jds-color-icon-muted);
+  opacity: 1;
+}
+
+.jds-checkbox__input--variant_ghost:checked::after,
+.jds-checkbox__input--variant_ghost[data-checked]::after {
+  background-color: var(--jds-color-icon-default);
+}
+
+.jds-checkbox__input--variant_ghost:indeterminate::after,
+.jds-checkbox__input--variant_ghost[data-indeterminate]::after {
+  mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='10.5' width='12' height='3' fill='%23808080'/%3E%3C/svg%3E");
+  background-color: var(--jds-color-icon-default);
+}
+
+.jds-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--jds-primitive-spacing-2);
+  flex-shrink: 0;
+  border-radius: var(--jds-primitive-radius-full);
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-chip svg {
+  flex-shrink: 0;
+}
+
+.jds-chip:disabled,
+.jds-chip[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.jds-chip--variant_filled {
+  background-color: var(--jds-color-bg-surface);
+  color: var(--jds-color-fg-default);
+  border-color: var(--jds-color-stroke-subtle);
+}
+
+.jds-chip--variant_filled:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-chip--variant_outlined {
+  background-color: transparent;
+  color: var(--jds-color-fg-default);
+  border-color: var(--jds-color-stroke-default);
+}
+
+.jds-chip--variant_outlined:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-chip--size_sm {
+  min-height: 2rem;
+  padding-inline: var(--jds-primitive-spacing-2);
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-chip--size_sm svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.jds-chip--size_md {
+  min-height: 2.25rem;
+  padding-inline: var(--jds-primitive-spacing-3);
+  font-size: var(--jds-primitive-typography-label-md-fontSize);
+  line-height: var(--jds-primitive-typography-label-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-md-letterSpacing);
+}
+
+.jds-chip--size_md svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.jds-chip--layout_iconOnly {
+  padding-inline: 0;
+}
+
+.jds-chip--layout_iconOnly-size_sm {
+  width: 2rem;
+  min-height: 2rem;
+}
+
+.jds-chip--layout_iconOnly-size_md {
+  width: 2.25rem;
+  min-height: 2.25rem;
+}
+
+.jds-chip--variant_outlined-layout_withText-size_sm {
+  padding-block: var(--jds-primitive-spacing-1);
+}
+
+.jds-dialog__overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--jds-color-overlay-default);
+  opacity: 0.55;
+}
+
+.jds-dialog__content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(32rem, calc(100vw - 2rem));
+  padding: var(--jds-primitive-spacing-6);
+  border-radius: var(--jds-primitive-radius-lg);
+  background-color: var(--jds-color-bg-elevated);
+  color: var(--jds-color-fg-default);
+  box-shadow: var(--jds-primitive-shadow-lg);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-subtle);
+  z-index: 1000;
+  overflow: auto;
+}
+
+.jds-dialog__close {
+  position: absolute;
+  top: var(--jds-primitive-spacing-4);
+  right: var(--jds-primitive-spacing-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--jds-primitive-radius-sm);
+  color: var(--jds-color-icon-muted);
+  cursor: pointer;
+  transition-property: background-color, color, opacity;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-dialog__close:hover {
+  background-color: var(--jds-color-bg-subtle);
+  color: var(--jds-color-icon-default);
+}
+
+.jds-dialog__close:disabled,
+.jds-dialog__close[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.jds-dialog__header {
+  display: grid;
+  gap: var(--jds-primitive-spacing-2);
+}
+
+.jds-dialog__title {
+  font-size: var(--jds-primitive-typography-title-md-fontSize);
+  line-height: var(--jds-primitive-typography-title-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-title-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-title-md-letterSpacing);
+}
+
+.jds-dialog__description {
+  color: var(--jds-color-fg-muted);
+  font-size: var(--jds-primitive-typography-body-md-fontSize);
+  line-height: var(--jds-primitive-typography-body-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-md-letterSpacing);
+}
+
+.jds-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--jds-primitive-spacing-3);
+  margin-top: var(--jds-primitive-spacing-6);
+}
+
+.jds-dialog__content--tone_accent {
+  border-color: var(--jds-color-stroke-accent);
+}
+
+.jds-dialog__title--tone_accent {
+  color: var(--jds-color-fg-accent);
+}
+
+.jds-select__value {
+  color: var(--jds-color-fg-default);
+  font-size: var(--jds-primitive-typography-label-md-fontSize);
+  line-height: var(--jds-primitive-typography-label-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-md-letterSpacing);
+}
+
+.jds-select__trigger {
+  display: flex;
+  width: 100%;
+  min-height: 2.5rem;
+  padding-inline: var(--jds-primitive-spacing-3);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--jds-primitive-spacing-2);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-default);
+  border-radius: var(--jds-primitive-radius-md);
+  background-color: var(--jds-color-bg-surface);
+  color: var(--jds-color-fg-default);
+  font-size: var(--jds-primitive-typography-label-md-fontSize);
+  line-height: var(--jds-primitive-typography-label-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-md-letterSpacing);
+  cursor: pointer;
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-select__trigger[data-placeholder] {
+  color: var(--jds-color-fg-subtle);
+}
+
+.jds-select__trigger:focus-visible {
+  outline: 2px solid var(--jds-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.jds-select__trigger:disabled,
+.jds-select__trigger[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.jds-select__viewport[data-position="popper"] {
+  width: 100%;
+  min-width: var(--radix-select-trigger-width);
+  height: var(--radix-select-trigger-height);
+}
+
+.jds-select__content {
+  position: relative;
+  z-index: 100;
+  min-width: 100%;
+  max-height: 24rem;
+  overflow: hidden;
+  padding-block: var(--jds-primitive-spacing-1);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-subtle);
+  border-radius: var(--jds-primitive-radius-md);
+  background-color: var(--jds-color-bg-elevated);
+  color: var(--jds-color-fg-default);
+  box-shadow: var(--jds-primitive-shadow-lg);
+}
+
+.jds-select__content[data-state="open"] {
+  animation-name: fade-in;
+  animation-duration: var(--jds-primitive-motion-duration-normal);
+}
+
+.jds-select__content[data-position="popper"][data-side="top"] {
+  transform: translateY(-0.25rem);
+}
+
+.jds-select__content[data-position="popper"][data-side="bottom"] {
+  transform: translateY(0.25rem);
+}
+
+.jds-select__content[data-position="popper"][data-side="left"] {
+  transform: translateX(-0.25rem);
+}
+
+.jds-select__content[data-position="popper"][data-side="right"] {
+  transform: translateX(0.25rem);
+}
+
+.jds-select__label {
+  padding-top: var(--jds-primitive-spacing-2);
+  padding-bottom: var(--jds-primitive-spacing-1);
+  padding-left: var(--jds-primitive-spacing-8);
+  padding-right: var(--jds-primitive-spacing-2);
+  color: var(--jds-color-fg-muted);
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-select__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding-left: var(--jds-primitive-spacing-8);
+  padding-right: var(--jds-primitive-spacing-2);
+  border-radius: var(--jds-primitive-radius-sm);
+  color: var(--jds-color-fg-default);
+  cursor: default;
+  user-select: none;
+  font-size: var(--jds-primitive-typography-body-md-fontSize);
+  line-height: var(--jds-primitive-typography-body-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-md-letterSpacing);
+}
+
+.jds-select__item:focus-visible,
+.jds-select__item[data-highlighted] {
+  outline: none;
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-select__item[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.jds-select__itemIndicator {
+  position: absolute;
+  left: var(--jds-primitive-spacing-2);
+  display: flex;
+  width: 1rem;
+  height: 1rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--jds-color-icon-accent);
+}
+
+.jds-select__separator {
+  margin-block: var(--jds-primitive-spacing-1);
+  margin-inline: var(--jds-primitive-spacing-1);
+  height: 1px;
+  background-color: var(--jds-color-stroke-subtle);
+}
+
+.jds-slider__root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  touch-action: none;
+  user-select: none;
+}
+
+.jds-slider__track {
+  position: relative;
+  width: 100%;
+  height: 0.5rem;
+  flex-grow: 1;
+  overflow: hidden;
+  border-radius: var(--jds-primitive-radius-full);
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-slider__range {
+  position: absolute;
+  height: 100%;
+  background-color: var(--jds-color-bg-accent);
+}
+
+.jds-slider__thumb {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+  border-radius: var(--jds-primitive-radius-full);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--jds-color-focus-ring);
+  background-color: var(--jds-color-bg-elevated);
+  box-shadow: var(--jds-primitive-shadow-sm);
+}
+
+.jds-slider__thumb:disabled,
+.jds-slider__thumb[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.jds-tabs__root {
+  width: 100%;
+}
+
+.jds-tabs__list {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--jds-primitive-spacing-1);
+  padding: var(--jds-primitive-spacing-1);
+  border-radius: var(--jds-primitive-radius-md);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-subtle);
+  background-color: var(--jds-color-bg-surface);
+}
+
+.jds-tabs__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.25rem;
+  padding-inline: var(--jds-primitive-spacing-3);
+  border-radius: var(--jds-primitive-radius-sm);
+  color: var(--jds-color-fg-muted);
+  cursor: pointer;
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+  transition-property: background-color, color, box-shadow;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-tabs__trigger[data-state="active"] {
+  background-color: var(--jds-color-bg-canvas);
+  color: var(--jds-color-fg-default);
+  box-shadow: var(--jds-primitive-shadow-sm);
+}
+
+.jds-tabs__content {
+  margin-top: var(--jds-primitive-spacing-4);
+  color: var(--jds-color-fg-default);
+  font-size: var(--jds-primitive-typography-body-md-fontSize);
+  line-height: var(--jds-primitive-typography-body-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-md-letterSpacing);
+}
+
+.jds-tabs__trigger--size_sm {
+  min-height: 2rem;
+  padding-inline: var(--jds-primitive-spacing-2);
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-tabs__trigger--tone_accent[data-state="active"] {
+  color: var(--jds-color-fg-accent);
+}
+
+.jds-textfield__root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--jds-primitive-spacing-2);
+  width: 100%;
+}
+
+.jds-textfield__heading {
+  color: var(--jds-color-fg-default);
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-textfield__container {
+  display: flex;
+  width: 100%;
+  min-height: 3rem;
+  align-items: center;
+  gap: var(--jds-primitive-spacing-2);
+  padding-inline: var(--jds-primitive-spacing-3);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-default);
+  border-radius: var(--jds-primitive-radius-md);
+  background-color: var(--jds-color-bg-elevated);
+  box-shadow: var(--jds-primitive-shadow-sm);
+  transition-property: border-color, box-shadow, background-color;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-textfield__container:focus-within {
+  border-color: var(--jds-color-stroke-accent);
+}
+
+.jds-textfield__container[data-disabled],
+.jds-textfield__container:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.jds-textfield__input {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: var(--jds-color-fg-default);
+  font-size: var(--jds-primitive-typography-body-md-fontSize);
+  line-height: var(--jds-primitive-typography-body-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-md-letterSpacing);
+}
+
+.jds-textfield__input::placeholder {
+  color: var(--jds-color-fg-subtle);
+}
+
+.jds-textfield__input:disabled,
+.jds-textfield__input[data-disabled] {
+  cursor: not-allowed;
+}
+
+.jds-textfield__trailingButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--jds-color-icon-muted);
+}
+
+.jds-textfield__helper {
+  color: var(--jds-color-fg-muted);
+  font-size: var(--jds-primitive-typography-body-sm-fontSize);
+  line-height: var(--jds-primitive-typography-body-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
+}
+
+.jds-textfield__container--status_negative {
+  border-color: var(--jds-color-danger-default);
+}
+
+.jds-textfield__container--status_negative:focus-within {
+  border-color: var(--jds-color-danger-default);
+  box-shadow: 0 0 0 1px var(--jds-color-danger-default);
+}
+
+.jds-textfield__helper--status_negative {
+  color: var(--jds-color-danger-default);
+}
+
+.jds-toast__container {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--jds-primitive-spacing-2);
+  pointer-events: none;
+}
+
+.jds-toast__item {
+  display: flex;
+  align-items: center;
+  gap: var(--jds-primitive-spacing-2);
+  max-width: 24rem;
+  padding-inline: var(--jds-primitive-spacing-4);
+  padding-block: var(--jds-primitive-spacing-3);
+  border-radius: var(--jds-primitive-radius-xl);
+  box-shadow: var(--jds-primitive-shadow-lg);
+  pointer-events: auto;
+  animation-name: fade-in;
+  animation-duration: var(--jds-primitive-motion-duration-fast);
+  animation-fill-mode: both;
+  font-size: var(--jds-primitive-typography-body-sm-fontSize);
+  line-height: var(--jds-primitive-typography-body-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-body-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
+}
+
+.jds-toast__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  border-radius: var(--jds-primitive-radius-sm);
+  opacity: 0.7;
+  cursor: pointer;
+  transition-property: opacity;
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+}
+
+.jds-toast__close:hover {
+  opacity: 1;
+}
+
+.jds-toast__container--position_top-left {
+  top: var(--jds-primitive-spacing-4);
+  left: var(--jds-primitive-spacing-4);
+}
+
+.jds-toast__container--position_top-center {
+  top: var(--jds-primitive-spacing-4);
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.jds-toast__container--position_top-right {
+  top: var(--jds-primitive-spacing-4);
+  right: var(--jds-primitive-spacing-4);
+}
+
+.jds-toast__container--position_bottom-left {
+  bottom: var(--jds-primitive-spacing-4);
+  left: var(--jds-primitive-spacing-4);
+  flex-direction: column-reverse;
+}
+
+.jds-toast__container--position_bottom-center {
+  bottom: var(--jds-primitive-spacing-4);
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  flex-direction: column-reverse;
+}
+
+.jds-toast__container--position_bottom-right {
+  bottom: var(--jds-primitive-spacing-4);
+  right: var(--jds-primitive-spacing-4);
+  flex-direction: column-reverse;
+}
+
+.jds-toast__item--variant_default {
+  background-color: var(--jds-color-bg-elevated);
+  color: var(--jds-color-fg-default);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-subtle);
+}
+
+.jds-toast__close--variant_default {
+  color: var(--jds-color-icon-muted);
+}
+
+.jds-toast__item--variant_destructive {
+  background-color: var(--jds-color-danger-default);
+  color: var(--jds-color-fg-inverse);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-danger-default);
+}
+
+.jds-toast__close--variant_destructive {
+  color: var(--jds-color-fg-inverse);
+}

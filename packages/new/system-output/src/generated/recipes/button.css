@@ -1,0 +1,118 @@
+.jds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--jds-primitive-spacing-2);
+  min-height: 2.5rem;
+  padding-inline: var(--jds-primitive-spacing-4);
+  border-radius: var(--jds-primitive-radius-md);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--jds-color-stroke-default);
+  background-color: var(--jds-color-bg-surface);
+  color: var(--jds-color-fg-default);
+  font-size: var(--jds-primitive-typography-label-md-fontSize);
+  line-height: var(--jds-primitive-typography-label-md-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-md-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-md-letterSpacing);
+  transition-duration: var(--jds-primitive-motion-duration-fast);
+  transition-timing-function: var(--jds-primitive-motion-easing-standard);
+  transition-property: background-color, border-color, color, box-shadow;
+}
+
+.jds-button:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-button:focus-visible {
+  outline: 2px solid var(--jds-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.jds-button:disabled,
+.jds-button[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.jds-button--size_sm {
+  min-height: 2.25rem;
+  padding-inline: var(--jds-primitive-spacing-3);
+  font-size: var(--jds-primitive-typography-label-sm-fontSize);
+  line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+  font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+  letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+}
+
+.jds-button--size_sm svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.jds-button--size_md svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.jds-button--size_lg {
+  min-height: 3rem;
+  padding-inline: var(--jds-primitive-spacing-5);
+}
+
+.jds-button--size_lg svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.jds-button--variant_primary {
+  background-color: var(--jds-color-bg-accent);
+  color: var(--jds-color-fg-inverse);
+  border-color: var(--jds-color-bg-accent);
+}
+
+.jds-button--variant_primary:hover {
+  background-color: var(--jds-color-bg-accent-hovered);
+}
+
+.jds-button--variant_secondary {
+  background-color: var(--jds-color-bg-surface);
+  color: var(--jds-color-fg-default);
+  border-color: var(--jds-color-stroke-default);
+}
+
+.jds-button--variant_secondary:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-button--variant_destructive {
+  background-color: var(--jds-color-danger-default);
+  color: var(--jds-color-fg-inverse);
+  border-color: var(--jds-color-danger-default);
+}
+
+.jds-button--variant_destructive:hover {
+  opacity: 0.92;
+}
+
+.jds-button--variant_outline {
+  background-color: transparent;
+  color: var(--jds-color-fg-default);
+  border-color: var(--jds-color-stroke-default);
+}
+
+.jds-button--variant_outline:hover {
+  background-color: var(--jds-color-bg-subtle);
+}
+
+.jds-button--variant_link {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--jds-color-fg-accent);
+  min-height: auto;
+  padding-inline: 0;
+  text-decoration: none;
+}
+
+.jds-button--variant_link:hover {
+  text-decoration: underline;
+}

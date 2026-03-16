@@ -1,0 +1,26 @@
+{
+  "name": "@jongh/new-system-spec",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint --max-warnings 0 --no-warn-ignored .",
+    "check-type": "tsgo --noEmit",
+    "test:types": "tsgo --noEmit"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./define": "./src/define.ts",
+    "./reset": "./src/reset.ts",
+    "./reset.css": "./src/reset.css",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@jongh/new-system-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.6",
+    "@jongh/eslint": "workspace:*",
+    "@jongh/tsconfig": "workspace:*"
+  }
+}
