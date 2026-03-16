@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node --experimental-strip-types ./scripts/build.ts && prettier --write ./src/generated",
     "lint": "eslint --max-warnings 0 --no-warn-ignored .",
     "check-type": "tsgo --noEmit",
     "test": "pnpm exec vitest run"
