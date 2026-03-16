@@ -18,7 +18,6 @@
   "devDependencies": {
     "@types/node": "^22.8.6",
     "@jongh/eslint": "workspace:*",
-    "@jongh/new-system-spec": "workspace:*",
     "@jongh/tsconfig": "workspace:*",
     "csstype": "^3.1.3"
   }

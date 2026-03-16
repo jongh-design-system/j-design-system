@@ -425,9 +425,6 @@ importers:
       '@jongh/eslint':
         specifier: workspace:*
         version: link:../../../configs/eslint
-      '@jongh/new-system-spec':
-        specifier: workspace:*
-        version: link:../system-spec
       '@jongh/tsconfig':
         specifier: workspace:*
         version: link:../../../configs/tsconfig

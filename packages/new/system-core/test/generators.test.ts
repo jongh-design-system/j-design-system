@@ -1,14 +1,14 @@
-import { system } from "@jongh/new-system-spec"
 import { describe, expect, it } from "vitest"
 
 import { SystemArtifactGenerator } from "../src/build.ts"
 import { CssGenerator } from "../src/generate/css.ts"
 import { RecipeDtsGenerator } from "../src/generate/dts.ts"
 import { RecipeJsGenerator } from "../src/generate/js.ts"
+import { testSystem } from "./fixtures/system.ts"
 
 describe("CssGenerator", () => {
   it("generates base css with primitive, semantic and keyframe output", () => {
-    const css = new CssGenerator(system).generateBaseCss()
+    const css = new CssGenerator(testSystem).generateBaseCss()
 
     expect(css).toContain("--jds-primitive-color-slate-50:")
     expect(css).toContain("--jds-color-bg-surface:")
@@ -17,7 +17,7 @@ describe("CssGenerator", () => {
   })
 
   it("generates recipe css for slot recipes", () => {
-    const css = new CssGenerator(system).generateAllCss()
+    const css = new CssGenerator(testSystem).generateAllCss()
 
     expect(css).toContain(".jds-avatar__root")
     expect(css).toContain(".jds-avatar__fallback--tone_accent")
@@ -27,8 +27,8 @@ describe("CssGenerator", () => {
 describe("Recipe generators", () => {
   it("generates runtime js for slot recipes", () => {
     const code = new RecipeJsGenerator(
-      system.theme.recipes.avatar,
-      system,
+      testSystem.theme.recipes.avatar,
+      testSystem,
     ).generate()
 
     expect(code).toContain('from "@jongh/new-system-runtime/recipe"')
@@ -39,7 +39,9 @@ describe("Recipe generators", () => {
   })
 
   it("generates dts for slot recipes", () => {
-    const dts = new RecipeDtsGenerator(system.theme.recipes.avatar).generate()
+    const dts = new RecipeDtsGenerator(
+      testSystem.theme.recipes.avatar,
+    ).generate()
 
     expect(dts).toContain(
       'export declare type AvatarSlotName = "root" | "image" | "fallback"',
@@ -53,7 +55,7 @@ describe("Recipe generators", () => {
 
 describe("SystemArtifactGenerator", () => {
   it("returns the expected generated file set", () => {
-    const files = new SystemArtifactGenerator(system).generateSystemFiles()
+    const files = new SystemArtifactGenerator(testSystem).generateSystemFiles()
     const filePaths = new Set(files.map((file) => file.path))
     const themingFile = files.find(
       (file) => file.path === "generated/theming.js",

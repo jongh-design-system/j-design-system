@@ -1,7 +1,7 @@
-import { system } from "@jongh/new-system-spec"
 import { describe, expect, it } from "vitest"
 
 import { renderStyleObject } from "../src/resolve/style-value.ts"
+import { testSystem } from "./fixtures/system.ts"
 
 describe("renderStyleObject", () => {
   it("expands shorthands and resolves token values", () => {
@@ -23,7 +23,7 @@ describe("renderStyleObject", () => {
           px: "spacing.6",
         },
       },
-      system,
+      testSystem,
     )
 
     expect(css).toContain("padding-inline: var(--jds-primitive-spacing-4);")

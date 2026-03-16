@@ -1,16 +1,16 @@
-import { system } from "@jongh/new-system-spec"
 import { describe, expect, it } from "vitest"
 
 import { validateRecipes } from "../src/validate/recipes.ts"
 import { validateTokenReferences } from "../src/validate/tokens.ts"
+import { testSystem } from "./fixtures/system.ts"
 
 describe("validateTokenReferences", () => {
   it("accepts the current system spec", () => {
-    expect(() => validateTokenReferences(system)).not.toThrow()
+    expect(() => validateTokenReferences(testSystem)).not.toThrow()
   })
 
   it("fails when a semantic token references an unknown primitive token", () => {
-    const invalidSystem = structuredClone(system) as typeof system
+    const invalidSystem = structuredClone(testSystem) as typeof testSystem
     invalidSystem.theme.semanticTokens.color.bg.surface.light =
       "color.slate.1234" as never
 
@@ -20,7 +20,7 @@ describe("validateTokenReferences", () => {
   })
 
   it("fails when a semantic token references another token family", () => {
-    const invalidSystem = structuredClone(system) as typeof system
+    const invalidSystem = structuredClone(testSystem) as typeof testSystem
     invalidSystem.theme.semanticTokens.color.bg.surface.light =
       "spacing.4" as never
 
@@ -32,11 +32,11 @@ describe("validateTokenReferences", () => {
 
 describe("validateRecipes", () => {
   it("accepts the current system recipes", () => {
-    expect(() => validateRecipes(system)).not.toThrow()
+    expect(() => validateRecipes(testSystem)).not.toThrow()
   })
 
   it("fails when a recipe references an unknown token", () => {
-    const invalidSystem = structuredClone(system) as typeof system
+    const invalidSystem = structuredClone(testSystem) as typeof testSystem
     invalidSystem.theme.recipes.button.base.backgroundColor =
       "color.bg.ghost" as never
 
@@ -46,7 +46,7 @@ describe("validateRecipes", () => {
   })
 
   it("fails when defaultVariants references a missing value", () => {
-    const invalidSystem = structuredClone(system) as typeof system
+    const invalidSystem = structuredClone(testSystem) as typeof testSystem
     invalidSystem.theme.recipes.avatar.defaultVariants.size = "xl" as never
 
     expect(() => validateRecipes(invalidSystem)).toThrowError(
@@ -55,7 +55,7 @@ describe("validateRecipes", () => {
   })
 
   it("fails when a slot recipe defines an unknown slot", () => {
-    const invalidSystem = structuredClone(system) as typeof system
+    const invalidSystem = structuredClone(testSystem) as typeof testSystem
 
     invalidSystem.theme.recipes.avatar.base = {
       ...invalidSystem.theme.recipes.avatar.base,
