@@ -346,7 +346,8 @@
   --jds-primitive-typography-title-lg-letterSpacing: normal;
 }
 
-:root, :root[data-theme='light'] {
+:root,
+:root[data-theme="light"] {
   --jds-color-bg-canvas: var(--jds-primitive-color-slate-50);
   --jds-color-bg-surface: var(--jds-primitive-color-slate-100);
   --jds-color-bg-subtle: var(--jds-primitive-color-slate-200);
@@ -374,7 +375,7 @@
   --jds-color-info-default: var(--jds-primitive-color-sky-600);
 }
 
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   --jds-color-bg-canvas: var(--jds-primitive-color-slate-950);
   --jds-color-bg-surface: var(--jds-primitive-color-slate-900);
   --jds-color-bg-subtle: var(--jds-primitive-color-slate-800);

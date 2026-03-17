@@ -1,46 +1,45 @@
-import { createClassName, mergeVariants, splitVariantProps } from "../../internal/recipe.js"
+import {
+  createClassName,
+  mergeVariants,
+  splitVariantProps,
+} from "../../internal/recipe.js"
 
 const defaultVariants = {
-  "variant": "filled",
-  "size": "md",
-  "layout": "withText"
+  variant: "filled",
+  size: "md",
+  layout: "withText",
 }
 const compoundVariants = [
   {
-    "layout": "iconOnly",
-    "size": "sm"
+    layout: "iconOnly",
+    size: "sm",
   },
   {
-    "layout": "iconOnly",
-    "size": "md"
+    layout: "iconOnly",
+    size: "md",
   },
   {
-    "variant": "outlined",
-    "layout": "withText",
-    "size": "sm"
-  }
+    variant: "outlined",
+    layout: "withText",
+    size: "sm",
+  },
 ]
 
 export const chipVariantMap = {
-  "variant": [
-    "filled",
-    "outlined"
-  ],
-  "size": [
-    "sm",
-    "md"
-  ],
-  "layout": [
-    "withText",
-    "iconOnly"
-  ]
+  variant: ["filled", "outlined"],
+  size: ["sm", "md"],
+  layout: ["withText", "iconOnly"],
 }
 export const chipVariantKeys = Object.keys(chipVariantMap)
 
 export function chip(props = {}) {
-  return createClassName("jds-chip", mergeVariants(defaultVariants, props), compoundVariants)
+  return createClassName(
+    "jds-chip",
+    mergeVariants(defaultVariants, props),
+    compoundVariants,
+  )
 }
 
 Object.assign(chip, {
-  splitVariantProps: (props) => splitVariantProps(props, chipVariantMap)
+  splitVariantProps: (props) => splitVariantProps(props, chipVariantMap),
 })

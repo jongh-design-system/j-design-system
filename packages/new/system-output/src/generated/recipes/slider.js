@@ -1,22 +1,14 @@
-import { createClassName, mergeVariants, splitVariantProps } from "../../internal/recipe.js"
+import {
+  createClassName,
+  mergeVariants,
+  splitVariantProps,
+} from "../../internal/recipe.js"
 
 const sliderSlots = [
-  [
-    "root",
-    "jds-slider__root"
-  ],
-  [
-    "track",
-    "jds-slider__track"
-  ],
-  [
-    "range",
-    "jds-slider__range"
-  ],
-  [
-    "thumb",
-    "jds-slider__thumb"
-  ]
+  ["root", "jds-slider__root"],
+  ["track", "jds-slider__track"],
+  ["range", "jds-slider__range"],
+  ["thumb", "jds-slider__thumb"],
 ]
 const defaultVariants = {}
 const compoundVariants = []
@@ -30,11 +22,11 @@ export function slider(props = {}) {
   return Object.fromEntries(
     sliderSlots.map(([slot, className]) => [
       slot,
-      createClassName(className, variants, compoundVariants)
-    ])
+      createClassName(className, variants, compoundVariants),
+    ]),
   )
 }
 
 Object.assign(slider, {
-  splitVariantProps: (props) => splitVariantProps(props, sliderVariantMap)
+  splitVariantProps: (props) => splitVariantProps(props, sliderVariantMap),
 })

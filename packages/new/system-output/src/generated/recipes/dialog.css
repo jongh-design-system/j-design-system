@@ -1,5 +1,3 @@
-
-
 .jds-dialog__overlay {
   position: fixed;
   inset: 0;
@@ -47,7 +45,8 @@
   color: var(--jds-color-icon-default);
 }
 
-.jds-dialog__close:disabled, .jds-dialog__close[data-disabled] {
+.jds-dialog__close:disabled,
+.jds-dialog__close[data-disabled] {
   pointer-events: none;
   opacity: 0.5;
 }

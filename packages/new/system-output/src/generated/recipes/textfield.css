@@ -35,7 +35,8 @@
   border-color: var(--jds-color-stroke-accent);
 }
 
-.jds-textfield__container[data-disabled], .jds-textfield__container:has(input:disabled) {
+.jds-textfield__container[data-disabled],
+.jds-textfield__container:has(input:disabled) {
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -58,7 +59,8 @@
   color: var(--jds-color-fg-subtle);
 }
 
-.jds-textfield__input:disabled, .jds-textfield__input[data-disabled] {
+.jds-textfield__input:disabled,
+.jds-textfield__input[data-disabled] {
   cursor: not-allowed;
 }
 

@@ -1,7 +1,3 @@
-
-
-
-
 .jds-accordion__header {
   display: flex;
 }
@@ -31,7 +27,7 @@
   transition: transform 180ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-.jds-accordion__trigger[data-state='open'] > svg {
+.jds-accordion__trigger[data-state="open"] > svg {
   transform: rotate(180deg);
 }
 
@@ -44,12 +40,12 @@
   letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
 }
 
-.jds-accordion__content[data-state='closed'] {
+.jds-accordion__content[data-state="closed"] {
   animation-duration: var(--jds-primitive-motion-duration-normal);
   animation-name: accordion-up_radix;
 }
 
-.jds-accordion__content[data-state='open'] {
+.jds-accordion__content[data-state="open"] {
   animation-duration: var(--jds-primitive-motion-duration-normal);
   animation-name: accordion-down_radix;
 }
@@ -73,7 +69,7 @@
   border-radius: var(--jds-primitive-radius-md);
 }
 
-.jds-accordion__item--variant_subtle[data-state='open'] {
+.jds-accordion__item--variant_subtle[data-state="open"] {
   background-color: var(--jds-color-bg-subtle);
 }
 

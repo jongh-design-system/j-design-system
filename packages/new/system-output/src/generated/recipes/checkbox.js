@@ -1,38 +1,24 @@
-import { createClassName, mergeVariants, splitVariantProps } from "../../internal/recipe.js"
+import {
+  createClassName,
+  mergeVariants,
+  splitVariantProps,
+} from "../../internal/recipe.js"
 
 const checkboxSlots = [
-  [
-    "root",
-    "jds-checkbox__root"
-  ],
-  [
-    "label",
-    "jds-checkbox__label"
-  ],
-  [
-    "input",
-    "jds-checkbox__input"
-  ],
-  [
-    "text",
-    "jds-checkbox__text"
-  ]
+  ["root", "jds-checkbox__root"],
+  ["label", "jds-checkbox__label"],
+  ["input", "jds-checkbox__input"],
+  ["text", "jds-checkbox__text"],
 ]
 const defaultVariants = {
-  "size": "md",
-  "variant": "square"
+  size: "md",
+  variant: "square",
 }
 const compoundVariants = []
 
 export const checkboxVariantMap = {
-  "size": [
-    "md",
-    "lg"
-  ],
-  "variant": [
-    "square",
-    "ghost"
-  ]
+  size: ["md", "lg"],
+  variant: ["square", "ghost"],
 }
 export const checkboxVariantKeys = Object.keys(checkboxVariantMap)
 
@@ -42,11 +28,11 @@ export function checkbox(props = {}) {
   return Object.fromEntries(
     checkboxSlots.map(([slot, className]) => [
       slot,
-      createClassName(className, variants, compoundVariants)
-    ])
+      createClassName(className, variants, compoundVariants),
+    ]),
   )
 }
 
 Object.assign(checkbox, {
-  splitVariantProps: (props) => splitVariantProps(props, checkboxVariantMap)
+  splitVariantProps: (props) => splitVariantProps(props, checkboxVariantMap),
 })

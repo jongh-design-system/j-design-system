@@ -48,7 +48,8 @@
   opacity: 0.65;
 }
 
-.jds-calendar__navButton:disabled, .jds-calendar__navButton[data-disabled] {
+.jds-calendar__navButton:disabled,
+.jds-calendar__navButton[data-disabled] {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -116,10 +117,10 @@
   opacity: 0.65;
 }
 
-.jds-calendar__dayCell[data-hidden='true'] {
+.jds-calendar__dayCell[data-hidden="true"] {
   visibility: hidden;
 }
 
-.jds-calendar__dayCell[data-outside-month='true'] {
+.jds-calendar__dayCell[data-outside-month="true"] {
   color: var(--jds-color-fg-subtle);
 }
