@@ -12,6 +12,7 @@ export default [
     ignores: [
       "styled-system/*",
       ".storybook/*",
+      ".tmp/*",
       "postcss.config.*",
       "storybook-static/*",
     ],

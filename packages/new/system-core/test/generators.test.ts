@@ -31,7 +31,7 @@ describe("Recipe generators", () => {
       testSystem,
     ).generate()
 
-    expect(code).toContain('from "@jongh/new-system-runtime/recipe"')
+    expect(code).toContain('from "../../internal/recipe.js"')
     expect(code).toContain("const avatarSlots =")
     expect(code).toContain("export const avatarVariantMap =")
     expect(code).toContain("export function avatar(props = {})")
@@ -57,10 +57,6 @@ describe("SystemArtifactGenerator", () => {
   it("returns the expected generated file set", () => {
     const files = new SystemArtifactGenerator(testSystem).generateSystemFiles()
     const filePaths = new Set(files.map((file) => file.path))
-    const themingFile = files.find(
-      (file) => file.path === "generated/theming.js",
-    )
-
     expect(filePaths).toContain("generated/styles/base.css")
     expect(filePaths).toContain("generated/styles/all.css")
     expect(filePaths).toContain("generated/tokens/index.js")
@@ -68,7 +64,5 @@ describe("SystemArtifactGenerator", () => {
     expect(filePaths).toContain("generated/recipes/avatar.css")
     expect(filePaths).toContain("generated/recipes/avatar.js")
     expect(filePaths).toContain("generated/recipes/avatar.d.ts")
-    expect(filePaths).toContain("generated/theming.js")
-    expect(themingFile?.contents).toContain("@jongh/new-system-runtime/theme")
   })
 })

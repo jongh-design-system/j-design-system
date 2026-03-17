@@ -60,7 +60,8 @@
   - styles
   - tokens
   - recipe JS/DTS/CSS
-  - theming entry
+  - react helper
+  - theme helper
 
 빌드 스크립트:
 
@@ -71,26 +72,6 @@
 - [generated/styles](/Users/jh/jds/packages/new/system-output/src/generated/styles)
 - [generated/tokens](/Users/jh/jds/packages/new/system-output/src/generated/tokens)
 - [generated/recipes](/Users/jh/jds/packages/new/system-output/src/generated/recipes)
-
-### `@jongh/new-system-runtime`
-
-- 위치: [system-runtime](/Users/jh/jds/packages/new/system-runtime)
-- 역할: 소비용 접착제
-- 포함:
-  - `cx`
-  - `splitVariantProps`
-  - `createRecipeContext`
-  - `createSlotRecipeContext`
-  - `tokenVar`
-  - theme helper
-
-중요 파일:
-
-- [index.ts](/Users/jh/jds/packages/new/system-runtime/src/index.ts)
-- [cx.ts](/Users/jh/jds/packages/new/system-runtime/src/cx.ts)
-- [splitVariantProps.ts](/Users/jh/jds/packages/new/system-runtime/src/splitVariantProps.ts)
-- [createRecipeContext.tsx](/Users/jh/jds/packages/new/system-runtime/src/createRecipeContext.tsx)
-- [createSlotRecipeContext.tsx](/Users/jh/jds/packages/new/system-runtime/src/createSlotRecipeContext.tsx)
 
 ## 전체 흐름
 
@@ -105,7 +86,7 @@
    - recipe DTS 생성
      을 수행한다.
 5. 결과를 `system-output/src/generated/*`에 쓴다.
-6. 소비자는 `system-output`의 CSS와 recipe를 import하고, 필요하면 `system-runtime` helper를 함께 쓴다.
+6. 소비자는 `system-output`의 CSS, recipe, react helper, theme helper를 import한다.
 
 ## 현재 토큰 구조
 
@@ -222,9 +203,10 @@ recipe별로 아래 3개가 생성된다.
 - [avatar.js](/Users/jh/jds/packages/new/system-output/src/generated/recipes/avatar.js)
 - [avatar.d.ts](/Users/jh/jds/packages/new/system-output/src/generated/recipes/avatar.d.ts)
 
-### Theming
+### React / Theme Helpers
 
-- [theming.js](/Users/jh/jds/packages/new/system-output/src/generated/theming.js)
+- [react/index.js](/Users/jh/jds/packages/new/system-output/src/react/index.js)
+- [theme/index.js](/Users/jh/jds/packages/new/system-output/src/theme/index.js)
 
 ## `avatar.js`가 생성되는 방식
 

@@ -30,7 +30,6 @@ export class SystemArtifactGenerator<TTheme extends ThemeContract> {
     return [
       ...this.generateStyleFiles(),
       ...this.generateTokenFiles(),
-      ...this.generateThemingFiles(),
       ...this.generateRecipeFiles(),
     ]
   }
@@ -72,16 +71,6 @@ export class SystemArtifactGenerator<TTheme extends ThemeContract> {
       {
         path: "generated/tokens/index.d.ts",
         contents: this.emitTokenDts(),
-      },
-    ]
-  }
-
-  private generateThemingFiles(): Array<{ path: string; contents: string }> {
-    return [
-      {
-        path: "generated/theming.js",
-        contents:
-          'export { applyTheme, generateThemeScript } from "@jongh/new-system-runtime/theme"\n',
       },
     ]
   }

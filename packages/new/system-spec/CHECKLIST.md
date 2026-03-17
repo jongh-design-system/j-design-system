@@ -2,7 +2,7 @@
 
 - [x] `packages/new/system-spec` 생성
 - [x] `packages/new/system-core` 생성
-- [x] `packages/new/system-runtime` 생성
+- [x] `packages/new/system-runtime`를 `packages/new/system-output`로 통합
 - [x] `packages/new/system-output` 생성
 - [x] 각 신규 패키지에 `@jongh/eslint`, `@jongh/tsconfig` 설정 추가
 - [x] OKLCH 기반 palette family 정의

@@ -1,5 +1,7 @@
 import type { Preview, ReactRenderer } from "@storybook/react-vite"
-import { withThemeByClassName } from "@storybook/addon-themes"
+import { withThemeByDataAttribute } from "@storybook/addon-themes"
+import "@jongh/new-system-output/styles/reset.css"
+import "@jongh/new-system-output/styles/all.css"
 import "./index.css"
 
 const preview: Preview = {
@@ -13,9 +15,9 @@ const preview: Preview = {
     layout: "centered",
   },
   decorators: [
-    withThemeByClassName<ReactRenderer>({
+    withThemeByDataAttribute<ReactRenderer>({
       themes: {
-        light: "",
+        light: "light",
         dark: "dark",
       },
       defaultTheme: "light",

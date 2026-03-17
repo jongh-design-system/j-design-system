@@ -27,7 +27,7 @@ export class RecipeJsGenerator<TTheme extends ThemeContract> {
         2,
       )
 
-      return `import { createClassName, mergeVariants, splitVariantProps } from "@jongh/new-system-runtime/recipe"
+      return `import { createClassName, mergeVariants, splitVariantProps } from "../../internal/recipe.js"
 
 const ${exportName}Slots = ${slots}
 const defaultVariants = ${defaultVariants}
@@ -53,7 +53,7 @@ Object.assign(${exportName}, {
 `
     }
 
-    return `import { createClassName, mergeVariants, splitVariantProps } from "@jongh/new-system-runtime/recipe"
+    return `import { createClassName, mergeVariants, splitVariantProps } from "../../internal/recipe.js"
 
 const defaultVariants = ${defaultVariants}
 const compoundVariants = ${compoundSelections}

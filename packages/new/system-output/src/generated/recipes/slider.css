@@ -35,8 +35,7 @@
   box-shadow: var(--jds-primitive-shadow-sm);
 }
 
-.jds-slider__thumb:disabled,
-.jds-slider__thumb[data-disabled] {
+.jds-slider__thumb:disabled, .jds-slider__thumb[data-disabled] {
   pointer-events: none;
   opacity: 0.5;
 }

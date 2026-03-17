@@ -1,11 +1,8 @@
-import { cx } from "./cx"
+export function cx(...values) {
+  return values.filter(Boolean).join(" ")
+}
 
-export type VariantSelection = Record<string, string | boolean | undefined>
-
-export function mergeVariants<T extends VariantSelection>(
-  defaults: T,
-  props: Partial<T>,
-): T {
+export function mergeVariants(defaults, props) {
   return {
     ...defaults,
     ...Object.fromEntries(
@@ -14,12 +11,9 @@ export function mergeVariants<T extends VariantSelection>(
   }
 }
 
-export function splitVariantProps<T extends Record<string, unknown>>(
-  props: T,
-  variantMap: Record<string, Array<string | boolean>>,
-): [Record<string, unknown>, Omit<T, keyof typeof variantMap>] {
-  const variantProps: Record<string, unknown> = {}
-  const otherProps: Record<string, unknown> = {}
+export function splitVariantProps(props, variantMap) {
+  const variantProps = {}
+  const otherProps = {}
 
   for (const [key, value] of Object.entries(props)) {
     if (Object.hasOwn(variantMap, key)) {
@@ -30,14 +24,14 @@ export function splitVariantProps<T extends Record<string, unknown>>(
     otherProps[key] = value
   }
 
-  return [variantProps, otherProps as Omit<T, keyof typeof variantMap>]
+  return [variantProps, otherProps]
 }
 
 export function createClassName(
-  baseClassName: string,
-  variants: VariantSelection,
-  compoundVariants: Array<Record<string, string>> = [],
-): string {
+  baseClassName,
+  variants,
+  compoundVariants = [],
+) {
   const variantClasses = Object.entries(variants)
     .filter(([, value]) => value != null)
     .map(
