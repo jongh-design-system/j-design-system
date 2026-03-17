@@ -16,12 +16,22 @@ import { existsSync } from "node:fs"
 function readInputs() {
   try {
     return {
-      vercelToken: getInput("vercel-token", { required: true }),
-      githubToken: getInput("github-token", { required: true }),
-      vercelOrgId: getInput("vercel-org-id", { required: true }),
-      vercelProjectId: getInput("vercel-project-id", { required: true }),
-      vercelArgs: getInput("vercel-args") || "--prod",
-      workingDir: getInput("workingDir"),
+      vercelToken:
+        process.env.VERCEL_TOKEN ||
+        getInput("vercel-token", { required: true }),
+      githubToken:
+        process.env.ACTION_GITHUB_TOKEN ||
+        getInput("github-token", { required: true }),
+      vercelOrgId:
+        process.env.VERCEL_ORG_ID ||
+        getInput("vercel-org-id", { required: true }),
+      vercelProjectId:
+        process.env.VERCEL_PROJECT_ID ||
+        getInput("vercel-project-id", { required: true }),
+      vercelArgs:
+        process.env.VERCEL_ARGS || getInput("vercel-args") || "--prod",
+      workingDir:
+        process.env.WORKING_DIR || getInput("workingDir", { required: true }),
     }
   } catch (error) {
     setFailed(error instanceof Error ? error.message : String(error))

@@ -18,11 +18,34 @@ inputs:
     required: false
     default: "--prod"
   workingDir:
-    description: "Optional working directory passed through the workflow."
-    required: false
+    description: "Working directory passed through the workflow."
+    required: true
+outputs:
+  preview-url:
+    description: "Resolved Vercel deployment URL."
+    value: ${{ steps.deploy.outputs.preview-url }}
+  preview-name:
+    description: "Resolved Vercel deployment name."
+    value: ${{ steps.deploy.outputs.preview-name }}
 runs:
-  using: "node20"
-  main: "index.js"
+  using: composite
+  steps:
+    - name: Use Node.js from .nvmrc
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+
+    - name: Run Vercel deploy
+      id: deploy
+      shell: bash
+      env:
+        VERCEL_TOKEN: ${{ inputs.vercel-token }}
+        ACTION_GITHUB_TOKEN: ${{ inputs.github-token }}
+        VERCEL_ORG_ID: ${{ inputs.vercel-org-id }}
+        VERCEL_PROJECT_ID: ${{ inputs.vercel-project-id }}
+        VERCEL_ARGS: ${{ inputs.vercel-args }}
+        WORKING_DIR: ${{ inputs.workingDir }}
+      run: node "$GITHUB_ACTION_PATH/index.js"
 branding:
   icon: "triangle"
   color: "blue"
