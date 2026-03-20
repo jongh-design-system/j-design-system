@@ -1,14 +1,19 @@
 export type {
   AnyRecipeDefinition,
+  DeepPartial,
   KeyframeDefinition,
   RecipeCompoundVariant,
   RecipeDefinition,
+  RecipeInputDefinition,
   RecipeVariantRecord,
   SlotRecipeCompoundVariant,
   SlotRecipeDefinition,
   SlotRecipeVariantRecord,
+  SystemConfigDefinition,
   SystemDefinition,
+  SystemPresetDefinition,
   SystemThemeDefinition,
+  SystemThemeInput,
 } from "./recipe.ts"
 export type {
   ColorTokenPath,

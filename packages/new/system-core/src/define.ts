@@ -1,9 +1,12 @@
+import { composeSystemDefinition } from "./merge/system.ts"
 import type {
   RecipeDefinition,
   RecipeVariantRecord,
   SlotRecipeDefinition,
   SlotRecipeVariantRecord,
+  SystemConfigDefinition,
   SystemDefinition,
+  SystemPresetDefinition,
 } from "./types/recipe.ts"
 import type { ThemeContract } from "./types/style.ts"
 import type {
@@ -50,10 +53,16 @@ export function defineSlotRecipe<
   return definition
 }
 
-export function defineSystem<TTheme extends ThemeContract>(
-  definition: SystemDefinition<TTheme>,
-): SystemDefinition<TTheme> {
+export function definePreset<TTheme extends ThemeContract>(
+  definition: SystemPresetDefinition<TTheme>,
+): SystemPresetDefinition<TTheme> {
   return definition
+}
+
+export function defineSystem<TTheme extends ThemeContract>(
+  definition: SystemConfigDefinition<TTheme>,
+): SystemDefinition<TTheme> {
+  return composeSystemDefinition(definition)
 }
 
 export function createSemanticTokensFactory<
@@ -80,10 +89,15 @@ export function createRecipeFactory<TTheme extends ThemeContract>() {
     ): SlotRecipeDefinition<S, TTheme, T> {
       return definition
     },
-    defineSystem(
-      definition: SystemDefinition<TTheme>,
-    ): SystemDefinition<TTheme> {
+    definePreset(
+      definition: SystemPresetDefinition<TTheme>,
+    ): SystemPresetDefinition<TTheme> {
       return definition
+    },
+    defineSystem(
+      definition: SystemConfigDefinition<TTheme>,
+    ): SystemDefinition<TTheme> {
+      return composeSystemDefinition(definition)
     },
   }
 }

@@ -7,7 +7,7 @@ import {
 import type { NativeThemeContract } from "./theme-contract.ts"
 import type { NativePrimitiveTokens } from "./tokens/primitive.ts"
 
-export const { defineRecipe, defineSlotRecipe, defineSystem } =
+export const { defineRecipe, defineSlotRecipe, definePreset, defineSystem } =
   createRecipeFactory<NativeThemeContract>()
 
 export const { defineSemanticTokens } =

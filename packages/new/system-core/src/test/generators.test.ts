@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { SystemArtifactGenerator } from "../src/build.ts"
-import { CssGenerator } from "../src/generate/css.ts"
-import { RecipeDtsGenerator } from "../src/generate/dts.ts"
-import { RecipeJsGenerator } from "../src/generate/js.ts"
+import { SystemArtifactGenerator } from "../build.ts"
+import { CssGenerator } from "../generate/css.ts"
+import { RecipeDtsGenerator } from "../generate/dts.ts"
+import { RecipeJsGenerator } from "../generate/js.ts"
+import { presetTestSystem } from "./fixtures/preset-system.ts"
 import { testSystem } from "./fixtures/system.ts"
 
 describe("CssGenerator", () => {
@@ -21,6 +22,14 @@ describe("CssGenerator", () => {
 
     expect(css).toContain(".jds-avatar__root")
     expect(css).toContain(".jds-avatar__fallback--tone_accent")
+  })
+
+  it("emits preset-composed token values and keyframes in base css", () => {
+    const css = new CssGenerator(presetTestSystem).generateBaseCss()
+
+    expect(css).toContain("--jds-primitive-color-blue-500: local-blue-500;")
+    expect(css).toContain("--jds-color-bg-accent:")
+    expect(css).toContain("@keyframes scale-in")
   })
 })
 
@@ -50,6 +59,16 @@ describe("Recipe generators", () => {
       "export declare type AvatarVariantProps = Partial<AvatarVariant>",
     )
     expect(dts).toContain("splitVariantProps")
+  })
+
+  it("emits merged default variants in recipe runtime js", () => {
+    const code = new RecipeJsGenerator(
+      presetTestSystem.theme.recipes.button,
+      presetTestSystem,
+    ).generate()
+
+    expect(code).toContain('"tone": "accent"')
+    expect(code).toContain('"size": "md"')
   })
 })
 
