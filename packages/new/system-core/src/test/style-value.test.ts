@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { renderStyleObject } from "../src/resolve/style-value.ts"
+import { renderStyleObject } from "../resolve/style-value.ts"
 import { testSystem } from "./fixtures/system.ts"
 
 describe("renderStyleObject", () => {
