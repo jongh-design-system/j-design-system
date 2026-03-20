@@ -278,6 +278,27 @@ type AnimationNameValue<TTheme extends ThemeContract> =
   | "none"
   | CssVarFunction
 
+interface StyleShorthandValueMap<TTheme extends ThemeContract> {
+  p: SpaceValue<TTheme>
+  px: SpaceValue<TTheme>
+  py: SpaceValue<TTheme>
+  pt: SpaceValue<TTheme>
+  pr: SpaceValue<TTheme>
+  pb: SpaceValue<TTheme>
+  pl: SpaceValue<TTheme>
+  m: SpaceValue<TTheme>
+  mx: SpaceValue<TTheme>
+  my: SpaceValue<TTheme>
+  w: SpaceValue<TTheme>
+  h: SpaceValue<TTheme>
+  minW: SpaceValue<TTheme>
+  minH: SpaceValue<TTheme>
+  maxW: SpaceValue<TTheme>
+  maxH: SpaceValue<TTheme>
+  bg: ColorValue<TTheme>
+  rounded: RadiusValue<TTheme>
+}
+
 export interface StyleValueMap<TTheme extends ThemeContract> {
   alignItems: AlignItemsLiteral
   animationDuration: DurationValue<TTheme>
@@ -428,9 +449,7 @@ export type NestedStyleKey =
   | `@supports ${string}`
 
 export type StyleObject<TTheme extends ThemeContract = ThemeContract> = Partial<
-  StyleValueMap<TTheme>
-> & {
-  [K in NestedStyleKey]?: StyleObject<TTheme>
-}
+  StyleValueMap<TTheme> & StyleShorthandValueMap<TTheme>
+> & { [K in NestedStyleKey]?: StyleObject<TTheme> }
 
 export type { TextStyleDefinition }
