@@ -1,4 +1,5 @@
-import { cx } from "@styled-system/css"
+import { cx } from "@jongh/new-system-output/react"
+import type { CheckboxVariantProps as CheckboxVariants } from "@jongh/new-system-output/recipes/checkbox"
 import { useComposedRefs, useControllableState } from "radix-ui/internal"
 import {
   type ComponentPropsWithoutRef,
@@ -8,7 +9,7 @@ import {
   useRef,
 } from "react"
 
-import { checkboxRecipe, type CheckboxVariants } from "./recipe"
+import { checkboxRecipe } from "./recipe"
 
 type CheckboxInputProps = Omit<ComponentPropsWithoutRef<"input">, "size"> & {
   indeterminate?: boolean

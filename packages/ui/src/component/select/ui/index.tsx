@@ -1,4 +1,4 @@
-import { createStyleContext } from "@styled-system/jsx"
+import { createStyleContext } from "@jongh/new-system-output/react"
 import { Select as SelectPrimitive } from "radix-ui"
 import {
   type ComponentPropsWithoutRef,
@@ -23,8 +23,8 @@ const BaseTrigger = forwardRef<
 BaseTrigger.displayName = SelectPrimitive.Trigger.displayName
 
 export const Root = withRootProvider(SelectPrimitive.Root)
-export const Group = SelectPrimitive.Group
-export const Value = SelectPrimitive.Value
+export const Group = withContext(SelectPrimitive.Group, "group")
+export const Value = withContext(SelectPrimitive.Value, "value")
 
 export const Trigger = withContext(BaseTrigger, "trigger")
 
