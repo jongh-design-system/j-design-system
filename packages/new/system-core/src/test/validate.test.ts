@@ -1,8 +1,20 @@
 import { describe, expect, it } from "vitest"
 
-import { validateRecipes } from "../src/validate/recipes.ts"
-import { validateTokenReferences } from "../src/validate/tokens.ts"
+import { validateRecipes } from "../validate/recipes.ts"
+import { validateTokenReferences } from "../validate/tokens.ts"
+import { presetTestSystem } from "./fixtures/preset-system.ts"
 import { testSystem } from "./fixtures/system.ts"
+
+function getMutableSurfaceSemanticToken(system: typeof testSystem) {
+  return system.theme.semanticTokens.color as unknown as {
+    bg: {
+      surface: {
+        light: string
+        dark: string
+      }
+    }
+  }
+}
 
 describe("validateTokenReferences", () => {
   it("accepts the current system spec", () => {
@@ -11,8 +23,8 @@ describe("validateTokenReferences", () => {
 
   it("fails when a semantic token references an unknown primitive token", () => {
     const invalidSystem = structuredClone(testSystem) as typeof testSystem
-    invalidSystem.theme.semanticTokens.color.bg.surface.light =
-      "color.slate.1234" as never
+    getMutableSurfaceSemanticToken(invalidSystem).bg.surface.light =
+      "color.slate.1234"
 
     expect(() => validateTokenReferences(invalidSystem)).toThrowError(
       /Unknown light semantic token reference "color\.slate\.1234" at "color\.bg\.surface"/,
@@ -21,12 +33,15 @@ describe("validateTokenReferences", () => {
 
   it("fails when a semantic token references another token family", () => {
     const invalidSystem = structuredClone(testSystem) as typeof testSystem
-    invalidSystem.theme.semanticTokens.color.bg.surface.light =
-      "spacing.4" as never
+    getMutableSurfaceSemanticToken(invalidSystem).bg.surface.light = "spacing.4"
 
     expect(() => validateTokenReferences(invalidSystem)).toThrowError(
       /references a different family token "spacing\.4"/,
     )
+  })
+
+  it("accepts token references from the merged preset system", () => {
+    expect(() => validateTokenReferences(presetTestSystem)).not.toThrow()
   })
 })
 
@@ -67,5 +82,9 @@ describe("validateRecipes", () => {
     expect(() => validateRecipes(invalidSystem)).toThrowError(
       /Slot recipe "avatar" base defines an unknown slot "badge"/,
     )
+  })
+
+  it("accepts recipe references from the merged preset system", () => {
+    expect(() => validateRecipes(presetTestSystem)).not.toThrow()
   })
 })

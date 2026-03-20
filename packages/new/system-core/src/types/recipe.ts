@@ -71,6 +71,21 @@ export type AnyRecipeDefinition<TTheme extends ThemeContract = ThemeContract> =
   | RecipeDefinition<TTheme>
   | SlotRecipeDefinition<string, TTheme>
 
+export type DeepPartial<T> =
+  T extends ReadonlyArray<infer U>
+    ? ReadonlyArray<DeepPartial<U>>
+    : T extends object
+      ? {
+          [K in keyof T]?: DeepPartial<T[K]>
+        }
+      : T
+
+export type RecipeInputDefinition<
+  TTheme extends ThemeContract = ThemeContract,
+> =
+  | DeepPartial<RecipeDefinition<TTheme>>
+  | DeepPartial<SlotRecipeDefinition<string, TTheme>>
+
 export interface KeyframeDefinition {
   from?: Record<string, string>
   to?: Record<string, string>
@@ -81,6 +96,28 @@ export type SystemThemeDefinition<
   TTheme extends ThemeContract = ThemeContract,
 > = TTheme & {
   recipes: Record<string, AnyRecipeDefinition<TTheme>>
+}
+
+export interface SystemThemeInput<
+  TTheme extends ThemeContract = ThemeContract,
+> {
+  primitiveTokens?: DeepPartial<TTheme["primitiveTokens"]>
+  semanticTokens?: DeepPartial<TTheme["semanticTokens"]>
+  recipes?: Record<string, RecipeInputDefinition<TTheme>>
+  keyframes?: Record<string, DeepPartial<KeyframeDefinition>>
+}
+
+export type SystemPresetDefinition<
+  TTheme extends ThemeContract = ThemeContract,
+> = SystemThemeInput<TTheme>
+
+export interface SystemConfigDefinition<
+  TTheme extends ThemeContract = ThemeContract,
+> {
+  name: string
+  prefix: string
+  presets?: Array<SystemPresetDefinition<TTheme>>
+  theme: SystemThemeInput<TTheme>
 }
 
 export interface SystemDefinition<

@@ -1,6 +1,6 @@
 "use client"
 
-import { css, cx } from "@styled-system/css"
+import { cx } from "@jongh/new-system-output/react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Context, useControllableState } from "radix-ui/internal"
 import {
@@ -100,6 +100,7 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
     },
     ref,
   ) => {
+    const styles = recipe()
     const [rangeValue = [], setRangeValue] = useControllableState<RangeDate>({
       prop: range,
       defaultProp: defaultRange,
@@ -208,7 +209,7 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
     )
 
     return (
-      <div ref={ref}>
+      <div ref={ref} className={cx(styles.root, className)} {...props}>
         <CalendarProvider
           value={dateFormat}
           weekStart={weekStart}
@@ -217,7 +218,6 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
           onYearChange={onYearChange}
           selectedValue={rangeValue}
           handleDayClick={handleDayClick}
-          {...props}
         >
           {children}
         </CalendarProvider>
@@ -306,7 +306,7 @@ export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
       }
     }, [dateValue, weekStart])
 
-    const styles = recipe.raw()
+    const styles = recipe()
     return (
       <CalendarProvider
         value={dateFormat}
@@ -317,7 +317,7 @@ export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
         selectedValue={selectedValue ? [selectedValue] : []}
         handleDayClick={(clickedDate: Date) => setSelectedValue(clickedDate)}
       >
-        <div ref={ref} className={cx(css(styles.root), className)} {...props}>
+        <div ref={ref} className={cx(styles.root, className)} {...props}>
           {children}
         </div>
       </CalendarProvider>
@@ -339,7 +339,7 @@ export const Header = ({
   render,
 }: HeaderProps) => {
   const { value, onMonthChange, locale } = useCalendarContext(contextScopeName)
-  const styles = recipe.raw()
+  const styles = recipe()
 
   const monthAndYear = new Intl.DateTimeFormat(locale, {
     month: month,
@@ -347,21 +347,21 @@ export const Header = ({
   }).format(new Date(value.year, value.month - 1))
 
   return (
-    <div className={cx(css(styles.header), className)}>
+    <div className={cx(styles.header, className)}>
       <button
-        className={cx(css(styles.navButton))}
+        className={cx(styles.navButton)}
         onClick={() => onMonthChange(-1)}
         aria-label="Go To Previous month"
       >
         <ChevronLeft />
       </button>
-      <div className={cx(css(styles.title))}>
+      <div className={cx(styles.title)}>
         {render
           ? render(new Date(value.year, value.month - 1), locale)
           : `${monthAndYear}`}
       </div>
       <button
-        className={cx(css(styles.navButton))}
+        className={cx(styles.navButton)}
         onClick={() => onMonthChange(1)}
         aria-label="Go To Next month"
       >
@@ -378,12 +378,12 @@ interface WeekdayProps {
 
 export const Weekday = ({ className, format = "short" }: WeekdayProps) => {
   const { weekStart, locale } = useCalendarContext(contextScopeName)
-  const styles = recipe.raw()
+  const styles = recipe()
 
   return (
-    <div className={cx(css(styles.weekday), className)}>
+    <div className={cx(styles.weekday, className)}>
       {getWeekdays(weekStart, locale, format).map((day, index) => (
-        <div key={index} className={cx(css(styles.weekday))}>
+        <div key={index} className={cx(styles.weekday)}>
           {day}
         </div>
       ))}
@@ -414,11 +414,11 @@ const DayButton = ({
   isOutsideMonth,
   ...props
 }: DayButtonProps) => {
-  const styles = recipe.raw()
+  const styles = recipe()
 
   return (
     <button
-      className={cx(css(styles.dayCell), className)}
+      className={cx(styles.dayCell, className)}
       data-day={day}
       data-month={month}
       data-year={year}
@@ -434,7 +434,7 @@ const DayButton = ({
 
 export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
   const { value, handleDayClick } = useCalendarContext(contextScopeName)
-  const styles = recipe.raw()
+  const styles = recipe()
   const weeks = useMemo(() => {
     const days: Array<{ day: number; isCurrentMonth: boolean }> = []
 
@@ -473,10 +473,10 @@ export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
   ])
 
   return (
-    <table className={cx(css(styles.daysGrid), className)}>
+    <table className={cx(styles.daysGrid, className)}>
       <tbody>
         {weeks.map((week, weekIndex) => (
-          <tr key={weekIndex} className={cx(css(styles.weekRow))}>
+          <tr key={weekIndex} className={cx(styles.weekRow)}>
             {week.map((day, dayIndex) => {
               const isHidden = !showOutsideDays && !day.isCurrentMonth
               const month = day.isCurrentMonth
@@ -488,7 +488,7 @@ export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
               return (
                 <td
                   key={`${weekIndex}-${dayIndex}`}
-                  className={cx(css(styles.daysGrid))}
+                  className={cx(styles.daysGrid)}
                 >
                   <DayButton
                     day={day.day}

@@ -1,4 +1,4 @@
-import { createStyleContext } from "@styled-system/jsx"
+import { createStyleContext } from "@jongh/new-system-output/react"
 import { Avatar as AvatarPrimitive } from "radix-ui"
 
 import { recipe } from "./recipe"

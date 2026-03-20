@@ -1,8 +1,4 @@
-import {
-  defineRecipe,
-  defineSlotRecipe,
-  defineSystem,
-} from "../../src/define.ts"
+import { defineRecipe, defineSlotRecipe, defineSystem } from "../../define.ts"
 
 const primitiveTokens = {
   color: {

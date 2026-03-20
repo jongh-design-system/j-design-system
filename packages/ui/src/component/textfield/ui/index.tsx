@@ -1,8 +1,9 @@
-import { css, cx } from "@styled-system/css"
+import { cx } from "@jongh/new-system-output/react"
+import type { TextfieldVariantProps as TextFieldVariantProps } from "@jongh/new-system-output/recipes/textfield"
 import type { ComponentPropsWithoutRef, ReactNode } from "react"
 import { forwardRef } from "react"
 
-import { recipe, TextFieldVariantProps } from "./recipe"
+import { recipe } from "./recipe"
 
 const getHelperText = (id: string) => `${id}-helper-text`
 
@@ -33,23 +34,23 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       ...rest
     } = componentProps
 
-    const styles = recipe.raw(variantProps)
+    const classes = recipe(variantProps)
     return (
-      <div className={css(styles.root)}>
+      <div className={classes.root}>
         {label && (
-          <div className={css(styles.heading)}>
+          <div className={classes.heading}>
             <label className={required ? "required" : ""} htmlFor={id}>
               {label}
             </label>
           </div>
         )}
 
-        <div className={css(styles.container)}>
+        <div className={classes.container}>
           {leadingAddon && <div>{leadingAddon}</div>}
 
           <input
             ref={ref}
-            className={cx(css(styles.input), className)}
+            className={cx(classes.input, className)}
             required={required}
             id={id}
             aria-describedby={getHelperText(id)}
@@ -58,13 +59,13 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           />
 
           {trailingAddon && (
-            <div className={css(styles.trailingButton)}>{trailingAddon}</div>
+            <div className={classes.trailingButton}>{trailingAddon}</div>
           )}
         </div>
 
         {helperText && (
           <div
-            className={css(styles.helper)}
+            className={classes.helper}
             id={getHelperText(id)}
             aria-live="polite"
           >
