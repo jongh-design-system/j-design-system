@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
-import * as Select from "../component/select/ui"
+import * as Select from "../select"
 
 export default {
   title: "Base/Select",

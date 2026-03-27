@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
 
-import * as Slider from "../component/slider/ui"
+import * as Slider from "../slider"
 
 export default {
   title: "Base/Slider",

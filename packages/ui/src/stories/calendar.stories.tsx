@@ -3,10 +3,7 @@ import type { CSSProperties } from "react"
 import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
 
-import {
-  type CalendarDay,
-  useCalendarState,
-} from "../component/calendar/useCalendarState"
+import { type CalendarDay, useCalendarState } from "../calendar"
 
 const meta = {
   title: "Base/Calendar",
