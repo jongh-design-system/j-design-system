@@ -4,33 +4,13 @@ import { forwardRef } from "react"
 
 import { Button } from "@/button"
 
-function getSlowMotionDurationSeconds() {
-  if (typeof document === "undefined") {
-    return 0.28
-  }
-
-  const rootStyles = getComputedStyle(document.documentElement)
-  const rawDuration = rootStyles
-    .getPropertyValue("--jds-primitive-motion-duration-slow")
-    .trim()
-  const parsedDuration = Number.parseFloat(rawDuration)
-
-  if (!Number.isFinite(parsedDuration)) {
-    return 0.28
-  }
-
-  if (rawDuration.endsWith("ms")) {
-    return parsedDuration / 1000
-  }
-
-  return parsedDuration
-}
-
 export type AnimateButtonProps = {
   animate: keyof typeof variants
   trigger?: "hover" | "click"
   initialAnimation?: keyof typeof variants
 } & ComponentProps<typeof Button>
+
+const SLOWER_DURATION_SECONDS = 0.5
 
 const variants = {
   initial: {
@@ -44,7 +24,7 @@ const variants = {
   pulse: {
     scale: [1, 1.05, 1, 1.05, 1],
     transition: {
-      duration: getSlowMotionDurationSeconds(),
+      duration: SLOWER_DURATION_SECONDS,
       ease: "easeInOut",
       times: [0, 0.25, 0.5, 0.75, 1],
     },
@@ -52,7 +32,7 @@ const variants = {
   bounce: {
     y: [0, -6, 0, -3, 0],
     transition: {
-      duration: getSlowMotionDurationSeconds(),
+      duration: SLOWER_DURATION_SECONDS,
       ease: "easeOut",
       times: [0, 0.25, 0.5, 0.75, 1],
     },
@@ -60,7 +40,7 @@ const variants = {
   shake: {
     x: [0, -6, 6, -3, 3, 0],
     transition: {
-      duration: getSlowMotionDurationSeconds(),
+      duration: SLOWER_DURATION_SECONDS,
       ease: "easeInOut",
     },
   },
