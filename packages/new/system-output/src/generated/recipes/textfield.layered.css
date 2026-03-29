@@ -1,0 +1,95 @@
+@layer jds-components {
+  .jds-textfield__root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--jds-primitive-spacing-2);
+    width: 100%;
+  }
+
+  .jds-textfield__heading {
+    color: var(--jds-color-fg-default);
+    font-size: var(--jds-primitive-typography-label-sm-fontSize);
+    line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+    font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+  }
+
+  .jds-textfield__container {
+    display: flex;
+    width: 100%;
+    min-height: 3rem;
+    align-items: center;
+    gap: var(--jds-primitive-spacing-2);
+    padding-inline: var(--jds-primitive-spacing-3);
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--jds-color-stroke-default);
+    border-radius: var(--jds-primitive-radius-md);
+    background-color: var(--jds-color-bg-elevated);
+    box-shadow: var(--jds-primitive-shadow-sm);
+    transition-property: border-color, box-shadow, background-color;
+    transition-duration: var(--jds-primitive-motion-duration-fast);
+    transition-timing-function: var(--jds-primitive-motion-easing-standard);
+  }
+
+  .jds-textfield__container:focus-within {
+    border-color: var(--jds-color-stroke-accent);
+  }
+
+  .jds-textfield__container[data-disabled],
+  .jds-textfield__container:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .jds-textfield__input {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: var(--jds-color-fg-default);
+    font-size: var(--jds-primitive-typography-body-md-fontSize);
+    line-height: var(--jds-primitive-typography-body-md-lineHeight);
+    font-weight: var(--jds-primitive-typography-body-md-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-body-md-letterSpacing);
+  }
+
+  .jds-textfield__input::placeholder {
+    color: var(--jds-color-fg-subtle);
+  }
+
+  .jds-textfield__input:disabled,
+  .jds-textfield__input[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  .jds-textfield__trailingButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--jds-color-icon-muted);
+  }
+
+  .jds-textfield__helper {
+    color: var(--jds-color-fg-muted);
+    font-size: var(--jds-primitive-typography-body-sm-fontSize);
+    line-height: var(--jds-primitive-typography-body-sm-lineHeight);
+    font-weight: var(--jds-primitive-typography-body-sm-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
+  }
+
+  .jds-textfield__container--status_negative {
+    border-color: var(--jds-color-danger-default);
+  }
+
+  .jds-textfield__container--status_negative:focus-within {
+    border-color: var(--jds-color-danger-default);
+    box-shadow: 0 0 0 1px var(--jds-color-danger-default);
+  }
+
+  .jds-textfield__helper--status_negative {
+    color: var(--jds-color-danger-default);
+  }
+}

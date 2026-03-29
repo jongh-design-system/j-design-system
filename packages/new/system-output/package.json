@@ -25,8 +25,11 @@
       "import": "./dist/generated/recipes/*.js"
     },
     "./styles/reset.css": "./dist/generated/styles/reset.css",
+    "./styles/reset.layered.css": "./dist/generated/styles/reset.layered.css",
     "./styles/base.css": "./dist/generated/styles/base.css",
+    "./styles/base.layered.css": "./dist/generated/styles/base.layered.css",
     "./styles/all.css": "./dist/generated/styles/all.css",
+    "./styles/all.layered.css": "./dist/generated/styles/all.layered.css",
     "./react": {
       "types": "./dist/react/index.d.ts",
       "import": "./dist/react/index.js"

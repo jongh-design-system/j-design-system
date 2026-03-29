@@ -1,0 +1,108 @@
+@layer jds-components {
+  .jds-toast__container {
+    position: fixed;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: var(--jds-primitive-spacing-2);
+    pointer-events: none;
+  }
+
+  .jds-toast__item {
+    display: flex;
+    align-items: center;
+    gap: var(--jds-primitive-spacing-2);
+    max-width: 24rem;
+    padding-inline: var(--jds-primitive-spacing-4);
+    padding-block: var(--jds-primitive-spacing-3);
+    border-radius: var(--jds-primitive-radius-xl);
+    box-shadow: var(--jds-primitive-shadow-lg);
+    pointer-events: auto;
+    animation-name: fade-in;
+    animation-duration: var(--jds-primitive-motion-duration-fast);
+    animation-fill-mode: both;
+    font-size: var(--jds-primitive-typography-body-sm-fontSize);
+    line-height: var(--jds-primitive-typography-body-sm-lineHeight);
+    font-weight: var(--jds-primitive-typography-body-sm-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
+  }
+
+  .jds-toast__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: auto;
+    border-radius: var(--jds-primitive-radius-sm);
+    opacity: 0.7;
+    cursor: pointer;
+    transition-property: opacity;
+    transition-duration: var(--jds-primitive-motion-duration-fast);
+    transition-timing-function: var(--jds-primitive-motion-easing-standard);
+  }
+
+  .jds-toast__close:hover {
+    opacity: 1;
+  }
+
+  .jds-toast__container--position_top-left {
+    top: var(--jds-primitive-spacing-4);
+    left: var(--jds-primitive-spacing-4);
+  }
+
+  .jds-toast__container--position_top-center {
+    top: var(--jds-primitive-spacing-4);
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
+
+  .jds-toast__container--position_top-right {
+    top: var(--jds-primitive-spacing-4);
+    right: var(--jds-primitive-spacing-4);
+  }
+
+  .jds-toast__container--position_bottom-left {
+    bottom: var(--jds-primitive-spacing-4);
+    left: var(--jds-primitive-spacing-4);
+    flex-direction: column-reverse;
+  }
+
+  .jds-toast__container--position_bottom-center {
+    bottom: var(--jds-primitive-spacing-4);
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    flex-direction: column-reverse;
+  }
+
+  .jds-toast__container--position_bottom-right {
+    bottom: var(--jds-primitive-spacing-4);
+    right: var(--jds-primitive-spacing-4);
+    flex-direction: column-reverse;
+  }
+
+  .jds-toast__item--variant_default {
+    background-color: var(--jds-color-bg-elevated);
+    color: var(--jds-color-fg-default);
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--jds-color-stroke-subtle);
+  }
+
+  .jds-toast__close--variant_default {
+    color: var(--jds-color-icon-muted);
+  }
+
+  .jds-toast__item--variant_destructive {
+    background-color: var(--jds-color-danger-default);
+    color: var(--jds-color-fg-inverse);
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--jds-color-danger-default);
+  }
+
+  .jds-toast__close--variant_destructive {
+    color: var(--jds-color-fg-inverse);
+  }
+}

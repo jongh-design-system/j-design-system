@@ -1,0 +1,84 @@
+@layer jds-components {
+  .jds-avatar__root {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--jds-color-stroke-subtle);
+    border-radius: var(--jds-primitive-radius-full);
+    background-color: var(--jds-color-bg-subtle);
+    color: var(--jds-color-fg-default);
+  }
+
+  .jds-avatar__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .jds-avatar__fallback {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--jds-color-bg-subtle);
+    color: var(--jds-color-fg-muted);
+    font-size: var(--jds-primitive-typography-label-md-fontSize);
+    line-height: var(--jds-primitive-typography-label-md-lineHeight);
+    font-weight: var(--jds-primitive-typography-label-md-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-label-md-letterSpacing);
+  }
+
+  .jds-avatar__root--size_sm {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .jds-avatar__fallback--size_sm {
+    font-size: var(--jds-primitive-typography-label-sm-fontSize);
+    line-height: var(--jds-primitive-typography-label-sm-lineHeight);
+    font-weight: var(--jds-primitive-typography-label-sm-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-label-sm-letterSpacing);
+  }
+
+  .jds-avatar__root--size_md {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .jds-avatar__root--size_lg {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .jds-avatar__fallback--size_lg {
+    font-size: var(--jds-primitive-typography-title-sm-fontSize);
+    line-height: var(--jds-primitive-typography-title-sm-lineHeight);
+    font-weight: var(--jds-primitive-typography-title-sm-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-title-sm-letterSpacing);
+  }
+
+  .jds-avatar__root--shape_rounded {
+    border-radius: var(--jds-primitive-radius-lg);
+  }
+
+  .jds-avatar__fallback--shape_rounded {
+    border-radius: var(--jds-primitive-radius-lg);
+  }
+
+  .jds-avatar__root--tone_accent {
+    border-color: var(--jds-color-stroke-accent);
+    background-color: var(--jds-color-bg-accent);
+    color: var(--jds-color-fg-inverse);
+  }
+
+  .jds-avatar__fallback--tone_accent {
+    background-color: var(--jds-color-bg-accent);
+    color: var(--jds-color-fg-inverse);
+  }
+}

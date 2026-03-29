@@ -40,8 +40,20 @@ describe("buildSystemOutput", () => {
       path.join(outputDir, "generated/styles/all.css"),
       "utf8",
     )
+    const baseLayeredCss = await fs.readFile(
+      path.join(outputDir, "generated/styles/base.layered.css"),
+      "utf8",
+    )
+    const allLayeredCss = await fs.readFile(
+      path.join(outputDir, "generated/styles/all.layered.css"),
+      "utf8",
+    )
     const avatarJs = await fs.readFile(
       path.join(outputDir, "generated/recipes/avatar.js"),
+      "utf8",
+    )
+    const avatarLayeredCss = await fs.readFile(
+      path.join(outputDir, "generated/recipes/avatar.layered.css"),
       "utf8",
     )
     const tokenDts = await fs.readFile(
@@ -52,14 +64,25 @@ describe("buildSystemOutput", () => {
       path.join(outputDir, "generated/styles/reset.css"),
       "utf8",
     )
+    const resetLayeredCss = await fs.readFile(
+      path.join(outputDir, "generated/styles/reset.layered.css"),
+      "utf8",
+    )
     const sourceResetCss = await fs.readFile(resetCssPath, "utf8")
 
     expect(baseCss).toContain("--jds-primitive-color-slate-50:")
     expect(baseCss).toContain("--jds-color-bg-surface:")
     expect(allCss).toContain(".jds-avatar__root")
+    expect(baseLayeredCss).toContain("@layer jds-base")
+    expect(allLayeredCss).toContain("@layer jds-base")
+    expect(allLayeredCss).toContain("@layer jds-components")
     expect(avatarJs).toContain('from "../../internal/recipe.js"')
+    expect(avatarLayeredCss).toContain("@layer jds-components")
+    expect(avatarLayeredCss).toContain(".jds-avatar__root")
     expect(avatarJs).toContain("export function avatar(props = {})")
     expect(tokenDts).toContain("export declare type ColorTokenPath =")
     expect(resetCss).toBe(sourceResetCss)
+    expect(resetLayeredCss).toContain("@layer base")
+    expect(resetLayeredCss).toContain("The new CSS reset - version 1.11.3")
   })
 })

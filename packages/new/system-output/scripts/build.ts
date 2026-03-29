@@ -27,6 +27,18 @@ async function formatGeneratedFiles(outputDir: string): Promise<void> {
   )
 }
 
+function wrapInLayer(layerName: string, css: string): string {
+  const trimmedCss = css.trim()
+  if (!trimmedCss) {
+    return ""
+  }
+
+  return `@layer ${layerName} {\n${trimmedCss
+    .split("\n")
+    .map((line) => (line ? `  ${line}` : ""))
+    .join("\n")}\n}\n`
+}
+
 export async function buildSystemOutput({
   outputDir,
   resetCssPath = defaultResetCssPath,
@@ -37,9 +49,15 @@ export async function buildSystemOutput({
   await writeSystemFiles(system, outputDir)
 
   await fs.mkdir(path.join(outputDir, "generated/styles"), { recursive: true })
+  const resetCss = await fs.readFile(resetCssPath, "utf8")
   await fs.copyFile(
     resetCssPath,
     path.join(outputDir, "generated/styles/reset.css"),
+  )
+  await fs.writeFile(
+    path.join(outputDir, "generated/styles/reset.layered.css"),
+    wrapInLayer("base", resetCss),
+    "utf8",
   )
 
   await formatGeneratedFiles(outputDir)

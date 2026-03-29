@@ -1,0 +1,88 @@
+@layer jds-components {
+  .jds-accordion__header {
+    display: flex;
+  }
+
+  .jds-accordion__trigger {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: var(--jds-primitive-spacing-1);
+    padding-block: var(--jds-primitive-spacing-2);
+    color: var(--jds-color-fg-default);
+    cursor: pointer;
+    font-size: var(--jds-primitive-typography-title-sm-fontSize);
+    line-height: var(--jds-primitive-typography-title-sm-lineHeight);
+    font-weight: var(--jds-primitive-typography-title-sm-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-title-sm-letterSpacing);
+    transition-property: color, background-color;
+    transition-duration: var(--jds-primitive-motion-duration-fast);
+    transition-timing-function: var(--jds-primitive-motion-easing-standard);
+  }
+
+  .jds-accordion__trigger > svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    transition: transform 180ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .jds-accordion__trigger[data-state="open"] > svg {
+    transform: rotate(180deg);
+  }
+
+  .jds-accordion__content {
+    overflow: hidden;
+    color: var(--jds-color-fg-muted);
+    font-size: var(--jds-primitive-typography-body-sm-fontSize);
+    line-height: var(--jds-primitive-typography-body-sm-lineHeight);
+    font-weight: var(--jds-primitive-typography-body-sm-fontWeight);
+    letter-spacing: var(--jds-primitive-typography-body-sm-letterSpacing);
+  }
+
+  .jds-accordion__content[data-state="closed"] {
+    animation-duration: var(--jds-primitive-motion-duration-normal);
+    animation-name: accordion-up_radix;
+  }
+
+  .jds-accordion__content[data-state="open"] {
+    animation-duration: var(--jds-primitive-motion-duration-normal);
+    animation-name: accordion-down_radix;
+  }
+
+  .jds-accordion__contentWrapper {
+    padding-inline: var(--jds-primitive-spacing-1);
+    padding-block: var(--jds-primitive-spacing-2);
+  }
+
+  .jds-accordion__item--variant_outline {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: var(--jds-color-stroke-subtle);
+  }
+
+  .jds-accordion__trigger--variant_outline:hover {
+    color: var(--jds-color-fg-accent);
+  }
+
+  .jds-accordion__item--variant_subtle {
+    border-radius: var(--jds-primitive-radius-md);
+  }
+
+  .jds-accordion__item--variant_subtle[data-state="open"] {
+    background-color: var(--jds-color-bg-subtle);
+  }
+
+  .jds-accordion__header--variant_subtle {
+    border-radius: var(--jds-primitive-radius-md);
+  }
+
+  .jds-accordion__trigger--variant_subtle {
+    border-radius: var(--jds-primitive-radius-md);
+  }
+
+  .jds-accordion__trigger--variant_subtle:hover {
+    background-color: var(--jds-color-bg-subtle);
+  }
+}

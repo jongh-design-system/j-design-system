@@ -24,6 +24,23 @@ describe("CssGenerator", () => {
     expect(css).toContain(".jds-avatar__fallback--tone_accent")
   })
 
+  it("generates layered css for base and recipes", () => {
+    const generator = new CssGenerator(testSystem)
+
+    expect(generator.generateLayeredBaseCss()).toContain("@layer jds-base")
+    expect(generator.generateLayeredBaseCss()).toContain(
+      "--jds-primitive-color-slate-50:",
+    )
+    expect(
+      generator.generateLayeredRecipeCss(testSystem.theme.recipes.avatar),
+    ).toContain("@layer jds-components")
+    expect(
+      generator.generateLayeredRecipeCss(testSystem.theme.recipes.avatar),
+    ).toContain(".jds-avatar__root")
+    expect(generator.generateLayeredAllCss()).toContain("@layer jds-base")
+    expect(generator.generateLayeredAllCss()).toContain("@layer jds-components")
+  })
+
   it("emits preset-composed token values and keyframes in base css", () => {
     const css = new CssGenerator(presetTestSystem).generateBaseCss()
 
@@ -78,9 +95,12 @@ describe("SystemArtifactGenerator", () => {
     const filePaths = new Set(files.map((file) => file.path))
     expect(filePaths).toContain("generated/styles/base.css")
     expect(filePaths).toContain("generated/styles/all.css")
+    expect(filePaths).toContain("generated/styles/base.layered.css")
+    expect(filePaths).toContain("generated/styles/all.layered.css")
     expect(filePaths).toContain("generated/tokens/index.js")
     expect(filePaths).toContain("generated/tokens/index.d.ts")
     expect(filePaths).toContain("generated/recipes/avatar.css")
+    expect(filePaths).toContain("generated/recipes/avatar.layered.css")
     expect(filePaths).toContain("generated/recipes/avatar.js")
     expect(filePaths).toContain("generated/recipes/avatar.d.ts")
   })

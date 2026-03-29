@@ -59,6 +59,14 @@ export class SystemArtifactGenerator<TTheme extends ThemeContract> {
         path: "generated/styles/all.css",
         contents: this.cssGenerator.generateAllCss(),
       },
+      {
+        path: "generated/styles/base.layered.css",
+        contents: this.cssGenerator.generateLayeredBaseCss(),
+      },
+      {
+        path: "generated/styles/all.layered.css",
+        contents: this.cssGenerator.generateLayeredAllCss(),
+      },
     ]
   }
 
@@ -80,6 +88,10 @@ export class SystemArtifactGenerator<TTheme extends ThemeContract> {
       {
         path: `generated/recipes/${recipe.name}.css`,
         contents: this.cssGenerator.generateRecipeCss(recipe),
+      },
+      {
+        path: `generated/recipes/${recipe.name}.layered.css`,
+        contents: this.cssGenerator.generateLayeredRecipeCss(recipe),
       },
       {
         path: `generated/recipes/${recipe.name}.js`,

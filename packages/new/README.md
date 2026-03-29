@@ -177,12 +177,18 @@ recipe는 아래 구조를 가진다.
 - [base.css](/Users/jh/jds/packages/new/system-output/src/generated/styles/base.css)
 - [all.css](/Users/jh/jds/packages/new/system-output/src/generated/styles/all.css)
 - [reset.css](/Users/jh/jds/packages/new/system-output/src/generated/styles/reset.css)
+- [base.layered.css](/Users/jh/jds/packages/new/system-output/src/generated/styles/base.layered.css)
+- [all.layered.css](/Users/jh/jds/packages/new/system-output/src/generated/styles/all.layered.css)
+- [reset.layered.css](/Users/jh/jds/packages/new/system-output/src/generated/styles/reset.layered.css)
 
 의미:
 
 - `base.css`: token vars + semantic vars + keyframes
 - `all.css`: `base.css` + 모든 recipe css
 - `reset.css`: spec 원본 reset 복사
+- `base.layered.css`: `base.css`를 `@layer jds-base`로 감싼 버전
+- `all.layered.css`: `base.layered.css` + 모든 recipe css를 `@layer jds-components`로 감싼 버전
+- `reset.layered.css`: `reset.css`를 `@layer base`로 감싼 버전
 
 ### Tokens
 
@@ -194,6 +200,7 @@ recipe는 아래 구조를 가진다.
 recipe별로 아래 3개가 생성된다.
 
 - `generated/recipes/<name>.css`
+- `generated/recipes/<name>.layered.css`
 - `generated/recipes/<name>.js`
 - `generated/recipes/<name>.d.ts`
 

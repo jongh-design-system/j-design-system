@@ -56,12 +56,46 @@ export class CssGenerator<TTheme extends ThemeContract> {
     return this.generateSingleRecipeCss(recipe, baseClassName)
   }
 
+  generateLayeredBaseCss(): string {
+    return this.wrapInLayer("jds-base", this.generateBaseCss())
+  }
+
+  generateLayeredAllCss(): string {
+    const recipeCss = Object.values(this.system.theme.recipes)
+      .map((recipe) => this.generateRecipeCss(recipe))
+      .filter(Boolean)
+      .join("\n\n")
+
+    return [
+      this.generateLayeredBaseCss(),
+      this.wrapInLayer("jds-components", recipeCss),
+    ]
+      .filter(Boolean)
+      .join("\n\n")
+  }
+
+  generateLayeredRecipeCss(recipe: AnyRecipeDefinition<TTheme>): string {
+    return this.wrapInLayer("jds-components", this.generateRecipeCss(recipe))
+  }
+
   private toCssVariable(path: string): string {
     return tokenVar(path, this.system.prefix).replace(/^var\(|\)$/g, "")
   }
 
   private renderCssRule(selector: string, declarations: string[]): string {
     return `${selector} {\n${declarations.map((line) => `  ${line}`).join("\n")}\n}`
+  }
+
+  private wrapInLayer(layerName: string, css: string): string {
+    const trimmedCss = css.trim()
+    if (!trimmedCss) {
+      return ""
+    }
+
+    return `@layer ${layerName} {\n${trimmedCss
+      .split("\n")
+      .map((line) => (line ? `  ${line}` : ""))
+      .join("\n")}\n}`
   }
 
   private renderPrimitiveTokenCss(): string {
@@ -257,4 +291,23 @@ export function generateAllCss<TTheme extends ThemeContract>(
   system: SystemDefinition<TTheme>,
 ): string {
   return new CssGenerator(system).generateAllCss()
+}
+
+export function generateLayeredBaseCss<TTheme extends ThemeContract>(
+  system: SystemDefinition<TTheme>,
+): string {
+  return new CssGenerator(system).generateLayeredBaseCss()
+}
+
+export function generateLayeredAllCss<TTheme extends ThemeContract>(
+  system: SystemDefinition<TTheme>,
+): string {
+  return new CssGenerator(system).generateLayeredAllCss()
+}
+
+export function generateLayeredRecipeCss<TTheme extends ThemeContract>(
+  recipe: AnyRecipeDefinition<TTheme>,
+  system: SystemDefinition<TTheme>,
+): string {
+  return new CssGenerator(system).generateLayeredRecipeCss(recipe)
 }
