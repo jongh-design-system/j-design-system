@@ -73,6 +73,19 @@
 - [generated/tokens](/Users/jh/jds/packages/new/system-output/src/generated/tokens)
 - [generated/recipes](/Users/jh/jds/packages/new/system-output/src/generated/recipes)
 
+### `@jongh/new-extension-tailwind`
+
+- 위치: [extension-tailwind](/Users/jh/jds/packages/new/extension-tailwind)
+- 역할: Tailwind 4 extension
+- 포함:
+  - `@theme` 기반 theme adapter
+  - duration utility
+
+중요 파일:
+
+- [build.ts](/Users/jh/jds/packages/new/extension-tailwind/src/build.ts)
+- [scripts/build.ts](/Users/jh/jds/packages/new/extension-tailwind/scripts/build.ts)
+
 ## 전체 흐름
 
 1. `system-spec`에서 토큰과 recipe를 정의한다.

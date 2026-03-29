@@ -1,0 +1,28 @@
+{
+  "name": "@jongh/new-extension-tailwind",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "lint": "eslint --max-warnings 0 --no-warn-ignored .",
+    "check-type": "tsgo --noEmit",
+    "test": "pnpm exec vitest run"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./theme.css": "./dist/theme.css",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@jongh/new-system-core": "workspace:*",
+    "@jongh/new-system-spec": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.6",
+    "@jongh/eslint": "workspace:*",
+    "@jongh/tsconfig": "workspace:*"
+  }
+}
