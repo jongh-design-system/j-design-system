@@ -37,6 +37,9 @@ interface MDXProps {
 
 // MDXContent component
 export const MDXContent = ({ code, components }: MDXProps) => {
+  // The compiled MDX entrypoint is produced dynamically from the serialized code.
+
   const Component = useMDXComponent(code)
+
   return <Component components={{ ...sharedComponents, ...components }} />
 }

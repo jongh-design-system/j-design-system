@@ -103,14 +103,14 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
     const styles = recipe()
     const [rangeValue = [], setRangeValue] = useControllableState<RangeDate>({
       prop: range,
-      defaultProp: defaultRange,
+      defaultProp: defaultRange ?? [],
       onChange: onRangeChange,
     })
 
     const [viewDateValue = new Date(), setViewDateValue] = useControllableState(
       {
         prop: viewDate,
-        defaultProp: defaultViewDate,
+        defaultProp: defaultViewDate ?? new Date(),
         onChange: onViewDateChange,
       },
     )
@@ -203,6 +203,8 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
           if (normalizedStart && end) {
             return [clickedDate, null]
           }
+
+          return prevRange
         })
       },
       [setRangeValue],
@@ -245,13 +247,13 @@ export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
   ) => {
     const [dateValue = new Date(), setDateValue] = useControllableState({
       prop: viewDate,
-      defaultProp: defaultViewDate,
+      defaultProp: defaultViewDate ?? new Date(),
       onChange: onViewDateChange,
     }) //화면에 보여지는 날짜
 
     const [selectedValue = null, setSelectedValue] = useControllableState({
       prop: date,
-      defaultProp: defaultDate,
+      defaultProp: defaultDate ?? new Date(),
       onChange: onDateChange,
     })
     const onMonthChange = useCallback(

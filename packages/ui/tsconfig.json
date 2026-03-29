@@ -3,6 +3,9 @@
   "compilerOptions": {
     "outDir": "dist",
     "paths": {
+      "@/component/*": ["./src/component/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/hooks/*": ["./src/hooks/*"],
       "@styled-system/*": ["./styled-system/*"],
       "@utils/*": ["./src/utils/*"],
       "@/*": ["./src/*"],

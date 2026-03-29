@@ -1,5 +1,5 @@
 const MODULES = [
-  // { name: "docs", parent: "app" },
+  { packageName: "docs", path: "./app/docs" },
   { packageName: "@jongh/ui", path: "./packages/ui" },
   { packageName: "@jongh/cli", path: "./packages/cli" },
   { packageName: "panda-animation", path: "./packages/panda-animation" },
@@ -25,8 +25,4 @@ const typeCheckConfigs = MODULES.reduce(
 module.exports = {
   "*": ["./check-uppercase.sh", "prettier --write --ignore-unknown"],
   ...typeCheckConfigs,
-  "./app/docs/**/*.{ts,tsx}": (filename) => [
-    `pnpm --filter docs lint --file ${filename.join(" ")}`,
-    `pnpm --filter docs check-type`,
-  ],
 }

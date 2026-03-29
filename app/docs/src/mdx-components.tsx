@@ -1,11 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { css } from "@styled-system/css"
-import type { ComponentType } from "react"
+import type { ComponentPropsWithoutRef, ComponentType } from "react"
 
 import { CodeBlock } from "./components/codeBlock"
 
+type MDXComponentMap = {
+  h1: ComponentType<ComponentPropsWithoutRef<"h1">>
+  h2: ComponentType<ComponentPropsWithoutRef<"h2">>
+  h3: ComponentType<ComponentPropsWithoutRef<"h3">>
+  p: ComponentType<ComponentPropsWithoutRef<"p">>
+  span: ComponentType<ComponentPropsWithoutRef<"span">>
+  a: ComponentType<ComponentPropsWithoutRef<"a">>
+  ul: ComponentType<ComponentPropsWithoutRef<"ul">>
+  ol: ComponentType<ComponentPropsWithoutRef<"ol">>
+  blockquote: ComponentType<ComponentPropsWithoutRef<"blockquote">>
+  code: ComponentType<ComponentPropsWithoutRef<"code">>
+  hr: ComponentType<ComponentPropsWithoutRef<"hr">>
+  pre: ComponentType<ComponentPropsWithoutRef<"pre">>
+}
+
 //global components using mdx
-export function MDXComponents(): Record<string, ComponentType<any>> {
+export function MDXComponents(): MDXComponentMap {
   return {
     h1: (props) => (
       <h1

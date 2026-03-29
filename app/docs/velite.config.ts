@@ -41,7 +41,7 @@ export default defineConfig({
   mdx: {
     rehypePlugins: [
       [
-        rehypeShiki as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        rehypeShiki,
         {
           theme: "vitesse-light",
         },

@@ -82,6 +82,8 @@ const animationVariants = {
   },
 } as const
 
+const MotionSpan = motion.create("span")
+
 const createContainerVariants = (staggerDelay: number, itemDelay: number) => ({
   hidden: {},
   show: {
@@ -161,12 +163,10 @@ export function AnimateText({
       return nodes?.map((nodeContent, index) => {
         const key = `segment-char-${index}`
 
-        const MotionComponent = motion.create("span")
-
         return (
-          <MotionComponent key={key} variants={itemVariants}>
+          <MotionSpan key={key} variants={itemVariants}>
             {nodeContent}
-          </MotionComponent>
+          </MotionSpan>
         )
       })
     }
@@ -177,12 +177,10 @@ export function AnimateText({
       return nodes?.map((nodeContent, index) => {
         const key = `segment-word-${index}`
 
-        const MotionComponent = motion.create("span")
-
         return (
-          <MotionComponent key={key} variants={itemVariants}>
+          <MotionSpan key={key} variants={itemVariants}>
             {nodeContent}
-          </MotionComponent>
+          </MotionSpan>
         )
       })
     }

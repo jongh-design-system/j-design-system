@@ -7,7 +7,7 @@
     "prepare": "panda codegen && velite build",
     "dev": "next dev --turbopack",
     "start": "next start",
-    "lint": "eslint src scripts *.ts *.tsx *.mjs *.cjs --fix --no-warn-ignored",
+    "lint": "eslint --fix --no-warn-ignored",
     "build": "next build",
     "check-type": "tsgo --noEmit",
     "transform-icon": "npx tsx ./scripts/transformIcon.ts && npx prettier --write ./src/components/icons/*.tsx"
