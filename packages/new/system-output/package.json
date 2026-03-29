@@ -42,12 +42,12 @@
   },
   "devDependencies": {
     "@types/node": "^22.8.6",
-    "@types/react": "^19.0.8",
+    "@types/react": "catalog:react18",
     "@jongh/eslint": "workspace:*",
     "@jongh/new-system-core": "workspace:*",
     "@jongh/new-system-spec": "workspace:*",
     "@jongh/tsconfig": "workspace:*",
-    "react": "^19.0.0",
+    "react": "catalog:react18",
     "tsdown": "catalog:"
   }
 }
