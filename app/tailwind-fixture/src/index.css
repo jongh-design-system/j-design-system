@@ -1,0 +1,6 @@
+@layer theme, base, jds-base, components, jds-components, utilities;
+
+@import "@jongh/new-system-output/styles/reset.layered.css";
+@import "@jongh/new-system-output/styles/all.layered.css";
+@import "tailwindcss";
+@import "@jongh/new-extension-tailwind/theme.css";

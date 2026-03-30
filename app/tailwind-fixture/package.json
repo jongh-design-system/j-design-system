@@ -1,0 +1,30 @@
+{
+  "name": "@jongh/tailwind-fixture",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "pnpm exec vitest run"
+  },
+  "dependencies": {
+    "@jongh/new-extension-tailwind": "workspace:*",
+    "@jongh/new-system-output": "workspace:*",
+    "@jongh/ui": "workspace:*",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
+  },
+  "devDependencies": {
+    "@jongh/eslint": "workspace:*",
+    "@jongh/tsconfig": "workspace:*",
+    "@tailwindcss/vite": "^4.1.12",
+    "@types/node": "^22.8.6",
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "@vitejs/plugin-react": "catalog:",
+    "tailwindcss": "^4.1.12",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}
