@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "pnpm exec vitest run"
+    "test": "pnpm exec vitest run --passWithNoTests"
   },
   "dependencies": {
     "@jongh/new-extension-tailwind": "workspace:*",
