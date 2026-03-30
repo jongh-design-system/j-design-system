@@ -8,7 +8,7 @@ import {
   within,
 } from "storybook/test"
 
-import * as Accordion from "../component/accordion/ui"
+import * as Accordion from "../accordion"
 
 export default {
   title: "Base/Accordion",

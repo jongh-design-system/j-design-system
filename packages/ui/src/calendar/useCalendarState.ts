@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react"
 
-import { useControlledState } from "../../hooks/useControllableState"
+import { useControlledState } from "../internal/useControllableState"
 
 export type CalendarWeekStart = 0 | 1 | 2 | 3 | 4 | 5 | 6
 export type CalendarSelectionMode = "none" | "single" | "range" | "multiple"

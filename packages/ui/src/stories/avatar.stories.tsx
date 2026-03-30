@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
-import * as Avatar from "../component/avatar/ui"
+import * as Avatar from "../avatar"
 
 export default {
   title: "Base/Avatar",

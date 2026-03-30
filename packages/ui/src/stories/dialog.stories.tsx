@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
 import { expect, userEvent, waitFor, within } from "storybook/test"
 
-import { Button } from "@/component/button/ui"
-import { TextField } from "@/component/textfield/ui"
+import { Button } from "@/button"
+import { TextField } from "@/textfield"
 
-import * as Dialog from "../component/dialog/ui"
+import * as Dialog from "../dialog"
 
 const meta = {
   title: "Base/Dialog",

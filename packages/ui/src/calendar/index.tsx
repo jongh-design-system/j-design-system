@@ -510,6 +510,8 @@ export const Days = ({ className, showOutsideDays = true }: DaysProps) => {
   )
 }
 
+export * from "./useCalendarState"
+
 function getWeekdays(
   weekStart: 0 | 1,
   locale: Intl.LocalesArgument,

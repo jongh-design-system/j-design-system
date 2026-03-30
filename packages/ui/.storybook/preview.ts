@@ -1,7 +1,6 @@
 import type { Preview, ReactRenderer } from "@storybook/react-vite"
 import { withThemeByDataAttribute } from "@storybook/addon-themes"
-import "@jongh/new-system-output/styles/reset.css"
-import "@jongh/new-system-output/styles/all.css"
+import "../src/styles.css"
 import "./index.css"
 
 const preview: Preview = {

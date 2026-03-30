@@ -1,8 +1,11 @@
 {
   "name": "@jongh/new-system-output",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "build": "node scripts/build.ts && pnpm exec tsdown --config tsdown.config.ts",
     "lint": "eslint --max-warnings 0 --no-warn-ignored .",

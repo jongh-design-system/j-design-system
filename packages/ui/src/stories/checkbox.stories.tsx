@@ -4,9 +4,9 @@ import { type FormEvent, useCallback, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { expect, userEvent, within } from "storybook/test"
 
-import { Button } from "@/component/button/ui"
+import { Button } from "@/button"
 
-import { Checkbox } from "../component/checkbox/ui"
+import { Checkbox } from "../checkbox"
 
 const meta = {
   title: "Base/Checkbox",

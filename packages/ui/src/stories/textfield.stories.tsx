@@ -5,7 +5,7 @@ import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"
 import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
 
-import { TextField } from "../component/textfield/ui"
+import { TextField } from "../textfield"
 
 const meta: Meta<typeof TextField> = {
   title: "Base/TextField",

@@ -2,7 +2,7 @@ import { applyTheme } from "@jongh/new-system-output/theme"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { expect, userEvent, waitFor, within } from "storybook/test"
 
-import * as Accordion from "../component/accordion/ui"
+import * as Accordion from "../accordion"
 
 export default {
   title: "Tests/Packed Output",
