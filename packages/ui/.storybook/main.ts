@@ -1,7 +1,9 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
+import { createRequire } from "node:module"
 import { dirname, join } from "path"
 import type { StorybookConfig } from "@storybook/react-vite"
-import { mergeConfig } from "vite"
-import tsconfigPaths from "vite-tsconfig-paths"
+
+const require = createRequire(import.meta.url)
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -26,11 +28,6 @@ const config: StorybookConfig = {
       propFilter: (prop) =>
         prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
     },
-  },
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      plugins: [tsconfigPaths({ root: "./" })],
-    })
   },
 }
 export default config
