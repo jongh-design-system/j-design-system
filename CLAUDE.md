@@ -19,7 +19,6 @@
 - `packages/cli/` - 컴포넌트 설치용 메인 CLI 도구
 - `packages/ui/` - Storybook이 포함된 React 컴포넌트 라이브러리
 - `packages/panda-animation/` - PandaCSS용 애니메이션 유틸리티
-- `figma/` - 디자인 통합을 위한 Figma plugin과 MCP server
 - `configs/` - 공유 ESLint 및 TypeScript 설정
 
 ### 주요 기술
