@@ -39,7 +39,7 @@ const contextScopeName = "calendar"
 const [CalendarProvider, useCalendarContext] =
   Context.createContext<CalendarContextType>(contextScopeName)
 
-type RangeDate = Array<Date | null>
+type RangeDate = [Date | null, Date | null]
 
 interface CalendarBaseProps extends ComponentPropsWithoutRef<"div"> {
   children?: ReactNode
@@ -54,22 +54,20 @@ interface CalendarViewProps {
 }
 
 export interface CalendarRootProps
-  extends CalendarBaseProps,
-    CalendarViewProps {
+  extends CalendarBaseProps, CalendarViewProps {
   type: "single"
 
-  date?: Date
-  defaultDate?: Date
-  onDateChange?: (date: Date) => void
+  date?: Date | null
+  defaultDate?: Date | null
+  onDateChange?: (date: Date | null) => void
 }
 
 export interface CalendarRangeProps
-  extends CalendarBaseProps,
-    CalendarViewProps {
+  extends CalendarBaseProps, CalendarViewProps {
   type: "range" // 구별자
   range?: RangeDate // 제어: 선택된 날짜 범위
   defaultRange?: RangeDate // 비제어: 초기 선택된 날짜 범위
-  onRangeChange?: (range: RangeDate | undefined) => void // range 변경 시 콜백
+  onRangeChange?: (range: RangeDate) => void // range 변경 시 콜백
 }
 
 export const Root = (props: CalendarRootProps | CalendarRangeProps) => {
@@ -100,19 +98,17 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
     },
     ref,
   ) => {
-    const [rangeValue = [], setRangeValue] = useControllableState<RangeDate>({
+    const [rangeValue, setRangeValue] = useControllableState<RangeDate>({
       prop: range,
-      defaultProp: defaultRange,
+      defaultProp: defaultRange ?? [null, null],
       onChange: onRangeChange,
     })
 
-    const [viewDateValue = new Date(), setViewDateValue] = useControllableState(
-      {
-        prop: viewDate,
-        defaultProp: defaultViewDate,
-        onChange: onViewDateChange,
-      },
-    )
+    const [viewDateValue, setViewDateValue] = useControllableState<Date>({
+      prop: viewDate,
+      defaultProp: defaultViewDate ?? new Date(),
+      onChange: onViewDateChange,
+    })
 
     const onMonthChange = useCallback(
       (amount: number) => {
@@ -173,7 +169,7 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
         normalizedClickedDate.setHours(0, 0, 0, 0)
         // 현재 상태(prevRange)를 받아 다음 상태를 반환하는 함수형 업데이트 사용
         setRangeValue((prevRange) => {
-          const [start, end] = prevRange || [null, null]
+          const [start, end] = prevRange
 
           // 시작 날짜의 시간도 0으로 설정 (비교를 위해)
           const normalizedStart = start ? new Date(start) : null
@@ -202,6 +198,8 @@ export const RangeCalendar = forwardRef<HTMLDivElement, CalendarRangeProps>(
           if (normalizedStart && end) {
             return [clickedDate, null]
           }
+
+          return prevRange
         })
       },
       [setRangeValue],
@@ -243,17 +241,19 @@ export const SingleCalendar = forwardRef<HTMLDivElement, CalendarRootProps>(
     },
     ref,
   ) => {
-    const [dateValue = new Date(), setDateValue] = useControllableState({
+    const [dateValue, setDateValue] = useControllableState<Date>({
       prop: viewDate,
-      defaultProp: defaultViewDate,
+      defaultProp: defaultViewDate ?? new Date(),
       onChange: onViewDateChange,
     }) //화면에 보여지는 날짜
 
-    const [selectedValue = null, setSelectedValue] = useControllableState({
-      prop: date,
-      defaultProp: defaultDate,
-      onChange: onDateChange,
-    })
+    const [selectedValue, setSelectedValue] = useControllableState<Date | null>(
+      {
+        prop: date,
+        defaultProp: defaultDate ?? null,
+        onChange: onDateChange,
+      },
+    )
     const onMonthChange = useCallback(
       (amount: number) => {
         const newDate = new Date(dateValue)

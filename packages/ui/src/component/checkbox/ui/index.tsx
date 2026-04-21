@@ -36,9 +36,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       text,
     } = checkboxRecipe(variantProps)
 
-    const [isChecked = false, setIsChecked] = useControllableState({
+    const [isChecked, setIsChecked] = useControllableState<boolean>({
       prop: inputProps.checked,
-      defaultProp: inputProps.defaultChecked,
+      defaultProp: inputProps.defaultChecked ?? false,
       onChange: onCheckedChange,
     })
 
