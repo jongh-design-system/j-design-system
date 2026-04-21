@@ -12,7 +12,7 @@
     "lint-staged": "lint-staged",
     "commit": "git-cz",
     "ci:version": "changeset version",
-    "ci:publish": "changeset publish -r",
+    "ci:publish": "changeset publish",
     "ci": "turbo run lint check-type test"
   },
   "devDependencies": {
@@ -42,6 +42,10 @@
     "app/*",
     "configs/*"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jongh-design-system/jds.git"
+  },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"

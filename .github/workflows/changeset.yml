@@ -2,6 +2,7 @@ name: Changesets
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 on:
   push:
@@ -27,9 +28,6 @@ jobs:
 
       - name: build
         run: pnpm turbo build
-
-      - name: Setup npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
       - name: create and publish versions
         uses: changesets/action@v1
