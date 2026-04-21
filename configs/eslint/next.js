@@ -1,13 +1,16 @@
-import { FlatCompat } from "@eslint/eslintrc"
+import nextPlugin from "@next/eslint-plugin-next"
 import { config as baseConfig } from "./base.js"
 
-const compat = new FlatCompat({
-  // import.meta.dirname is available after Node.js v20.11.0
-  baseDirectory: import.meta.dirname,
-})
 export const config = [
   ...baseConfig,
-  ...compat.config({
-    extends: ["next", "next/core-web-vitals", "next/typescript"],
-  }),
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: {
+      "@next/next": nextPlugin,
+    },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
+    },
+  },
 ]
