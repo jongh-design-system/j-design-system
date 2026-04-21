@@ -59,9 +59,9 @@ describe("add test", () => {
     )
   })
 
-  afterAll(() => {
-    fs.remove(path.join(cwd, "components.json"))
-    fs.remove(path.join(cwd, "tsconfig.json"))
+  afterAll(async () => {
+    await fs.remove(path.join(cwd, "components.json"))
+    await fs.remove(path.join(cwd, "tsconfig.json"))
   })
 
   describe("add 유틸함수 test", () => {
@@ -97,8 +97,8 @@ describe("add test", () => {
       await addCommand.parseAsync(["node", "add", "button", "-c", cwd])
     })
 
-    afterAll(() => {
-      fs.remove(path.join(cwd, "src"))
+    afterAll(async () => {
+      await fs.remove(path.join(cwd, "src"))
     })
 
     test("components/button 폴더에 index.tsx파일이 생성됩니다", () => {
