@@ -84,19 +84,18 @@ export const Controlled: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     // 1번 내용이 처음에 열려있어야 함
-    expect(canvas.getByText("내용1")).toBeVisible()
+    expect(await canvas.findByText("내용1")).toBeVisible()
 
     const trigger1 = canvas.getByRole("button", { name: "1번" })
     const trigger2 = canvas.getByRole("button", { name: "2번" })
 
     await userEvent.click(trigger2)
     expect(canvas.getByText("내용1")).toBeVisible()
-    expect(canvas.getByText("내용2")).toBeVisible()
+    expect(await canvas.findByText("내용2")).toBeVisible()
 
     await userEvent.click(trigger1)
 
-    await waitForElementToBeRemoved(canvas.getByText("내용1"))
-    // console.log(canvas.getByText("내용1"))
+    await waitForElementToBeRemoved(() => canvas.queryByText("내용1"))
     expect(canvas.queryByText("내용1")).toBeNull()
     expect(canvas.getByText("내용2")).toBeVisible()
   },
