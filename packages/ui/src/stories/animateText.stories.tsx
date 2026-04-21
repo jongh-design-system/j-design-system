@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { motion } from "framer-motion"
 import { type ReactNode, useMemo, useState } from "react"

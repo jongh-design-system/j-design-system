@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { css } from "@styled-system/css"
 import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"

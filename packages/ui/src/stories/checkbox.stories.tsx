@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { type FormEvent, useCallback, useState } from "react"
 import { useController, useForm } from "react-hook-form"
