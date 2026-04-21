@@ -23,6 +23,11 @@
     "dist",
     "package.json"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jongh-design-system/jds.git",
+    "directory": "packages/cli"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
