@@ -1,5 +1,12 @@
 # @jongh/ui
 
+## 1.6.6
+
+### Patch Changes
+
+- Updated dependencies [6e8f90a]
+  - panda-animation@0.1.1
+
 ## 1.6.5
 
 ### Patch Changes
