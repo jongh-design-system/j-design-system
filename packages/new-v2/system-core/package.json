@@ -1,0 +1,38 @@
+{
+  "name": "@jongh/new-v2-system-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "type-safe하게 토큰을 선언할수있는 API를 제공합니다.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "lint": "eslint --max-warnings 0 --no-warn-ignored .",
+    "check-type": "tsgo --noEmit",
+    "test": "pnpm exec vitest run"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.6",
+    "@jongh/eslint": "workspace:*",
+    "@jongh/tsconfig": "workspace:*",
+    "tsdown": "catalog:"
+  },
+  "dependencies": {
+    "csstype": "^3.1.3"
+  }
+}
