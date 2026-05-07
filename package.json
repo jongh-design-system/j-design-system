@@ -21,7 +21,7 @@
     "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/cz-commitlint": "^19.5.0",
     "@turbo/gen": "^2.3.3",
-    "@typescript/native-preview": "^7.0.0-dev.20260326.1",
+    "@typescript/native-preview": "beta",
     "@vitest/coverage-v8": "catalog:",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
@@ -39,6 +39,7 @@
   },
   "workspaces": [
     "packages/*",
+    "packages/new-v2/*",
     "app/*",
     "configs/*"
   ],
