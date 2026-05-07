@@ -9,5 +9,6 @@
       "react": ["./node_modules/@types/react"]
     }
   },
+  "include": ["src", "vite-env.d.ts"],
   "exclude": ["node_modules", "dist"]
 }
