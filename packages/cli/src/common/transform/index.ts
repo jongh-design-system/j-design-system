@@ -10,8 +10,11 @@ import type { ConfigType } from "../types"
 export function transformImports(content: string, config: ConfigType) {
   let transformedContent = content
 
-  // 모든 가능한 import 패턴들을 변환
   const transformPatterns = [
+    {
+      from: /@\/component\/([^/"']+)\/(?:panda|tailwind)/g,
+      to: `${config.components}/$1`,
+    },
     // utils
     {
       from: /@utils\//g,
@@ -22,11 +25,6 @@ export function transformImports(content: string, config: ConfigType) {
       from: /@hooks\//g,
       to: `${config.hooks}/`,
     },
-    // styled-system
-    {
-      from: /@styled-system\//g,
-      to: `${config.styledsystem}/`,
-    },
     // components
     {
       from: /@components\//g,
@@ -34,7 +32,13 @@ export function transformImports(content: string, config: ConfigType) {
     },
   ]
 
-  // 각 패턴에 대해 변환 수행
+  if (config.style === "panda") {
+    transformPatterns.push({
+      from: /@styled-system\//g,
+      to: `${config.styledsystem}/`,
+    })
+  }
+
   transformPatterns.forEach(({ from, to }) => {
     transformedContent = transformedContent.replace(from, to)
   })

@@ -1,6 +1,7 @@
 import Handlebars from "handlebars"
 import { z } from "zod"
 
+import { tailwindTemplate } from "./tailwind-template"
 import { template } from "./template"
 
 export const colorPalette = [
@@ -46,5 +47,10 @@ export type ColorSchema = z.infer<typeof colorSchema>
 
 export const transformTemplate = (options: ColorSchema) => {
   const compliedTemplate = Handlebars.compile(template)
+  return compliedTemplate(options)
+}
+
+export const transformTailwindTemplate = (options: ColorSchema) => {
+  const compliedTemplate = Handlebars.compile(tailwindTemplate)
   return compliedTemplate(options)
 }

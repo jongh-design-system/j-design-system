@@ -6,7 +6,7 @@ import { Project } from "ts-morph"
 import { fileURLToPath } from "url"
 import { z } from "zod"
 
-import { subDirectories } from "./common/types"
+import { fileSchema, styleSchema } from "./common/types"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -16,6 +16,8 @@ const program = new Command()
 const UI_WORKSPACE_PATH = path.resolve(__dirname, "../../ui/src/component") //ui 경로
 const TARGET_PATH = path.resolve(__dirname, "../../../app/docs/public") //registry 파일이 생성될 경로
 const UI_PRESET_PATH = path.resolve(__dirname, "../../ui")
+const UI_TOKENS_PATH = path.resolve(__dirname, "../../ui/src/tokens")
+const UI_HOOKS_PATH = path.resolve(__dirname, "../../ui/src/hooks")
 
 const registryOptionSchema = z.object({
   component: z.string().optional(),
@@ -28,9 +30,11 @@ const WHITE_LIST = [
   "react", // react, react-dom, @types/react 등
   "react-dom",
   /^@styled-system\/.+/, //내부 패키지들
+  /^@\/component\/.+/,
   /^@utils\/.+/,
   /^@components\/.+/,
   /^@hooks\/.+/,
+  "tailwind-variants",
   /^\.\/.+/,
 ]
 
@@ -57,6 +61,7 @@ export async function handleRegistryCommand(
         await createRegistryFile(component)
       }
       await createPresetFile()
+      await createTailwindTokenFile()
       console.log("\n✅ 모든 컴포넌트의 Registry 파일 생성이 완료되었습니다!")
     } else {
       console.log(`🔄 ${component} 컴포넌트의 Registry 파일을 생성합니다.`)
@@ -71,64 +76,148 @@ export async function handleRegistryCommand(
 export async function createRegistryFile(component: string) {
   console.log(`📁 ${component} 컴포넌트 경로를 확인합니다...`)
   const componentPath = path.join(UI_WORKSPACE_PATH, `./${component}`)
-  // const files = await fs.readdir(componentPath)
-  //이제 여기에서 ui / hooks / utils 등등을 구분해서 처리해야됨
-  // files.forEach((file) => {
-  //   if (file !== `index.tsx` && file !== `recipe.ts`) {
-  //     console.error(
-  //       `⚠️ ${component} 파일 형식이 올바르지 않습니다. ${file}은 유효하지 않은 파일입니다.`,
-  //     )
-  //     process.exit(1)
-  //   }
-  // })
 
-  const fileContents: Array<{ name: string; content: string; type: string }> =
-    []
-  const dependencies: string[] = []
+  const styles: Record<
+    string,
+    {
+      dependencies: string[]
+      files: Array<z.infer<typeof fileSchema>>
+    }
+  > = {}
 
-  for (const subDirectory of subDirectories) {
-    const folderPath = path.join(componentPath, subDirectory)
+  for (const styleDirectory of styleSchema.options) {
+    const folderPath = path.join(componentPath, styleDirectory)
     const exist = await fs.pathExists(folderPath)
     if (!exist) {
-      return
+      continue
     }
-    const files = await fs.readdir(folderPath)
 
     const project = new Project()
+    const fileContents: Array<z.infer<typeof fileSchema>> = []
+    const dependencies = new Set<string>()
+    const visitedFiles = new Set<string>()
+    const files = await fs.readdir(folderPath)
+
     for (const file of files) {
-      const content = await fs.readFile(path.join(folderPath, file), "utf-8")
-      fileContents.push({ name: file, content, type: subDirectory })
-      console.log(`✓ ${file} 파일을 읽었습니다.`)
-
-      const sourceFile = project.addSourceFileAtPath(
-        path.join(folderPath, file),
-      )
-
-      console.log(`🔍 의존성을 분석합니다...`)
-      sourceFile.getImportDeclarations().forEach((importDeclaration) => {
-        const module = importDeclaration.getModuleSpecifier().getLiteralValue()
-        dependencies.push(module)
+      await collectRegistryFile({
+        dependencies,
+        fileContents,
+        filePath: path.join(folderPath, file),
+        project,
+        type: "ui",
+        visitedFiles,
       })
     }
 
-    const fileContent = {
-      name: `${component}`,
-      dependencies: dependencies.filter(
-        (dep) =>
-          !WHITE_LIST.some((w) =>
-            typeof w === "string" ? dep === w : w.test(dep),
-          ),
-      ),
+    styles[styleDirectory] = {
+      dependencies: normalizeDependencies([...dependencies]),
       files: fileContents,
     }
-    const stringifiedFileContent = JSON.stringify(fileContent)
-
-    console.log(`💾 Registry 파일을 저장합니다...`)
-    await fs.writeFile(
-      path.join(TARGET_PATH, `${component.toLowerCase()}.json`),
-      stringifiedFileContent,
-    )
   }
+
+  if (!Object.keys(styles).length) {
+    console.warn(`⚠️ ${component} 컴포넌트에 유효한 style 디렉토리가 없습니다.`)
+    return
+  }
+
+  const fileContent = {
+    name: `${component}`,
+    styles,
+  }
+  const stringifiedFileContent = JSON.stringify(fileContent)
+
+  console.log(`💾 Registry 파일을 저장합니다...`)
+  await fs.writeFile(
+    path.join(TARGET_PATH, `${component.toLowerCase()}.json`),
+    stringifiedFileContent,
+  )
+}
+
+async function collectRegistryFile({
+  dependencies,
+  fileContents,
+  filePath,
+  project,
+  type,
+  visitedFiles,
+}: {
+  dependencies: Set<string>
+  fileContents: Array<z.infer<typeof fileSchema>>
+  filePath: string
+  project: Project
+  type: z.infer<typeof fileSchema>["type"]
+  visitedFiles: Set<string>
+}) {
+  if (visitedFiles.has(filePath)) {
+    return
+  }
+  visitedFiles.add(filePath)
+
+  const content = await fs.readFile(filePath, "utf-8")
+  fileContents.push({ name: path.basename(filePath), content, type })
+  console.log(`✓ ${path.basename(filePath)} 파일을 읽었습니다.`)
+
+  const sourceFile = project.addSourceFileAtPath(filePath)
+  console.log(`🔍 의존성을 분석합니다...`)
+  for (const importDeclaration of sourceFile.getImportDeclarations()) {
+    const module = importDeclaration.getModuleSpecifier().getLiteralValue()
+    dependencies.add(module)
+
+    const internalFile = resolveInternalFile(module)
+    if (internalFile) {
+      await collectRegistryFile({
+        dependencies,
+        fileContents,
+        filePath: internalFile.filePath,
+        project,
+        type: internalFile.type,
+        visitedFiles,
+      })
+    }
+  }
+}
+
+function resolveInternalFile(module: string) {
+  const internalRoots = [
+    { prefix: "@hooks/", root: UI_HOOKS_PATH, type: "hooks" as const },
+  ]
+
+  const target = internalRoots.find(({ prefix }) => module.startsWith(prefix))
+  if (!target) {
+    return null
+  }
+
+  const relativePath = module.slice(target.prefix.length)
+  for (const extension of [".ts", ".tsx"]) {
+    const filePath = path.join(target.root, `${relativePath}${extension}`)
+    if (fs.pathExistsSync(filePath)) {
+      return { filePath, type: target.type }
+    }
+  }
+
+  return null
+}
+
+function normalizeDependencies(dependencies: string[]) {
+  return [
+    ...new Set(
+      dependencies
+        .filter(
+          (dep) =>
+            !WHITE_LIST.some((w) =>
+              typeof w === "string" ? dep === w : w.test(dep),
+            ),
+        )
+        .map((dep) => {
+          if (dep.startsWith("@")) {
+            const [scope, name] = dep.split("/")
+            return `${scope}/${name}`
+          }
+
+          return dep.split("/")[0]
+        }),
+    ),
+  ]
 }
 
 export async function createPresetFile() {
@@ -144,6 +233,22 @@ export async function createPresetFile() {
   }
   fs.writeFile(
     path.join(TARGET_PATH, "preset.json"),
+    JSON.stringify(fileContent),
+  )
+}
+
+export async function createTailwindTokenFile() {
+  const content = await fs.readFile(
+    path.join(UI_TOKENS_PATH, "tailwind.template.css"),
+    "utf-8",
+  )
+  const fileContent = {
+    name: "tailwind.css",
+    dependencies: ["tailwindcss"],
+    file: JSON.stringify(content),
+  }
+  fs.writeFile(
+    path.join(TARGET_PATH, "tailwind.json"),
     JSON.stringify(fileContent),
   )
 }

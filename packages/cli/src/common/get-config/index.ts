@@ -92,6 +92,28 @@ export function getBaseAlias(cwd: string, tsConfig: ConfigLoaderSuccessResult) {
   return null
 }
 
+export function getBasePath(cwd: string, tsConfig: ConfigLoaderSuccessResult) {
+  const basePaths = ["./", "./src/", "./app/", "./src/app"].map((p) =>
+    path.resolve(cwd, p),
+  )
+
+  for (const paths of Object.values(tsConfig.paths)) {
+    const resolvedPaths = path.join(
+      cwd,
+      tsConfig.baseUrl || "",
+      paths[0].replace(/\/\*$/, ""),
+    )
+
+    if (
+      basePaths.some((p) => p === resolvedPaths || p.includes(resolvedPaths))
+    ) {
+      return resolvedPaths
+    }
+  }
+
+  return null
+}
+
 /**
  * pandacss의 output 경로에 해당하는 alias를 반환하는 함수
  * @param styleFolderName panda.config의 output 설정, 기본값은 styled-system
