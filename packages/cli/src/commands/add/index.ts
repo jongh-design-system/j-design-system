@@ -8,12 +8,8 @@ import path from "path"
 import { z } from "zod"
 
 import { CommandError, ErrorMap } from "@/common/error"
-import {
-  getPandacssConfigPath,
-  loadComponentConfig,
-  loadTSConfig,
-} from "@/common/get-config"
-import { resolveImport, resolvePandaConfig } from "@/common/resolve"
+import { loadComponentConfig, loadTSConfig } from "@/common/get-config"
+import { resolveImport } from "@/common/resolve"
 import { transformImports } from "@/common/transform"
 import { configSchema, registrySchema } from "@/common/types"
 import { getPackageManagerCommand } from "@/common/utils/packageManager"
@@ -23,7 +19,9 @@ export const addSchema = z.object({
   cwd: z.string(),
 })
 
-const BASE_URL = "https://jds-docs.vercel.app"
+const BASE_URL = (
+  process.env.JDS_REGISTRY_URL ?? "https://jds-docs.vercel.app"
+).replace(/\/$/, "")
 
 const error = chalk.bold.red
 const info = chalk.bold.blue
@@ -46,33 +44,19 @@ export const addCommand = new Command()
       //1. components.json 파일을 읽어온다
       const componentsJson = configSchema.schema.parse(
         loadComponentConfig(options.cwd),
-      )
-      //2. tsconfig.json 파일을 읽어온다
-      const tsconfig = loadTSConfig(options.cwd)
-      //3. panda.config.* 파일을 읽어온다
-      const pandaConfigPath = await getPandacssConfigPath(options.cwd)
-
-      const config = await fs.readFile(
-        path.resolve(options.cwd, pandaConfigPath),
-        "utf-8",
-      )
-
-      const { outdir } = await resolvePandaConfig(config)
-      //최종 경로
-
-      const paths = configSchema.schema.parse(
-        {
-          utils: await resolveImport(componentsJson.utils, tsconfig),
-          components: await resolveImport(componentsJson.components, tsconfig),
-          hooks: await resolveImport(componentsJson.hooks, tsconfig),
-          styledsystem: path.join(options.cwd, outdir || "styled-system"),
-        },
         {
           errorMap: () => ({
-            message: `validation failed at components.json`,
+            message: `components.json is invalid`,
           }),
         },
       )
+      //2. tsconfig.json 파일을 읽어온다
+      const tsconfig = loadTSConfig(options.cwd)
+      const paths = {
+        utils: await resolveImport(componentsJson.utils, tsconfig),
+        components: await resolveImport(componentsJson.components, tsconfig),
+        hooks: await resolveImport(componentsJson.hooks, tsconfig),
+      }
       //fetch
       const componentList = options.components?.map((c) => c.toLowerCase())
 
@@ -111,6 +95,23 @@ export const addCommand = new Command()
               message: `registry for ${componentList[index]} is invaliad`,
             }),
           })
+          let selectedRegistry = registry.styles[componentsJson.style]
+          if (!selectedRegistry) {
+            const [fallbackStyle] = Object.keys(registry.styles)
+            if (!fallbackStyle) {
+              console.log(error(`${componentList[index]} has no styles`))
+              continue
+            }
+
+            const shouldInstallFallback = await confirm({
+              message: `${componentList[index]} does not support ${componentsJson.style}. Install ${fallbackStyle} instead?`,
+            })
+            if (!shouldInstallFallback) {
+              continue
+            }
+
+            selectedRegistry = registry.styles[fallbackStyle]
+          }
           //2.폴더를 하나 생성해야 함 -> 폴더이름은 reigstry.name
           const src = path.join(paths.components, componentList[index])
 
@@ -123,7 +124,7 @@ export const addCommand = new Command()
             }
           }
 
-          registry.files?.forEach((file) => {
+          selectedRegistry.files.forEach((file) => {
             //import문을 경로를 반영하여 변경하기
             const convertedContent = transformImports(
               file.content,
@@ -141,14 +142,16 @@ export const addCommand = new Command()
             }
           })
 
-          const packageManagerCommand = await getPackageManagerCommand(
-            options.cwd,
-            registry.dependencies || [],
-          )
+          const dependencies = selectedRegistry.dependencies || []
+          const packageManagerCommand = dependencies.length
+            ? await getPackageManagerCommand(options.cwd, dependencies)
+            : undefined
 
-          const outroMsg = !packageManagerCommand
-            ? `Cannot find your package manager, install this dependencies: ${registry.dependencies?.join(" ")}`
-            : `Run this command in the terminal : ${packageManagerCommand.command} ${packageManagerCommand.args.join(" ")}`
+          const outroMsg = !dependencies.length
+            ? "No additional dependencies required"
+            : !packageManagerCommand
+              ? `Cannot find your package manager, install this dependencies: ${dependencies.join(" ")}`
+              : `Run this command in the terminal : ${packageManagerCommand.command} ${packageManagerCommand.args.join(" ")}`
 
           outro(
             info(

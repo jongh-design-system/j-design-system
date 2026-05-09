@@ -10,7 +10,8 @@ import { zodToJsonSchema } from "zod-to-json-schema"
 
 import { colorPalette, colorSchema, grayColorPalette } from "@/common/theme"
 
-import { init, initSchema } from "../init"
+import { init } from "../init"
+import { initOptionSchema, resolveOption } from "../init/option"
 
 export const server = new Server(
   {
@@ -32,7 +33,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "init",
         description: "Initialize the design system and generate theme files.",
-        inputSchema: zodToJsonSchema(initSchema),
+        inputSchema: zodToJsonSchema(initOptionSchema),
       },
       {
         name: "previewColors",
@@ -52,11 +53,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     switch (request.params.name) {
       case "init": {
         try {
-          const { cwd, theme } = request.params.arguments
-          const params = initSchema.parse({
-            cwd,
-            default: true,
-            theme,
+          const params = await resolveOption({
+            ...request.params.arguments,
+            yes: true,
           })
 
           await init(params)

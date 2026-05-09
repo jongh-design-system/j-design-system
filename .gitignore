@@ -9,6 +9,8 @@ panda
 panda-static
 outdir
 ts-import-map-outdir
+!packages/ui/src/component/**/panda/
+!packages/ui/src/component/**/panda/**
 .eslintcache
 tsconfig.tsbuildinfo
 **/.velite/
@@ -44,4 +46,3 @@ lerna-debug.log*
 *.sln
 *.sw?
 //
-

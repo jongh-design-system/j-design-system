@@ -1,8 +1,7 @@
+import * as Tabs from "@story-components/tabs"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
-
-import * as Tabs from "../component/tabs/ui"
 
 const meta = {
   title: "Base/Tabs",

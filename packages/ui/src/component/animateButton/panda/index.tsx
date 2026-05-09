@@ -3,7 +3,7 @@ import { motion, type Variants } from "framer-motion"
 import type { ComponentProps, ComponentRef } from "react"
 import { forwardRef } from "react"
 
-import { Button } from "@/component/button/ui"
+import { Button } from "@/component/button/panda"
 
 export type AnimateButtonProps = {
   animate: keyof typeof variants

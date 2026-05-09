@@ -1,6 +1,5 @@
+import { AnimateButton } from "@story-components/animateButton"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-
-import { AnimateButton } from "../component/animateButton/ui"
 
 const meta = {
   title: "Animation/AnimateButton",

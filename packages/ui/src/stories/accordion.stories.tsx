@@ -1,5 +1,5 @@
+import * as Accordion from "@story-components/accordion"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { css } from "@styled-system/css"
 import { useState } from "react"
 import {
   expect,
@@ -7,8 +7,6 @@ import {
   waitForElementToBeRemoved,
   within,
 } from "storybook/test"
-
-import * as Accordion from "../component/accordion/ui"
 
 export default {
   title: "Base/Accordion",
@@ -23,11 +21,7 @@ export const Primary: Story = {
       <div style={{ width: "500px" }}>
         <Accordion.Root type="single" collapsible>
           <Accordion.Item value="1">
-            <Accordion.Trigger
-              className={css({
-                color: "red.100",
-              })}
-            >
+            <Accordion.Trigger style={{ color: "#fee2e2" }}>
               1번
             </Accordion.Trigger>
             <Accordion.Content>내용1</Accordion.Content>
