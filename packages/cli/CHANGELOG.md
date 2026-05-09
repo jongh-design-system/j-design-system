@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## 3.0.0
+
+### Major Changes
+
+- Add Tailwind CSS style support to the CLI registry, init, and add flows.
+
 ## 2.1.0
 
 ### Minor Changes
