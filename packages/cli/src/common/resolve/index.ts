@@ -27,12 +27,20 @@ export async function resolveAllPaths(
   config: ConfigType,
   tsconfig: ConfigLoaderSuccessResult,
 ) {
-  return {
+  const paths = {
     utils: await resolveImport(config.utils, tsconfig),
     components: await resolveImport(config.components, tsconfig),
     hooks: await resolveImport(config.hooks, tsconfig),
-    styledsystem: await resolveImport(config.styledsystem, tsconfig),
   }
+
+  if (config.style === "panda") {
+    return {
+      ...paths,
+      styledsystem: await resolveImport(config.styledsystem, tsconfig),
+    }
+  }
+
+  return paths
 }
 
 /**
