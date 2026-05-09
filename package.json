@@ -52,6 +52,10 @@
     }
   },
   "pnpm": {
+    "overrides": {
+      "@storybook/addon-docs>react": "18.3.1",
+      "@storybook/addon-docs>react-dom": "18.3.1"
+    },
     "packageExtensions": {
       "lucide-react": {
         "peerDependencies": {

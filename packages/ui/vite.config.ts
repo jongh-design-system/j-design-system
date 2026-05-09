@@ -54,6 +54,9 @@ export default defineConfig({
   resolve: {
     dedupe: ["react", "react-dom"],
   },
+  optimizeDeps: {
+    include: ["clsx", "tailwind-merge", "tailwind-variants"],
+  },
   plugins: [
     storyResolver,
     tailwindcss(),
