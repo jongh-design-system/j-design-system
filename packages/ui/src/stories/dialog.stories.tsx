@@ -1,5 +1,7 @@
+import { Button } from "@story-components/button"
+import * as Dialog from "@story-components/dialog"
+import { TextField } from "@story-components/textfield"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { css } from "@styled-system/css"
 import {
   expect,
   screen,
@@ -7,11 +9,6 @@ import {
   waitForElementToBeRemoved,
   within,
 } from "storybook/test"
-
-import { Button } from "@/component/button/ui"
-import { TextField } from "@/component/textfield/ui"
-
-import * as Dialog from "../component/dialog/ui"
 
 const meta = {
   title: "Base/Dialog",
@@ -94,31 +91,11 @@ export const LongText: Story = {
           himenaeos.
         </span>
         <Dialog.Root>
-          <Dialog.Trigger
-            className={css({
-              textStyle: "6xl",
-            })}
-          >
-            Open
-          </Dialog.Trigger>
-          <Dialog.Content
-            className={css({
-              bg: "cyan.600",
-            })}
-          >
+          <Dialog.Trigger style={{ fontSize: "3.75rem" }}>Open</Dialog.Trigger>
+          <Dialog.Content style={{ backgroundColor: "#0891b2" }}>
             <Dialog.Header>
-              <Dialog.Title
-                className={css({
-                  color: "red.100",
-                })}
-              >
-                Dialog
-              </Dialog.Title>
-              <Dialog.Description
-                className={css({
-                  fontSize: "sm",
-                })}
-              >
+              <Dialog.Title style={{ color: "#fee2e2" }}>Dialog</Dialog.Title>
+              <Dialog.Description style={{ fontSize: "0.875rem" }}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
                 venenatis feugiat eros aliquam convallis. Donec tincidunt eros
                 sed ligula tincidunt, sit amet tristique purus pulvinar. Donec

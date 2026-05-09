@@ -1,10 +1,8 @@
+import { AnimateText } from "@story-components/animateText"
+import { Button } from "@story-components/button"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { motion } from "framer-motion"
 import { type ReactNode, useMemo, useState } from "react"
-
-import { Button } from "@/component/button/ui"
-
-import { AnimateText } from "../component/animateText/ui"
 
 const meta = {
   title: "Animation/AnimateText",

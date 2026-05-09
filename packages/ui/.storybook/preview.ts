@@ -1,6 +1,6 @@
 import type { Preview, ReactRenderer } from "@storybook/react-vite"
 import { withThemeByClassName } from "@storybook/addon-themes"
-import "./index.css"
+import "@story-style"
 
 const preview: Preview = {
   parameters: {

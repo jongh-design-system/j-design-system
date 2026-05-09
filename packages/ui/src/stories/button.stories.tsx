@@ -1,8 +1,7 @@
+import { Button } from "@story-components/button"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import type { ComponentProps } from "react"
 import { expect, fn, userEvent, within } from "storybook/test"
-
-import { Button } from "../component/button/ui"
 export default {
   title: "Base/Button",
   tags: ["autodocs"],
