@@ -8,9 +8,9 @@ import tsconfigPaths from "vite-tsconfig-paths"
 
 const rootDir = dirname(fileURLToPath(import.meta.url))
 const storyStyle = process.env.JDS_STYLE ?? "panda"
-const storyStyleEntries: Record<string, string> = {
-  panda: resolve(rootDir, "styled-system/styles.css"),
-  tailwind: resolve(rootDir, "src/tokens/tailwind.css"),
+const storyStyleEntries: Record<string, string[]> = {
+  panda: [resolve(rootDir, ".storybook/panda.css")],
+  tailwind: [resolve(rootDir, "src/tokens/tailwind.css")],
 }
 const storyStyleEntry = storyStyleEntries[storyStyle]
 const storyStyleVirtualId = "\0jds-story-style"
@@ -45,7 +45,7 @@ const storyResolver = {
 
     return [
       `import ${JSON.stringify(resolve(rootDir, ".storybook/index.css"))}`,
-      `import ${JSON.stringify(storyStyleEntry)}`,
+      ...storyStyleEntry.map((entry) => `import ${JSON.stringify(entry)}`),
     ].join("\n")
   },
 } satisfies Plugin
