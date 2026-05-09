@@ -1,9 +1,8 @@
+import { Chip } from "@story-components/chip"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { PlusCircleIcon } from "lucide-react"
 import { ComponentProps } from "react"
 import { expect, fn, userEvent } from "storybook/test"
-
-import { Chip } from "../component/chip/ui"
 
 export default {
   title: "Base/Chip",

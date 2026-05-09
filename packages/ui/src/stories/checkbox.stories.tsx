@@ -1,11 +1,9 @@
+import { Button } from "@story-components/button"
+import { Checkbox } from "@story-components/checkbox"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { type FormEvent, useCallback, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { expect, userEvent, within } from "storybook/test"
-
-import { Button } from "@/component/button/ui"
-
-import { Checkbox } from "../component/checkbox/ui"
 
 const meta = {
   title: "Base/Checkbox",

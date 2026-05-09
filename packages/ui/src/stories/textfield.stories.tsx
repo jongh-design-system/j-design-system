@@ -1,10 +1,8 @@
+import { TextField } from "@story-components/textfield"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { css } from "@styled-system/css"
 import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"
 import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
-
-import { TextField } from "../component/textfield/ui"
 
 const meta: Meta<typeof TextField> = {
   title: "Base/TextField",
@@ -136,13 +134,7 @@ export const AllVariants: Story = {
         width: "300px",
       }}
     >
-      <p
-        className={css({
-          fluidFontSize: "[1.5rem]",
-        })}
-      >
-        기본 상태
-      </p>
+      <p style={{ fontSize: "1.5rem" }}>기본 상태</p>
       <input title="test"></input>
       <TextField
         label="기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태기본 상태"
