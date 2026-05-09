@@ -7,9 +7,9 @@
   "scripts": {
     "lint": "eslint --max-warnings 0 --no-warn-ignored --fix",
     "prepare": "panda codegen",
-    "test": "vitest run",
-    "test-storybook": "vitest run --project=storybook",
-    "test-storybook:panda": "JDS_STYLE=panda vitest run --project=storybook",
+    "test": "panda codegen && JDS_STYLE=panda vitest run --project=storybook && JDS_STYLE=tailwind vitest run --project=storybook",
+    "test-storybook": "panda codegen && vitest run --project=storybook",
+    "test-storybook:panda": "panda codegen && JDS_STYLE=panda vitest run --project=storybook",
     "test-storybook:tailwind": "JDS_STYLE=tailwind vitest run --project=storybook",
     "storybook": "storybook dev -p 6006",
     "storybook:panda": "JDS_STYLE=panda storybook dev -p 6006",
