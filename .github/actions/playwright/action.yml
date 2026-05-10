@@ -11,7 +11,7 @@ runs:
       id: playwright-version
 
     - name: Cache Playwright Browsers for Playwright's Version
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         # https://playwright.dev/docs/browsers#managing-browser-binaries
         path: ~/.cache/ms-playwright
