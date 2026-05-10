@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: checkout branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
@@ -27,13 +27,13 @@ jobs:
         run: pnpm turbo build
 
       - name: Upload Storybook artifact for Chromatic
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ui-artifact
           path: packages/ui/storybook-static
 
       - name: Upload Docs artifact for AWS
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: docs-artifact
           path: app/docs/out
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
@@ -51,7 +51,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Download  Docs artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: docs-artifact
           path: app/docs/out
