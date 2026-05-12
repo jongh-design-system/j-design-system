@@ -1,6 +1,12 @@
 name: pnpm setup
 description: pnpm setup
 
+inputs:
+  use-cache:
+    description: 'Enable pnpm cache'
+    required: false
+    default: 'true'
+
 runs:
   using: composite
   steps:
@@ -15,11 +21,18 @@ runs:
     - name: Install pnpm
       uses: pnpm/action-setup@v4.4.0
 
-    - name: Use Node.js
+    - name: Use Node.js (with cache)
+      if: inputs.use-cache == 'true'
       uses: actions/setup-node@v5
       with:
         node-version-file: .nvmrc
         cache: "pnpm"
+
+    - name: Use Node.js (without cache)
+      if: inputs.use-cache != 'true'
+      uses: actions/setup-node@v5
+      with:
+        node-version-file: .nvmrc
 
     - name: Install dependencies
       run: pnpm install

@@ -26,6 +26,8 @@ jobs:
 
       - name: pnpm setup
         uses: ./.github/actions/setup
+        with:
+          use-cache: 'false'
 
       - name: build
         run: pnpm turbo build
