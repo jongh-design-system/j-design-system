@@ -3,12 +3,12 @@ import { tv } from "tailwind-variants"
 export const button = tv({
   base: [
     "inline-flex min-h-9 shrink-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-md",
-    "text-style-label1 transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+    "typo-label1 transition-colors disabled:cursor-not-allowed disabled:opacity-50",
     "[&_svg]:shrink-0",
   ],
   variants: {
     size: {
-      sm: "h-9 px-3 py-1.5 text-style-label2 [&_svg]:size-3.5",
+      sm: "h-9 px-3 py-1.5 typo-label2 [&_svg]:size-3.5",
       md: "h-10 px-4 py-2 [&_svg]:size-4",
       lg: "h-11 px-5 py-2 [&_svg]:size-5",
     },
