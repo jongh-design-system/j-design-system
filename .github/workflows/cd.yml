@@ -22,6 +22,8 @@ jobs:
 
       - name: setup pnpm
         uses: ./.github/actions/setup
+        with:
+          use-cache: 'false'
 
       - name: build
         run: pnpm turbo build
@@ -49,6 +51,8 @@ jobs:
 
       - name: setup pnpm
         uses: ./.github/actions/setup
+        with:
+          use-cache: 'false'
 
       - name: Download  Docs artifact
         uses: actions/download-artifact@v7
