@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## 4.0.0
+
+### Major Changes
+
+- f029e2b: Rename Tailwind typography utilities from `text-style-*` to `typo-*` to avoid `tailwind-merge` conflicts with `text-*` color and size utilities.
+
 ## 3.0.0
 
 ### Major Changes
