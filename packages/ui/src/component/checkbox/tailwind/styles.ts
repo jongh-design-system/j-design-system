@@ -21,7 +21,7 @@ export const checkbox = tv({
       "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:content-[''] before:transition-colors",
       "after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:bg-center after:bg-no-repeat after:content-['']",
     ],
-    text: "cursor-pointer text-style-label1 peer-disabled:cursor-not-allowed",
+    text: "cursor-pointer typo-label1 peer-disabled:cursor-not-allowed",
   },
   variants: {
     size: {

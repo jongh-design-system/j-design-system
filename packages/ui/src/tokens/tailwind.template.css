@@ -112,91 +112,91 @@
   --text-caption2--font-weight: var(--font-weight-semibold);
 }
 
-@utility text-style-display1 {
+@utility typo-display1 {
   font-size: var(--text-display1);
   font-weight: var(--text-display1--font-weight);
   letter-spacing: var(--text-display1--letter-spacing);
   line-height: var(--text-display1--line-height);
 }
 
-@utility text-style-display2 {
+@utility typo-display2 {
   font-size: var(--text-display2);
   font-weight: var(--text-display2--font-weight);
   letter-spacing: var(--text-display2--letter-spacing);
   line-height: var(--text-display2--line-height);
 }
 
-@utility text-style-title1 {
+@utility typo-title1 {
   font-size: var(--text-title1);
   font-weight: var(--text-title1--font-weight);
   letter-spacing: var(--text-title1--letter-spacing);
   line-height: var(--text-title1--line-height);
 }
 
-@utility text-style-title2 {
+@utility typo-title2 {
   font-size: var(--text-title2);
   font-weight: var(--text-title2--font-weight);
   letter-spacing: var(--text-title2--letter-spacing);
   line-height: var(--text-title2--line-height);
 }
 
-@utility text-style-title3 {
+@utility typo-title3 {
   font-size: var(--text-title3);
   font-weight: var(--text-title3--font-weight);
   letter-spacing: var(--text-title3--letter-spacing);
   line-height: var(--text-title3--line-height);
 }
 
-@utility text-style-heading1 {
+@utility typo-heading1 {
   font-size: var(--text-heading1);
   font-weight: var(--text-heading1--font-weight);
   letter-spacing: var(--text-heading1--letter-spacing);
   line-height: var(--text-heading1--line-height);
 }
 
-@utility text-style-heading2 {
+@utility typo-heading2 {
   font-size: var(--text-heading2);
   font-weight: var(--text-heading2--font-weight);
   letter-spacing: var(--text-heading2--letter-spacing);
   line-height: var(--text-heading2--line-height);
 }
 
-@utility text-style-body1 {
+@utility typo-body1 {
   font-size: var(--text-body1);
   font-weight: var(--text-body1--font-weight);
   letter-spacing: var(--text-body1--letter-spacing);
   line-height: var(--text-body1--line-height);
 }
 
-@utility text-style-body2 {
+@utility typo-body2 {
   font-size: var(--text-body2);
   font-weight: var(--text-body2--font-weight);
   letter-spacing: var(--text-body2--letter-spacing);
   line-height: var(--text-body2--line-height);
 }
 
-@utility text-style-label1 {
+@utility typo-label1 {
   font-size: var(--text-label1);
   font-weight: var(--text-label1--font-weight);
   letter-spacing: var(--text-label1--letter-spacing);
   line-height: var(--text-label1--line-height);
 }
 
-@utility text-style-label2 {
+@utility typo-label2 {
   font-size: var(--text-label2);
   font-weight: var(--text-label2--font-weight);
   letter-spacing: var(--text-label2--letter-spacing);
   line-height: var(--text-label2--line-height);
 }
 
-@utility text-style-caption1 {
+@utility typo-caption1 {
   font-size: var(--text-caption1);
   font-weight: var(--text-caption1--font-weight);
   letter-spacing: var(--text-caption1--letter-spacing);
   line-height: var(--text-caption1--line-height);
 }
 
-@utility text-style-caption2 {
+@utility typo-caption2 {
   font-size: var(--text-caption2);
   font-weight: var(--text-caption2--font-weight);
   letter-spacing: var(--text-caption2--letter-spacing);

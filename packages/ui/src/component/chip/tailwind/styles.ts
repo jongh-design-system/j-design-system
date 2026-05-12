@@ -14,8 +14,8 @@ export const chip = tv({
         "border border-stroke bg-layer text-foreground-emphasized [&:not(:disabled):hover]:bg-neutral-active",
     },
     size: {
-      sm: "h-7 text-style-label2 [&_svg]:size-3",
-      md: "h-9 text-style-label1 [&_svg]:size-4",
+      sm: "h-7 typo-label2 [&_svg]:size-3",
+      md: "h-9 typo-label1 [&_svg]:size-4",
     },
     layout: {
       withText: "",
