@@ -10,6 +10,8 @@ export {
   keepCommentsOnReviewableLines,
   postPullRequestReview
 } from "./github-review.js";
+export { readCodexReviewCommentCommand } from "./comment-command-event.js";
+export { readPullRequestReviewDataFromGitHub } from "./github-api-reader.js";
 export { filterReviewTargets } from "./review-targets.js";
 export { buildReviewPackets, formatReconcilePrompt, formatReviewPrompt } from "./review-packets.js";
 export { parseUnifiedDiffPatches } from "./unified-diff-parser.js";

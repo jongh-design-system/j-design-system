@@ -8,7 +8,9 @@ import {
   parseUnifiedDiffPatches,
   filterReviewTargets,
   readCommitsFromLocalGit,
+  readCodexReviewCommentCommand,
   readFileDiffsFromLocalGit,
+  readPullRequestReviewDataFromGitHub,
   readPullRequestContextFromGitHubEvent,
   readPullRequestRefsFromGitHubEvent,
   runCodexReconcile,
@@ -22,7 +24,9 @@ test("exports the review pipeline modules", () => {
   assert.equal(typeof parseUnifiedDiffPatches, "function");
   assert.equal(typeof filterReviewTargets, "function");
   assert.equal(typeof readCommitsFromLocalGit, "function");
+  assert.equal(typeof readCodexReviewCommentCommand, "function");
   assert.equal(typeof readFileDiffsFromLocalGit, "function");
+  assert.equal(typeof readPullRequestReviewDataFromGitHub, "function");
   assert.equal(typeof readPullRequestContextFromGitHubEvent, "function");
   assert.equal(typeof readPullRequestRefsFromGitHubEvent, "function");
   assert.equal(typeof runCodexReconcile, "function");
