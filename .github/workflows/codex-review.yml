@@ -1,0 +1,45 @@
+name: codex review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    if: ${{ github.event.pull_request.draft == false && github.event.pull_request.head.repo.full_name == github.repository }}
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: fetch base
+        run: git fetch --no-tags origin ${{ github.event.pull_request.base.ref }}
+
+      - name: setup pnpm
+        uses: ./.github/actions/setup
+
+      - name: install codex
+        run: npm install -g @openai/codex
+
+      - name: restore codex auth
+        env:
+          CODEX_AUTH_JSON_B64: ${{ secrets.CODEX_AUTH_JSON_B64 }}
+        run: |
+          test -n "$CODEX_AUTH_JSON_B64"
+          mkdir -p ~/.codex
+          printf '%s' "$CODEX_AUTH_JSON_B64" | base64 -d > ~/.codex/auth.json
+          chmod 600 ~/.codex/auth.json
+
+      - name: run codex review
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node code-review/src/cli.js --base origin/${{ github.event.pull_request.base.ref }} --head HEAD
