@@ -5,7 +5,7 @@ import {
   buildPullRequestReviewRequest,
   buildReviewPackets,
   keepCommentsOnReviewableLines,
-  parseUnifiedDiffByFile,
+  parseUnifiedDiffPatches,
   filterReviewTargets,
   readCommitsFromLocalGit,
   readFileDiffsFromLocalGit,
@@ -19,7 +19,7 @@ test("exports the review pipeline modules", () => {
   assert.equal(typeof buildPullRequestReviewRequest, "function");
   assert.equal(typeof buildReviewPackets, "function");
   assert.equal(typeof keepCommentsOnReviewableLines, "function");
-  assert.equal(typeof parseUnifiedDiffByFile, "function");
+  assert.equal(typeof parseUnifiedDiffPatches, "function");
   assert.equal(typeof filterReviewTargets, "function");
   assert.equal(typeof readCommitsFromLocalGit, "function");
   assert.equal(typeof readFileDiffsFromLocalGit, "function");

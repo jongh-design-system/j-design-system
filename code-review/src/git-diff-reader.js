@@ -1,6 +1,6 @@
 import { execFileSync } from "node:child_process";
 
-import { parseUnifiedDiffByFile } from "./unified-diff-parser.js";
+import { parseUnifiedDiffPatches } from "./unified-diff-parser.js";
 
 export function readFileDiffsFromLocalGit({
   repositoryPath,
@@ -19,6 +19,7 @@ export function readFileDiffsFromLocalGit({
   }
 
   const mergeBase = runGit(repositoryPath, ["merge-base", "--", base, head]).trim();
+  const changedFiles = readChangedFiles(repositoryPath, mergeBase, head);
   const unifiedDiff = runGit(repositoryPath, [
     "diff",
     "--no-ext-diff",
@@ -32,11 +33,67 @@ export function readFileDiffsFromLocalGit({
     "--"
   ]);
 
+  const patches = parseUnifiedDiffPatches(unifiedDiff);
+  if (changedFiles.length !== patches.length) {
+    throw new Error(
+      `git diff file count mismatch: name-status returned ${changedFiles.length}, unified diff returned ${patches.length}`
+    );
+  }
+
   return {
     mergeBase,
     unifiedDiff,
-    files: parseUnifiedDiffByFile(unifiedDiff)
+    files: changedFiles.map((file, index) => ({
+      ...file,
+      ...patches[index]
+    }))
   };
+}
+
+function readChangedFiles(repositoryPath, base, head) {
+  const output = runGit(repositoryPath, [
+    "diff",
+    "--name-status",
+    "-z",
+    "--no-ext-diff",
+    "--no-textconv",
+    "--find-renames",
+    "--end-of-options",
+    base,
+    head,
+    "--"
+  ]);
+  const tokens = output.split("\0").filter(Boolean);
+  const files = [];
+
+  for (let index = 0; index < tokens.length;) {
+    const statusToken = tokens[index++];
+    const statusCode = statusToken[0];
+
+    switch (statusCode) {
+      case "A": {
+        files.push({ path: tokens[index++], oldPath: undefined, status: "added" });
+        break;
+      }
+      case "D": {
+        const path = tokens[index++];
+        files.push({ path, oldPath: path, status: "removed" });
+        break;
+      }
+      case "R": {
+        const oldPath = tokens[index++];
+        const path = tokens[index++];
+        files.push({ path, oldPath, status: "renamed" });
+        break;
+      }
+      default: {
+        const path = tokens[index++];
+        files.push({ path, oldPath: path, status: "modified" });
+      }
+    }
+  }
+
+  return files;
 }
 
 function runGit(cwd, args) {

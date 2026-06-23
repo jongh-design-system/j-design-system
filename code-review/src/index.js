@@ -12,4 +12,4 @@ export {
 } from "./github-review.js";
 export { filterReviewTargets } from "./review-targets.js";
 export { buildReviewPackets, formatReconcilePrompt, formatReviewPrompt } from "./review-packets.js";
-export { parseUnifiedDiffByFile } from "./unified-diff-parser.js";
+export { parseUnifiedDiffPatches } from "./unified-diff-parser.js";

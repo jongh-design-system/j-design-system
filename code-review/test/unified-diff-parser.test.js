@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { parseUnifiedDiffByFile } from "../src/unified-diff-parser.js";
+import { parseUnifiedDiffPatches } from "../src/unified-diff-parser.js";
 
-test("splits a unified diff into file diffs with status and line counts", () => {
+test("splits a unified diff into patches with line counts", () => {
   const diff = [
     "diff --git a/src/a.js b/src/a.js",
     "index 1111111..2222222 100644",
@@ -26,11 +26,8 @@ test("splits a unified diff into file diffs with status and line counts", () => 
     ""
   ].join("\n");
 
-  assert.deepEqual(parseUnifiedDiffByFile(diff), [
+  assert.deepEqual(parseUnifiedDiffPatches(diff), [
     {
-      path: "src/a.js",
-      oldPath: "src/a.js",
-      status: "modified",
       patch: [
         "diff --git a/src/a.js b/src/a.js",
         "index 1111111..2222222 100644",
@@ -48,9 +45,6 @@ test("splits a unified diff into file diffs with status and line counts", () => 
       isBinary: false
     },
     {
-      path: "src/b.js",
-      oldPath: undefined,
-      status: "added",
       patch: [
         "diff --git a/src/b.js b/src/b.js",
         "new file mode 100644",
@@ -68,7 +62,7 @@ test("splits a unified diff into file diffs with status and line counts", () => 
   ]);
 });
 
-test("keeps the old path as the display path for deleted files", () => {
+test("keeps deleted file patches without reading their paths", () => {
   const diff = [
     "diff --git a/src/removed.js b/src/removed.js",
     "deleted file mode 100644",
@@ -81,11 +75,8 @@ test("keeps the old path as the display path for deleted files", () => {
     ""
   ].join("\n");
 
-  assert.deepEqual(parseUnifiedDiffByFile(diff), [
+  assert.deepEqual(parseUnifiedDiffPatches(diff), [
     {
-      path: "src/removed.js",
-      oldPath: "src/removed.js",
-      status: "removed",
       patch: [
         "diff --git a/src/removed.js b/src/removed.js",
         "deleted file mode 100644",
@@ -98,6 +89,28 @@ test("keeps the old path as the display path for deleted files", () => {
       ].join("\n"),
       additions: 0,
       deletions: 2,
+      isBinary: false
+    }
+  ]);
+});
+
+test("keeps quoted git diff paths as patch text only", () => {
+  const diff = [
+    'diff --git "a/src/caf\\303\\251\\t\\"old\\".js" "b/src/caf\\303\\251\\t\\"new\\".js"',
+    'rename from "src/caf\\303\\251\\t\\"old\\".js"',
+    'rename to "src/caf\\303\\251\\t\\"new\\".js"',
+    '--- "a/src/caf\\303\\251\\t\\"old\\".js"',
+    '+++ "b/src/caf\\303\\251\\t\\"new\\".js"',
+    "@@ -1 +1 @@",
+    "-export const value = 'old';",
+    "+export const value = 'new';"
+  ].join("\n");
+
+  assert.deepEqual(parseUnifiedDiffPatches(diff), [
+    {
+      patch: diff,
+      additions: 1,
+      deletions: 1,
       isBinary: false
     }
   ]);

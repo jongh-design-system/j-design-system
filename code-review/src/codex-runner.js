@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -77,38 +77,73 @@ function runCodexStructuredOutput({ codexCommand, cwd, env, prompt, schema }) {
   const schemaPath = join(dir, "schema.json");
   const outputPath = join(dir, "output.json");
 
-  writeFileSync(schemaPath, JSON.stringify(schema, null, 2));
+  try {
+    writeFileSync(schemaPath, JSON.stringify(schema, null, 2));
 
-  const result = spawnSync(
-    codexCommand,
-    [
-      "--sandbox",
-      "read-only",
-      "--ask-for-approval",
-      "never",
-      "exec",
-      "--ephemeral",
-      "--output-schema",
-      schemaPath,
-      "-o",
-      outputPath,
-      "Review the packet provided on stdin."
-    ],
-    {
-      cwd,
-      env,
-      input: prompt,
-      encoding: "utf8",
-      maxBuffer: 100 * 1024 * 1024
+    const result = spawnSync(
+      codexCommand,
+      [
+        "--sandbox",
+        "read-only",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ephemeral",
+        "--output-schema",
+        schemaPath,
+        "-o",
+        outputPath,
+        "Review the packet provided on stdin."
+      ],
+      {
+        cwd,
+        env: buildCodexEnvironment(env),
+        input: prompt,
+        encoding: "utf8",
+        maxBuffer: 100 * 1024 * 1024
+      }
+    );
+
+    if (result.error) {
+      throw result.error;
     }
-  );
+    if (result.status !== 0) {
+      throw new Error(result.stderr || result.stdout || `codex exited with status ${result.status}`);
+    }
 
-  if (result.error) {
-    throw result.error;
+    return JSON.parse(readFileSync(outputPath, "utf8"));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
   }
-  if (result.status !== 0) {
-    throw new Error(result.stderr || result.stdout || `codex exited with status ${result.status}`);
+}
+
+function buildCodexEnvironment(env) {
+  const allowedKeys = [
+    "CI",
+    "CODEX_ACCESS_TOKEN",
+    "CODEX_HOME",
+    "HOME",
+    "HTTPS_PROXY",
+    "HTTP_PROXY",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "NO_PROXY",
+    "PATH",
+    "SHELL",
+    "SSL_CERT_FILE",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "USER"
+  ];
+  const codexEnv = {};
+
+  for (const key of allowedKeys) {
+    if (env[key] !== undefined) {
+      codexEnv[key] = env[key];
+    }
   }
 
-  return JSON.parse(readFileSync(outputPath, "utf8"));
+  return codexEnv;
 }
