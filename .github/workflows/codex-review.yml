@@ -1,0 +1,69 @@
+name: codex review
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    if: ${{ github.event.pull_request.draft == false && github.event.pull_request.head.repo.full_name == github.repository }}
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout reviewer
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: reviewer
+          persist-credentials: false
+
+      - name: checkout pull request target
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: fetch target base
+        working-directory: target
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: git fetch --no-tags origin "$BASE_REF"
+
+      - name: remove target checkout credentials
+        working-directory: target
+        run: git config --local --unset-all http.https://github.com/.extraheader || true
+
+      - name: setup node
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: reviewer/.nvmrc
+
+      - name: install codex
+        run: npm install -g @openai/codex
+
+      - name: restore codex auth
+        env:
+          CODEX_AUTH_JSON_B64: ${{ secrets.CODEX_AUTH_JSON_B64 }}
+        run: |
+          test -n "$CODEX_AUTH_JSON_B64"
+          mkdir -p ~/.codex
+          printf '%s' "$CODEX_AUTH_JSON_B64" | base64 -d > ~/.codex/auth.json
+          chmod 600 ~/.codex/auth.json
+
+      - name: run codex review
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >
+          node "$GITHUB_WORKSPACE/reviewer/code-review/src/cli.js"
+          --repo "$GITHUB_WORKSPACE/target"
+          --event "$GITHUB_EVENT_PATH"
+          --base "origin/$BASE_REF"
+          --head HEAD
