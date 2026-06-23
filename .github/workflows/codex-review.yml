@@ -1,0 +1,47 @@
+name: codex review
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: write
+
+jobs:
+  review:
+    if: >-
+      github.event.issue.pull_request &&
+      github.event.comment.body == '/codex review' &&
+      format('{0}', github.event.comment.user.id) == vars.CODEX_REVIEW_ALLOWED_USER_ID
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: setup node
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+
+      - name: install codex
+        run: npm install -g @openai/codex
+
+      - name: restore codex auth
+        env:
+          CODEX_AUTH_JSON_B64: ${{ secrets.CODEX_AUTH_JSON_B64 }}
+        run: |
+          test -n "$CODEX_AUTH_JSON_B64"
+          mkdir -p ~/.codex
+          printf '%s' "$CODEX_AUTH_JSON_B64" | base64 -d > ~/.codex/auth.json
+          chmod 600 ~/.codex/auth.json
+
+      - name: run codex review
+        env:
+          CODEX_REVIEW_ALLOWED_USER_ID: ${{ vars.CODEX_REVIEW_ALLOWED_USER_ID }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node code-review/src/comment-cli.js
