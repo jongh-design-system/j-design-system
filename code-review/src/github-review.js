@@ -7,7 +7,7 @@ export function buildPullRequestReviewRequest({ owner, repo, pullNumber, summary
       comments: comments.map((comment) => ({
         path: comment.path,
         line: comment.line,
-        side: "RIGHT",
+        side: "LEFT",
         body: `[${comment.severity}] ${comment.body}`
       }))
     }
