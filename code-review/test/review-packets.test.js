@@ -74,7 +74,7 @@ test("formats a prompt that explicitly invokes the code-judgment skill", () => {
   });
 
   assert.match(prompt, /Use the \$code-judgment skill/);
-  assert.match(prompt, /Read only the relevant principle files/);
+  assert.match(prompt, /Follow the skill's own routing instructions/);
   assert.match(prompt, /<review_packet>/);
   assert.match(prompt, /"unit_id": "commit-aaaaaaaaaaaa"/);
 });
