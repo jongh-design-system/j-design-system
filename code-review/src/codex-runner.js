@@ -1,5 +1,13 @@
 import { spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -47,12 +55,18 @@ export function runCodexReviewPacket({
   eventLogDir,
   env = process.env
 }) {
+  const skillContext = readLocalSkillContext({ cwd, skillName });
+
+  if (eventLogDir && skillContext) {
+    writeSkillContextLog({ dir: eventLogDir, skillContext });
+  }
+
   return runCodexStructuredOutput({
     codexCommand,
     cwd,
     eventLogDir,
     env,
-    prompt: formatReviewPrompt({ packet, skillName }),
+    prompt: formatReviewPrompt({ packet, skillName, skillContext: skillContext?.text }),
     runName: `review-${packet.unit_id}`,
     schema: REVIEW_OUTPUT_SCHEMA
   });
@@ -67,12 +81,23 @@ export function runCodexReconcile({
   eventLogDir,
   env = process.env
 }) {
+  const skillContext = readLocalSkillContext({ cwd, skillName });
+
+  if (eventLogDir && skillContext) {
+    writeSkillContextLog({ dir: eventLogDir, skillContext });
+  }
+
   return runCodexStructuredOutput({
     codexCommand,
     cwd,
     eventLogDir,
     env,
-    prompt: formatReconcilePrompt({ pullRequest, candidateComments, skillName }),
+    prompt: formatReconcilePrompt({
+      pullRequest,
+      candidateComments,
+      skillName,
+      skillContext: skillContext?.text
+    }),
     runName: "reconcile",
     schema: RECONCILE_OUTPUT_SCHEMA
   });
@@ -150,6 +175,63 @@ function writeCodexEventLogs({ dir, runName, stdout }) {
       2
     )}\n`
   );
+}
+
+function writeSkillContextLog({ dir, skillContext }) {
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(
+    join(dir, "skill-context.json"),
+    `${JSON.stringify(
+      {
+        skillName: skillContext.skillName,
+        files: skillContext.files
+      },
+      null,
+      2
+    )}\n`
+  );
+}
+
+function readLocalSkillContext({ cwd, skillName }) {
+  const skillDir = join(cwd, ".agents", "skills", skillName);
+  const files = [];
+
+  addSkillFile({ files, cwd, path: join(skillDir, "SKILL.md") });
+  const principlesDir = join(skillDir, "principles");
+  if (existsSync(principlesDir)) {
+    for (const entry of readdirSync(principlesDir, { withFileTypes: true })) {
+      if (entry.isFile() && entry.name.endsWith(".md")) {
+        addSkillFile({ files, cwd, path: join(principlesDir, entry.name) });
+      }
+    }
+  }
+
+  if (files.length === 0) {
+    return null;
+  }
+
+  files.sort((left, right) => Number(!left.relativePath.endsWith("/SKILL.md")) - Number(!right.relativePath.endsWith("/SKILL.md")) || left.relativePath.localeCompare(right.relativePath));
+
+  return {
+    skillName,
+    files: files.map((file) => file.relativePath),
+    text: files
+      .map(
+        (file) => `--- skill file: ${file.relativePath} ---
+${file.content}`
+      )
+      .join("\n\n")
+  };
+}
+
+function addSkillFile({ files, cwd, path }) {
+  if (!existsSync(path)) {
+    return;
+  }
+  files.push({
+    relativePath: path.slice(cwd.length + 1).replaceAll("\\", "/"),
+    content: readFileSync(path, "utf8")
+  });
 }
 
 function readLastUsage(stdout) {
