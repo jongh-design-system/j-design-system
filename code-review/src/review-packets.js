@@ -35,10 +35,8 @@ export function buildReviewPackets({ pullRequest, commits, reviewTargets, skippe
     .filter(Boolean);
 }
 
-export function formatReviewPrompt({ packet, skillName = "code-judgment" }) {
-  return `Use the $${skillName} skill.
-
-Follow the skill's own routing instructions for any extra files.
+export function formatReviewPrompt({ packet, skillName = "code-judgment", skillContext }) {
+  return `${formatSkillContextPrompt({ skillName, skillContext })}
 
 You are reviewing one commit-scoped change group from a pull request.
 Use the pull request title and body as the author's declared intent and constraints.
@@ -55,10 +53,8 @@ ${JSON.stringify(packet, null, 2)}
 </review_packet>`;
 }
 
-export function formatReconcilePrompt({ pullRequest, candidateComments, skillName = "code-judgment" }) {
-  return `Use the $${skillName} skill.
-
-Follow the skill's own routing instructions for any extra files.
+export function formatReconcilePrompt({ pullRequest, candidateComments, skillName = "code-judgment", skillContext }) {
+  return `${formatSkillContextPrompt({ skillName, skillContext })}
 
 Remove comments that are generic, duplicated, not tied to the PR intent, not actionable, or not important enough to post.
 
@@ -71,6 +67,21 @@ ${JSON.stringify(candidateComments, null, 2)}
 </candidate_comments>
 
 Return JSON only.`;
+}
+
+function formatSkillContextPrompt({ skillName, skillContext }) {
+  if (!skillContext) {
+    return `Use the $${skillName} skill.
+
+Follow the skill's own routing instructions for any extra files.`;
+  }
+
+  return `Use the ${skillName} review guidance provided in <skill_context>.
+Do not read skill files from disk; the local skill files needed for this review are already included below.
+
+<skill_context>
+${skillContext}
+</skill_context>`;
 }
 
 function toPacketFile(file) {
