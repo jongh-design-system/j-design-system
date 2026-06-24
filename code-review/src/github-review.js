@@ -23,7 +23,16 @@ export function keepCommentsOnReviewableLines({ comments, files }) {
   return comments.filter((comment) => linesByPath.get(comment.path)?.has(comment.line));
 }
 
-export async function postPullRequestReview({ token, owner, repo, pullNumber, summary, comments }) {
+export async function postPullRequestReview({
+  token,
+  owner,
+  repo,
+  pullNumber,
+  summary,
+  comments,
+  maxAttempts = 3,
+  retryDelayMs = 1000
+}) {
   if (!token) {
     throw new Error("GitHub token is required");
   }
@@ -32,16 +41,20 @@ export async function postPullRequestReview({ token, owner, repo, pullNumber, su
   }
 
   const request = buildPullRequestReviewRequest({ owner, repo, pullNumber, summary, comments });
-  const response = await fetch(request.url, {
-    method: "POST",
-    headers: {
-      accept: "application/vnd.github+json",
-      authorization: `Bearer ${token}`,
-      "content-type": "application/json",
-      "x-github-api-version": "2022-11-28"
+  const response = await fetchWithRetry(
+    request.url,
+    {
+      method: "POST",
+      headers: {
+        accept: "application/vnd.github+json",
+        authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+        "x-github-api-version": "2022-11-28"
+      },
+      body: JSON.stringify(request.body)
     },
-    body: JSON.stringify(request.body)
-  });
+    { maxAttempts, retryDelayMs }
+  );
 
   if (!response.ok) {
     const body = await response.text();
@@ -49,6 +62,33 @@ export async function postPullRequestReview({ token, owner, repo, pullNumber, su
   }
 
   return response.json();
+}
+
+async function fetchWithRetry(url, options, { maxAttempts, retryDelayMs }) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok || response.status < 500 || attempt === maxAttempts) {
+        return response;
+      }
+      lastError = new Error(`GitHub request failed with ${response.status}`);
+    } catch (error) {
+      lastError = error;
+      if (attempt === maxAttempts) {
+        throw error;
+      }
+    }
+
+    await sleep(retryDelayMs);
+  }
+
+  throw lastError;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function reviewableLinesFromPatch(patch) {
