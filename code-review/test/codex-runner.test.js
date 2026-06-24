@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { chmodSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -55,6 +55,61 @@ test("does not pass GitHub credentials to the Codex subprocess", () => {
     } else {
       process.env.CODEX_AUTH_JSON_B64 = previousAuthSecret;
     }
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("writes Codex JSONL events and token usage when an event log directory is provided", () => {
+  const dir = mkdtempSync(join(tmpdir(), "codex-runner-events-test-"));
+  const commandPath = join(dir, "fake-codex.js");
+  const eventLogDir = join(dir, "codex-events");
+
+  try {
+    writeFileSync(
+      commandPath,
+      [
+        "#!/usr/bin/env node",
+        'import { writeFileSync } from "node:fs";',
+        'const outputPath = process.argv[process.argv.indexOf("-o") + 1];',
+        'if (process.argv.includes("--json")) {',
+        '  console.log(JSON.stringify({ type: "turn.completed", usage: { input_tokens: 10, cached_input_tokens: 2, output_tokens: 3, reasoning_output_tokens: 1 } }));',
+        "}",
+        "writeFileSync(outputPath, JSON.stringify({",
+        '  unit_id: "commit-123",',
+        '  summary: "clean",',
+        "  comments: []",
+        "}));"
+      ].join("\n")
+    );
+    chmodSync(commandPath, 0o755);
+
+    runCodexReviewPacket({
+      codexCommand: commandPath,
+      cwd: dir,
+      eventLogDir,
+      packet: {
+        unit_id: "commit-123",
+        pull_request: { number: 1, title: "test", body: "" },
+        commits: [],
+        changed_files: [],
+        skipped_files: []
+      }
+    });
+
+    assert.match(
+      readFileSync(join(eventLogDir, "review-commit-123.events.jsonl"), "utf8"),
+      /"type":"turn.completed"/
+    );
+    assert.deepEqual(JSON.parse(readFileSync(join(eventLogDir, "review-commit-123.usage.json"), "utf8")), {
+      run: "review-commit-123",
+      usage: {
+        input_tokens: 10,
+        cached_input_tokens: 2,
+        output_tokens: 3,
+        reasoning_output_tokens: 1
+      }
+    });
+  } finally {
     rmSync(dir, { recursive: true, force: true });
   }
 });
