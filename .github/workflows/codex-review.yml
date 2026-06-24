@@ -43,6 +43,35 @@ jobs:
 
       - name: run codex review
         env:
+          CODEX_REVIEW_EVENT_LOG_DIR: code-review-codex-events
           CODEX_REVIEW_ALLOWED_USER_ID: ${{ vars.CODEX_REVIEW_ALLOWED_USER_ID }}
           GITHUB_TOKEN: ${{ github.token }}
         run: node code-review/src/comment-cli.js
+
+      - name: summarize codex json events
+        if: always()
+        run: |
+          if [ -d code-review-codex-events ]; then
+            {
+              echo "### Codex JSON events"
+              echo
+              echo "Raw JSONL events and usage summaries are attached as the \`codex-review-json-events\` artifact."
+              echo
+              for file in code-review-codex-events/*.usage.json; do
+                [ -e "$file" ] || continue
+                echo "- \`$(basename "$file")\`"
+                echo
+                echo '```json'
+                cat "$file"
+                echo '```'
+              done
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: upload codex json events
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codex-review-json-events
+          path: code-review-codex-events/
+          if-no-files-found: ignore

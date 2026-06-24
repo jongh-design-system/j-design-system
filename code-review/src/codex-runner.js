@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -44,13 +44,16 @@ export function runCodexReviewPacket({
   cwd,
   skillName = "code-judgment",
   codexCommand = "codex",
+  eventLogDir,
   env = process.env
 }) {
   return runCodexStructuredOutput({
     codexCommand,
     cwd,
+    eventLogDir,
     env,
     prompt: formatReviewPrompt({ packet, skillName }),
+    runName: `review-${packet.unit_id}`,
     schema: REVIEW_OUTPUT_SCHEMA
   });
 }
@@ -61,51 +64,62 @@ export function runCodexReconcile({
   cwd,
   skillName = "code-judgment",
   codexCommand = "codex",
+  eventLogDir,
   env = process.env
 }) {
   return runCodexStructuredOutput({
     codexCommand,
     cwd,
+    eventLogDir,
     env,
     prompt: formatReconcilePrompt({ pullRequest, candidateComments, skillName }),
+    runName: "reconcile",
     schema: RECONCILE_OUTPUT_SCHEMA
   });
 }
 
-function runCodexStructuredOutput({ codexCommand, cwd, env, prompt, schema }) {
+function runCodexStructuredOutput({ codexCommand, cwd, eventLogDir, env, prompt, runName, schema }) {
   const dir = mkdtempSync(join(tmpdir(), "code-review-codex-"));
   const schemaPath = join(dir, "schema.json");
   const outputPath = join(dir, "output.json");
+  const codexArgs = [
+    "--sandbox",
+    "read-only",
+    "--ask-for-approval",
+    "never",
+    "exec",
+    "--ephemeral",
+    "--output-schema",
+    schemaPath,
+    "-o",
+    outputPath,
+    "Review the packet provided on stdin."
+  ];
+
+  if (eventLogDir) {
+    codexArgs.splice(5, 0, "--json");
+  }
 
   try {
     writeFileSync(schemaPath, JSON.stringify(schema, null, 2));
 
-    const result = spawnSync(
-      codexCommand,
-      [
-        "--sandbox",
-        "read-only",
-        "--ask-for-approval",
-        "never",
-        "exec",
-        "--ephemeral",
-        "--output-schema",
-        schemaPath,
-        "-o",
-        outputPath,
-        "Review the packet provided on stdin."
-      ],
-      {
-        cwd,
-        env: buildCodexEnvironment(env),
-        input: prompt,
-        encoding: "utf8",
-        maxBuffer: 100 * 1024 * 1024
-      }
-    );
+    const result = spawnSync(codexCommand, codexArgs, {
+      cwd,
+      env: buildCodexEnvironment(env),
+      input: prompt,
+      encoding: "utf8",
+      maxBuffer: 100 * 1024 * 1024
+    });
 
     if (result.error) {
       throw result.error;
+    }
+    if (eventLogDir) {
+      writeCodexEventLogs({
+        dir: eventLogDir,
+        runName,
+        stdout: result.stdout
+      });
     }
     if (result.status !== 0) {
       throw new Error(result.stderr || result.stdout || `codex exited with status ${result.status}`);
@@ -115,6 +129,45 @@ function runCodexStructuredOutput({ codexCommand, cwd, env, prompt, schema }) {
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+}
+
+function writeCodexEventLogs({ dir, runName, stdout }) {
+  const safeRunName = runName.replace(/[^a-zA-Z0-9._-]/g, "-");
+  const eventLogPath = join(dir, `${safeRunName}.events.jsonl`);
+  const usagePath = join(dir, `${safeRunName}.usage.json`);
+  const usage = readLastUsage(stdout);
+
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(eventLogPath, stdout);
+  writeFileSync(
+    usagePath,
+    `${JSON.stringify(
+      {
+        run: safeRunName,
+        usage
+      },
+      null,
+      2
+    )}\n`
+  );
+}
+
+function readLastUsage(stdout) {
+  let usage = null;
+  for (const line of stdout.split("\n")) {
+    if (!line.trim()) {
+      continue;
+    }
+    try {
+      const event = JSON.parse(line);
+      if (event.usage) {
+        usage = event.usage;
+      }
+    } catch {
+      // Keep raw JSONL intact even if Codex prints a non-JSON diagnostic line.
+    }
+  }
+  return usage;
 }
 
 function buildCodexEnvironment(env) {

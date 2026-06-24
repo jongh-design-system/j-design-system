@@ -10,6 +10,7 @@ import { runCodexReconcile, runCodexReviewPacket } from "./codex-runner.js";
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const eventPath = options.event ?? process.env.GITHUB_EVENT_PATH;
+  const eventLogDir = options.eventLogDir ?? process.env.CODEX_REVIEW_EVENT_LOG_DIR;
   const allowedUserId = options.allowedUserId ?? process.env.CODEX_REVIEW_ALLOWED_USER_ID;
   const command = readCodexReviewCommentCommand({
     eventPath,
@@ -43,6 +44,7 @@ async function main() {
       runCodexReviewPacket({
         packet,
         cwd: process.cwd(),
+        eventLogDir,
         skillName: options.skill ?? "code-judgment"
       })
     );
@@ -61,6 +63,7 @@ async function main() {
           pullRequest: reviewData.pullRequest,
           candidateComments,
           cwd: process.cwd(),
+          eventLogDir,
           skillName: options.skill ?? "code-judgment"
         })
       : { summary: "Codex found no review comments.", comments: [] };
@@ -105,6 +108,9 @@ function parseArgs(args) {
         break;
       case "--exclude":
         options.exclude.push(args[++index]);
+        break;
+      case "--event-log-dir":
+        options.eventLogDir = args[++index];
         break;
       case "--skill":
         options.skill = args[++index];
