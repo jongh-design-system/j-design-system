@@ -38,7 +38,7 @@ export function buildReviewPackets({ pullRequest, commits, reviewTargets, skippe
 export function formatReviewPrompt({ packet, skillName = "code-judgment" }) {
   return `Use the $${skillName} skill.
 
-Read only the relevant principle files before judging this change.
+Follow the skill's own routing instructions for any extra files.
 
 You are reviewing one commit-scoped change group from a pull request.
 Use the pull request title and body as the author's declared intent and constraints.
@@ -58,7 +58,7 @@ ${JSON.stringify(packet, null, 2)}
 export function formatReconcilePrompt({ pullRequest, candidateComments, skillName = "code-judgment" }) {
   return `Use the $${skillName} skill.
 
-Read only the relevant principle files needed to judge these candidate review comments.
+Follow the skill's own routing instructions for any extra files.
 
 Remove comments that are generic, duplicated, not tied to the PR intent, not actionable, or not important enough to post.
 
