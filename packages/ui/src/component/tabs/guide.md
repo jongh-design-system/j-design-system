@@ -1,0 +1,127 @@
+---
+name: tabs
+platform: web
+---
+
+# Tabs
+
+## 역할
+
+서로 관련되고 비슷한 중요도를 가진 콘텐츠 패널을 한 자리에서 전환한다. 한 번에 하나의 패널을 보여 주는 정보 구조이며, 페이지 간 주요 탐색이나 순차 작업 흐름을 대신하지 않는다. [Spectrum은 관련 콘텐츠를 하나의 일관된 단위로 묶고 서로 다른 중요도의 콘텐츠나 flow에 사용하지 않도록 안내한다](https://spectrum.adobe.com/page/tabs/).
+
+## 보장해야 하는 계약
+
+| 조건                                              | 규칙                                                                                                                                          | 근거                                                                                                                                                                                    |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 항상                                              | tab 집합, 각 tab, 대응 panel에 각각 `tablist`, `tab`, `tabpanel` 의미를 제공하고 tab과 panel의 이름·제어 관계를 연결한다.                     | [WAI-ARIA `tablist`](https://www.w3.org/TR/wai-aria/#tablist), [`tab`](https://www.w3.org/TR/wai-aria/#tab), [`tabpanel`](https://www.w3.org/TR/wai-aria/#tabpanel)                     |
+| 항상                                              | 활성 tab 하나의 `aria-selected`만 `true`이고, 표시되는 panel과 일치해야 한다. 비활성 panel은 사용자에게 활성 콘텐츠처럼 노출되지 않아야 한다. | [WAI-ARIA `tab` role](https://www.w3.org/TR/wai-aria/#tab), [APG Tabs Pattern (informative)](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)                                            |
+| 키보드 focus가 tablist에 들어올 때                | 일반적으로 활성 tab이 하나의 tab stop이 되고, 방향키로 같은 tablist의 tab 사이를 이동한다.                                                    | [APG Tabs Pattern (informative)](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/), [APG Keyboard Interface (informative)](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/) |
+| 수직 방향을 지원하는 경우                         | orientation을 프로그램적으로 제공하고, 키보드 이동 축을 시각 방향과 일치시킨다.                                                               | [`aria-orientation` 명세](https://www.w3.org/TR/wai-aria/#aria-orientation), [APG Tabs Pattern (informative)](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)                           |
+| 자동 활성화를 사용하는 경우                       | focus된 panel이 지연 없이 표시되어야 한다. 네트워크·렌더링 지연이 있으면 focus 이동과 panel 활성화를 분리하는 수동 활성화를 사용한다.         | [APG Tabs Pattern의 activation latency 권고 (informative)](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)                                                                              |
+| panel의 첫 의미 있는 콘텐츠가 focus 불가능한 경우 | tablist 다음의 키보드 사용자가 panel 콘텐츠로 이동할 수 있도록 panel 자체를 tab 순서에 포함하는 방식을 검토한다.                              | [APG Tabs Pattern (informative)](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)                                                                                                        |
+| 활성 상태를 시각화하는 경우                       | 색상 하나에만 의존하지 않고 focus와 selection을 서로 구분한다.                                                                                | [WCAG 2.2 Use of Color, Non-text Contrast, Focus Visible](https://www.w3.org/TR/WCAG22/)                                                                                                |
+
+APG tabs pattern은 **informative 작성 지침**이며 키보드 모델을 구현하는 예시이지 브라우저가 자동 제공하는 동작이 아니다. 커스텀 tab은 대상 브라우저와 보조 기술에서 roving focus와 panel 관계를 검증한다.
+
+## 프로젝트에서 결정할 항목
+
+| 결정                  | 적용 조건                                    | 판단에 사용하는 정보                                 |
+| --------------------- | -------------------------------------------- | ---------------------------------------------------- |
+| 자동 또는 수동 활성화 | 키보드 방향키 탐색이 있을 때                 | panel 표시 지연, preload 정책, 데이터 비용           |
+| 가로 또는 세로 방향   | 공간과 콘텐츠 구조에 따라                    | 반응형 Foundation, label 길이, 읽기 방향             |
+| overflow 처리         | tab이 사용 가능한 축을 넘을 때               | tab 수, 좁은 화면, 접근성 있는 스크롤·대체 picker    |
+| panel DOM 유지 여부   | panel에 로컬 상태나 비용 큰 콘텐츠가 있을 때 | 상태 보존, 성능, 보조 기술 노출                      |
+| 초기 활성 tab         | 최초 렌더링 또는 복원 시                     | URL, 사용자 상태, validation 오류, 제품 기본값       |
+| tab label과 선택 표시 | 항상                                         | Content guideline, Icon Foundation, Color Foundation |
+| 비활성 tab 처리       | 사용할 수 없는 panel이 있을 때               | 사유 전달, 작업 순서, 대체 접근 경로                 |
+| tab 추가·닫기         | 동적 workspace를 지원할 때                   | focus 복원, 데이터 손실, 별도 action UI              |
+| 선택 표시 모션        | 활성 tab이 바뀔 때                           | Motion Foundation, reduced-motion 정책, 즉시성       |
+
+## 토큰 결정 지도
+
+```yaml
+root:
+  color: color
+  background-color: color
+
+list:
+  background-color: color
+  border-color: color
+  border-width: border
+  border-radius: radius
+  gap: spacing
+  padding: spacing
+
+tab:
+  color: color
+  background-color: color
+  typography: typography
+  padding-block: spacing
+  padding-inline: spacing
+  gap: spacing
+  min-block-size: sizing
+  border-radius: radius
+
+selection-indicator:
+  color: color
+  thickness: border
+  offset: spacing
+
+panel:
+  color: color
+  background-color: color
+  typography: typography
+  padding-block: spacing
+  margin-block-start: spacing
+
+focus:
+  outline-color: color
+  outline-width: border
+  outline-offset: spacing
+
+motion:
+  duration: motion
+  easing: motion
+```
+
+## 엔지니어링 지식
+
+### 의미와 동작
+
+focus된 tab과 selected tab은 수동 활성화에서 서로 다를 수 있다. 키보드 focus 상태를 selection 상태에서 파생하지 말고, activation mode에 따라 명시적으로 전환한다. tab·panel 식별자는 SSR과 hydration을 거쳐 안정적이어야 하며, 한 tab의 label과 제어 대상이 다른 인스턴스와 충돌하지 않게 한다.
+
+### 레이아웃
+
+tab label은 번역과 텍스트 확대를 견뎌야 한다. 여러 label을 잘라 억지로 한 줄에 맞추기보다 접근 가능한 horizontal scroll, 세로 배치, 별도 picker 등 프로젝트에 맞는 overflow 전략을 선택한다. Spectrum은 좁은 공간에서 horizontal scroll이나 picker를 제안하며 여러 tab label을 동시에 잘라 맞추지 않도록 안내한다. [Spectrum Tabs](https://spectrum.adobe.com/page/tabs/)
+
+### 접근성
+
+가로 tablist에서는 `Left`·`Right`, 세로 tablist에서는 `Up`·`Down`으로 이동하는 APG의 informative 관례를 우선 검토한다. `Home`·`End` 지원은 선택 사항이다. 수동 활성화에서는 `Enter` 또는 `Space`가 focused tab을 활성화한다. 방향키 처리 시 가로 목록의 `Up`·`Down` 같은 브라우저 스크롤 키를 불필요하게 가로채지 않는다. [APG Tabs Pattern (informative)](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)
+
+아이콘만 있는 tab을 허용하면 시각 label과 동등한 접근 가능한 이름을 제공한다. focus indicator와 selected indicator가 동시에 나타날 수 있으므로 두 상태를 구별 가능하게 설계한다. [Spectrum Tabs label 지침](https://spectrum.adobe.com/page/tabs/), [WCAG 2.2 Focus Visible](https://www.w3.org/TR/WCAG22/#focus-visible)
+
+### 렌더링과 브라우저
+
+비활성 panel을 CSS로만 화면 밖에 배치하면 보조 기술이나 검색·focus 순서에 남을 수 있다. 숨김 방식이 접근성 트리와 focusability를 함께 제어하는지 확인한다. panel을 지연 로드할 때 자동 활성화 focus 이동을 막을 정도의 latency가 생기면 수동 활성화로 전환한다. URL과 활성 tab을 동기화할 경우 브라우저 뒤로 가기, deep link, 초기 hydration의 우선순위를 명시한다.
+
+## 검증 관점
+
+- 한 tab만 selected이고 표시되는 panel과 정확히 대응하는가
+- tab과 panel의 accessible name·control 관계가 인스턴스마다 유일한가
+- `Tab`은 tablist에 한 번 진입하고 방향키가 내부 focus를 이동하는가
+- 수동 활성화에서 방향키 focus가 값을 즉시 바꾸지 않는가
+- 자동 활성화에서 panel이 지연 없이 표시되는가
+- 가로·세로 방향과 키보드 이동 축이 일치하는가
+- 긴 번역, 확대, 좁은 화면에서 모든 tab에 접근할 수 있는가
+- focus와 selected 표시를 동시에 구별할 수 있는가
+- 비활성 panel의 컨트롤이 키보드 순서에 남지 않는가
+
+## 출처
+
+- [WAI-ARIA 1.2: tablist](https://www.w3.org/TR/wai-aria/#tablist)
+- [WAI-ARIA 1.2: tab](https://www.w3.org/TR/wai-aria/#tab)
+- [WAI-ARIA 1.2: tabpanel](https://www.w3.org/TR/wai-aria/#tabpanel)
+- [WAI-ARIA APG Tabs Pattern (informative)](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)
+- [APG Keyboard Interface (informative)](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
+- [Spectrum Tabs](https://spectrum.adobe.com/page/tabs/)

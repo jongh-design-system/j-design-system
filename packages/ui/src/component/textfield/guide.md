@@ -1,0 +1,114 @@
+---
+name: textfield
+platform: web
+---
+
+# TextField
+
+## 역할
+
+TextField는 사용자가 한 줄의 자유 형식 텍스트 값을 입력하고 편집하게 한다. HTML의 `input type="text"`는 한 줄 plain-text edit control이며 줄바꿈 문자를 허용하지 않는다. 여러 줄 입력이나 미리 정해진 선택지는 다른 컨트롤의 책임이다. [HTML Standard](<https://html.spec.whatwg.org/multipage/input.html#text-(type=text)>)
+
+## 보장해야 하는 계약
+
+| 조건                           | 규칙                                                                                                                                        | 근거                                                                                                                                                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 항상                           | 입력 목적에 맞는 네이티브 `input` 유형을 선택하고 브라우저의 편집, 선택, 자동완성, 폼, 키보드 동작을 보존한다.                              | [HTML Standard: input types](https://html.spec.whatwg.org/multipage/input.html#states-of-the-type-attribute), [WCAG 2.2 1.3.5](https://www.w3.org/TR/WCAG22/#identify-input-purpose)                                                             |
+| 사용자 입력을 요구할 때        | 입력 목적을 설명하는 레이블 또는 지시문을 제공하고 컨트롤과 프로그램적으로 연결한다.                                                        | [HTML Standard: label](https://html.spec.whatwg.org/multipage/forms.html#the-label-element), [WCAG 2.2 3.3.2](https://www.w3.org/TR/WCAG22/#labels-or-instructions)                                                                              |
+| placeholder를 사용할 때        | placeholder를 지속 레이블이나 필수 형식 지시문의 유일한 수단으로 사용하지 않는다.                                                           | [WCAG Technique H44](https://www.w3.org/WAI/WCAG22/Techniques/html/H44), [Carbon Text Input](https://carbondesignsystem.com/components/text-input/usage/)                                                                                        |
+| 도움말이나 형식 지시가 있을 때 | 관련 텍스트를 컨트롤과 프로그램적으로 연결하고 입력 전에 알아야 하는 조건은 지속적으로 접근 가능하게 한다.                                  | [WCAG 2.2 1.3.1](https://www.w3.org/TR/WCAG22/#info-and-relationships), [WCAG 2.2 3.3.2](https://www.w3.org/TR/WCAG22/#labels-or-instructions)                                                                                                   |
+| 오류를 자동 감지할 때          | 오류가 난 항목을 식별하고 오류 내용을 텍스트로 설명하며, 유효성 상태와 오류 메시지 관계를 보조 기술에 전달한다.                             | [WCAG 2.2 3.3.1](https://www.w3.org/TR/WCAG22/#error-identification), [WAI-ARIA `aria-invalid`](https://www.w3.org/TR/wai-aria/#aria-invalid), [WAI-ARIA `aria-errormessage`](https://www.w3.org/TR/wai-aria/#aria-errormessage)                 |
+| 필수 입력일 때                 | 필수 여부를 시각적으로만 표시하지 않고 프로그램적 상태와 지시문으로도 전달한다.                                                             | [HTML Standard: required](https://html.spec.whatwg.org/multipage/input.html#attr-input-required), [WCAG 2.2 1.3.1](https://www.w3.org/TR/WCAG22/#info-and-relationships), [WCAG 2.2 3.3.2](https://www.w3.org/TR/WCAG22/#labels-or-instructions) |
+| 앞뒤 부가 요소가 있을 때       | 장식은 접근 가능한 이름을 오염시키지 않고, 정보성 단위·접두·접미는 입력 의미와 연결하며, 대화형 요소는 독립된 이름과 focus target을 갖는다. | [WCAG 2.2 1.3.1](https://www.w3.org/TR/WCAG22/#info-and-relationships), [WCAG 2.2 4.1.2](https://www.w3.org/TR/WCAG22/#name-role-value)                                                                                                          |
+| 사용자 정의 외형을 적용할 때   | 입력 경계, 상태, focus를 식별하는 시각 정보가 충분히 구분되고 색 하나에만 의존하지 않아야 한다.                                             | [WCAG 2.2 1.4.11](https://www.w3.org/TR/WCAG22/#non-text-contrast), [WCAG 2.2 1.4.1](https://www.w3.org/TR/WCAG22/#use-of-color), [WCAG 2.2 2.4.7](https://www.w3.org/TR/WCAG22/#focus-visible)                                                  |
+
+## 프로젝트에서 결정할 항목
+
+| 결정                            | 적용 조건                       | 판단에 사용하는 정보                                 |
+| ------------------------------- | ------------------------------- | ---------------------------------------------------- |
+| 네이티브 입력 유형과 input mode | 모든 필드                       | 데이터 의미, 유효 형식, 모바일 키보드, 자동완성 정책 |
+| 지속 레이블, 도움말, 예시 문구  | 모든 필드                       | 콘텐츠 전략, 폼 복잡도, 사용자 연구                  |
+| 필수·선택 표기 방식             | 폼에 두 종류가 공존할 때        | 폼 정책, 법적 요구, 콘텐츠 Foundation                |
+| 검증 시점                       | 유효성 검사가 있을 때           | 오류 비용, 서버 규칙, 사용자 흐름                    |
+| 오류 메시지 발표 방식           | 동적으로 오류가 생길 때         | 제출 흐름, focus 이동, live region 정책              |
+| leading·trailing content 역할   | 단위, 아이콘, 버튼을 포함할 때  | 데이터 의미, Icon Foundation, 명령 경계              |
+| 너비와 밀도                     | 다양한 예상 입력 길이가 있을 때 | 데이터 길이, 레이아웃, Typography, Spacing           |
+| 읽기 전용과 비활성              | 수정 불가 값을 표시할 때        | 복사 필요성, 제출 정책, 권한 모델                    |
+
+## 토큰 결정 지도
+
+```yaml
+root:
+  width: sizing
+label:
+  color: color
+  typography: typography
+field:
+  color: color
+  background-color: color
+  border-color: color
+  border-width: border
+  border-radius: radius
+  min-size: sizing
+  padding-block: spacing
+  padding-inline: spacing
+  typography: typography
+content:
+  gap: spacing
+helper:
+  color: color
+  typography: typography
+  gap: spacing
+icon:
+  color: color
+  size: sizing
+focus:
+  outline-color: color
+  outline-width: border
+  outline-offset: spacing
+state:
+  disabled-opacity: opacity
+motion:
+  transition-duration: motion
+  transition-timing-function: motion
+```
+
+## 엔지니어링 지식
+
+### 의미와 동작
+
+데이터가 한 줄 자유 입력인지부터 확인한다. 이메일, URL, 전화번호처럼 목적이 명확하면 적절한 네이티브 type과 autocomplete token을 검토하고, 특정 형식을 강제할 때는 사용자가 입력 전에 조건을 알 수 있게 한다. controlled 상태를 사용할 때도 IME composition, selection, undo, autofill 같은 브라우저 편집 동작을 깨지 않도록 한다. `type="text"`에는 selection API와 input/change events가 적용된다. [HTML Standard](<https://html.spec.whatwg.org/multipage/input.html#text-(type=text)>)
+
+### 레이아웃
+
+레이블, 입력, 도움말, 오류를 하나의 읽기 흐름으로 배치한다. 예상 데이터 길이는 필드 너비 결정의 근거지만 입력 가능한 최대 길이와 동일하지 않다. 앞뒤 요소가 줄어들 때 실제 입력 영역이 사라지지 않게 하고, 긴 값은 네이티브 수평 편집과 caret 추적을 방해하지 않는다. Carbon도 한 줄 입력과 여러 줄 입력을 기대 콘텐츠 길이로 구분하고, placeholder를 레이블 대체로 쓰지 않도록 권고한다. 이는 디자인 시스템 참고 지침이다. [Carbon Text Input](https://carbondesignsystem.com/components/text-input/usage/)
+
+### 접근성
+
+오류가 있다는 사실만 live region으로 반복 발표하지 말고 필드 이름, 유효성 상태, 구체적 오류 텍스트의 관계를 유지한다. 자동 감지된 오류는 텍스트로 설명되어야 한다. 필드가 포커스를 얻는 것만으로 예기치 않은 문맥 변화를 만들지 않는다. [WCAG 2.2 3.3.1](https://www.w3.org/TR/WCAG22/#error-identification), [WCAG 2.2 3.2.1](https://www.w3.org/TR/WCAG22/#on-focus)
+
+### 렌더링과 브라우저
+
+브라우저의 autofill, spellcheck, writing direction, high contrast, zoom 상태를 포함해 확인한다. 컨테이너의 `focus-within` 스타일은 실제 input focus indicator를 대체할 수 있을 만큼 명확해야 하며 overflow에 잘리지 않아야 한다. 강제 색상 모드에서는 box shadow가 제거되고 여러 색이 시스템 색으로 강제될 수 있다. [HTML Standard](<https://html.spec.whatwg.org/multipage/input.html#text-(type=text)>), [MDN `forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors)
+
+## 검증 관점
+
+- 레이블을 활성화하면 정확한 input에 포커스가 가는가
+- 스크린 리더에서 이름, 도움말, 필수 여부, 오류가 올바른 순서와 관계로 전달되는가
+- placeholder가 사라진 뒤에도 입력 목적과 형식을 알 수 있는가
+- IME 입력, 붙여넣기, undo, autofill, password manager가 상태 모델과 충돌하지 않는가
+- 긴 값과 텍스트 확대에서 caret과 입력 내용이 사용 가능하게 유지되는가
+- leading·trailing interactive element가 독립적으로 포커스되고 명확한 이름을 갖는가
+- 강제 색상 모드에서도 입력 경계, 오류, focus를 구분할 수 있는가
+
+## 출처
+
+- [HTML Standard: Text state](<https://html.spec.whatwg.org/multipage/input.html#text-(type=text)>)
+- [HTML Standard: The label element](https://html.spec.whatwg.org/multipage/forms.html#the-label-element)
+- [HTML Standard: Input types](https://html.spec.whatwg.org/multipage/input.html#states-of-the-type-attribute)
+- [WAI-ARIA: `aria-invalid`](https://www.w3.org/TR/wai-aria/#aria-invalid)
+- [WAI-ARIA: `aria-errormessage`](https://www.w3.org/TR/wai-aria/#aria-errormessage)
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
+- [WCAG Technique H44](https://www.w3.org/WAI/WCAG22/Techniques/html/H44)
+- [Carbon Design System: Text Input](https://carbondesignsystem.com/components/text-input/usage/)
+- [MDN: `forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors)
