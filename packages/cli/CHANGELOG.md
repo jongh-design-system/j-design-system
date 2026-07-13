@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## 4.1.0
+
+### Minor Changes
+
+- db77ba9: Add component guide registry generation and the guide lookup command.
+
 ## 4.0.0
 
 ### Major Changes
