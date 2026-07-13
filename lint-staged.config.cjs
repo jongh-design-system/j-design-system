@@ -21,7 +21,7 @@ module.exports = {
   "*.{ts,tsx,css,md}": "prettier --write",
   ...typeCheckConfigs,
   "./app/docs/**/*.{ts,tsx}": (filename) => [
-    `pnpm --filter docs lint --file ${filename.join(" ")}`,
+    `pnpm --filter docs lint ${filename.join(" ")}`,
     `pnpm --filter docs check-type`,
   ],
 }
