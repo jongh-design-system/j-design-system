@@ -6,7 +6,7 @@ import { Project } from "ts-morph"
 import { fileURLToPath } from "url"
 import { z } from "zod"
 
-import { fileSchema, styleSchema } from "./common/types"
+import { fileSchema, guideRegistrySchema, styleSchema } from "./common/types"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -59,6 +59,7 @@ export async function handleRegistryCommand(
       for (const component of components) {
         console.log(`\n🔄 ${component} 처리 중...`)
         await createRegistryFile(component)
+        await createGuideRegistryFile(component)
       }
       await createPresetFile()
       await createTailwindTokenFile()
@@ -66,6 +67,7 @@ export async function handleRegistryCommand(
     } else {
       console.log(`🔄 ${component} 컴포넌트의 Registry 파일을 생성합니다.`)
       await createRegistryFile(component!)
+      await createGuideRegistryFile(component!)
       console.log(`✅ ${component} Registry 파일 생성이 완료되었습니다!`)
     }
   } catch (e) {
@@ -130,6 +132,23 @@ export async function createRegistryFile(component: string) {
   await fs.writeFile(
     path.join(TARGET_PATH, `${component.toLowerCase()}.json`),
     stringifiedFileContent,
+  )
+}
+
+export async function createGuideRegistryFile(component: string) {
+  const guidePath = path.join(UI_WORKSPACE_PATH, component, "guide.md")
+  if (!(await fs.pathExists(guidePath))) {
+    return
+  }
+
+  const guide = guideRegistrySchema.parse({
+    name: component,
+    content: await fs.readFile(guidePath, "utf-8"),
+  })
+
+  await fs.outputFile(
+    path.join(TARGET_PATH, "guides", `${component.toLowerCase()}.json`),
+    JSON.stringify(guide),
   )
 }
 
