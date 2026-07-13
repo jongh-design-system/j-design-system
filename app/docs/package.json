@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "prepare": "panda codegen && velite build",
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "start": "next start",
-    "lint": "next lint --fix",
+    "lint": "eslint . --fix",
     "build": "next build",
     "check-type": "tsgo --noEmit",
     "transform-icon": "npx tsx ./scripts/transformIcon.ts && npx prettier --write ./src/components/icons/*.tsx"
@@ -15,12 +15,12 @@
   "dependencies": {
     "lucide-react": "^0.475.0",
     "motion": "^12.4.10",
-    "next": "15.1.4",
+    "next": "16.2.10",
     "next-themes": "^0.4.4",
     "panda-animation": "workspace:*",
     "radix-ui": "^1.1.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@jongh/eslint": "workspace:*",
@@ -32,8 +32,8 @@
     "@svgr/plugin-prettier": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "velite": "^0.2.2",
     "@pandacss/dev": "catalog:"
   }

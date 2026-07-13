@@ -47,6 +47,11 @@ export const registrySchema = z.object({
   ),
 })
 
+export const guideRegistrySchema = z.object({
+  name: z.string(),
+  content: z.string(),
+})
+
 export const presetSchema = z.object({
   name: z.string(),
   dependencies: z.array(z.string()).optional(),
