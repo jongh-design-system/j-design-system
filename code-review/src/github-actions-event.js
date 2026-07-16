@@ -1,14 +1,14 @@
-import { readFileSync } from "node:fs";
+import { readFileSync } from "node:fs"
 
 export function readPullRequestRefsFromGitHubEvent(eventPath) {
   if (!eventPath) {
-    throw new Error("eventPath is required");
+    throw new Error("eventPath is required")
   }
 
-  const event = JSON.parse(readFileSync(eventPath, "utf8"));
-  const pullRequest = event.pull_request;
+  const event = JSON.parse(readFileSync(eventPath, "utf8"))
+  const pullRequest = event.pull_request
   if (!pullRequest) {
-    throw new Error("GitHub event does not contain pull_request data");
+    throw new Error("GitHub event does not contain pull_request data")
   }
 
   return {
@@ -18,22 +18,22 @@ export function readPullRequestRefsFromGitHubEvent(eventPath) {
     baseRepo: pullRequest.base?.repo?.full_name,
     headRef: pullRequest.head?.ref,
     headSha: pullRequest.head?.sha,
-    headRepo: pullRequest.head?.repo?.full_name
-  };
+    headRepo: pullRequest.head?.repo?.full_name,
+  }
 }
 
 export function readPullRequestContextFromGitHubEvent(eventPath) {
   if (!eventPath) {
-    throw new Error("eventPath is required");
+    throw new Error("eventPath is required")
   }
 
-  const event = JSON.parse(readFileSync(eventPath, "utf8"));
-  const pullRequest = event.pull_request;
+  const event = JSON.parse(readFileSync(eventPath, "utf8"))
+  const pullRequest = event.pull_request
   if (!pullRequest) {
-    throw new Error("GitHub event does not contain pull_request data");
+    throw new Error("GitHub event does not contain pull_request data")
   }
 
-  const [owner, repo] = (event.repository?.full_name ?? "").split("/");
+  const [owner, repo] = (event.repository?.full_name ?? "").split("/")
 
   return {
     owner,
@@ -46,7 +46,7 @@ export function readPullRequestContextFromGitHubEvent(eventPath) {
       baseRef: pullRequest.base?.ref,
       baseSha: pullRequest.base?.sha,
       headRef: pullRequest.head?.ref,
-      headSha: pullRequest.head?.sha
-    }
-  };
+      headSha: pullRequest.head?.sha,
+    },
+  }
 }

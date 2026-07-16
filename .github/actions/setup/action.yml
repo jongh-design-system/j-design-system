@@ -3,9 +3,9 @@ description: pnpm setup
 
 inputs:
   use-cache:
-    description: 'Enable pnpm cache'
+    description: "Enable pnpm cache"
     required: false
-    default: 'true'
+    default: "true"
 
 runs:
   using: composite

@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process"
 import {
   existsSync,
   mkdirSync,
@@ -6,12 +6,12 @@ import {
   readFileSync,
   readdirSync,
   rmSync,
-  writeFileSync
-} from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+  writeFileSync,
+} from "node:fs"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
 
-import { formatReconcilePrompt, formatReviewPrompt } from "./review-packets.js";
+import { formatReconcilePrompt, formatReviewPrompt } from "./review-packets.js"
 
 const REVIEW_OUTPUT_SCHEMA = {
   type: "object",
@@ -26,26 +26,26 @@ const REVIEW_OUTPUT_SCHEMA = {
           path: { type: "string" },
           line: { type: "integer" },
           body: { type: "string" },
-          severity: { type: "string", enum: ["P0", "P1", "P2"] }
+          severity: { type: "string", enum: ["P0", "P1", "P2"] },
         },
         required: ["path", "line", "body", "severity"],
-        additionalProperties: false
-      }
-    }
+        additionalProperties: false,
+      },
+    },
   },
   required: ["unit_id", "summary", "comments"],
-  additionalProperties: false
-};
+  additionalProperties: false,
+}
 
 const RECONCILE_OUTPUT_SCHEMA = {
   type: "object",
   properties: {
     summary: { type: "string" },
-    comments: REVIEW_OUTPUT_SCHEMA.properties.comments
+    comments: REVIEW_OUTPUT_SCHEMA.properties.comments,
   },
   required: ["summary", "comments"],
-  additionalProperties: false
-};
+  additionalProperties: false,
+}
 
 export function runCodexReviewPacket({
   packet,
@@ -53,12 +53,12 @@ export function runCodexReviewPacket({
   skillName = "code-judgment",
   codexCommand = "codex",
   eventLogDir,
-  env = process.env
+  env = process.env,
 }) {
-  const skillContext = readLocalSkillContext({ cwd, skillName });
+  const skillContext = readLocalSkillContext({ cwd, skillName })
 
   if (eventLogDir && skillContext) {
-    writeSkillContextLog({ dir: eventLogDir, skillContext });
+    writeSkillContextLog({ dir: eventLogDir, skillContext })
   }
 
   return runCodexStructuredOutput({
@@ -66,10 +66,14 @@ export function runCodexReviewPacket({
     cwd,
     eventLogDir,
     env,
-    prompt: formatReviewPrompt({ packet, skillName, skillContext: skillContext?.text }),
+    prompt: formatReviewPrompt({
+      packet,
+      skillName,
+      skillContext: skillContext?.text,
+    }),
     runName: `review-${packet.unit_id}`,
-    schema: REVIEW_OUTPUT_SCHEMA
-  });
+    schema: REVIEW_OUTPUT_SCHEMA,
+  })
 }
 
 export function runCodexReconcile({
@@ -79,12 +83,12 @@ export function runCodexReconcile({
   skillName = "code-judgment",
   codexCommand = "codex",
   eventLogDir,
-  env = process.env
+  env = process.env,
 }) {
-  const skillContext = readLocalSkillContext({ cwd, skillName });
+  const skillContext = readLocalSkillContext({ cwd, skillName })
 
   if (eventLogDir && skillContext) {
-    writeSkillContextLog({ dir: eventLogDir, skillContext });
+    writeSkillContextLog({ dir: eventLogDir, skillContext })
   }
 
   return runCodexStructuredOutput({
@@ -96,17 +100,25 @@ export function runCodexReconcile({
       pullRequest,
       candidateComments,
       skillName,
-      skillContext: skillContext?.text
+      skillContext: skillContext?.text,
     }),
     runName: "reconcile",
-    schema: RECONCILE_OUTPUT_SCHEMA
-  });
+    schema: RECONCILE_OUTPUT_SCHEMA,
+  })
 }
 
-function runCodexStructuredOutput({ codexCommand, cwd, eventLogDir, env, prompt, runName, schema }) {
-  const dir = mkdtempSync(join(tmpdir(), "code-review-codex-"));
-  const schemaPath = join(dir, "schema.json");
-  const outputPath = join(dir, "output.json");
+function runCodexStructuredOutput({
+  codexCommand,
+  cwd,
+  eventLogDir,
+  env,
+  prompt,
+  runName,
+  schema,
+}) {
+  const dir = mkdtempSync(join(tmpdir(), "code-review-codex-"))
+  const schemaPath = join(dir, "schema.json")
+  const outputPath = join(dir, "output.json")
   const codexArgs = [
     "--sandbox",
     "read-only",
@@ -118,99 +130,108 @@ function runCodexStructuredOutput({ codexCommand, cwd, eventLogDir, env, prompt,
     schemaPath,
     "-o",
     outputPath,
-    "Review the packet provided on stdin."
-  ];
+    "Review the packet provided on stdin.",
+  ]
 
   if (eventLogDir) {
-    codexArgs.splice(5, 0, "--json");
+    codexArgs.splice(5, 0, "--json")
   }
 
   try {
-    writeFileSync(schemaPath, JSON.stringify(schema, null, 2));
+    writeFileSync(schemaPath, JSON.stringify(schema, null, 2))
 
     const result = spawnSync(codexCommand, codexArgs, {
       cwd,
       env: buildCodexEnvironment(env),
       input: prompt,
       encoding: "utf8",
-      maxBuffer: 100 * 1024 * 1024
-    });
+      maxBuffer: 100 * 1024 * 1024,
+    })
 
     if (result.error) {
-      throw result.error;
+      throw result.error
     }
     if (eventLogDir) {
       writeCodexEventLogs({
         dir: eventLogDir,
         runName,
-        stdout: result.stdout
-      });
+        stdout: result.stdout,
+      })
     }
     if (result.status !== 0) {
-      throw new Error(result.stderr || result.stdout || `codex exited with status ${result.status}`);
+      throw new Error(
+        result.stderr ||
+          result.stdout ||
+          `codex exited with status ${result.status}`,
+      )
     }
 
-    return JSON.parse(readFileSync(outputPath, "utf8"));
+    return JSON.parse(readFileSync(outputPath, "utf8"))
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true })
   }
 }
 
 function writeCodexEventLogs({ dir, runName, stdout }) {
-  const safeRunName = runName.replace(/[^a-zA-Z0-9._-]/g, "-");
-  const eventLogPath = join(dir, `${safeRunName}.events.jsonl`);
-  const usagePath = join(dir, `${safeRunName}.usage.json`);
-  const usage = readLastUsage(stdout);
+  const safeRunName = runName.replace(/[^a-zA-Z0-9._-]/g, "-")
+  const eventLogPath = join(dir, `${safeRunName}.events.jsonl`)
+  const usagePath = join(dir, `${safeRunName}.usage.json`)
+  const usage = readLastUsage(stdout)
 
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(eventLogPath, stdout);
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(eventLogPath, stdout)
   writeFileSync(
     usagePath,
     `${JSON.stringify(
       {
         run: safeRunName,
-        usage
+        usage,
       },
       null,
-      2
-    )}\n`
-  );
+      2,
+    )}\n`,
+  )
 }
 
 function writeSkillContextLog({ dir, skillContext }) {
-  mkdirSync(dir, { recursive: true });
+  mkdirSync(dir, { recursive: true })
   writeFileSync(
     join(dir, "skill-context.json"),
     `${JSON.stringify(
       {
         skillName: skillContext.skillName,
-        files: skillContext.files
+        files: skillContext.files,
       },
       null,
-      2
-    )}\n`
-  );
+      2,
+    )}\n`,
+  )
 }
 
 function readLocalSkillContext({ cwd, skillName }) {
-  const skillDir = join(cwd, ".agents", "skills", skillName);
-  const files = [];
+  const skillDir = join(cwd, ".agents", "skills", skillName)
+  const files = []
 
-  addSkillFile({ files, cwd, path: join(skillDir, "SKILL.md") });
-  const principlesDir = join(skillDir, "principles");
+  addSkillFile({ files, cwd, path: join(skillDir, "SKILL.md") })
+  const principlesDir = join(skillDir, "principles")
   if (existsSync(principlesDir)) {
     for (const entry of readdirSync(principlesDir, { withFileTypes: true })) {
       if (entry.isFile() && entry.name.endsWith(".md")) {
-        addSkillFile({ files, cwd, path: join(principlesDir, entry.name) });
+        addSkillFile({ files, cwd, path: join(principlesDir, entry.name) })
       }
     }
   }
 
   if (files.length === 0) {
-    return null;
+    return null
   }
 
-  files.sort((left, right) => Number(!left.relativePath.endsWith("/SKILL.md")) - Number(!right.relativePath.endsWith("/SKILL.md")) || left.relativePath.localeCompare(right.relativePath));
+  files.sort(
+    (left, right) =>
+      Number(!left.relativePath.endsWith("/SKILL.md")) -
+        Number(!right.relativePath.endsWith("/SKILL.md")) ||
+      left.relativePath.localeCompare(right.relativePath),
+  )
 
   return {
     skillName,
@@ -218,38 +239,38 @@ function readLocalSkillContext({ cwd, skillName }) {
     text: files
       .map(
         (file) => `--- skill file: ${file.relativePath} ---
-${file.content}`
+${file.content}`,
       )
-      .join("\n\n")
-  };
+      .join("\n\n"),
+  }
 }
 
 function addSkillFile({ files, cwd, path }) {
   if (!existsSync(path)) {
-    return;
+    return
   }
   files.push({
     relativePath: path.slice(cwd.length + 1).replaceAll("\\", "/"),
-    content: readFileSync(path, "utf8")
-  });
+    content: readFileSync(path, "utf8"),
+  })
 }
 
 function readLastUsage(stdout) {
-  let usage = null;
+  let usage = null
   for (const line of stdout.split("\n")) {
     if (!line.trim()) {
-      continue;
+      continue
     }
     try {
-      const event = JSON.parse(line);
+      const event = JSON.parse(line)
       if (event.usage) {
-        usage = event.usage;
+        usage = event.usage
       }
     } catch {
       // Keep raw JSONL intact even if Codex prints a non-JSON diagnostic line.
     }
   }
-  return usage;
+  return usage
 }
 
 function buildCodexEnvironment(env) {
@@ -270,15 +291,15 @@ function buildCodexEnvironment(env) {
     "TEMP",
     "TMP",
     "TMPDIR",
-    "USER"
-  ];
-  const codexEnv = {};
+    "USER",
+  ]
+  const codexEnv = {}
 
   for (const key of allowedKeys) {
     if (env[key] !== undefined) {
-      codexEnv[key] = env[key];
+      codexEnv[key] = env[key]
     }
   }
 
-  return codexEnv;
+  return codexEnv
 }

@@ -42,7 +42,8 @@ export function filterReviewTargets(files, options = {}) {
       case normalizedFile.status === "removed":
         reason = "removed"
         break
-      case Buffer.byteLength(normalizedFile.patch ?? "", "utf8") > maxPatchBytes:
+      case Buffer.byteLength(normalizedFile.patch ?? "", "utf8") >
+        maxPatchBytes:
         reason = "too-large"
         break
       case userExclude.some((matches) => matches(normalizedFile.path)):

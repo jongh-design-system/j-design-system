@@ -1,7 +1,7 @@
-import assert from "node:assert/strict";
-import test from "node:test";
+import assert from "node:assert/strict"
+import test from "node:test"
 
-import { parseUnifiedDiffPatches } from "../src/unified-diff-parser.js";
+import { parseUnifiedDiffPatches } from "../src/unified-diff-parser.js"
 
 test("splits a unified diff into patches with line counts", () => {
   const diff = [
@@ -23,8 +23,8 @@ test("splits a unified diff into patches with line counts", () => {
     "@@ -0,0 +1,2 @@",
     "+export const value = 1;",
     "+export const ready = true;",
-    ""
-  ].join("\n");
+    "",
+  ].join("\n")
 
   assert.deepEqual(parseUnifiedDiffPatches(diff), [
     {
@@ -38,11 +38,11 @@ test("splits a unified diff into patches with line counts", () => {
         "-const oldName = user.name;",
         "+const name = user?.name;",
         "+const enabled = true;",
-        " export { name };"
+        " export { name };",
       ].join("\n"),
       additions: 2,
       deletions: 1,
-      isBinary: false
+      isBinary: false,
     },
     {
       patch: [
@@ -53,14 +53,14 @@ test("splits a unified diff into patches with line counts", () => {
         "+++ b/src/b.js",
         "@@ -0,0 +1,2 @@",
         "+export const value = 1;",
-        "+export const ready = true;"
+        "+export const ready = true;",
       ].join("\n"),
       additions: 2,
       deletions: 0,
-      isBinary: false
-    }
-  ]);
-});
+      isBinary: false,
+    },
+  ])
+})
 
 test("keeps deleted file patches without reading their paths", () => {
   const diff = [
@@ -72,8 +72,8 @@ test("keeps deleted file patches without reading their paths", () => {
     "@@ -1,2 +0,0 @@",
     "-export const removed = true;",
     "-export const gone = true;",
-    ""
-  ].join("\n");
+    "",
+  ].join("\n")
 
   assert.deepEqual(parseUnifiedDiffPatches(diff), [
     {
@@ -85,14 +85,14 @@ test("keeps deleted file patches without reading their paths", () => {
         "+++ /dev/null",
         "@@ -1,2 +0,0 @@",
         "-export const removed = true;",
-        "-export const gone = true;"
+        "-export const gone = true;",
       ].join("\n"),
       additions: 0,
       deletions: 2,
-      isBinary: false
-    }
-  ]);
-});
+      isBinary: false,
+    },
+  ])
+})
 
 test("keeps quoted git diff paths as patch text only", () => {
   const diff = [
@@ -103,15 +103,15 @@ test("keeps quoted git diff paths as patch text only", () => {
     '+++ "b/src/caf\\303\\251\\t\\"new\\".js"',
     "@@ -1 +1 @@",
     "-export const value = 'old';",
-    "+export const value = 'new';"
-  ].join("\n");
+    "+export const value = 'new';",
+  ].join("\n")
 
   assert.deepEqual(parseUnifiedDiffPatches(diff), [
     {
       patch: diff,
       additions: 1,
       deletions: 1,
-      isBinary: false
-    }
-  ]);
-});
+      isBinary: false,
+    },
+  ])
+})

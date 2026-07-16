@@ -1,23 +1,32 @@
-export function buildReviewPackets({ pullRequest, commits, reviewTargets, skippedFiles = [] }) {
-  const targetByPath = new Map();
+export function buildReviewPackets({
+  pullRequest,
+  commits,
+  reviewTargets,
+  skippedFiles = [],
+}) {
+  const targetByPath = new Map()
   for (const file of reviewTargets) {
-    targetByPath.set(file.path, file);
+    targetByPath.set(file.path, file)
     if (file.oldPath) {
-      targetByPath.set(file.oldPath, file);
+      targetByPath.set(file.oldPath, file)
     }
   }
 
   return commits
     .map((commit) => {
-      const touched = new Set(commit.touchedFiles);
+      const touched = new Set(commit.touchedFiles)
       const changedFiles = [...touched]
         .map((path) => targetByPath.get(path))
         .filter(Boolean)
-        .filter((file, index, files) => files.findIndex((candidate) => candidate.path === file.path) === index)
-        .map(toPacketFile);
+        .filter(
+          (file, index, files) =>
+            files.findIndex((candidate) => candidate.path === file.path) ===
+            index,
+        )
+        .map(toPacketFile)
 
       if (changedFiles.length === 0) {
-        return null;
+        return null
       }
 
       return {
@@ -25,17 +34,21 @@ export function buildReviewPackets({ pullRequest, commits, reviewTargets, skippe
         pull_request: {
           number: pullRequest.number,
           title: pullRequest.title,
-          body: pullRequest.body ?? ""
+          body: pullRequest.body ?? "",
         },
         commits: [commit],
         changed_files: changedFiles,
-        skipped_files: skippedFiles
-      };
+        skipped_files: skippedFiles,
+      }
     })
-    .filter(Boolean);
+    .filter(Boolean)
 }
 
-export function formatReviewPrompt({ packet, skillName = "code-judgment", skillContext }) {
+export function formatReviewPrompt({
+  packet,
+  skillName = "code-judgment",
+  skillContext,
+}) {
   return `${formatSkillContextPrompt({ skillName, skillContext })}
 
 You are reviewing one commit-scoped change group from a pull request.
@@ -50,10 +63,15 @@ Review requirements:
 
 <review_packet>
 ${JSON.stringify(packet, null, 2)}
-</review_packet>`;
+</review_packet>`
 }
 
-export function formatReconcilePrompt({ pullRequest, candidateComments, skillName = "code-judgment", skillContext }) {
+export function formatReconcilePrompt({
+  pullRequest,
+  candidateComments,
+  skillName = "code-judgment",
+  skillContext,
+}) {
   return `${formatSkillContextPrompt({ skillName, skillContext })}
 
 Remove comments that are generic, duplicated, not tied to the PR intent, not actionable, or not important enough to post.
@@ -66,14 +84,14 @@ ${JSON.stringify(pullRequest, null, 2)}
 ${JSON.stringify(candidateComments, null, 2)}
 </candidate_comments>
 
-Return JSON only.`;
+Return JSON only.`
 }
 
 function formatSkillContextPrompt({ skillName, skillContext }) {
   if (!skillContext) {
     return `Use the $${skillName} skill.
 
-Follow the skill's own routing instructions for any extra files.`;
+Follow the skill's own routing instructions for any extra files.`
   }
 
   return `Use the ${skillName} review guidance provided in <skill_context>.
@@ -81,7 +99,7 @@ Do not read skill files from disk; the local skill files needed for this review 
 
 <skill_context>
 ${skillContext}
-</skill_context>`;
+</skill_context>`
 }
 
 function toPacketFile(file) {
@@ -91,6 +109,6 @@ function toPacketFile(file) {
     status: file.status,
     additions: file.additions,
     deletions: file.deletions,
-    final_pr_patch: file.patch
-  };
+    final_pr_patch: file.patch,
+  }
 }

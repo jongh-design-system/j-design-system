@@ -1,71 +1,74 @@
 export function parseUnifiedDiffPatches(unifiedDiff) {
   if (!unifiedDiff || unifiedDiff.trim() === "") {
-    return [];
+    return []
   }
 
   return splitDiffIntoFilePatches(unifiedDiff).map((patch) => {
-    const lines = patch.split("\n");
+    const lines = patch.split("\n")
     return {
       patch,
       ...countChangedLines(lines),
-      isBinary: lines.some((line) => line.startsWith("Binary files ") || line === "GIT binary patch")
-    };
-  });
+      isBinary: lines.some(
+        (line) =>
+          line.startsWith("Binary files ") || line === "GIT binary patch",
+      ),
+    }
+  })
 }
 
 function splitDiffIntoFilePatches(unifiedDiff) {
-  const lines = unifiedDiff.replaceAll("\r\n", "\n").split("\n");
-  const patches = [];
-  let current = [];
+  const lines = unifiedDiff.replaceAll("\r\n", "\n").split("\n")
+  const patches = []
+  let current = []
 
   for (const line of lines) {
     if (line.startsWith("diff --git ")) {
       if (current.length > 0) {
-        patches.push(trimTrailingBlankLines(current).join("\n"));
+        patches.push(trimTrailingBlankLines(current).join("\n"))
       }
-      current = [line];
-      continue;
+      current = [line]
+      continue
     }
 
     if (current.length > 0) {
-      current.push(line);
+      current.push(line)
     }
   }
 
   if (current.length > 0) {
-    patches.push(trimTrailingBlankLines(current).join("\n"));
+    patches.push(trimTrailingBlankLines(current).join("\n"))
   }
 
-  return patches;
+  return patches
 }
 
 function trimTrailingBlankLines(lines) {
-  const trimmed = [...lines];
+  const trimmed = [...lines]
   while (trimmed.length > 0 && trimmed.at(-1) === "") {
-    trimmed.pop();
+    trimmed.pop()
   }
-  return trimmed;
+  return trimmed
 }
 
 function countChangedLines(lines) {
-  let additions = 0;
-  let deletions = 0;
-  let inHunk = false;
+  let additions = 0
+  let deletions = 0
+  let inHunk = false
 
   for (const line of lines) {
     if (line.startsWith("@@ ")) {
-      inHunk = true;
-      continue;
+      inHunk = true
+      continue
     }
     if (!inHunk) {
-      continue;
+      continue
     }
     if (line.startsWith("+") && !line.startsWith("+++")) {
-      additions += 1;
+      additions += 1
     } else if (line.startsWith("-") && !line.startsWith("---")) {
-      deletions += 1;
+      deletions += 1
     }
   }
 
-  return { additions, deletions };
+  return { additions, deletions }
 }
