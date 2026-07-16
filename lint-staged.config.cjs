@@ -17,8 +17,7 @@ const typeCheckConfigs = MODULES.reduce(
 )
 
 module.exports = {
-  "*": "./check-uppercase.sh",
-  "*.{ts,tsx,css,md}": "prettier --write",
+  "*": ["./check-uppercase.sh", "prettier --write --ignore-unknown"],
   ...typeCheckConfigs,
   "./app/docs/**/*.{ts,tsx}": (filename) => [
     `pnpm --filter docs lint ${filename.join(" ")}`,
