@@ -16,10 +16,16 @@ describe("guide command", () => {
   test("prints the requested component guide as Markdown", async () => {
     const fetchMock = vi.fn(() =>
       Promise.resolve(
-        new Response(JSON.stringify(GUIDE), {
-          headers: { "content-type": "application/json" },
-          status: 200,
-        }),
+        new Response(
+          JSON.stringify({
+            ...GUIDE,
+            sources: "# Private research sources\n",
+          }),
+          {
+            headers: { "content-type": "application/json" },
+            status: 200,
+          },
+        ),
       ),
     )
     vi.stubGlobal("fetch", fetchMock)
@@ -33,6 +39,7 @@ describe("guide command", () => {
     expect(fetchMock).toHaveBeenCalledWith(
       "https://jds-docs.vercel.app/guides/button.json",
     )
+    expect(write).toHaveBeenCalledOnce()
     expect(write).toHaveBeenCalledWith(GUIDE.content)
   })
 })

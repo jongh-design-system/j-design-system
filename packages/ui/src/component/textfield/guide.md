@@ -5,110 +5,131 @@ platform: web
 
 # TextField
 
-## 역할
+## Overview
 
-TextField는 사용자가 한 줄의 자유 형식 텍스트 값을 입력하고 편집하게 한다. HTML의 `input type="text"`는 한 줄 plain-text edit control이며 줄바꿈 문자를 허용하지 않는다. 여러 줄 입력이나 미리 정해진 선택지는 다른 컨트롤의 책임이다. [HTML Standard](<https://html.spec.whatwg.org/multipage/input.html#text-(type=text)>)
+한 줄의 자유 형식 텍스트를 입력하고 편집한다. Label, Input, 보조 내용, 검증 상태를 하나의 form field로 연결한다.
 
-## 보장해야 하는 계약
+## Anatomy
 
-| 조건                           | 규칙                                                                                                                                        | 근거                                                                                                                                                                                                                                             |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 항상                           | 입력 목적에 맞는 네이티브 `input` 유형을 선택하고 브라우저의 편집, 선택, 자동완성, 폼, 키보드 동작을 보존한다.                              | [HTML Standard: input types](https://html.spec.whatwg.org/multipage/input.html#states-of-the-type-attribute), [WCAG 2.2 1.3.5](https://www.w3.org/TR/WCAG22/#identify-input-purpose)                                                             |
-| 사용자 입력을 요구할 때        | 입력 목적을 설명하는 레이블 또는 지시문을 제공하고 컨트롤과 프로그램적으로 연결한다.                                                        | [HTML Standard: label](https://html.spec.whatwg.org/multipage/forms.html#the-label-element), [WCAG 2.2 3.3.2](https://www.w3.org/TR/WCAG22/#labels-or-instructions)                                                                              |
-| placeholder를 사용할 때        | placeholder를 지속 레이블이나 필수 형식 지시문의 유일한 수단으로 사용하지 않는다.                                                           | [WCAG Technique H44](https://www.w3.org/WAI/WCAG22/Techniques/html/H44), [Carbon Text Input](https://carbondesignsystem.com/components/text-input/usage/)                                                                                        |
-| 도움말이나 형식 지시가 있을 때 | 관련 텍스트를 컨트롤과 프로그램적으로 연결하고 입력 전에 알아야 하는 조건은 지속적으로 접근 가능하게 한다.                                  | [WCAG 2.2 1.3.1](https://www.w3.org/TR/WCAG22/#info-and-relationships), [WCAG 2.2 3.3.2](https://www.w3.org/TR/WCAG22/#labels-or-instructions)                                                                                                   |
-| 오류를 자동 감지할 때          | 오류가 난 항목을 식별하고 오류 내용을 텍스트로 설명하며, 유효성 상태와 오류 메시지 관계를 보조 기술에 전달한다.                             | [WCAG 2.2 3.3.1](https://www.w3.org/TR/WCAG22/#error-identification), [WAI-ARIA `aria-invalid`](https://www.w3.org/TR/wai-aria/#aria-invalid), [WAI-ARIA `aria-errormessage`](https://www.w3.org/TR/wai-aria/#aria-errormessage)                 |
-| 필수 입력일 때                 | 필수 여부를 시각적으로만 표시하지 않고 프로그램적 상태와 지시문으로도 전달한다.                                                             | [HTML Standard: required](https://html.spec.whatwg.org/multipage/input.html#attr-input-required), [WCAG 2.2 1.3.1](https://www.w3.org/TR/WCAG22/#info-and-relationships), [WCAG 2.2 3.3.2](https://www.w3.org/TR/WCAG22/#labels-or-instructions) |
-| 앞뒤 부가 요소가 있을 때       | 장식은 접근 가능한 이름을 오염시키지 않고, 정보성 단위·접두·접미는 입력 의미와 연결하며, 대화형 요소는 독립된 이름과 focus target을 갖는다. | [WCAG 2.2 1.3.1](https://www.w3.org/TR/WCAG22/#info-and-relationships), [WCAG 2.2 4.1.2](https://www.w3.org/TR/WCAG22/#name-role-value)                                                                                                          |
-| 사용자 정의 외형을 적용할 때   | 입력 경계, 상태, focus를 식별하는 시각 정보가 충분히 구분되고 색 하나에만 의존하지 않아야 한다.                                             | [WCAG 2.2 1.4.11](https://www.w3.org/TR/WCAG22/#non-text-contrast), [WCAG 2.2 1.4.1](https://www.w3.org/TR/WCAG22/#use-of-color), [WCAG 2.2 2.4.7](https://www.w3.org/TR/WCAG22/#focus-visible)                                                  |
-
-## 프로젝트에서 결정할 항목
-
-| 결정                            | 적용 조건                       | 판단에 사용하는 정보                                 |
-| ------------------------------- | ------------------------------- | ---------------------------------------------------- |
-| 네이티브 입력 유형과 input mode | 모든 필드                       | 데이터 의미, 유효 형식, 모바일 키보드, 자동완성 정책 |
-| 지속 레이블, 도움말, 예시 문구  | 모든 필드                       | 콘텐츠 전략, 폼 복잡도, 사용자 연구                  |
-| 필수·선택 표기 방식             | 폼에 두 종류가 공존할 때        | 폼 정책, 법적 요구, 콘텐츠 Foundation                |
-| 검증 시점                       | 유효성 검사가 있을 때           | 오류 비용, 서버 규칙, 사용자 흐름                    |
-| 오류 메시지 발표 방식           | 동적으로 오류가 생길 때         | 제출 흐름, focus 이동, live region 정책              |
-| leading·trailing content 역할   | 단위, 아이콘, 버튼을 포함할 때  | 데이터 의미, Icon Foundation, 명령 경계              |
-| 너비와 밀도                     | 다양한 예상 입력 길이가 있을 때 | 데이터 길이, 레이아웃, Typography, Spacing           |
-| 읽기 전용과 비활성              | 수정 불가 값을 표시할 때        | 복사 필요성, 제출 정책, 권한 모델                    |
-
-## 토큰 결정 지도
-
-```yaml
-root:
-  width: sizing
-label:
-  color: color
-  typography: typography
-field:
-  color: color
-  background-color: color
-  border-color: color
-  border-width: border
-  border-radius: radius
-  min-size: sizing
-  padding-block: spacing
-  padding-inline: spacing
-  typography: typography
-content:
-  gap: spacing
-helper:
-  color: color
-  typography: typography
-  gap: spacing
-icon:
-  color: color
-  size: sizing
-focus:
-  outline-color: color
-  outline-width: border
-  outline-offset: spacing
-state:
-  disabled-opacity: opacity
-motion:
-  transition-duration: motion
-  transition-timing-function: motion
+```text
+Root
+├─ Heading
+│  └─ Label
+├─ Container
+│  ├─ LeadingAddon
+│  ├─ Input
+│  └─ TrailingAddon
+└─ HelperText
 ```
 
-## 엔지니어링 지식
+Input이 값과 native form 동작을 소유한다. Addon은 값의 단위나 보조 동작을 제공하며 Label이나 Input을 대신하지 않는다.
 
-### 의미와 동작
+## Behavior
 
-데이터가 한 줄 자유 입력인지부터 확인한다. 이메일, URL, 전화번호처럼 목적이 명확하면 적절한 네이티브 type과 autocomplete token을 검토하고, 특정 형식을 강제할 때는 사용자가 입력 전에 조건을 알 수 있게 한다. controlled 상태를 사용할 때도 IME composition, selection, undo, autofill 같은 브라우저 편집 동작을 깨지 않도록 한다. `type="text"`에는 selection API와 input/change events가 적용된다. [HTML Standard](<https://html.spec.whatwg.org/multipage/input.html#text-(type=text)>)
+- Label을 실행하면 Input으로 focus가 이동한다.
+- Input은 브라우저의 편집, selection, autocomplete, validation 동작을 유지한다.
+- status가 negative이면 시각 상태와 `aria-invalid`가 함께 바뀐다.
+- HelperText가 렌더링될 때만 Input의 `aria-describedby`에 해당 id를 연결한다.
+- trailing action은 자신의 접근 가능한 이름과 disabled 상태를 가지며 Input의 focus를 불필요하게 빼앗지 않는다.
 
-### 레이아웃
+## CSS
 
-레이블, 입력, 도움말, 오류를 하나의 읽기 흐름으로 배치한다. 예상 데이터 길이는 필드 너비 결정의 근거지만 입력 가능한 최대 길이와 동일하지 않다. 앞뒤 요소가 줄어들 때 실제 입력 영역이 사라지지 않게 하고, 긴 값은 네이티브 수평 편집과 caret 추적을 방해하지 않는다. Carbon도 한 줄 입력과 여러 줄 입력을 기대 콘텐츠 길이로 구분하고, placeholder를 레이블 대체로 쓰지 않도록 권고한다. 이는 디자인 시스템 참고 지침이다. [Carbon Text Input](https://carbondesignsystem.com/components/text-input/usage/)
+```css
+.textfield {
+  display: flex;
+  flex-direction: column;
+  gap: {spacing.field};
+  width: 100%;
+}
 
-### 접근성
+.textfield__label {
+  color: {color.fg};
+  font: {typography.label};
+}
 
-오류가 있다는 사실만 live region으로 반복 발표하지 말고 필드 이름, 유효성 상태, 구체적 오류 텍스트의 관계를 유지한다. 자동 감지된 오류는 텍스트로 설명되어야 한다. 필드가 포커스를 얻는 것만으로 예기치 않은 문맥 변화를 만들지 않는다. [WCAG 2.2 3.3.1](https://www.w3.org/TR/WCAG22/#error-identification), [WCAG 2.2 3.2.1](https://www.w3.org/TR/WCAG22/#on-focus)
+.textfield__container {
+  display: flex;
+  align-items: center;
+  gap: {spacing.gap};
+  width: 100%;
+  min-height: {layout.control-height};
+  padding-inline: {spacing.inline};
+  background: {color.bg};
+  border: {layout.border-width} solid {color.stroke};
+  border-radius: {radius};
+  box-shadow: {elevation};
+  transition: border-color {motion.duration} {motion.easing};
+}
 
-### 렌더링과 브라우저
+.textfield__container:focus-within {
+  border-color: {color.stroke.focus};
+  outline: {accessibility.focus-width} solid {color.focus-ring};
+  outline-offset: {accessibility.focus-offset};
+}
 
-브라우저의 autofill, spellcheck, writing direction, high contrast, zoom 상태를 포함해 확인한다. 컨테이너의 `focus-within` 스타일은 실제 input focus indicator를 대체할 수 있을 만큼 명확해야 하며 overflow에 잘리지 않아야 한다. 강제 색상 모드에서는 box shadow가 제거되고 여러 색이 시스템 색으로 강제될 수 있다. [HTML Standard](<https://html.spec.whatwg.org/multipage/input.html#text-(type=text)>), [MDN `forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors)
+.textfield__input {
+  flex: 1;
+  min-width: 0;
+  padding-block: {spacing.block};
+  color: {color.fg};
+  font: {typography.body};
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
 
-## 검증 관점
+.textfield__input::placeholder {
+  color: {color.fg.placeholder};
+}
 
-- 레이블을 활성화하면 정확한 input에 포커스가 가는가
-- 스크린 리더에서 이름, 도움말, 필수 여부, 오류가 올바른 순서와 관계로 전달되는가
-- placeholder가 사라진 뒤에도 입력 목적과 형식을 알 수 있는가
-- IME 입력, 붙여넣기, undo, autofill, password manager가 상태 모델과 충돌하지 않는가
-- 긴 값과 텍스트 확대에서 caret과 입력 내용이 사용 가능하게 유지되는가
-- leading·trailing interactive element가 독립적으로 포커스되고 명확한 이름을 갖는가
-- 강제 색상 모드에서도 입력 경계, 오류, focus를 구분할 수 있는가
+.textfield__addon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  color: {color.fg.muted};
+  white-space: nowrap;
+}
 
-## 출처
+.textfield__helper {
+  color: {color.fg.muted};
+  font: {typography.caption};
+}
 
-- [HTML Standard: Text state](<https://html.spec.whatwg.org/multipage/input.html#text-(type=text)>)
-- [HTML Standard: The label element](https://html.spec.whatwg.org/multipage/forms.html#the-label-element)
-- [HTML Standard: Input types](https://html.spec.whatwg.org/multipage/input.html#states-of-the-type-attribute)
-- [WAI-ARIA: `aria-invalid`](https://www.w3.org/TR/wai-aria/#aria-invalid)
-- [WAI-ARIA: `aria-errormessage`](https://www.w3.org/TR/wai-aria/#aria-errormessage)
-- [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
-- [WCAG Technique H44](https://www.w3.org/WAI/WCAG22/Techniques/html/H44)
-- [Carbon Design System: Text Input](https://carbondesignsystem.com/components/text-input/usage/)
-- [MDN: `forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors)
+.textfield:has(.textfield__input[aria-invalid="true"]) .textfield__container {
+  border-color: {color.stroke.negative};
+}
+
+.textfield:has(.textfield__input[aria-invalid="true"]) .textfield__helper {
+  color: {color.fg.negative};
+}
+
+.textfield__container:has(.textfield__input:disabled) {
+  color: {color.fg.disabled};
+  background: {color.bg.disabled};
+  cursor: not-allowed;
+  opacity: {state.disabled-opacity};
+}
+```
+
+## Engineering notes
+
+- Input의 `min-width: 0`은 긴 값이 Addon을 밀어내고 Container 폭을 넘는 것을 막는다.
+- focus ring은 Container의 `:focus-within`이 소유해 Input과 Addon을 하나의 field surface로 보이게 한다. 실제 keyboard focus는 Input에 남는다.
+- `aria-describedby`를 항상 고정 id로 출력하면 HelperText가 없을 때 dangling reference가 생기므로 렌더 여부와 함께 계산한다.
+- 브라우저가 제공하는 autocomplete와 편집 키를 keydown handler로 가로채지 않는다.
+
+## Accessibility
+
+- 보이는 Label을 `for`와 Input id로 연결한다. placeholder는 Label을 대신하지 않는다.
+- required는 native required와 보이는 표시를 함께 제공한다.
+- 오류 상태는 `aria-invalid`와 구체적인 HelperText로 전달한다.
+- LeadingAddon과 TrailingAddon이 장식 아이콘이면 보조 기술에서 숨기고, 동작이면 독립된 이름을 제공한다.
+
+## Tests
+
+- Label 클릭, 입력, selection, clear와 form submit을 확인한다.
+- disabled, required, negative 상태의 native 속성과 시각 상태를 확인한다.
+- HelperText가 있을 때만 `aria-describedby`가 연결되는지 확인한다.
+- LeadingAddon과 TrailingAddon이 있어도 Input 폭과 focus ring이 유지되는지 확인한다.
+- 긴 값, 긴 Label, 브라우저 확대에서 overflow를 확인한다.
+- autocomplete와 keyboard 편집 동작이 유지되는지 확인한다.

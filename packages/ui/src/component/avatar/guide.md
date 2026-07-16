@@ -5,105 +5,94 @@ platform: web
 
 # Avatar
 
-## 역할
+## Overview
 
-Avatar는 사람, 팀, 조직, 봇처럼 제품 안에서 식별되는 주체를 시각적으로 나타낸다. 사진이 없거나 불러올 수 없을 때도 같은 주체를 알아볼 수 있는 대체 표현을 유지한다. Avatar 자체는 선택, 메뉴 열기, 온라인 상태 전달을 기본 책임으로 갖지 않으며, 그런 기능이 필요할 때는 해당 의미를 가진 상위 컴포넌트와 결합한다.
+사람, 팀, 조직 또는 봇처럼 제품 안에서 식별되는 주체를 시각적으로 나타낸다. 이미지가 없거나 로드되지 않아도 같은 크기에서 식별 가능한 fallback을 유지한다.
 
-## 보장해야 하는 계약
+## Anatomy
 
-| 조건                                                                 | 규칙                                                                                                                           | 근거                                                                                                                |
-| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| 항상                                                                 | 이미지, 대체 표현, 로딩 결과가 바뀌어도 같은 주체를 나타내며 외곽 크기와 주변 레이아웃을 안정적으로 유지한다.                  | 이미지 공간을 미리 확보하면 로딩 중 레이아웃 이동을 방지할 수 있다. [S4]                                            |
-| 이미지가 주변 텍스트에 없는 정보를 전달할 때                         | 이미지 목적을 간결하게 대신하는 텍스트 대안을 제공한다. 파일명이나 단순히 “이미지”라는 표현을 대안으로 사용하지 않는다.        | 비텍스트 콘텐츠에는 동등한 목적의 텍스트 대안이 필요하며, `alt`는 이미지의 명확하고 간결한 대체여야 한다. [S1] [S2] |
-| 같은 주체 이름이 인접 텍스트나 상위 컨트롤의 이름으로 이미 제공될 때 | 이미지가 정보를 반복할 뿐이라면 장식 이미지로 처리해 중복 발표를 피한다. HTML 이미지에서는 빈 `alt`가 표준적인 처리다.         | 인접 텍스트가 이미 같은 정보를 제공하는 이미지는 빈 `alt`로 보조 기술에서 제외할 수 있다. [S3]                      |
-| 이미지가 없거나 로드에 실패할 때                                     | 대체 표현을 제공하되, 사진에만 있던 의미를 임의로 추론하지 않는다. 대체 표현이 텍스트라면 대상 주체와 일관되게 생성한다.       | Avatar는 사용자나 엔터티의 시각적 표현이며 [S6], 이미지의 텍스트 대안은 실제 목적과 문맥에 따라 정해야 한다. [S1]   |
-| 이미지를 고정된 프레임에 맞출 때                                     | 자르기, 맞춤, 초점 위치 정책을 명시하고 중요한 얼굴이나 표식이 의도치 않게 잘리지 않는지 확인한다.                             | 대체 요소인 이미지의 프레임 내 크기와 위치는 `object-fit`과 `object-position`으로 별도 제어된다. [S5]               |
-| Avatar가 링크나 버튼 안에 들어갈 때                                  | 상호작용 의미, 키보드 동작, 접근 가능한 이름은 링크나 버튼이 소유한다. Avatar의 사진 설명만으로 동작의 이름을 대신하지 않는다. | 컨트롤인 비텍스트 콘텐츠에는 목적을 설명하는 이름이 필요하다. [S1]                                                  |
-
-## 프로젝트에서 결정할 항목
-
-| 결정                           | 적용 조건                                  | 판단에 사용하는 정보                                         |
-| ------------------------------ | ------------------------------------------ | ------------------------------------------------------------ |
-| 주체 종류와 표시 목적          | 항상                                       | Product domain, Content model                                |
-| 이미지가 정보성인지 장식성인지 | 사용 문맥마다                              | 주변 레이블, 접근 가능한 이름, Content guidelines            |
-| 대체 표현의 종류와 생성 규칙   | 이미지가 선택 사항이거나 실패할 수 있을 때 | Locale, Naming rules, Privacy, Icon foundation               |
-| 프레임의 모양과 크기 체계      | 항상                                       | Shape, Spacing, Density, Usage context                       |
-| 이미지 맞춤과 초점 정책        | 원본 비율이 프레임과 다를 때               | Media policy, User-generated content, Cropping behavior      |
-| 이미지 로딩과 교체 정책        | 원격 또는 지연 로딩 이미지를 사용할 때     | Performance budget, Cache policy, Perceived stability        |
-| 테두리와 배경 처리             | 배경과 이미지 경계를 구분해야 할 때        | Color, Border, Contrast                                      |
-| 상태 표시의 결합 방식          | 상태나 배지를 함께 보여 주는 제품만        | Status semantics, Color, Icon, Accessibility                 |
-| 상호작용 래퍼                  | Avatar가 동작을 실행할 때만                | Interaction model, Button or Link contract, Focus foundation |
-
-## 토큰 결정 지도
-
-```yaml
-root:
-  inline-size: spacing
-  block-size: spacing
-  border-radius: radius
-  border-color: color
-  border-width: border
-  background-color: color
-
-image:
-  inline-size: spacing
-  block-size: spacing
-
-fallback:
-  color: color
-  background-color: color
-  typography: typography
-
-focus:
-  outline-color: color
-  outline-width: border
-  outline-offset: spacing
+```text
+Root
+├─ Fallback
+└─ Image
 ```
 
-`focus`는 Avatar를 상호작용 요소와 결합하는 경우에만 프로젝트 문서에 반영한다. 상태 표시가 필요하면 별도 상태 컴포넌트의 토큰 지도를 결합하고 Avatar의 기본 anatomy로 강제하지 않는다.
+`Image`와 `Fallback`은 같은 영역을 점유한다. badge, 상태 표시, 클릭 동작은 Avatar 자체가 아니라 이를 조합하는 상위 컴포넌트가 소유한다.
 
-## 엔지니어링 지식
+## Behavior
 
-### 의미와 동작
+- 로드 전과 오류 상태에는 Fallback을 보여 주고, 이미지가 준비된 뒤 Image로 교체한다.
+- Fallback은 이니셜 또는 식별 가능한 대체 아이콘을 사용하며 빈 영역을 만들지 않는다.
+- 이미지 교체 전후에 Root의 크기와 주변 layout이 바뀌지 않는다.
+- 인접 텍스트가 이미 주체의 이름을 제공하면 중복 announcement를 피하도록 Image의 대체 텍스트를 결정한다.
 
-Avatar의 핵심 데이터는 “어떤 주체를 나타내는가”이다. 이미지 URL을 정체성의 유일한 원천으로 삼지 말고, 이미지 실패 후에도 동일한 주체의 대체 표현을 계산할 수 있어야 한다. 대체 문자는 모든 문화권의 이름에서 같은 방식으로 만들 수 없으므로 이름 순서, 공백, 단일 이름, 비라틴 문자에 대한 프로젝트 규칙을 적용한다.
+## CSS
 
-이미지의 `alt`는 컴포넌트 이름으로 고정할 수 없다. 목록에서 이름이 바로 옆에 반복되는 경우와, 사진 자체가 유일한 식별 정보인 경우의 목적이 다르기 때문이다. 상태 표시, 알림 수, 편집 동작은 조건부 결합 기능이며 Avatar가 임의로 발표해서는 안 된다.
+```css
+.avatar {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: {layout.avatar-size};
+  height: {layout.avatar-size};
+  aspect-ratio: 1;
+  overflow: hidden;
+  color: {color.fg};
+  background: {color.bg};
+  border-radius: {radius.full};
+}
 
-### 레이아웃
+.avatar__image,
+.avatar__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
 
-루트는 이미지가 다운로드되기 전에 최종 공간을 예약한다. 이미지와 fallback은 같은 프레임을 점유해 교체 시 주변 콘텐츠가 이동하지 않게 한다. 이미지 비율은 원본에 맡기지 않고 프로젝트의 맞춤 정책을 적용하되, 사용자 생성 사진의 핵심 부분이 잘릴 수 있다는 점을 검토한다.
+.avatar__image {
+  display: block;
+  object-fit: cover;
+}
 
-목록과 조밀한 레이아웃에서는 Avatar가 의도치 않게 축소되는지 확인한다. 확대, 고대비, 긴 인접 이름에서도 Avatar가 레이블을 밀어내거나 가리지 않아야 한다.
+.avatar__fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: {color.fg.muted};
+  font: {typography.label};
+  background: {color.bg.muted};
+}
 
-### 접근성
+.avatar::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  border: {layout.border-width} solid {color.stroke};
+  border-radius: inherit;
+  pointer-events: none;
+}
+```
 
-텍스트 대안은 이미지 파일의 묘사가 아니라 해당 문맥에서 이미지가 하는 일을 설명한다. 같은 이름이 인접해 있으면 중복 발표를 피하고, 이미지가 유일한 정보라면 그 목적을 대체한다. fallback 문자가 시각적으로 보인다는 이유만으로 자동으로 충분한 접근 가능한 이름이 되는 것은 아니다.
+## Engineering notes
 
-Avatar를 클릭 가능하게 만들 때는 의미 없는 컨테이너에 이벤트만 붙이지 않는다. 실제 동작에 맞는 링크나 버튼이 포커스, 이름, 비활성 상태와 입력 동작을 제공해야 한다. presence 같은 상태를 색만으로 전달하지 않으며, 상태 기능이 실제로 포함된 경우에는 별도의 텍스트 의미를 제공한다.
+- Image와 Fallback을 absolute layer로 겹치면 로딩 상태가 바뀌어도 주변 layout이 재배치되지 않는다.
+- `object-fit: cover`는 원본 비율을 유지한 채 원형 frame을 채우고, `overflow: hidden`은 모서리 밖 이미지를 자른다.
+- 테두리를 `::after`에 그리면 이미지 위에 항상 같은 stroke가 남고 포인터 이벤트를 가로채지 않는다.
+- Fallback을 잠깐 지연할 수는 있지만 지연 중 빈 Root가 노출되지 않도록 배경을 유지한다.
 
-### 렌더링과 브라우저
+## Accessibility
 
-`img`는 intrinsic 크기를 가진 대체 요소이므로 루트와 이미지의 크기 책임을 분리한다. [MDN의 이미지 요소 문서][S2]가 설명하듯 이미지 박스 안의 맞춤과 위치는 별도 속성으로 제어된다. 로드 성공, 오류, 소스 변경이 순서와 다르게 도착할 수 있으므로 현재 소스에 해당하는 결과만 화면 상태에 반영한다.
+- 단독 Avatar가 주체를 식별해야 하면 Image의 `alt` 또는 상위 대화형 요소의 이름으로 주체를 전달한다.
+- 이름 텍스트가 바로 옆에 반복되면 Image는 장식 이미지로 처리할 수 있다.
+- Fallback의 이니셜만으로 상위 버튼·링크의 접근 가능한 이름을 대신하지 않는다.
+- 상태 badge는 색상 외의 텍스트 이름을 별도로 제공한다.
 
-fallback과 이미지가 잠시 동시에 보이는 플래시를 피하되, fallback을 늦추는 동안 빈 영역을 만들지는 프로젝트의 로딩 정책에 따라 판단한다. 외부 이미지 서비스 사용 시에는 인증, referrer, 캐시, 개인정보 정책도 제품 수준에서 검토한다.
+## Tests
 
-## 검증 관점
-
-- 이미지 다운로드 전, 성공 후, 실패 후에 Avatar 외곽과 주변 레이아웃이 이동하지 않는가
-- 인접한 이름이 있을 때 스크린 리더가 같은 이름을 불필요하게 반복하지 않는가
-- 이미지가 유일한 정보일 때 목적에 맞는 텍스트 대안이 제공되는가
-- 빈 URL, 깨진 URL, 느린 응답, 소스의 빠른 교체에서도 올바른 fallback이 남는가
-- 긴 이름, 단일 이름, 비라틴 문자와 결합 문자를 대체 표현 규칙이 손상하지 않는가
-- 다양한 원본 비율에서 얼굴이나 핵심 표식이 예기치 않게 잘리지 않는가
-- 확대와 사용자 지정 텍스트 간격에서도 인접 레이블이 잘리거나 겹치지 않는가
-- 상호작용 가능한 경우 키보드 포커스, 접근 가능한 이름, 동작 의미가 상위 컨트롤에서 유지되는가
-
-## 출처
-
-- [S1] [WCAG 2.2, Success Criterion 1.1.1 Non-text Content](https://www.w3.org/TR/WCAG22/#non-text-content)
-- [S2] [MDN, `<img>`: Authoring meaningful alternate descriptions](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#authoring_meaningful_alternate_descriptions)
-- [S3] [W3C WAI, Decorative Images](https://www.w3.org/WAI/tutorials/images/decorative/)
-- [S4] [web.dev, Optimize Cumulative Layout Shift: Images without dimensions](https://web.dev/articles/optimize-cls#images_without_dimensions)
-- [S5] [MDN, `object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/object-fit)
-- [S6] [Atlassian Design System, Avatar](https://atlassian.design/components/avatar/)
+- 로딩, 성공, 오류에서 Fallback과 Image의 전환을 확인한다.
+- 정사각·세로·가로 원본 이미지의 crop을 확인한다.
+- 전환 전후 Root의 크기와 주변 layout이 변하지 않는지 확인한다.
+- 단독 사용과 이름 텍스트 병치 사용의 접근 가능한 이름을 확인한다.
+- 느린 이미지 로딩에서도 빈 원이나 깨진 이미지가 노출되지 않는지 확인한다.
