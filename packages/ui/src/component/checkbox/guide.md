@@ -7,7 +7,7 @@ platform: web
 
 ## Overview
 
-서로 독립적인 항목을 선택하거나 해제한다. indeterminate는 별도의 세 번째 값이 아니라 하위 항목의 일부만 선택됐음을 보여 주는 집계 표시다.
+native checkbox Input과 Label을 하나의 컨트롤로 묶어 독립적인 checked 값을 변경한다. Input이 focus·keyboard·form·reset 동작을 소유하고, checkmark와 indeterminate mark는 그 상태를 시각적으로 반영한다.
 
 ## Anatomy
 
@@ -25,6 +25,7 @@ Root
 - Label, Input 또는 Space를 실행하면 checked 상태가 바뀐다.
 - controlled와 uncontrolled 사용 모두 native `checked`와 change event를 유지한다.
 - indeterminate 표시는 `input.indeterminate`와 시각 상태를 함께 갱신한다.
+- indeterminate는 별도의 제출 값이 아니라 일부만 선택된 집계 상태를 표시한다.
 - form reset 후 checked와 indeterminate가 초기 상태로 돌아간다.
 - disabled 상태에서는 focus, 상태 변경, form 값 제출이 발생하지 않는다.
 
@@ -109,7 +110,7 @@ Root
 ## Accessibility
 
 - 모든 Checkbox는 보이는 Text 또는 동등한 접근 가능한 이름을 가진다.
-- indeterminate는 native property 또는 `aria-checked="mixed"`로 보조 기술에 전달한다.
+- `input.indeterminate`가 mixed 상태를 보조 기술에 전달한다.
 - 관련 Checkbox 묶음은 `fieldset`과 `legend`를 사용한다.
 - 오류·설명 문구는 `aria-describedby`로 Input에 연결한다.
 

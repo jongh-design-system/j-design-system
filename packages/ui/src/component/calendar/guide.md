@@ -7,7 +7,7 @@ platform: web
 
 ## Overview
 
-월 단위 날짜 관계를 보여 주고 none, single, range 또는 multiple 방식으로 날짜를 선택한다. 날짜 입력과 popup까지 포함하는 DatePicker와는 분리한다.
+locale과 week start에 맞춰 월 단위 Grid를 만들고, 현재 보이는 월과 선택 값을 독립적으로 관리한다. none·single·range·multiple 선택 모드를 제공하며 각 DayButton은 today·outside·disabled·selected·range 위치를 표현한다.
 
 ## Anatomy
 
@@ -28,10 +28,13 @@ Heading은 현재 보이는 월·년을 나타낸다. 각 DayButton은 날짜, �
 ## Behavior
 
 - PreviousButton과 NextButton은 선택값을 바꾸지 않고 보이는 월만 이동한다.
+- none 모드에서는 날짜를 표시하지만 선택 값은 만들지 않는다.
 - single은 하나의 날짜, multiple은 독립된 여러 날짜를 선택한다.
 - range는 첫 선택을 시작일로 두고 두 번째 선택을 종료일로 확정한다. 시작일보다 이른 날짜를 고르면 새 범위를 시작한다.
 - min·max 범위와 `isDateDisabled`가 막은 날짜는 선택되지 않는다.
+- 날짜에 focus가 있을 때 좌우 방향키는 하루, 상하 방향키는 일주일을 이동한다. Home·End는 해당 주의 처음·마지막 날로 이동한다. PageUp·PageDown은 이전·다음 달의 같은 날짜로 이동하되, 해당 일이 없으면 그 달의 마지막 날로 이동한다.
 - locale과 week start에 맞춰 weekday 순서, 월 이름, 날짜의 접근 가능한 이름을 만든다.
+- `fixedWeeks`가 true이면 항상 6개 Week를 만들고, false이면 해당 월에 필요한 Week만 만든다.
 
 ## CSS
 
@@ -127,10 +130,10 @@ Heading은 현재 보이는 월·년을 나타낸다. 각 DayButton은 날짜, �
 
 ## Engineering notes
 
-- 날짜 비교 전에 시·분·초를 정규화해 같은 달력 날짜가 time 값 때문에 달라지는 것을 막는다. timezone을 포함하는 제품이면 native `Date` 비교 규칙을 제품 날짜 모델로 대체한다.
+- 모든 입력 날짜의 시·분·초·밀리초를 0으로 정규화한 뒤 비교해 같은 달력 날짜가 time 값 때문에 달라지는 것을 막는다.
 - 월 이동은 31일에서 짧은 달로 갈 때 overflow가 나지 않도록 대상 달의 마지막 날로 clamp한다.
 - weekday와 월 Label은 고정 문자열 배열이 아니라 `Intl.DateTimeFormat`과 locale을 사용한다.
-- 6주 고정 Grid를 사용하면 월 이동 때 Calendar 높이가 바뀌지 않는다. 고정하지 않으면 주변 layout이 높이 변화를 수용해야 한다.
+- `fixedWeeks`의 6주 Grid는 월 이동 전후의 Calendar 높이를 일정하게 유지한다.
 
 ## Accessibility
 

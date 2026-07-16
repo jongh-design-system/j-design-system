@@ -7,7 +7,7 @@ platform: web
 
 ## Overview
 
-제출, 취소, 열기, 삭제처럼 현재 맥락에서 명령을 실행한다. 다른 위치로 이동하는 동작은 Button 모양이어도 link 의미를 사용한다.
+한 번의 사용자 입력으로 하나의 명령을 실행하는 native button 컨트롤이다. Label을 기본 콘텐츠로 삼고 필요한 아이콘을 조합하며, default·hover·pressed·focus·disabled 상태에서 같은 배치와 조작 영역을 유지한다.
 
 ## Anatomy
 
@@ -18,7 +18,7 @@ Button
 └─ SuffixIcon
 ```
 
-아이콘만 있는 Button은 Label 대신 같은 의미의 접근 가능한 이름을 가진다. `asChild`로 합성할 때도 최종 DOM에는 대화형 요소가 하나만 남는다.
+Label은 Button이 실행하는 명령을 나타내고, PrefixIcon과 SuffixIcon은 Label의 의미를 보조한다.
 
 ## Behavior
 
@@ -53,8 +53,10 @@ Button
     transform {motion.duration} {motion.easing};
 }
 
-.button:hover:not(:disabled) {
-  background: {color.bg.hover};
+@media (hover: hover) and (pointer: fine) {
+  .button:hover:not(:disabled) {
+    background: {color.bg.hover};
+  }
 }
 
 .button:active:not(:disabled) {
@@ -77,7 +79,6 @@ Button
   flex-shrink: 0;
   width: {iconography.size};
   height: {iconography.size};
-  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -89,17 +90,14 @@ Button
 
 ## Engineering notes
 
-- `flex-shrink: 0`과 최소 높이는 좁은 flex 컨테이너에서도 조작 영역이 찌그러지는 것을 막는다. 긴 Label을 허용해야 하는 화면에서는 Button 자체가 아니라 배치 규칙에서 줄바꿈 정책을 바꾼다.
-- 아이콘의 `pointer-events: none`은 이벤트 target이 SVG path로 갈라져 클릭 로직이 불안정해지는 것을 막는다.
+- `flex-shrink: 0`과 최소 높이는 좁은 flex 컨테이너에서 Button의 조작 영역이 찌그러지는 것을 막는다.
 - 눌림 피드백은 layout을 다시 계산하는 width·height가 아니라 transform을 사용하고 중심에서 축소한다.
-- `asChild`는 스타일 전달 수단이다. button 안에 link나 다른 button을 중첩하지 않는다.
 
 ## Accessibility
 
-- 텍스트 또는 `aria-label`로 동작을 설명하는 접근 가능한 이름을 제공한다.
+- 보이는 Label이 Button의 접근 가능한 이름이 된다. 아이콘만 보이면 같은 명령을 설명하는 `aria-label`을 제공한다.
 - 키보드 focus 표시를 hover와 별도로 유지한다.
-- 색상만으로 위험·선택·disabled 상태를 구분하지 않는다.
-- 상태 변경 결과가 Button 밖에서 발생하면 해당 영역의 focus 또는 live announcement 전략을 별도로 제공한다.
+- disabled는 스타일만 바꾸지 않고 native `disabled` 속성으로 focus·click·form 동작을 함께 막는다.
 
 ## Tests
 

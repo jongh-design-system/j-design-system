@@ -7,22 +7,21 @@ platform: web
 
 ## Overview
 
-Button의 의미와 실행 동작을 그대로 유지하면서 press, 실행 가능 상태 또는 짧은 결과 피드백을 transform 기반 모션으로 보강한다. 모션이 실행되지 않아도 명령은 완전해야 한다.
+기존 Button의 크기, 의미, focus, disabled, click 동작을 유지하면서 hover나 press에 transform 기반 피드백을 더한다. pulse, bounce, shake, press 모션은 모두 종료·취소 후 기준 위치와 크기로 복귀한다.
 
 ## Anatomy
 
 ```text
-AnimateButton
-└─ motion.button (final Button element)
-   └─ Content
+AnimateButton (button)
+└─ Content
 ```
 
-Button의 `asChild`가 `motion.button`에 합성되어 최종 button element는 하나만 남는다. 기존 Button의 크기, variant, disabled, focus 계약을 그대로 사용한다.
+애니메이션을 적용해도 최종 DOM에는 Content를 가진 button 하나만 남는다. 모션을 위한 별도 대화형 요소를 추가하지 않는다.
 
 ## Behavior
 
-- hover trigger는 fine pointer에서만 보조 피드백을 제공하고 실행을 대신하지 않는다.
-- click trigger는 완료된 click 뒤가 아니라 pointer·keyboard press 동안 피드백을 제공한다.
+- hover trigger는 hover를 지원하는 포인터가 Button 위에 있는 동안 모션을 실행한다. Button의 click은 별도로 유지한다.
+- click trigger는 pointer나 keyboard로 Button을 누르는 동안 모션을 실행하고 release·cancel에서 복귀한다.
 - pulse, bounce, shake는 짧게 실행한 뒤 기준 위치와 scale로 돌아온다.
 - press는 누르는 동안만 scale을 바꾸고 release 또는 cancel 시 즉시 복귀한다.
 - reduced motion에서는 translate와 scale 반복을 생략하고 Button 동작과 상태 변경은 그대로 유지한다.
@@ -38,6 +37,7 @@ Button의 `asChild`가 `motion.button`에 합성되어 최종 button element는 
     )
     scale(var(--animate-button-scale, 1));
   transform-origin: center;
+  transition: transform {motion.duration} {motion.easing};
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -53,16 +53,15 @@ Button의 `asChild`가 `motion.button`에 합성되어 최종 button element는 
 
 ## Engineering notes
 
-- Button의 `asChild` 합성은 Motion element에 스타일과 event를 전달하되 최종 DOM에 button 하나만 남겨야 한다.
+- 모션 wrapper가 필요해도 button 안에 다른 button을 만들지 않는다. 이벤트, focus, disabled 속성은 실제 button 하나가 소유한다.
 - x, y, scale만 바꾸면 주변 layout을 다시 계산하지 않고 같은 hit area에서 피드백을 줄 수 있다.
 - `transform-origin: center`는 press scale이 한쪽으로 밀려 보이지 않게 한다.
 - `will-change`가 필요하면 애니메이션 중에만 적용하고 종료 후 제거해 불필요한 compositor layer를 계속 유지하지 않는다.
-- Motion을 쓰면 `whileHover`, `whileTap`, variants에 같은 transform 값을 매핑하고 reduced-motion 설정에서 initial과 target을 같은 값으로 만든다.
 
 ## Accessibility
 
 - 최종 element는 Button의 접근 가능한 이름, role, disabled, focus 동작을 그대로 가진다.
-- 모션만으로 성공, 오류, loading 상태를 전달하지 않는다.
+- 모션은 실행 결과나 상태의 유일한 표시가 되지 않는다.
 - keyboard press에도 pointer press와 같은 피드백을 제공한다.
 - 사용자의 reduced-motion 설정을 존중한다.
 

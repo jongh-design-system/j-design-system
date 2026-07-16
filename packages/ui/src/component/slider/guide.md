@@ -7,7 +7,7 @@ platform: web
 
 ## Overview
 
-정해진 최소값과 최대값 사이에서 하나 이상의 값을 연속 또는 step 단위로 조정한다. 숫자를 정확히 입력하는 일이 핵심이면 직접 입력 필드를 함께 제공한다.
+최소값·최대값·step으로 정의된 숫자 범위를 하나 이상의 Thumb 위치로 표현하고 포인터와 키보드로 조정한다. 각 Thumb의 값, Track 안의 위치, Range 길이, form·ARIA 값을 같은 상태에서 계산한다.
 
 ## Anatomy
 
@@ -67,6 +67,7 @@ Root
   box-shadow: {elevation};
   cursor: grab;
   transform-origin: center;
+  transition: transform {motion.duration} {motion.easing};
 }
 
 .slider__thumb::before {
@@ -90,9 +91,12 @@ Root
   opacity: {state.disabled-opacity};
 }
 
+.slider[data-disabled] .slider__thumb {
+  cursor: not-allowed;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .slider__thumb,
-  .slider__range {
+  .slider__thumb {
     transition-duration: 0.01ms;
   }
 }
@@ -109,8 +113,6 @@ Root
 
 - 각 Thumb은 slider role, 접근 가능한 이름, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`를 가진다.
 - 숫자만으로 의미가 불분명하면 단위가 포함된 `aria-valuetext`를 제공한다.
-- 세로 방향이면 orientation을 전달하고 키 방향도 시각 축과 일치시킨다.
-- touch 보조 기술을 포함한 실제 기기에서 조작을 확인한다.
 
 ## Tests
 
@@ -120,3 +122,4 @@ Root
 - controlled와 uncontrolled 값, form 값이 일치하는지 확인한다.
 - disabled 상태를 확인한다.
 - 각 Thumb의 이름과 ARIA value, 확대된 hit area를 확인한다.
+- touch 입력과 touch 보조 기술에서 drag·값 변경을 확인한다.

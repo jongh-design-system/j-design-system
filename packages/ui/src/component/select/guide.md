@@ -7,7 +7,7 @@ platform: web
 
 ## Overview
 
-미리 정해진 목록에서 하나의 값을 고르는 select-only control이다. 검색이나 자유 입력이 필요하면 editable Combobox를 별도 계약으로 사용한다.
+Trigger에 현재 값을 보여 주고, 열린 listbox의 Item 중 하나를 선택하는 컨트롤이다. Item이 선택되면 Trigger의 Value, Indicator, form 값이 같은 선택 값으로 동기화된다.
 
 ## Anatomy
 
@@ -35,6 +35,7 @@ Root
 - 목록이 열리면 방향키로 Item을 이동하고 Enter 또는 Space로 값을 확정한다.
 - Escape는 이전 값을 유지한 채 목록을 닫고 focus를 Trigger로 돌린다.
 - disabled Item은 focus와 선택 대상에서 제외한다.
+- 문자를 입력하면 해당 문자열로 시작하는 enabled Item으로 focus를 이동한다.
 - 선택 후 Trigger의 Value, form 값, 선택 Indicator가 같은 값을 반영한다.
 
 ## CSS
@@ -67,6 +68,17 @@ Root
   opacity: {state.disabled-opacity};
 }
 
+.select__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select__icon {
+  flex-shrink: 0;
+}
+
 .select__content {
   z-index: {layout.popover-z};
   width: var(--select-trigger-width);
@@ -92,7 +104,7 @@ Root
   display: flex;
   align-items: center;
   min-height: {layout.item-height};
-  padding-inline: {spacing.item-end} {spacing.indicator-clearance};
+  padding-inline: {spacing.indicator-clearance} {spacing.item-end};
   border-radius: {radius.item};
   cursor: pointer;
   user-select: none;
@@ -113,14 +125,23 @@ Root
   position: absolute;
   inset-inline-start: {spacing.item-start};
 }
+
+.select__item-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 ```
 
 ## Engineering notes
 
-- Content와 Viewport의 `--select-trigger-width`는 실제 Trigger 너비를 재사용해 목록이 더 좁아지는 것을 막는다. Radix에서는 `--radix-select-trigger-width`와 `--radix-select-content-available-height`를 매핑한다.
-- Portal과 positioning primitive가 viewport 충돌, side, transform origin을 계산하고 CSS는 계산된 변수만 소비한다.
+- Trigger의 실제 너비를 `--select-trigger-width`, viewport에서 사용 가능한 높이를 `--select-available-height`에 넣어 popup 크기에 사용한다.
+- popup 위치 계산은 viewport 경계와 Trigger 위치를 기준으로 위·아래 배치 방향과 `--select-transform-origin`을 결정한다. CSS에서 위치 계산을 복제하지 않는다.
 - Indicator를 absolute 배치하고 Item의 시작 padding을 확보하면 선택 유무에 따라 Label이 좌우로 움직이지 않는다.
-- `overflow`는 Viewport가 소유한다. Content까지 스크롤 컨테이너로 만들면 위치 계산과 내부 scroll button 동작이 섞인다.
+- `Value`의 `min-width: 0`과 ellipsis는 긴 선택값이 Icon을 밀어내거나 Trigger 폭을 넘는 것을 막는다.
+- `ItemText`의 `min-width: 0`과 ellipsis는 긴 Label이 Indicator 영역을 밀어내는 것을 막는다.
+- 스크롤은 Viewport만 소유한다. Content까지 스크롤 컨테이너로 만들지 않는다.
 
 ## Accessibility
 

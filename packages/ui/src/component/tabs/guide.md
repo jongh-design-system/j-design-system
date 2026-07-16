@@ -7,7 +7,7 @@ platform: web
 
 ## Overview
 
-서로 관련되고 같은 수준인 콘텐츠 패널을 한 자리에서 전환한다. 페이지 간 주요 탐색이나 순차 작업 단계에는 사용하지 않는다.
+List의 Trigger가 서로 관련된 Content 중 하나를 active 패널로 선택한다. active 값, Trigger focus, `aria-selected`, Content 표시를 함께 바꾸고, 좁은 화면에서도 각 Trigger의 크기를 유지한다.
 
 ## Anatomy
 
@@ -23,9 +23,9 @@ Root
 ## Behavior
 
 - Trigger를 클릭하면 연결된 Content가 active가 된다.
-- 수평 List에서는 Left·Right, 수직 List에서는 Up·Down으로 Trigger focus를 이동하고 처음과 끝에서 순환한다.
+- Left·Right로 Trigger focus를 이동하고 처음과 끝에서 순환한다.
 - Home과 End는 첫 번째와 마지막 enabled Trigger로 이동한다.
-- 자동 활성화는 Content를 지연 없이 보여 줄 수 있을 때 사용하고, 그렇지 않으면 Enter 또는 Space로 확정한다.
+- 기본 자동 활성화에서는 Trigger focus가 이동할 때 Content도 바로 바뀐다. 수동 활성화로 설정하면 Enter 또는 Space에서만 Content를 바꾼다.
 - disabled Trigger는 focus 이동과 선택에서 제외한다.
 
 ## CSS
@@ -100,7 +100,6 @@ Root
 - Trigger를 `flex: none`으로 유지하고 List가 수평 scroll을 소유하게 하면 좁은 화면에서 Label과 hit area가 눌리지 않는다.
 - `transition: all`은 layout 속성까지 예상치 않게 보간하므로 실제로 바뀌는 color, background, shadow만 지정한다.
 - 자동 활성화는 focus 이동마다 Content를 바꾸므로 네트워크 요청이나 무거운 렌더링이 있으면 키보드 탐색을 지연시킨다.
-- Content를 조건부 unmount할 때 form 값, media 재생, scroll 위치를 잃어도 되는지 먼저 정한다.
 
 ## Accessibility
 
@@ -116,4 +115,4 @@ Root
 - 자동·수동 활성화 정책을 각각 확인한다.
 - ARIA role, selected 상태, Trigger·Content 연결을 확인한다.
 - 긴 Label과 좁은 viewport에서 수평 scroll과 focus 노출을 확인한다.
-- controlled 값 변경과 Content 보존 정책을 확인한다.
+- controlled 값 변경이 active Trigger와 Content에 함께 반영되는지 확인한다.

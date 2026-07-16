@@ -7,7 +7,7 @@ platform: web
 
 ## Overview
 
-관련된 섹션의 제목을 먼저 보여 주고 필요한 본문만 펼친다. 항상 함께 읽어야 하는 내용이나 순차 작업은 Accordion으로 숨기지 않는다.
+여러 Item의 제목과 본문을 하나의 목록으로 구성하고, 각 Trigger가 연결된 Content의 open 상태를 제어한다. 단일 모드와 다중 모드 모두 Trigger·Content 연결과 실제 본문 높이를 기준으로 열림·닫힘을 동기화한다.
 
 ## Anatomy
 
@@ -50,6 +50,7 @@ Root
 .accordion__header {
   display: flex;
   margin: 0;
+  padding: 0;
   font: inherit;
 }
 
@@ -67,6 +68,30 @@ Root
   background: transparent;
   border: 0;
   cursor: pointer;
+}
+
+.accordion__trigger::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  border-radius: {radius.item};
+  transition: background-color {motion.duration} {motion.easing};
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .accordion__trigger:hover:not(:disabled)::before {
+    background: {color.bg.hover};
+  }
+}
+
+.accordion__trigger:focus-visible {
+  outline: {accessibility.focus-width} solid {color.focus-ring};
+  outline-offset: {accessibility.focus-offset};
+}
+
+.accordion__trigger:disabled {
+  cursor: not-allowed;
 }
 
 .accordion__label {
@@ -123,8 +148,8 @@ Root
 
 ## Engineering notes
 
-- `ContentWrapper`의 렌더링 높이를 `--accordion-content-height`에 연결한다. Radix를 쓰면 `--radix-accordion-content-height`, Base UI를 쓰면 `--accordion-panel-height`, 직접 구현하면 내부 요소의 측정값을 매핑한다.
-- `overflow: hidden`은 높이 전환 중 본문이 패널 밖에 먼저 보이는 것을 막는다. 닫힌 뒤에는 primitive가 focus 가능한 자식을 숨기거나 unmount해야 한다.
+- `ContentWrapper`의 실제 렌더 높이를 측정해 `--accordion-content-height`에 넣는다. 열린 도중 본문 크기가 바뀌면 변경된 높이를 다시 반영한다.
+- `overflow: hidden`은 높이 전환 중 본문이 패널 밖에 먼저 보이는 것을 막는다.
 - `min-width: 0`은 긴 제목이 아이콘을 밀어내거나 Trigger 폭을 넘는 것을 막는다.
 - `isolation: isolate`는 Trigger 배경을 가상 요소로 확장해도 음수 `z-index`가 Item 밖으로 빠져나가지 않게 한다.
 
@@ -133,6 +158,7 @@ Root
 - Trigger는 접근 가능한 이름을 가진 button이며 문서 계층에 맞는 heading 안에 있다.
 - Trigger와 Content는 `aria-controls`, `aria-labelledby`, 고유 id로 서로 연결한다.
 - `aria-expanded`는 실제 열린 상태와 항상 같다.
+- 닫힌 Content의 자식은 숨겨지거나 unmount되어 focus 순서에 남지 않는다.
 - Content의 `region`은 패널 수가 많아 landmark가 과도해지지 않을 때만 사용한다.
 
 ## Tests

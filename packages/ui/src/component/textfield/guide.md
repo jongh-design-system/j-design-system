@@ -7,14 +7,13 @@ platform: web
 
 ## Overview
 
-한 줄의 자유 형식 텍스트를 입력하고 편집한다. Label, Input, 보조 내용, 검증 상태를 하나의 form field로 연결한다.
+native 한 줄 Input과 보이는 Label, HelperText, 검증 상태, Leading·Trailing Addon을 하나의 form field로 연결한다. Input이 값·편집·autocomplete·form 동작을 소유하고, Container가 전체 field 표면과 focus·disabled·negative 시각 상태를 소유한다.
 
 ## Anatomy
 
 ```text
 Root
-├─ Heading
-│  └─ Label
+├─ Label
 ├─ Container
 │  ├─ LeadingAddon
 │  ├─ Input
@@ -30,7 +29,6 @@ Input이 값과 native form 동작을 소유한다. Addon은 값의 단위나 �
 - Input은 브라우저의 편집, selection, autocomplete, validation 동작을 유지한다.
 - status가 negative이면 시각 상태와 `aria-invalid`가 함께 바뀐다.
 - HelperText가 렌더링될 때만 Input의 `aria-describedby`에 해당 id를 연결한다.
-- trailing action은 자신의 접근 가능한 이름과 disabled 상태를 가지며 Input의 focus를 불필요하게 빼앗지 않는다.
 
 ## CSS
 
@@ -127,7 +125,7 @@ Input이 값과 native form 동작을 소유한다. Addon은 값의 단위나 �
 
 ## Tests
 
-- Label 클릭, 입력, selection, clear와 form submit을 확인한다.
+- Label 클릭, 입력, selection과 form submit을 확인한다.
 - disabled, required, negative 상태의 native 속성과 시각 상태를 확인한다.
 - HelperText가 있을 때만 `aria-describedby`가 연결되는지 확인한다.
 - LeadingAddon과 TrailingAddon이 있어도 Input 폭과 focus ring이 유지되는지 확인한다.
