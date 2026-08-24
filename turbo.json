@@ -5,10 +5,6 @@
       "outputs": ["dist/**", ".next/**", "out/**", "storybook-static/**"],
       "dependsOn": ["^build"]
     },
-    "docs#build": {
-      "dependsOn": ["@jongh/cli#build"],
-      "outputs": ["out/**"]
-    },
     "@jongh/cli#build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**"],

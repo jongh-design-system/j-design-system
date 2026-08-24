@@ -5,9 +5,8 @@
   "bin": "./dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsup && npx tsx ./src/build-script.ts --all",
+    "build": "tsup",
     "build:cli": "tsup",
-    "build:registry": "npx tsx ./src/build-script.ts --all",
     "release": "pnpm publish -no-git-checks",
     "lint": "eslint --max-warnings 0 --no-warn-ignored --fix",
     "check-type": "tsgo --noEmit",

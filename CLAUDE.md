@@ -8,14 +8,12 @@
 
 - 디자인 시스템 컴포넌트 설치를 위한 CLI 도구 (shadcn과 유사)
 - PandaCSS와 React로 구축된 컴포넌트 라이브러리
-- 컴포넌트 예제가 포함된 문서 사이트
 - 디자인-코드 워크플로우를 위한 Figma 통합 도구
 
 ## 아키텍처
 
 ### Monorepo 구조 (pnpm workspaces)
 
-- `app/docs/` - Next.js 문서 사이트
 - `packages/cli/` - 컴포넌트 설치용 메인 CLI 도구
 - `packages/ui/` - Storybook이 포함된 React 컴포넌트 라이브러리
 - `packages/panda-animation/` - PandaCSS용 애니메이션 유틸리티
@@ -27,8 +25,6 @@
 - **Turborepo**: Monorepo 빌드 오케스트레이션
 - **Vitest**: 테스팅 프레임워크
 - **Storybook**: 컴포넌트 개발 및 테스팅
-- **Next.js**: 문서 사이트
-- **Velite**: 문서용 콘텐츠 관리
 
 ## 개발 명령어
 
@@ -47,13 +43,6 @@
 - `turbo run test` - 모든 패키지에서 테스트 실행
 - `turbo run lint` - 모든 패키지 린트
 - `turbo run check-type` - TypeScript 타입 체킹
-
-### 문서 사이트 (app/docs/)
-
-- `pnpm dev` - Turbopack이 포함된 Next.js 개발 서버
-- `pnpm build` - 정적 문서 사이트 빌드
-- `pnpm check-type` - TypeScript 체킹
-- `pnpm prepare` - PandaCSS 산출물 생성
 
 ### 컴포넌트 라이브러리 (packages/ui/)
 
