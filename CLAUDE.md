@@ -34,7 +34,7 @@
 
 ### 루트 레벨 명령어
 
-- `pnpm dev` - 개발 서버 시작 (Vite)
+- `pnpm test` - Turbo로 모든 패키지 테스트 실행
 - `pnpm lint` - 모든 패키지에서 ESLint 실행 (styled-system/ 무시)
 - `pnpm ci` - 전체 CI 파이프라인 실행 (lint, check-type, test via Turbo)
 - `pnpm ci:version` - Changesets로 패키지 버전 관리

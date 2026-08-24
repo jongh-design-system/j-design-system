@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@10.15.1",
   "scripts": {
-    "dev": "vite",
+    "test": "turbo run test",
     "lint": "eslint . --ignore-pattern 'styled-system/'",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
@@ -21,19 +21,15 @@
     "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/cz-commitlint": "^19.5.0",
     "@typescript/native-preview": "^7.0.0-dev.20260326.1",
-    "@vitest/coverage-v8": "catalog:",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.20.1",
     "husky": "^9.1.4",
     "inquirer": "9",
     "lint-staged": "^15.2.7",
-    "playwright": "catalog:",
     "prettier": "^3.5.2",
     "turbo": "^2.0.9",
-    "typescript": "^6",
-    "vite": "catalog:",
-    "vitest": "catalog:"
+    "typescript": "^6"
   },
   "workspaces": [
     "packages/*",

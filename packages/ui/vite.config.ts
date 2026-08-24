@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig, type Plugin } from "vite"
-import tsconfigPaths from "vite-tsconfig-paths"
 
 const rootDir = dirname(fileURLToPath(import.meta.url))
 const storyStyle = process.env.JDS_STYLE ?? "panda"
@@ -53,14 +52,10 @@ const storyResolver = {
 export default defineConfig({
   resolve: {
     dedupe: ["react", "react-dom"],
+    tsconfigPaths: true,
   },
   optimizeDeps: {
     include: ["clsx", "tailwind-merge", "tailwind-variants"],
   },
-  plugins: [
-    storyResolver,
-    tailwindcss(),
-    react(),
-    tsconfigPaths({ root: "./" }),
-  ],
+  plugins: [storyResolver, tailwindcss(), react()],
 })
