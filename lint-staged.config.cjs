@@ -1,7 +1,6 @@
 const MODULES = [
   { name: "ui", parent: "packages" },
   { name: "cli", parent: "packages" },
-  { name: "panda-animation", parent: "packages" },
 ]
 
 const typeCheckConfigs = MODULES.reduce(

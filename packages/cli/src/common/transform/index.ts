@@ -115,10 +115,6 @@ export function transformPandaConfig(path: string) {
 
   const importToIncludes = [
     {
-      namedImports: [{ name: "preset" }],
-      moduleSpecifier: "panda-animation",
-    },
-    {
       namedImports: [{ name: "defaultPreset" }],
       moduleSpecifier: "./preset",
     },
@@ -143,7 +139,7 @@ export function transformPandaConfig(path: string) {
       // presets 속성이 없다면 추가
       configObject.addPropertyAssignment({
         name: "presets",
-        initializer: `[preset(), "@pandacss/preset-panda", defaultPreset]`,
+        initializer: `["@pandacss/preset-panda", defaultPreset]`,
       })
     }
 
@@ -151,7 +147,7 @@ export function transformPandaConfig(path: string) {
     sourceFile.saveSync()
   } else {
     console.warn(
-      "Could not modify panda.config.ts. add presets : [preset(), @pandacss/preset-panda, defaultPreset] in your panda.config",
+      "Could not modify panda.config.ts. add presets : [@pandacss/preset-panda, defaultPreset] in your panda.config",
     )
   }
 }

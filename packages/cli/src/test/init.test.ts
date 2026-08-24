@@ -126,7 +126,6 @@ describe("init 명령어 입력 테스트", () => {
       "utf-8",
     )
     expect(pandaConfig).toContain("defaultPreset")
-    expect(pandaConfig).toContain("panda-animation")
   })
 
   test("tailwind init은 base path에 styles.css를 생성하고 panda.config.ts를 요구하지 않습니다", async () => {
