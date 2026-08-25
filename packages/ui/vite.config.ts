@@ -1,61 +1,15 @@
-import { dirname, resolve } from "node:path"
-import { fileURLToPath } from "node:url"
+import { resolve } from "node:path"
 
-import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
-import { defineConfig, type Plugin } from "vite"
-
-const rootDir = dirname(fileURLToPath(import.meta.url))
-const storyStyle = process.env.JDS_STYLE ?? "panda"
-const storyStyleEntries: Record<string, string[]> = {
-  panda: [resolve(rootDir, ".storybook/panda.css")],
-  tailwind: [resolve(rootDir, "src/tokens/tailwind.css")],
-}
-const storyStyleEntry = storyStyleEntries[storyStyle]
-const storyStyleVirtualId = "\0jds-story-style"
-
-if (!storyStyleEntry) {
-  throw new Error(`Unsupported JDS_STYLE: ${storyStyle}`)
-}
-
-const storyResolver = {
-  name: "jds-story-resolver",
-  enforce: "pre",
-  resolveId(source) {
-    if (source === "@story-style") {
-      return storyStyleVirtualId
-    }
-
-    if (source.startsWith("@story-components/")) {
-      const component = source.slice("@story-components/".length)
-
-      return resolve(
-        rootDir,
-        `src/component/${component}/${storyStyle}/index.tsx`,
-      )
-    }
-
-    return null
-  },
-  load(id) {
-    if (id !== storyStyleVirtualId) {
-      return null
-    }
-
-    return [
-      `import ${JSON.stringify(resolve(rootDir, ".storybook/index.css"))}`,
-      ...storyStyleEntry.map((entry) => `import ${JSON.stringify(entry)}`),
-    ].join("\n")
-  },
-} satisfies Plugin
+import { defineConfig } from "vite"
 
 export default defineConfig({
+  css: {
+    postcss: resolve(import.meta.dirname, ".storybook"),
+  },
   resolve: {
     dedupe: ["react", "react-dom"],
     tsconfigPaths: true,
   },
-  optimizeDeps: {
-    include: ["clsx", "tailwind-merge", "tailwind-variants"],
-  },
-  plugins: [storyResolver, tailwindcss(), react()],
+  plugins: [react()],
 })

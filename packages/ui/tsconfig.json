@@ -4,10 +4,7 @@
     "outDir": "dist",
     "paths": {
       "@styled-system/*": ["./styled-system/*"],
-      "@story-components/*": ["./src/component/*/panda"],
-      "@utils/*": ["./src/utils/*"],
-      "@/*": ["./src/*"],
-      "react": ["./node_modules/@types/react"]
+      "@/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
