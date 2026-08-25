@@ -1,4 +1,3 @@
-import * as Accordion from "@story-components/accordion"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 import {
@@ -7,6 +6,8 @@ import {
   waitForElementToBeRemoved,
   within,
 } from "storybook/test"
+
+import * as Accordion from "@/component/accordion"
 
 export default {
   title: "Base/Accordion",

@@ -1,6 +1,3 @@
-import { Button } from "@story-components/button"
-import * as Dialog from "@story-components/dialog"
-import { TextField } from "@story-components/textfield"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
   expect,
@@ -9,6 +6,10 @@ import {
   waitForElementToBeRemoved,
   within,
 } from "storybook/test"
+
+import { Button } from "@/component/button"
+import * as Dialog from "@/component/dialog"
+import { TextField } from "@/component/textfield"
 
 const meta = {
   title: "Base/Dialog",
@@ -45,9 +46,8 @@ export const Primary: Story = {
 
     await userEvent.click(CloseElement)
 
-    waitForElementToBeRemoved(CloseElement).then(() =>
-      expect(CloseElement).not.toBeInTheDocument(),
-    )
+    await waitForElementToBeRemoved(CloseElement)
+    expect(CloseElement).not.toBeInTheDocument()
   },
 }
 

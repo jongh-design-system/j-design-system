@@ -1,5 +1,6 @@
-import * as Avatar from "@story-components/avatar"
 import type { Meta, StoryObj } from "@storybook/react-vite"
+
+import * as Avatar from "@/component/avatar"
 
 export default {
   title: "Base/Avatar",
@@ -13,7 +14,10 @@ export const Primary: Story = {
   render: () => {
     return (
       <Avatar.Root>
-        <Avatar.Image src="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSDvLC5bOMlnrUBoojLDYnfS0S8G6kuUgQfcFq6d60TsnCmfNGimIc4pIgCmTHdnLaIgxGHBcdNeJ6FAoE" />
+        <Avatar.Image
+          src="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSDvLC5bOMlnrUBoojLDYnfS0S8G6kuUgQfcFq6d60TsnCmfNGimIc4pIgCmTHdnLaIgxGHBcdNeJ6FAoE"
+          alt="프로필 이미지"
+        />
       </Avatar.Root>
     )
   },
@@ -24,7 +28,7 @@ export const Fallback: Story = {
   render: () => {
     return (
       <Avatar.Root>
-        <Avatar.Image src="" />
+        <Avatar.Image src="" alt="" />
         <Avatar.Fallback>JD</Avatar.Fallback>
       </Avatar.Root>
     )

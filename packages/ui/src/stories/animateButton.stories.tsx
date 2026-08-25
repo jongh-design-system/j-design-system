@@ -1,5 +1,6 @@
-import { AnimateButton } from "@story-components/animateButton"
 import type { Meta, StoryObj } from "@storybook/react-vite"
+
+import { AnimateButton } from "@/component/animateButton"
 
 const meta = {
   title: "Animation/AnimateButton",
@@ -56,6 +57,22 @@ export const ClickTrigger: Story = {
     children: "Click Me!",
     animate: "press",
     trigger: "click",
+  },
+}
+
+export const Static: Story = {
+  args: {
+    children: "Static",
+    animate: "pulse",
+    static: true,
+  },
+}
+
+export const Disabled: Story = {
+  args: {
+    children: "Disabled",
+    animate: "pulse",
+    disabled: true,
   },
 }
 

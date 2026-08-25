@@ -1,8 +1,9 @@
-import { TextField } from "@story-components/textfield"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"
 import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
+
+import { TextField } from "@/component/textfield"
 
 const meta: Meta<typeof TextField> = {
   title: "Base/TextField",

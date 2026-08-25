@@ -1,7 +1,8 @@
-import * as Tabs from "@story-components/tabs"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
+
+import * as Tabs from "@/component/tabs"
 
 const meta = {
   title: "Base/Tabs",
@@ -27,6 +28,7 @@ export const Primary: Story = {
               {item.label}
             </Tabs.Trigger>
           ))}
+          <Tabs.Indicator />
         </Tabs.List>
         {data.map((item) => (
           <Tabs.Content key={item.value} value={item.value}>
@@ -66,6 +68,7 @@ export const Controlled: Story = {
               {item.label}
             </Tabs.Trigger>
           ))}
+          <Tabs.Indicator />
         </Tabs.List>
         {data.map((item) => (
           <Tabs.Content key={item.value} value={item.value}>
