@@ -7,7 +7,8 @@ runs:
     - name: Get playwright version
       shell: bash
       run: |
-        echo "PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('playwright/package.json').version)")" >> $GITHUB_OUTPUT
+        PLAYWRIGHT_VERSION="$(pnpm --filter @jongh/ui exec playwright --version)"
+        echo "PLAYWRIGHT_VERSION=${PLAYWRIGHT_VERSION#Version }" >> "$GITHUB_OUTPUT"
       id: playwright-version
 
     - name: Cache Playwright Browsers for Playwright's Version
@@ -23,4 +24,4 @@ runs:
     - name: Setup Playwright
       shell: bash
       if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-      run: npx playwright install --with-deps
+      run: pnpm --filter @jongh/ui exec playwright install --with-deps
