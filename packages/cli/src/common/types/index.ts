@@ -1,7 +1,5 @@
 import { z } from "zod"
 
-export const styleSchema = z.enum(["panda", "tailwind"])
-
 const baseConfigSchema = z.object({
   utils: z.string(),
   components: z.string(),
@@ -10,19 +8,7 @@ const baseConfigSchema = z.object({
 
 export const configSchema = {
   fileName: "components.json",
-  schema: z.discriminatedUnion("style", [
-    baseConfigSchema
-      .extend({
-        style: z.literal("panda"),
-        styledsystem: z.string(),
-      })
-      .strict(),
-    baseConfigSchema
-      .extend({
-        style: z.literal("tailwind"),
-      })
-      .strict(),
-  ]),
+  schema: baseConfigSchema.strict(),
 } as const
 
 export type ConfigType = z.infer<(typeof configSchema)["schema"]>
@@ -35,25 +21,6 @@ export const fileSchema = z.object({
 
 export const registrySchema = z.object({
   name: z.string(),
-  // Registry style keys are logically styleSchema, but a component may not have
-  // every style implementation yet. Keep the registry shape permissive here and
-  // validate the selected style in the add command.
-  styles: z.record(
-    z.string(),
-    z.object({
-      dependencies: z.array(z.string()).optional(),
-      files: z.array(fileSchema),
-    }),
-  ),
-})
-
-export const guideRegistrySchema = z.object({
-  name: z.string(),
-  content: z.string(),
-})
-
-export const presetSchema = z.object({
-  name: z.string(),
   dependencies: z.array(z.string()).optional(),
-  file: z.string(),
+  files: z.array(fileSchema),
 })

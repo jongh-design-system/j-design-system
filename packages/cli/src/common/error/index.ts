@@ -19,7 +19,6 @@ export const ISSUE_CODE = arrayToEnum([
 export const FILE_TYPE = arrayToEnum([
   "components.json",
   "tsconfig.json",
-  "panda.config.*",
   "package.json",
 ])
 

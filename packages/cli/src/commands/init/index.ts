@@ -1,4 +1,4 @@
-import { confirm, outro, spinner } from "@clack/prompts"
+import { confirm, spinner } from "@clack/prompts"
 import chalk from "chalk"
 import { Command } from "commander"
 import fs from "fs-extra"
@@ -7,30 +7,11 @@ import { packageDirectory } from "pkg-dir"
 import { z } from "zod"
 
 import { CommandError, ErrorMap } from "@/common/error"
-import {
-  checkJsonInit,
-  getBaseAlias,
-  getBasePath,
-  getStyleAlias,
-  loadTSConfig,
-} from "@/common/get-config"
-import { getPandacssConfigPath } from "@/common/get-config"
-import { resolveImport, resolvePandaConfig } from "@/common/resolve"
-import { transformTailwindTemplate, transformTemplate } from "@/common/theme"
-import { transformPandaConfig } from "@/common/transform"
-import { configSchema } from "@/common/types"
-import { getPackageManagerCommand } from "@/common/utils/packageManager"
+import { checkJsonInit, getBaseAlias, loadTSConfig } from "@/common/get-config"
 
-import { initOptionSchema, resolveOption } from "./option"
+import { initOptionSchema } from "./option"
 
 const error = chalk.bold.red
-const info = chalk.bold.blue
-const tailwindInitDependencies = [
-  "tailwindcss",
-  "clsx",
-  "tailwind-merge",
-  "tailwind-variants",
-]
 
 export const initCommand = new Command()
   .name("init")
@@ -40,40 +21,17 @@ export const initCommand = new Command()
     "current working directory, default to process.cwd()",
     process.cwd(),
   )
-  .option("-y, --yes", "skip prompts and use default options", false)
-  .option("--style <style>", "component style")
-  .option("--primary <color>", "primary color")
-  .option("--secondary <color>", "secondary color")
-  .option("--gray <color>", "gray color")
   .action(async (opts) => {
     const s = spinner()
     s.start("Initializing")
     try {
-      const options = await resolveOption({
+      const options = initOptionSchema.parse({
         cwd: path.resolve(opts.cwd),
-        yes: opts.yes,
-        style: opts.style,
-        primary: opts.primary,
-        secondary: opts.secondary,
-        gray: opts.gray,
       })
-      const config = await init(options)
+      await init(options)
       s.stop("successfully Initialized!")
-      if (config?.style === "tailwind") {
-        const packageManagerCommand = await getPackageManagerCommand(
-          options.cwd,
-          tailwindInitDependencies,
-        )
-        if (packageManagerCommand) {
-          outro(
-            info(
-              `Run this command in the terminal : ${packageManagerCommand.command} ${packageManagerCommand.args.join(" ")}`,
-            ),
-          )
-        }
-      }
     } catch (e) {
-      s.stop(error(info("error occured")))
+      s.stop(error("error occured"))
       if (e instanceof z.ZodError) {
         console.log(e.message)
       }
@@ -88,7 +46,7 @@ export const initCommand = new Command()
   })
 
 export async function init(options: z.output<typeof initOptionSchema>) {
-  const root = options.cwd || (await packageDirectory())
+  const root = await packageDirectory({ cwd: options.cwd })
   if (!root) {
     throw ErrorMap({
       code: "config_not_found",
@@ -120,107 +78,17 @@ export async function init(options: z.output<typeof initOptionSchema>) {
     }
   }
 
-  if (options.style === "panda") {
-    const pandacssConfigPath = await getPandacssConfigPath(root)
-    const pandacssConfigFile = await fs.readFile(
-      path.join(root, pandacssConfigPath),
-      "utf-8",
-    )
-
-    let defaultStyledSystemAlias = "styled-system"
-
-    const { outdir, importMap } = await resolvePandaConfig(pandacssConfigFile)
-
-    //만약 importMap이 있으면 그 값을 그대로 사용
-    if (importMap) {
-      defaultStyledSystemAlias = importMap
-    } else {
-      //존재하지 않을 경우 - outdir || styled-system으로 되어있는 alias를 찾아본 뒤
-      defaultStyledSystemAlias =
-        getStyleAlias(root, outdir || "styled-system", result) || "." //없다면 현재 디렉토리의 root경로에 있다고 가정(.)
-    }
-    if (outdir) {
-      defaultStyledSystemAlias = outdir //outdir이 있으면 경로는 outdir
-    }
-
-    const config = configSchema.schema.parse(
-      {
-        style: options.style,
-        utils: `${baseAlias}/utils`,
-        components: `${baseAlias}/components`,
-        hooks: `${baseAlias}/hooks`,
-        styledsystem: defaultStyledSystemAlias,
-      },
-      {
-        errorMap: () => ({ message: `components.json is invalid` }),
-      },
-    )
-
-    await fs.writeFile(
-      path.resolve(root, "components.json"),
-      JSON.stringify(config),
-      "utf-8",
-    )
-    const preset = transformTemplate({
-      primary: options.primary,
-      secondary: options.secondary,
-      gray: options.gray,
-    })
-
-    await fs.writeFile(path.join(root, "preset.ts"), preset)
-    transformPandaConfig(path.resolve(root, pandacssConfigPath))
-    return config
+  const config = {
+    utils: `${baseAlias}/utils`,
+    components: `${baseAlias}/components`,
+    hooks: `${baseAlias}/hooks`,
   }
 
-  if (options.style === "tailwind") {
-    const basePath = getBasePath(root, result)
-    if (basePath === null) {
-      throw ErrorMap({
-        code: "resolve_path_fail",
-        target: "tsconfig.json",
-        cwd: root,
-        message: [
-          `cannot find base path in your ${path.join(root, "tsconfig.json")}`,
-        ],
-      })
-    }
+  await fs.writeFile(
+    path.resolve(root, "components.json"),
+    JSON.stringify(config),
+    "utf-8",
+  )
 
-    const config = configSchema.schema.parse(
-      {
-        style: options.style,
-        utils: `${baseAlias}/utils`,
-        components: `${baseAlias}/components`,
-        hooks: `${baseAlias}/hooks`,
-      },
-      {
-        errorMap: () => ({ message: `components.json is invalid` }),
-      },
-    )
-
-    await fs.writeFile(
-      path.resolve(root, "components.json"),
-      JSON.stringify(config),
-      "utf-8",
-    )
-
-    const styles = transformTailwindTemplate({
-      primary: options.primary,
-      secondary: options.secondary,
-      gray: options.gray,
-    })
-
-    await fs.outputFile(path.join(basePath, "styles.css"), styles)
-    await fs.outputFile(
-      path.join(await resolveImport(config.utils, result), "cn.ts"),
-      `import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
-`,
-    )
-
-    return config
-  }
+  return config
 }
