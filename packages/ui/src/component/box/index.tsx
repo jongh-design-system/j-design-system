@@ -1,29 +1,27 @@
 import { cx } from "@styled-system/css"
 import { splitCssProps } from "@styled-system/jsx"
 import { layoutRecipe } from "@styled-system/recipes"
-import { Slot } from "radix-ui"
+import { Primitive } from "radix-ui/internal"
 import type { ComponentPropsWithoutRef, ComponentRef } from "react"
 import { forwardRef } from "react"
 
 import { type LayoutStyleProps, normalizeLayoutStyleProps } from "@/layout"
 
 export type BoxProps = Omit<
-  ComponentPropsWithoutRef<typeof Slot.Root>,
+  ComponentPropsWithoutRef<typeof Primitive.div>,
   keyof LayoutStyleProps
 > &
-  LayoutStyleProps & {
-    asChild?: boolean
-  }
+  LayoutStyleProps
 
-export const Box = forwardRef<ComponentRef<typeof Slot.Root>, BoxProps>(
+export const Box = forwardRef<ComponentRef<typeof Primitive.div>, BoxProps>(
   ({ asChild, ...props }, ref) => {
-    const Comp = asChild ? Slot.Root : "div"
     const [styleProps, elementProps] = splitCssProps(props)
     const { className, style, ...htmlProps } = elementProps
 
     return (
-      <Comp
-        ref={ref as never}
+      <Primitive.div
+        asChild={asChild}
+        ref={ref}
         data-slot="box"
         className={cx(layoutRecipe(), className)}
         style={{

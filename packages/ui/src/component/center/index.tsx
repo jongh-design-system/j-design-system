@@ -5,8 +5,8 @@ import {
   type CenterRecipeVariantProps,
   layoutRecipe,
 } from "@styled-system/recipes"
-import { Slot } from "radix-ui"
-import type { ComponentPropsWithoutRef, ReactNode } from "react"
+import { Primitive } from "radix-ui/internal"
+import type { ComponentPropsWithoutRef, ComponentRef, ReactNode } from "react"
 import { forwardRef } from "react"
 
 import { type LayoutStyleProps, normalizeLayoutStyleProps } from "@/layout"
@@ -17,40 +17,40 @@ export type CenterAxis = Extract<
 >
 
 export type CenterProps = Omit<
-  ComponentPropsWithoutRef<"div">,
+  ComponentPropsWithoutRef<typeof Primitive.div>,
   keyof LayoutStyleProps
 > &
   LayoutStyleProps & {
-    asChild?: boolean
     axis?: CenterAxis
     isInline?: boolean
     children: ReactNode
   }
 
-export const Center = forwardRef<HTMLDivElement, CenterProps>(
-  ({ asChild, axis = "both", isInline = false, children, ...props }, ref) => {
-    const Comp = asChild ? Slot.Root : "div"
-    const [styleProps, elementProps] = splitCssProps(props)
-    const { className, style, ...htmlProps } = elementProps
+export const Center = forwardRef<
+  ComponentRef<typeof Primitive.div>,
+  CenterProps
+>(({ asChild, axis = "both", isInline = false, children, ...props }, ref) => {
+  const [styleProps, elementProps] = splitCssProps(props)
+  const { className, style, ...htmlProps } = elementProps
 
-    return (
-      <Comp
-        ref={ref}
-        data-slot="center"
-        className={cx(layoutRecipe(), centerRecipe({ axis }), className)}
-        style={{
-          ...normalizeLayoutStyleProps({
-            ...styleProps,
-            display: styleProps.display ?? (isInline ? "inline-flex" : "flex"),
-          }),
-          ...style,
-        }}
-        {...htmlProps}
-      >
-        {children}
-      </Comp>
-    )
-  },
-)
+  return (
+    <Primitive.div
+      asChild={asChild}
+      ref={ref}
+      data-slot="center"
+      className={cx(layoutRecipe(), centerRecipe({ axis }), className)}
+      style={{
+        ...normalizeLayoutStyleProps({
+          ...styleProps,
+          display: styleProps.display ?? (isInline ? "inline-flex" : "flex"),
+        }),
+        ...style,
+      }}
+      {...htmlProps}
+    >
+      {children}
+    </Primitive.div>
+  )
+})
 
 Center.displayName = "Center"

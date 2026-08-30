@@ -3,28 +3,28 @@ import {
   buttonRecipe,
   type ButtonRecipeVariantProps,
 } from "@styled-system/recipes"
-import { Slot } from "radix-ui"
-import type { ComponentPropsWithoutRef } from "react"
+import { Primitive } from "radix-ui/internal"
+import type { ComponentPropsWithoutRef, ComponentRef } from "react"
 import { forwardRef } from "react"
 
 export type ButtonVariantProps = ButtonRecipeVariantProps
 
-export type ButtonProps = ComponentPropsWithoutRef<"button"> & {
-  asChild?: boolean
-} & ButtonVariantProps
+export type ButtonProps = ComponentPropsWithoutRef<typeof Primitive.button> &
+  ButtonVariantProps
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ asChild, className, ...props }, ref) => {
-    const Comp = asChild ? Slot.Root : "button"
-    const [variantProps, componentProps] = buttonRecipe.splitVariantProps(props)
-    return (
-      <Comp
-        ref={ref}
-        className={cx(buttonRecipe(variantProps), className)}
-        {...componentProps}
-      />
-    )
-  },
-)
+export const Button = forwardRef<
+  ComponentRef<typeof Primitive.button>,
+  ButtonProps
+>(({ asChild, className, ...props }, ref) => {
+  const [variantProps, componentProps] = buttonRecipe.splitVariantProps(props)
+  return (
+    <Primitive.button
+      asChild={asChild}
+      ref={ref}
+      className={cx(buttonRecipe(variantProps), className)}
+      {...componentProps}
+    />
+  )
+})
 
 Button.displayName = "Button"

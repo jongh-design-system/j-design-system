@@ -2,18 +2,17 @@ import { cx } from "@styled-system/css"
 import { splitCssProps } from "@styled-system/jsx"
 import { layoutRecipe } from "@styled-system/recipes"
 import type { Properties } from "@styled-system/types/csstype"
-import { Slot } from "radix-ui"
+import { Primitive } from "radix-ui/internal"
 import type { ComponentPropsWithoutRef, ComponentRef, ReactNode } from "react"
 import { forwardRef } from "react"
 
 import { type LayoutStyleProps, normalizeLayoutStyleProps } from "@/layout"
 
 export type VStackProps = Omit<
-  ComponentPropsWithoutRef<typeof Slot.Root>,
+  ComponentPropsWithoutRef<typeof Primitive.div>,
   keyof LayoutStyleProps
 > &
   LayoutStyleProps & {
-    asChild?: boolean
     align?: NonNullable<Properties["alignItems"]>
     justify?: NonNullable<Properties["justifyContent"]>
     wrap?: boolean | NonNullable<Properties["flexWrap"]>
@@ -22,18 +21,21 @@ export type VStackProps = Omit<
     children: ReactNode
   }
 
-export const VStack = forwardRef<ComponentRef<typeof Slot.Root>, VStackProps>(
+export const VStack = forwardRef<
+  ComponentRef<typeof Primitive.div>,
+  VStackProps
+>(
   (
     { asChild, align, justify, wrap, grow, shrink, children, ...props },
     ref,
   ) => {
-    const Comp = asChild ? Slot.Root : "div"
     const [styleProps, elementProps] = splitCssProps(props)
     const { className, style, ...htmlProps } = elementProps
 
     return (
-      <Comp
-        ref={ref as never}
+      <Primitive.div
+        asChild={asChild}
+        ref={ref}
         data-slot="v-stack"
         className={cx(layoutRecipe(), className)}
         style={{
@@ -54,7 +56,7 @@ export const VStack = forwardRef<ComponentRef<typeof Slot.Root>, VStackProps>(
         {...htmlProps}
       >
         {children}
-      </Comp>
+      </Primitive.div>
     )
   },
 )
