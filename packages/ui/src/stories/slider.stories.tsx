@@ -1,5 +1,6 @@
-import * as Slider from "@story-components/slider"
 import type { Meta, StoryObj } from "@storybook/react-vite"
+
+import * as Slider from "@/component/slider"
 
 export default {
   title: "Base/Slider",

@@ -4,6 +4,6 @@
   "storybookBaseDir": "packages/ui",
   "zip": true,
   "storybookBuildDir": "storybook-static",
-  "buildCommand": "pnpm run build",
+  "buildCommand": "pnpm run build:storybook",
   "outputDir": "storybook-static"
 }

@@ -20,7 +20,8 @@ export const addSchema = z.object({
 })
 
 const BASE_URL = (
-  process.env.JDS_REGISTRY_URL ?? "https://jds-docs.vercel.app"
+  process.env.JDS_REGISTRY_URL ??
+  "https://raw.githubusercontent.com/jongh-design-system/jds/dev/registry"
 ).replace(/\/$/, "")
 
 const error = chalk.bold.red
@@ -95,24 +96,6 @@ export const addCommand = new Command()
               message: `registry for ${componentList[index]} is invaliad`,
             }),
           })
-          let selectedRegistry = registry.styles[componentsJson.style]
-          if (!selectedRegistry) {
-            const [fallbackStyle] = Object.keys(registry.styles)
-            if (!fallbackStyle) {
-              console.log(error(`${componentList[index]} has no styles`))
-              continue
-            }
-
-            const shouldInstallFallback = await confirm({
-              message: `${componentList[index]} does not support ${componentsJson.style}. Install ${fallbackStyle} instead?`,
-            })
-            if (!shouldInstallFallback) {
-              continue
-            }
-
-            selectedRegistry = registry.styles[fallbackStyle]
-          }
-          //2.폴더를 하나 생성해야 함 -> 폴더이름은 reigstry.name
           const src = path.join(paths.components, componentList[index])
 
           if (fs.pathExistsSync(src)) {
@@ -124,7 +107,7 @@ export const addCommand = new Command()
             }
           }
 
-          selectedRegistry.files.forEach((file) => {
+          registry.files.forEach((file) => {
             //import문을 경로를 반영하여 변경하기
             const convertedContent = transformImports(
               file.content,
@@ -142,7 +125,7 @@ export const addCommand = new Command()
             }
           })
 
-          const dependencies = selectedRegistry.dependencies || []
+          const dependencies = registry.dependencies || []
           const packageManagerCommand = dependencies.length
             ? await getPackageManagerCommand(options.cwd, dependencies)
             : undefined

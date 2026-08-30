@@ -1,8 +1,9 @@
-import { AnimateText } from "@story-components/animateText"
-import { Button } from "@story-components/button"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 import { type ReactNode, useMemo, useState } from "react"
+
+import { AnimateText } from "@/component/animateText"
+import { Button } from "@/component/button"
 
 const meta = {
   title: "Animation/AnimateText",
@@ -203,8 +204,8 @@ export const Primary: Story = {
   args: {
     by: "words",
     animation: "fadeUp",
-    staggerDelay: 0.1,
-    duration: 0.6,
+    staggerDelay: 0.035,
+    duration: 0.8,
     children: "안녕하세요 AnimateText 컴포넌트입니다",
   },
 }
@@ -213,8 +214,8 @@ export const CharacterAnimation: Story = {
   args: {
     by: "chars",
     animation: "fadeLeft",
-    staggerDelay: 0.05,
-    duration: 0.4,
+    staggerDelay: 0.035,
+    duration: 0.8,
     children: "Character by Character",
   },
 }
@@ -222,8 +223,8 @@ export const CharacterAnimation: Story = {
 export const LineByLineAnimation: Story = {
   args: {
     animation: "fadeUp",
-    staggerDelay: 3.0,
-    duration: 0.6,
+    staggerDelay: 0.035,
+    duration: 0.8,
   },
   render: ({ ...args }) => {
     return (
@@ -240,8 +241,8 @@ export const WordByWordAnimation: Story = {
   args: {
     by: "words",
     animation: "fadeUp",
-    staggerDelay: 0.1,
-    duration: 0.4,
+    staggerDelay: 0.035,
+    duration: 0.8,
     children: "각 단어가 개별적으로 애니메이션됩니다",
   },
 }

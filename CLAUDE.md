@@ -91,7 +91,7 @@
 
 ### 커밋 가이드라인
 
-- commitlint와 함께 conventional commits 사용
+- conventional commits 형식 사용
 - 허용된 타입: feat, fix, docs, style, refactor, test, chore, release
 - lint-staged가 포함된 Husky pre-commit hooks
 

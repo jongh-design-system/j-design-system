@@ -6,17 +6,17 @@
 npx @jongh/cli init
 ```
 
-- primary / secondary / grey color를 입력받아, 컴포넌트 스타일의 기반이 될 preset을 생성합니다
-- 사용자의 경로 설정 파일을 분석하여 이후 코드가 저장될 장소를 components.json이라는 파일에 저장합니다
+- 사용자의 `tsconfig.json` 경로 설정에서 base alias를 찾습니다
+- 이후 코드가 저장될 components, hooks, utils 경로를 `components.json`에 저장합니다
 
 ### add
 
 ```bash
-npx @jongh/cli add [component-name]
+npx @jongh/cli add [name]
 ```
 
-- 원격 Registry에서 컴포넌트 코드를 가져와 components.json에 명시된 경로에 저장합니다
-- ui 코드 뿐 아니라 hook,util 등의 코드도 같이 저장될 수 있습니다
+- 원격 Registry에서 항목의 파일을 가져와 `components.json`에 명시된 경로에 저장합니다
+- 컴포넌트 코드뿐 아니라 hook, util 파일과 패키지 의존성도 함께 처리합니다
 
 ### codemod: radix-ui-import
 

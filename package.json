@@ -10,22 +10,15 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
     "lint-staged": "lint-staged",
-    "commit": "git-cz",
     "ci:version": "changeset version",
     "ci:publish": "changeset publish",
     "ci": "turbo run lint check-type test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
-    "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
-    "@commitlint/cz-commitlint": "^19.5.0",
     "@typescript/native-preview": "^7.0.0-dev.20260326.1",
-    "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.20.1",
     "husky": "^9.1.4",
-    "inquirer": "9",
     "lint-staged": "^15.2.7",
     "prettier": "^3.5.2",
     "turbo": "^2.0.9",
@@ -39,11 +32,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jongh-design-system/jds.git"
-  },
-  "config": {
-    "commitizen": {
-      "path": "@commitlint/cz-commitlint"
-    }
   },
   "pnpm": {
     "overrides": {

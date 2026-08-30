@@ -3,6 +3,7 @@ import type { CSSProperties } from "react"
 import { useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
 
+import * as Calendar from "../component/calendar"
 import {
   type CalendarDay,
   useCalendarState,
@@ -16,6 +17,22 @@ const meta = {
 export default meta
 
 type Story = StoryObj<typeof meta>
+
+export const VisualStates: Story = {
+  render: () => (
+    <Calendar.Root
+      type="single"
+      defaultViewDate={new Date(2026, 2, 1)}
+      defaultDate={new Date(2026, 2, 14)}
+      weekStart={1}
+      locale="en-US"
+    >
+      <Calendar.Header />
+      <Calendar.Weekday />
+      <Calendar.Days />
+    </Calendar.Root>
+  ),
+}
 
 export const SingleSelectionAndNavigation: Story = {
   render: () => <SingleSelectionHarness />,
