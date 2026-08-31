@@ -1,44 +1,46 @@
-name: Changesets
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
+name: Release PR
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - dev
     paths:
-      - ".changeset/**" # .changeset 폴더에 변경이 있을 때만 실행
+      - ".changeset/**"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: npm-release-dev
+  cancel-in-progress: false
+
 env:
   CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
-  version:
-    timeout-minutes: 15
+  release:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
 
-      - name: pnpm setup
+      - name: Set up the workspace
         uses: ./.github/actions/setup
         with:
           use-cache: "false"
 
-      - name: build
-        run: pnpm turbo build
-
-      - name: create and publish versions
+      - name: Maintain the reviewed Release PR
         uses: changesets/action@v1
         with:
           version: pnpm ci:version
-          commit: "chore: update versions"
-          title: "chore: update versions"
-          publish: pnpm ci:publish
+          commit: Prepare the reviewed date-based npm release
+          title: Prepare the reviewed date-based npm release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
