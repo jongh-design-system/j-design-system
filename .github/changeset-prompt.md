@@ -7,7 +7,7 @@ Return only JSON matching the provided schema.
 Rules:
 
 - Every package whose `changed` field is `true` must be included in `releases`.
-- A package whose `changed` field is `false` may be included in `releases` only when `forceRelease` is `true` and the pull request clearly intends to release that package.
+- A package whose `changed` field is `false` must not be included in `releases`.
 - Do not invent package names.
 - Choose `major` only for an incompatible public API change, `minor` for a backward-compatible feature, and `patch` for fixes or internal packaging changes.
 - Write one summary for package consumers. Explain the observable change and any required migration, without implementation trivia or generic filler.

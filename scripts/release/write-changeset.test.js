@@ -14,7 +14,6 @@ test("a Changeset must include every package with a different integrity", () => 
     comparisonPath,
     JSON.stringify({
       schemaVersion: 1,
-      forceRelease: false,
       packages: [
         { name: "@jongh/cli", changed: false },
         { name: "@jongh/ui", changed: true },
@@ -48,7 +47,7 @@ test("a Changeset must include every package with a different integrity", () => 
   )
 })
 
-test("an unchanged package requires release:force", () => {
+test("a Changeset cannot include a package that matches npm", () => {
   const fixture = mkdtempSync(join(tmpdir(), "jds-release-"))
   mkdirSync(join(fixture, ".changeset"))
   const comparisonPath = join(fixture, "comparison.json")
@@ -57,7 +56,6 @@ test("an unchanged package requires release:force", () => {
     comparisonPath,
     JSON.stringify({
       schemaVersion: 1,
-      forceRelease: false,
       packages: [{ name: "@jongh/ui", changed: false }],
     }),
   )
@@ -82,29 +80,5 @@ test("an unchanged package requires release:force", () => {
     { encoding: "utf8" },
   )
   assert.equal(result.status, 1)
-  assert.match(result.stderr, /requires the release:force label/)
-
-  writeFileSync(
-    comparisonPath,
-    JSON.stringify({
-      schemaVersion: 1,
-      forceRelease: true,
-      packages: [{ name: "@jongh/ui", changed: false }],
-    }),
-  )
-  execFileSync(
-    process.execPath,
-    [
-      new URL("./write-changeset.js", import.meta.url).pathname,
-      fixture,
-      comparisonPath,
-      notePath,
-      "208",
-    ],
-    { stdio: "pipe" },
-  )
-  assert.match(
-    readFileSync(join(fixture, ".changeset/pr-208.md"), "utf8"),
-    /"@jongh\/ui": patch/,
-  )
+  assert.match(result.stderr, /matches npm and is not a release target/)
 })

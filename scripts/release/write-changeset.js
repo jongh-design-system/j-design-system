@@ -23,7 +23,7 @@ if (typeof note.summary !== "string" || note.summary.trim() === "") {
   throw new Error("The Changeset summary must be a non-empty string")
 }
 
-// 무결성이 달라진 패키지는 빠질 수 없다. 동일한 패키지는 force 라벨이 있을 때만 추가할 수 있다.
+// 무결성이 달라진 패키지는 모두 포함하고, 동일한 패키지는 추가할 수 없다.
 const knownPackages = new Set(comparison.packages.map((pkg) => pkg.name))
 const changedPackages = new Set(
   comparison.packages.filter((pkg) => pkg.changed).map((pkg) => pkg.name),
@@ -45,10 +45,8 @@ for (const release of note.releases) {
   if (!["major", "minor", "patch"].includes(release.type)) {
     throw new Error(`${release.name} has invalid release type ${release.type}`)
   }
-  if (!comparison.forceRelease && !changedPackages.has(release.name)) {
-    throw new Error(
-      `${release.name} matches npm and requires the release:force label`,
-    )
+  if (!changedPackages.has(release.name)) {
+    throw new Error(`${release.name} matches npm and is not a release target`)
   }
   selectedPackages.add(release.name)
 }

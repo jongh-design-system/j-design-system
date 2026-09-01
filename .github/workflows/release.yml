@@ -1,4 +1,4 @@
-name: npm publish
+name: npm release
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: npm-publish
+  group: npm-release-dev
   cancel-in-progress: false
 
 env:
@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Check whether the pushed commit merged the Release PR
+      - name: Check whether the pushed commit merged a Release PR
         id: source
         env:
           GH_TOKEN: ${{ github.token }}
@@ -33,7 +33,7 @@ jobs:
           RELEASE_PR="$(
             gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" |
               jq -r --arg repo "$GITHUB_REPOSITORY" --arg sha "$GITHUB_SHA" \
-                '[.[] | select(.base.ref == "dev" and .head.ref == "changeset-release/dev" and .head.repo.full_name == $repo and .merge_commit_sha == $sha and .merged_at != null)] | first | .number // empty'
+                '[.[] | select(.base.ref == "dev" and (.head.ref | startswith("release/")) and .head.repo.full_name == $repo and .merge_commit_sha == $sha and .merged_at != null)] | first | .number // empty'
           )"
           if [ -n "$RELEASE_PR" ]; then
             echo "should_publish=true" >> "$GITHUB_OUTPUT"
@@ -65,7 +65,7 @@ jobs:
         if: steps.source.outputs.should_publish == 'true'
         run: pnpm turbo build
 
-      - name: Publish the versions approved in the merged Release PR
+      - name: Publish the approved versions
         if: steps.source.outputs.should_publish == 'true'
         uses: changesets/action@v1
         with:

@@ -1,7 +1,6 @@
 import { execFileSync } from "node:child_process"
 import {
   appendFileSync,
-  existsSync,
   mkdirSync,
   readFileSync,
   readdirSync,
@@ -9,22 +8,20 @@ import {
 } from "node:fs"
 import { dirname, join, resolve } from "node:path"
 
-const baseRoot = resolve(process.argv[2] ?? process.cwd())
-const candidateRoot = resolve(process.argv[3] ?? process.cwd())
+const repositoryRoot = resolve(process.argv[2] ?? process.cwd())
 const outputPath = resolve(
-  process.argv[4] ??
-    join(candidateRoot, ".release-work/package-comparison.json"),
+  process.argv[3] ??
+    join(repositoryRoot, ".release-work/package-comparison.json"),
 )
-const forceRelease = process.env.FORCE_RELEASE === "true"
 
 // 공개 workspace를 찾는다. 패키지 이름과 경로를 별도 매핑으로 관리하지 않는다.
 const packages = []
-for (const entry of readdirSync(join(candidateRoot, "packages"), {
+for (const entry of readdirSync(join(repositoryRoot, "packages"), {
   withFileTypes: true,
 })) {
   if (!entry.isDirectory()) continue
 
-  const path = join(candidateRoot, "packages", entry.name)
+  const path = join(repositoryRoot, "packages", entry.name)
   const manifest = JSON.parse(readFileSync(join(path, "package.json"), "utf8"))
   if (manifest.private === true || !manifest.name) continue
 
@@ -36,14 +33,12 @@ if (packages.length === 0) {
   throw new Error("No public packages were found under packages/*")
 }
 
-// base와 merge candidate에 똑같은 build/pack 절차를 적용한다.
+// 현재 dev를 npm latest와 같은 version으로 pack해 내용만 비교한다.
 function buildAndPack(root, relativePath, name, latestVersion) {
   const path = join(root, relativePath)
   const manifestPath = join(path, "package.json")
-  if (!existsSync(manifestPath)) return null
 
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8"))
-  if (manifest.private === true) return null
   if (!manifest.scripts?.build) {
     throw new Error(
       `${name} must define a build script before it can be packed`,
@@ -75,7 +70,7 @@ function buildAndPack(root, relativePath, name, latestVersion) {
   return packResult[0].integrity
 }
 
-// npm과 다른 결과 중에서도 이 PR이 base 결과를 실제로 바꾼 패키지만 Changeset 대상으로 삼는다.
+// npm latest와 현재 dev의 배포 결과가 다른 패키지만 Changeset 대상으로 삼는다.
 const comparison = []
 for (const pkg of packages) {
   const response = await fetch(
@@ -99,21 +94,14 @@ for (const pkg of packages) {
     }
   }
 
-  const relativePath = pkg.path.slice(candidateRoot.length + 1)
-  const baseIntegrity = buildAndPack(
-    baseRoot,
+  const relativePath = pkg.path.slice(repositoryRoot.length + 1)
+  const devIntegrity = buildAndPack(
+    repositoryRoot,
     relativePath,
     pkg.name,
     latestVersion,
   )
-  const candidateIntegrity = buildAndPack(
-    candidateRoot,
-    relativePath,
-    pkg.name,
-    latestVersion,
-  )
-  const changedFromPublished = publishedIntegrity !== candidateIntegrity
-  const changedFromBase = baseIntegrity !== candidateIntegrity
+  const changed = publishedIntegrity !== devIntegrity
 
   comparison.push({
     name: pkg.name,
@@ -121,18 +109,14 @@ for (const pkg of packages) {
     sourceVersion: pkg.sourceVersion,
     latestVersion,
     publishedIntegrity,
-    baseIntegrity,
-    candidateIntegrity,
-    changedFromPublished,
-    changedFromBase,
-    changed: changedFromPublished && changedFromBase,
+    devIntegrity,
+    changed,
   })
 }
 
 const result = {
   schemaVersion: 1,
-  forceRelease,
-  hasRelease: forceRelease || comparison.some((pkg) => pkg.changed),
+  hasRelease: comparison.some((pkg) => pkg.changed),
   packages: comparison,
 }
 
@@ -143,14 +127,13 @@ console.table(
   comparison.map((pkg) => ({
     package: pkg.name,
     npm: pkg.latestVersion ?? "not published",
-    differsFromBase: pkg.changedFromBase,
     changed: pkg.changed,
   })),
 )
 console.log(
   result.hasRelease
-    ? `release draft required${forceRelease ? " (release:force)" : ""}`
-    : "this pull request does not add a package release",
+    ? "release draft required"
+    : "current dev packages match npm latest",
 )
 
 if (process.env.GITHUB_OUTPUT) {

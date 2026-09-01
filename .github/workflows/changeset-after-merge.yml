@@ -4,17 +4,11 @@ on:
   push:
     branches:
       - dev
-  workflow_dispatch:
-    inputs:
-      pull_request:
-        description: Merged PR number to backfill
-        required: true
-        type: number
 
 permissions: {}
 
 concurrency:
-  group: changeset-after-merge-${{ inputs.pull_request || github.sha }}
+  group: changeset-after-merge-${{ github.sha }}
   cancel-in-progress: false
 
 jobs:
@@ -39,87 +33,43 @@ jobs:
         id: context
         env:
           GH_TOKEN: ${{ github.token }}
-          INPUT_PULL_REQUEST: ${{ inputs.pull_request }}
         run: |
           mkdir -p .release-work
+          gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" |
+            jq --arg sha "$GITHUB_SHA" \
+              '[.[] | select(.merged_at != null and .merge_commit_sha == $sha and .base.ref == "dev")] | first // empty' \
+              > .release-work/pull-request.json
 
-          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            gh api "repos/$GITHUB_REPOSITORY/pulls/$INPUT_PULL_REQUEST" > .release-work/pull-request.json
-            jq -e '.merged_at != null and .merge_commit_sha != null and .base.ref == "dev"' .release-work/pull-request.json > /dev/null
-            BASE_SHA="$(jq -r '.base.sha' .release-work/pull-request.json)"
-            MERGE_SHA="$(jq -r '.merge_commit_sha' .release-work/pull-request.json)"
-          else
-            BASE_SHA="${{ github.event.before }}"
-            MERGE_SHA="${{ github.sha }}"
-            gh api "repos/$GITHUB_REPOSITORY/commits/$MERGE_SHA/pulls" |
-              jq --arg sha "$MERGE_SHA" \
-                '[.[] | select(.merged_at != null and .merge_commit_sha == $sha and .base.ref == "dev")] | first // empty' \
-                > .release-work/pull-request.json
-
-            if ! jq -e '.number' .release-work/pull-request.json > /dev/null; then
-              echo "should_compare=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
+          if ! jq -e '.number' .release-work/pull-request.json > /dev/null; then
+            echo "should_compare=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
+          PR_NUMBER="$(jq -r '.number' .release-work/pull-request.json)"
           HEAD_REF="$(jq -r '.head.ref' .release-work/pull-request.json)"
-          if [ "$HEAD_REF" = "changeset-release/dev" ] || [[ "$HEAD_REF" = changeset/pr-* ]]; then
+          if [[ "$HEAD_REF" = release/* ]]; then
             echo "should_compare=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           echo "should_compare=true" >> "$GITHUB_OUTPUT"
 
-          PR_NUMBER="$(jq -r '.number' .release-work/pull-request.json)"
           echo "pull_request=$PR_NUMBER" >> "$GITHUB_OUTPUT"
-          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
-          echo "merge_sha=$MERGE_SHA" >> "$GITHUB_OUTPUT"
-          echo "force_release=$(jq -r '[.labels[].name] | contains(["release:force"])' .release-work/pull-request.json)" >> "$GITHUB_OUTPUT"
 
           gh pr diff "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" > .release-work/pull-request.diff
 
-      - name: Check out the state before the merge
+      - name: Set up the pushed dev commit
         if: steps.context.outputs.should_compare == 'true'
-        uses: actions/checkout@v5
+        uses: ./.github/actions/setup
         with:
-          repository: ${{ github.repository }}
-          ref: ${{ steps.context.outputs.base_sha }}
-          path: .release-work/base
-          persist-credentials: false
+          use-cache: "false"
 
-      - name: Check out the merged state
-        if: steps.context.outputs.should_compare == 'true'
-        uses: actions/checkout@v5
-        with:
-          repository: ${{ github.repository }}
-          ref: ${{ steps.context.outputs.merge_sha }}
-          path: .release-work/candidate
-          persist-credentials: false
-
-      - if: steps.context.outputs.should_compare == 'true'
-        uses: pnpm/action-setup@v4.4.0
-
-      - if: steps.context.outputs.should_compare == 'true'
-        uses: actions/setup-node@v5
-        with:
-          node-version-file: .nvmrc
-          package-manager-cache: false
-
-      - name: Install dependencies for both states
-        if: steps.context.outputs.should_compare == 'true'
-        run: |
-          pnpm --dir .release-work/base install --frozen-lockfile
-          pnpm --dir .release-work/candidate install --frozen-lockfile
-
-      - name: Compare the packages created by this merge with npm
+      - name: Compare the pushed dev packages with npm
         if: steps.context.outputs.should_compare == 'true'
         id: compare
-        env:
-          FORCE_RELEASE: ${{ steps.context.outputs.force_release }}
         run: >-
           node scripts/release/compare-packages.js
-          .release-work/base
-          .release-work/candidate
+          .
           .release-work/package-comparison.json
 
       - name: Save the Changeset input
@@ -164,7 +114,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ needs.compare.outputs.pull_request }}
         run: |
-          BRANCH="changeset/pr-$PR_NUMBER"
+          BRANCH="release/pr-$PR_NUMBER"
           EXISTING_PR="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH" --base dev --state all --json number --jq '.[0].number // empty')"
 
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
@@ -180,6 +130,15 @@ jobs:
         with:
           ref: ${{ github.sha }}
           path: .release-work/review
+
+      - if: steps.review.outputs.create == 'true'
+        uses: pnpm/action-setup@v4.4.0
+
+      - if: steps.review.outputs.create == 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
 
       - name: Install Codex
         if: steps.review.outputs.create == 'true'
@@ -229,7 +188,7 @@ jobs:
             "$RUNNER_TEMP/changeset-input/changeset.json" \
             "$PR_NUMBER"
 
-      - name: Push the Changeset review branch
+      - name: Prepare and push the Release PR branch
         if: steps.review.outputs.create == 'true'
         env:
           BRANCH: ${{ steps.review.outputs.branch }}
@@ -241,22 +200,35 @@ jobs:
           git add ".changeset/pr-$PR_NUMBER.md"
           git commit -m "Record npm release intent from merged PR #$PR_NUMBER"
 
+          cp ".changeset/pr-$PR_NUMBER.md" "$RUNNER_TEMP/changeset-pr-$PR_NUMBER.md"
+          pnpm install --frozen-lockfile
+          pnpm run ci:version
+          git add -A
+          git commit -m "Prepare the date-based npm release for PR #$PR_NUMBER"
+
           REMOTE_SHA="$(git ls-remote --heads origin "refs/heads/$BRANCH" | cut -f1)"
           git push --force-with-lease="refs/heads/$BRANCH:$REMOTE_SHA" origin "HEAD:refs/heads/$BRANCH"
 
-      - name: Open the Changeset review pull request
+      - name: Open the Release PR
         if: steps.review.outputs.create == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ steps.review.outputs.branch }}
           PR_NUMBER: ${{ needs.compare.outputs.pull_request }}
         run: |
+          {
+            printf 'Publishes the package changes from PR #%s after this PR is merged into dev.\n\n' "$PR_NUMBER"
+            printf '## AI-generated Changeset\n\n```md\n'
+            cat "$RUNNER_TEMP/changeset-pr-$PR_NUMBER.md"
+            printf '```\n'
+          } > "$RUNNER_TEMP/release-pr-body.md"
+
           gh pr create \
             --repo "$GITHUB_REPOSITORY" \
             --head "$BRANCH" \
             --base dev \
-            --title "Review npm release intent from PR #$PR_NUMBER" \
-            --body "PR #$PR_NUMBER is already merged into dev. Review the affected packages, compatibility level, and consumer-facing summary before merging this Changeset."
+            --title "Release package changes from PR #$PR_NUMBER" \
+            --body-file "$RUNNER_TEMP/release-pr-body.md"
 
       - name: Preserve refreshed Codex authentication
         if: always() && steps.review.outputs.create == 'true'
