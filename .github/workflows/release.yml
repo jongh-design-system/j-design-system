@@ -1,12 +1,11 @@
 name: npm release
 
 on:
-  workflow_call:
-    inputs:
-      sha:
-        description: Exact dev commit to publish
-        required: true
-        type: string
+  push:
+    branches:
+      - dev
+    paths:
+      - "packages/*/CHANGELOG.md"
 
 permissions:
   contents: write
@@ -29,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ inputs.sha }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
       - name: Set up the workspace

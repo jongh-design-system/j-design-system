@@ -14,6 +14,9 @@ outputs:
   changed-packages:
     description: JSON array of package names that differ from npm latest
     value: ${{ steps.compare.outputs.changed_packages }}
+  has-pending-publish:
+    description: Whether dev already contains a version that is not on npm
+    value: ${{ steps.compare.outputs.has_pending_publish }}
   comparison-path:
     description: Path to the full package comparison JSON
     value: ${{ inputs.output-path }}

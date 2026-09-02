@@ -1,0 +1,33 @@
+name: Update component registry
+
+on:
+  push:
+    branches:
+      - dev
+    paths-ignore:
+      - "registry/**"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-component-registry-dev
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up the pushed dev commit
+        uses: ./.github/actions/setup
+        with:
+          use-cache: "false"
+
+      - name: Update the component registry
+        uses: ./.github/actions/update-registry

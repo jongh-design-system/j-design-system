@@ -30,14 +30,14 @@ references:
 - Release PR 병합은 다시 Release PR을 만들지 않고 별도 npm 배포 흐름으로 들어간다.
 - 강제 배포 라벨은 사용하지 않는다. 필요한 경우에도 Release PR을 만들어 검토 후 병합한다.
 - 사용자는 PR을 squash merge한다.
-- `dev` 반영 후 작업을 조정하는 상위 워크플로우는 이벤트명이 아니라 CD 책임이 드러나는 이름을 사용한다.
+- 레지스트리 갱신, Release PR 준비, npm 배포는 같은 `dev` push를 받되 각각 독립된 워크플로우로 동작한다.
+- Release PR이 Changesets로 생성한 패키지별 `CHANGELOG.md` 변경을 실제 npm 배포의 시작 신호로 사용한다.
 
 ## Done
 
-- `dev` 푸시에서 일반 기능 머지와 Release PR 머지를 한 곳에서 구분한다.
-- 상위 워크플로우의 파일명과 표시 이름에서 CD 역할을 바로 알 수 있다.
+- 중앙 라우터 없이 레지스트리 갱신, Release PR 준비, npm 배포가 독립된 워크플로우로 보인다.
 - 일반 기능 머지는 공개 패키지별 변경 여부만 계산하는 독립 Action을 사용한다.
 - 변경된 패키지만 대상으로 하나의 배포 준비 완료 상태의 Release PR을 만든다.
-- Release PR 병합 시 PR 조회나 브랜치 판정 없이 전달받은 정확한 SHA를 빌드하고 `changeset publish`한다.
+- Release PR 병합으로 패키지별 `CHANGELOG.md`가 `dev`에 반영되면 해당 SHA를 빌드하고 `changeset publish`한다.
 - 비교 결과는 실제 배포와 같은 pnpm 버전 및 `pnpm pack` 산출물을 기준으로 한다.
 - 릴리즈 관련 검사와 기존 CI가 통과한다.

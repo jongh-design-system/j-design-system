@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process"
 import { createHash } from "node:crypto"
 import {
   appendFileSync,
+  existsSync,
   mkdtempSync,
   mkdirSync,
   readFileSync,
@@ -35,6 +36,16 @@ packages.sort((left, right) => left.name.localeCompare(right.name))
 
 if (packages.length === 0) {
   throw new Error("No public packages were found under packages/*")
+}
+
+function changelogContainsVersion(path, version) {
+  const changelogPath = join(path, "CHANGELOG.md")
+  if (!existsSync(changelogPath)) return false
+
+  const escapedVersion = version.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  return new RegExp(`^##\\s+${escapedVersion}(?:\\s|$)`, "m").test(
+    readFileSync(changelogPath, "utf8"),
+  )
 }
 
 // 실제 publish와 같은 pnpm pack 결과를 npm latest tarball과 비교한다.
@@ -76,8 +87,8 @@ for (const pkg of packages) {
     `https://registry.npmjs.org/${encodeURIComponent(pkg.name)}`,
   )
 
+  let metadata = null
   let latestVersion = null
-  let publishedIntegrity = null
   if (response.status !== 404) {
     if (!response.ok) {
       throw new Error(
@@ -85,22 +96,51 @@ for (const pkg of packages) {
       )
     }
 
-    const metadata = await response.json()
+    metadata = await response.json()
     latestVersion = metadata["dist-tags"]?.latest
-    publishedIntegrity = metadata.versions?.[latestVersion]?.dist?.integrity
-    if (!latestVersion || !publishedIntegrity) {
-      throw new Error(`${pkg.name} latest metadata has no version or integrity`)
-    }
-    if (pkg.sourceVersion !== latestVersion) {
-      throw new Error(
-        `${pkg.name} source version ${pkg.sourceVersion} does not match npm latest ${latestVersion}`,
-      )
+    if (
+      !latestVersion ||
+      !metadata.versions?.[latestVersion]?.dist?.integrity
+    ) {
+      throw new Error(`${pkg.name} latest metadata is incomplete`)
     }
   }
 
+  const publishedVersion = metadata?.versions?.[pkg.sourceVersion]
+  const versionRecorded = changelogContainsVersion(pkg.path, pkg.sourceVersion)
+  const pendingPublish = publishedVersion === undefined && versionRecorded
+
+  if (metadata !== null && publishedVersion === undefined && !versionRecorded) {
+    throw new Error(
+      `${pkg.name} source version ${pkg.sourceVersion} is not on npm or in its changelog`,
+    )
+  }
+
+  if (
+    metadata !== null &&
+    publishedVersion !== undefined &&
+    pkg.sourceVersion !== latestVersion
+  ) {
+    throw new Error(
+      `${pkg.name} source version ${pkg.sourceVersion} is published but npm latest is ${latestVersion}`,
+    )
+  }
+
+  let publishedIntegrity = null
+  let devIntegrity = null
+  let changed = false
+  if (!pendingPublish) {
+    publishedIntegrity = publishedVersion?.dist?.integrity ?? null
+    if (metadata !== null && !publishedIntegrity) {
+      throw new Error(`${pkg.name}@${pkg.sourceVersion} has no npm integrity`)
+    }
+
+    const relativePath = pkg.path.slice(repositoryRoot.length + 1)
+    devIntegrity = buildAndPack(repositoryRoot, relativePath, pkg.name)
+    changed = publishedIntegrity !== devIntegrity
+  }
+
   const relativePath = pkg.path.slice(repositoryRoot.length + 1)
-  const devIntegrity = buildAndPack(repositoryRoot, relativePath, pkg.name)
-  const changed = publishedIntegrity !== devIntegrity
 
   comparison.push({
     name: pkg.name,
@@ -110,12 +150,15 @@ for (const pkg of packages) {
     publishedIntegrity,
     devIntegrity,
     changed,
+    pendingPublish,
+    state: pendingPublish ? "pending-publish" : changed ? "changed" : "current",
   })
 }
 
 const result = {
   schemaVersion: 1,
   hasRelease: comparison.some((pkg) => pkg.changed),
+  hasPendingPublish: comparison.some((pkg) => pkg.pendingPublish),
   packages: comparison,
 }
 
@@ -126,13 +169,15 @@ console.table(
   comparison.map((pkg) => ({
     package: pkg.name,
     npm: pkg.latestVersion ?? "not published",
-    changed: pkg.changed,
+    state: pkg.state,
   })),
 )
 console.log(
   result.hasRelease
     ? "release draft required"
-    : "current dev packages match npm latest",
+    : result.hasPendingPublish
+      ? "release prepared and waiting to be published"
+      : "current dev packages match npm latest",
 )
 
 if (process.env.GITHUB_OUTPUT) {
@@ -143,6 +188,7 @@ if (process.env.GITHUB_OUTPUT) {
     process.env.GITHUB_OUTPUT,
     [
       `has_release=${result.hasRelease}`,
+      `has_pending_publish=${result.hasPendingPublish}`,
       `changed_packages=${JSON.stringify(changedPackages)}`,
       "",
     ].join("\n"),
