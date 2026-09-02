@@ -1,4 +1,4 @@
-name: dev push
+name: CD
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: dev-push
+  group: cd
   cancel-in-progress: false
 
 jobs:
