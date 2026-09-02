@@ -1,6 +1,6 @@
 {
   "name": "@jongh/ui",
-  "version": "1.6.5",
+  "version": "2.20260902.1",
   "private": false,
   "description": "Headless UI components for React",
   "type": "module",
