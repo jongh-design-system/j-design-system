@@ -1,6 +1,6 @@
 {
   "name": "@jongh/ui",
-  "version": "1.6.5",
+  "version": "2.20260902.1",
   "private": false,
   "description": "Headless UI components for React",
   "type": "module",
@@ -70,6 +70,14 @@
   "peerDependencies": {
     "react": ">=18",
     "react-dom": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jongh-design-system/jds.git",
+    "directory": "packages/ui"
   },
   "keywords": [],
   "author": "",

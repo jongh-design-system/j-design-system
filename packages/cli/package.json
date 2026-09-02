@@ -1,6 +1,6 @@
 {
   "name": "@jongh/cli",
-  "version": "4.1.0",
+  "version": "5.20260902.1",
   "description": "",
   "bin": "./dist/index.js",
   "type": "module",

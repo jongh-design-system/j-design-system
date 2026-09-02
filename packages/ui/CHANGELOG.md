@@ -1,5 +1,11 @@
 # @jongh/ui
 
+## 2.20260902.1
+
+### Major Changes
+
+- 4527f23: Make `@jongh/ui` the canonical source for components, design tokens, responsive layout primitives, and component-scoped CSS. The Panda/Tailwind implementation choice and `Chip` are removed; migrate `Chip` usages to `Badge`, import components from the package root, and load `@jongh/ui/theme/blue.css` or `@jongh/ui/theme/purple.css` when selecting a color theme.
+
 ## 1.6.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## 5.20260902.1
+
+### Major Changes
+
+- 4527f23: Simplify the CLI around the generated component registry. `init` no longer creates Panda or Tailwind configuration, and the public `guide` and MCP commands are removed. Configure the styling framework in the consuming project and replace any guide or MCP command usage before upgrading.
+
 ## 4.1.0
 
 ### Minor Changes
