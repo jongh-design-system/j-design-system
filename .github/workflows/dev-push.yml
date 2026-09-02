@@ -1,0 +1,117 @@
+name: dev push
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions: {}
+
+concurrency:
+  group: dev-push
+  cancel-in-progress: false
+
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      kind: ${{ steps.source.outputs.kind }}
+      pull-request: ${{ steps.source.outputs.pull_request }}
+
+    steps:
+      - name: Classify the pushed dev commit
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PULL_REQUEST="$(
+            gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" |
+              jq -c --arg sha "$GITHUB_SHA" \
+                '[.[] | select(.merged_at != null and .merge_commit_sha == $sha and .base.ref == "dev")] | first // empty'
+          )"
+
+          if [ -z "$PULL_REQUEST" ]; then
+            echo "kind=other" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PR_NUMBER="$(jq -r '.number' <<< "$PULL_REQUEST")"
+          HEAD_REF="$(jq -r '.head.ref' <<< "$PULL_REQUEST")"
+          HEAD_REPOSITORY="$(jq -r '.head.repo.full_name' <<< "$PULL_REQUEST")"
+          echo "pull_request=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+          if [[ "$HEAD_REPOSITORY" = "$GITHUB_REPOSITORY" && "$HEAD_REF" =~ ^release/pr-[0-9]+$ ]]; then
+            echo "kind=release" >> "$GITHUB_OUTPUT"
+          else
+            echo "kind=feature" >> "$GITHUB_OUTPUT"
+          fi
+
+  registry:
+    needs: route
+    if: needs.route.outputs.kind == 'feature'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up the pushed dev commit
+        uses: ./.github/actions/setup
+        with:
+          use-cache: "false"
+
+      - name: Update the component registry
+        uses: ./.github/actions/update-registry
+
+  prepare-release:
+    needs: route
+    if: needs.route.outputs.kind == 'feature'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: true
+
+      - name: Set up the pushed dev commit
+        uses: ./.github/actions/setup
+        with:
+          use-cache: "false"
+
+      - name: Compare publishable packages with npm
+        id: packages
+        uses: ./.github/actions/compare-packages
+
+      - name: Prepare the Release PR
+        if: steps.packages.outputs.has-release == 'true'
+        uses: ./.github/actions/prepare-release-pr
+        with:
+          pull-request: ${{ needs.route.outputs.pull-request }}
+          comparison-path: ${{ steps.packages.outputs.comparison-path }}
+          github-token: ${{ github.token }}
+          codex-auth-json-b64: ${{ secrets.CODEX_AUTH_JSON_B64 }}
+          codex-auth-secret-update-token: ${{ secrets.CODEX_AUTH_SECRET_UPDATE_TOKEN }}
+
+  npm-release:
+    needs: route
+    if: needs.route.outputs.kind == 'release'
+    permissions:
+      contents: write
+      id-token: write
+    uses: ./.github/workflows/release.yml
+    with:
+      sha: ${{ github.sha }}
+    secrets: inherit

@@ -1,11 +1,15 @@
 import { execFileSync } from "node:child_process"
+import { createHash } from "node:crypto"
 import {
   appendFileSync,
+  mkdtempSync,
   mkdirSync,
   readFileSync,
   readdirSync,
+  rmSync,
   writeFileSync,
 } from "node:fs"
+import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
 
 const repositoryRoot = resolve(process.argv[2] ?? process.cwd())
@@ -33,8 +37,8 @@ if (packages.length === 0) {
   throw new Error("No public packages were found under packages/*")
 }
 
-// 현재 dev를 npm latest와 같은 version으로 pack해 내용만 비교한다.
-function buildAndPack(root, relativePath, name, latestVersion) {
+// 실제 publish와 같은 pnpm pack 결과를 npm latest tarball과 비교한다.
+function buildAndPack(root, relativePath, name) {
   const path = join(root, relativePath)
   const manifestPath = join(path, "package.json")
 
@@ -45,29 +49,24 @@ function buildAndPack(root, relativePath, name, latestVersion) {
     )
   }
 
-  // npm latest와 같은 version으로 pack해야 version 필드 때문에 생기는 거짓 차이를 피할 수 있다.
-  if (latestVersion && manifest.version !== latestVersion) {
-    execFileSync("npm", ["pkg", "set", `version=${latestVersion}`], {
-      cwd: path,
-      stdio: "inherit",
-    })
-  }
-
   execFileSync("pnpm", ["--filter", name, "build"], {
     cwd: root,
     stdio: "inherit",
   })
 
-  const packResult = JSON.parse(
-    execFileSync("npm", ["pack", "--dry-run", "--ignore-scripts", "--json"], {
+  const packDirectory = mkdtempSync(join(tmpdir(), "jds-pack-"))
+  const tarballPath = join(packDirectory, "package.tgz")
+  try {
+    execFileSync("pnpm", ["pack", "--out", tarballPath, "--json"], {
       cwd: path,
-      encoding: "utf8",
-    }),
-  )
-  if (packResult.length !== 1 || !packResult[0].integrity) {
-    throw new Error(`npm pack did not return one integrity for ${name}`)
+      stdio: "inherit",
+    })
+    return `sha512-${createHash("sha512")
+      .update(readFileSync(tarballPath))
+      .digest("base64")}`
+  } finally {
+    rmSync(packDirectory, { recursive: true, force: true })
   }
-  return packResult[0].integrity
 }
 
 // npm latest와 현재 dev의 배포 결과가 다른 패키지만 Changeset 대상으로 삼는다.
@@ -92,15 +91,15 @@ for (const pkg of packages) {
     if (!latestVersion || !publishedIntegrity) {
       throw new Error(`${pkg.name} latest metadata has no version or integrity`)
     }
+    if (pkg.sourceVersion !== latestVersion) {
+      throw new Error(
+        `${pkg.name} source version ${pkg.sourceVersion} does not match npm latest ${latestVersion}`,
+      )
+    }
   }
 
   const relativePath = pkg.path.slice(repositoryRoot.length + 1)
-  const devIntegrity = buildAndPack(
-    repositoryRoot,
-    relativePath,
-    pkg.name,
-    latestVersion,
-  )
+  const devIntegrity = buildAndPack(repositoryRoot, relativePath, pkg.name)
   const changed = publishedIntegrity !== devIntegrity
 
   comparison.push({
@@ -137,8 +136,15 @@ console.log(
 )
 
 if (process.env.GITHUB_OUTPUT) {
+  const changedPackages = comparison
+    .filter((pkg) => pkg.changed)
+    .map((pkg) => pkg.name)
   appendFileSync(
     process.env.GITHUB_OUTPUT,
-    `has_release=${result.hasRelease}\n`,
+    [
+      `has_release=${result.hasRelease}`,
+      `changed_packages=${JSON.stringify(changedPackages)}`,
+      "",
+    ].join("\n"),
   )
 }

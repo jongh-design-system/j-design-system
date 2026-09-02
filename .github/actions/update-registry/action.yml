@@ -1,0 +1,26 @@
+name: Update component registry
+description: Generate, format, and commit the component registry
+
+runs:
+  using: composite
+  steps:
+    - name: Generate the registry
+      shell: bash
+      run: pnpm --filter @jongh/cli build:registry
+
+    - name: Format the registry
+      shell: bash
+      run: pnpm exec prettier --write registry
+
+    - name: Commit the registry
+      shell: bash
+      run: |
+        if [ -z "$(git status --porcelain -- registry)" ]; then
+          exit 0
+        fi
+
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add registry
+        git commit -m "chore: generate cli registry"
+        git push origin HEAD:dev

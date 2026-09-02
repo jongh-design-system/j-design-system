@@ -1,0 +1,27 @@
+name: Compare publishable packages
+description: Compare each public workspace package with its npm latest tarball
+
+inputs:
+  output-path:
+    description: Path for the package comparison JSON
+    required: false
+    default: .release-work/package-comparison.json
+
+outputs:
+  has-release:
+    description: Whether at least one package differs from npm latest
+    value: ${{ steps.compare.outputs.has_release }}
+  changed-packages:
+    description: JSON array of package names that differ from npm latest
+    value: ${{ steps.compare.outputs.changed_packages }}
+  comparison-path:
+    description: Path to the full package comparison JSON
+    value: ${{ inputs.output-path }}
+
+runs:
+  using: composite
+  steps:
+    - name: Compare pnpm pack results with npm
+      id: compare
+      shell: bash
+      run: node scripts/release/compare-packages.js . "${{ inputs.output-path }}"

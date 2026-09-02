@@ -1,6 +1,6 @@
 import applyReleasePlan from "@changesets/apply-release-plan"
 import assembleReleasePlan from "@changesets/assemble-release-plan"
-import { read as readConfig } from "@changesets/config"
+import { readConfig } from "@changesets/config"
 import readChangesets from "@changesets/read"
 import { getPackages } from "@manypkg/get-packages"
 
@@ -8,7 +8,14 @@ import { nextDateVersion } from "./date-version.js"
 
 const repositoryRoot = process.cwd()
 const packages = await getPackages(repositoryRoot)
-const config = await readConfig(repositoryRoot, packages)
+const configResult = await readConfig(repositoryRoot, packages)
+for (const warning of configResult.warnings) console.warn(warning)
+if (!configResult.config) {
+  throw new Error(
+    `Invalid Changesets config:\n${configResult.errors.join("\n")}`,
+  )
+}
+const config = configResult.config
 const changesets = await readChangesets(repositoryRoot)
 const releasePlan = assembleReleasePlan(changesets, packages, config, undefined)
 

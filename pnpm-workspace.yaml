@@ -22,9 +22,20 @@ catalogs:
     "@types/react": ^19.2.14
     "@types/react-dom": ^19.2.3
 
+overrides:
+  "@storybook/addon-docs>react": 18.3.1
+  "@storybook/addon-docs>react-dom": 18.3.1
+
+packageExtensions:
+  lucide-react:
+    peerDependencies:
+      "@types/react": "*"
+
 autoInstallPeers: false
 hoist: false
-minimumReleaseAge: 1440
 publicHoistPattern:
   - "*eslint*"
   - "*prettier*"
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
