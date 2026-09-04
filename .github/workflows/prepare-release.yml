@@ -22,22 +22,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v5
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: true
-
-      - name: Set up the pushed dev commit
-        uses: ./.github/actions/setup
-        with:
-          use-cache: "false"
-
-      - name: Compare publishable packages with npm
-        id: packages
-        uses: ./.github/actions/compare-packages
-
       - name: Find the merged pull request
-        if: steps.packages.outputs.has-release == 'true'
         id: source
         uses: actions/github-script@v8
         with:
@@ -59,20 +44,36 @@ jobs:
                 merged_at !== null,
             )
 
-            if (!pullRequest) {
-              core.setFailed(
-                `No pull request merged into dev produced ${context.sha}`,
-              )
-              return
-            }
+            if (pullRequest) core.setOutput("pull-request", pullRequest.number)
 
-            core.setOutput("pull-request", pullRequest.number)
+      - uses: actions/checkout@v5
+        if: steps.source.outputs.pull-request != ''
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: true
 
-      - name: Prepare the Release PR
+      - name: Set up the pushed dev commit
+        if: steps.source.outputs.pull-request != ''
+        uses: ./.github/actions/setup
+        with:
+          use-cache: "false"
+
+      - name: Compare publishable packages with npm
+        if: steps.source.outputs.pull-request != ''
+        id: packages
+        uses: ./.github/actions/compare-packages
+
+      - name: Record the merged pull request Changeset
         if: steps.packages.outputs.has-release == 'true'
-        uses: ./.github/actions/prepare-release-pr
+        uses: ./.github/actions/record-changeset
         with:
           pull-request: ${{ steps.source.outputs.pull-request }}
           comparison-path: ${{ steps.packages.outputs.comparison-path }}
           github-token: ${{ github.token }}
           codex-auth-json-b64: ${{ secrets.CODEX_AUTH_JSON_B64 }}
+
+      - name: Prepare the Release PR
+        if: steps.packages.outputs.has-release == 'true'
+        uses: ./.github/actions/prepare-release-pr
+        with:
+          github-token: ${{ github.token }}
