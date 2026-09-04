@@ -1,37 +1,33 @@
-name: registry
+name: Update component registry
 
 on:
   push:
     branches:
       - dev
+    paths-ignore:
+      - "registry/**"
 
 permissions:
   contents: write
 
+concurrency:
+  group: update-component-registry-dev
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: dev
+          ref: ${{ github.sha }}
 
-      - name: setup
+      - name: Set up the pushed dev commit
         uses: ./.github/actions/setup
         with:
           use-cache: "false"
 
-      - name: generate registry
-        run: pnpm --filter @jongh/cli build:registry
-
-      - name: commit registry
-        run: |
-          if [ -z "$(git status --porcelain -- registry)" ]; then
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add registry
-          git commit -m "chore: generate cli registry"
-          git push origin HEAD:dev
+      - name: Update the component registry
+        uses: ./.github/actions/update-registry

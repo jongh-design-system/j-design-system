@@ -1,11 +1,16 @@
 import { execFileSync } from "node:child_process"
+import { createHash } from "node:crypto"
 import {
   appendFileSync,
+  existsSync,
+  mkdtempSync,
   mkdirSync,
   readFileSync,
   readdirSync,
+  rmSync,
   writeFileSync,
 } from "node:fs"
+import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
 
 const repositoryRoot = resolve(process.argv[2] ?? process.cwd())
@@ -33,8 +38,18 @@ if (packages.length === 0) {
   throw new Error("No public packages were found under packages/*")
 }
 
-// 현재 dev를 npm latest와 같은 version으로 pack해 내용만 비교한다.
-function buildAndPack(root, relativePath, name, latestVersion) {
+function changelogContainsVersion(path, version) {
+  const changelogPath = join(path, "CHANGELOG.md")
+  if (!existsSync(changelogPath)) return false
+
+  const escapedVersion = version.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  return new RegExp(`^##\\s+${escapedVersion}(?:\\s|$)`, "m").test(
+    readFileSync(changelogPath, "utf8"),
+  )
+}
+
+// 실제 publish와 같은 pnpm pack 결과를 npm latest tarball과 비교한다.
+function buildAndPack(root, relativePath, name) {
   const path = join(root, relativePath)
   const manifestPath = join(path, "package.json")
 
@@ -45,29 +60,24 @@ function buildAndPack(root, relativePath, name, latestVersion) {
     )
   }
 
-  // npm latest와 같은 version으로 pack해야 version 필드 때문에 생기는 거짓 차이를 피할 수 있다.
-  if (latestVersion && manifest.version !== latestVersion) {
-    execFileSync("npm", ["pkg", "set", `version=${latestVersion}`], {
-      cwd: path,
-      stdio: "inherit",
-    })
-  }
-
   execFileSync("pnpm", ["--filter", name, "build"], {
     cwd: root,
     stdio: "inherit",
   })
 
-  const packResult = JSON.parse(
-    execFileSync("npm", ["pack", "--dry-run", "--ignore-scripts", "--json"], {
+  const packDirectory = mkdtempSync(join(tmpdir(), "jds-pack-"))
+  const tarballPath = join(packDirectory, "package.tgz")
+  try {
+    execFileSync("pnpm", ["pack", "--out", tarballPath, "--json"], {
       cwd: path,
-      encoding: "utf8",
-    }),
-  )
-  if (packResult.length !== 1 || !packResult[0].integrity) {
-    throw new Error(`npm pack did not return one integrity for ${name}`)
+      stdio: "inherit",
+    })
+    return `sha512-${createHash("sha512")
+      .update(readFileSync(tarballPath))
+      .digest("base64")}`
+  } finally {
+    rmSync(packDirectory, { recursive: true, force: true })
   }
-  return packResult[0].integrity
 }
 
 // npm latest와 현재 dev의 배포 결과가 다른 패키지만 Changeset 대상으로 삼는다.
@@ -77,8 +87,8 @@ for (const pkg of packages) {
     `https://registry.npmjs.org/${encodeURIComponent(pkg.name)}`,
   )
 
+  let metadata = null
   let latestVersion = null
-  let publishedIntegrity = null
   if (response.status !== 404) {
     if (!response.ok) {
       throw new Error(
@@ -86,22 +96,51 @@ for (const pkg of packages) {
       )
     }
 
-    const metadata = await response.json()
+    metadata = await response.json()
     latestVersion = metadata["dist-tags"]?.latest
-    publishedIntegrity = metadata.versions?.[latestVersion]?.dist?.integrity
-    if (!latestVersion || !publishedIntegrity) {
-      throw new Error(`${pkg.name} latest metadata has no version or integrity`)
+    if (
+      !latestVersion ||
+      !metadata.versions?.[latestVersion]?.dist?.integrity
+    ) {
+      throw new Error(`${pkg.name} latest metadata is incomplete`)
     }
   }
 
+  const publishedVersion = metadata?.versions?.[pkg.sourceVersion]
+  const versionRecorded = changelogContainsVersion(pkg.path, pkg.sourceVersion)
+  const pendingPublish = publishedVersion === undefined && versionRecorded
+
+  if (metadata !== null && publishedVersion === undefined && !versionRecorded) {
+    throw new Error(
+      `${pkg.name} source version ${pkg.sourceVersion} is not on npm or in its changelog`,
+    )
+  }
+
+  if (
+    metadata !== null &&
+    publishedVersion !== undefined &&
+    pkg.sourceVersion !== latestVersion
+  ) {
+    throw new Error(
+      `${pkg.name} source version ${pkg.sourceVersion} is published but npm latest is ${latestVersion}`,
+    )
+  }
+
+  let publishedIntegrity = null
+  let devIntegrity = null
+  let changed = false
+  if (!pendingPublish) {
+    publishedIntegrity = publishedVersion?.dist?.integrity ?? null
+    if (metadata !== null && !publishedIntegrity) {
+      throw new Error(`${pkg.name}@${pkg.sourceVersion} has no npm integrity`)
+    }
+
+    const relativePath = pkg.path.slice(repositoryRoot.length + 1)
+    devIntegrity = buildAndPack(repositoryRoot, relativePath, pkg.name)
+    changed = publishedIntegrity !== devIntegrity
+  }
+
   const relativePath = pkg.path.slice(repositoryRoot.length + 1)
-  const devIntegrity = buildAndPack(
-    repositoryRoot,
-    relativePath,
-    pkg.name,
-    latestVersion,
-  )
-  const changed = publishedIntegrity !== devIntegrity
 
   comparison.push({
     name: pkg.name,
@@ -111,12 +150,15 @@ for (const pkg of packages) {
     publishedIntegrity,
     devIntegrity,
     changed,
+    pendingPublish,
+    state: pendingPublish ? "pending-publish" : changed ? "changed" : "current",
   })
 }
 
 const result = {
   schemaVersion: 1,
   hasRelease: comparison.some((pkg) => pkg.changed),
+  hasPendingPublish: comparison.some((pkg) => pkg.pendingPublish),
   packages: comparison,
 }
 
@@ -127,18 +169,28 @@ console.table(
   comparison.map((pkg) => ({
     package: pkg.name,
     npm: pkg.latestVersion ?? "not published",
-    changed: pkg.changed,
+    state: pkg.state,
   })),
 )
 console.log(
   result.hasRelease
     ? "release draft required"
-    : "current dev packages match npm latest",
+    : result.hasPendingPublish
+      ? "release prepared and waiting to be published"
+      : "current dev packages match npm latest",
 )
 
 if (process.env.GITHUB_OUTPUT) {
+  const changedPackages = comparison
+    .filter((pkg) => pkg.changed)
+    .map((pkg) => pkg.name)
   appendFileSync(
     process.env.GITHUB_OUTPUT,
-    `has_release=${result.hasRelease}\n`,
+    [
+      `has_release=${result.hasRelease}`,
+      `has_pending_publish=${result.hasPendingPublish}`,
+      `changed_packages=${JSON.stringify(changedPackages)}`,
+      "",
+    ].join("\n"),
   )
 }

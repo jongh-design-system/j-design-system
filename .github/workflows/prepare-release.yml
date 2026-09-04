@@ -1,0 +1,79 @@
+name: Prepare npm release
+
+on:
+  push:
+    branches:
+      - dev
+    paths-ignore:
+      - "registry/**"
+
+permissions: {}
+
+concurrency:
+  group: prepare-npm-release-dev
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: true
+
+      - name: Set up the pushed dev commit
+        uses: ./.github/actions/setup
+        with:
+          use-cache: "false"
+
+      - name: Compare publishable packages with npm
+        id: packages
+        uses: ./.github/actions/compare-packages
+
+      - name: Find the merged pull request
+        if: steps.packages.outputs.has-release == 'true'
+        id: source
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const pullRequests = await github.paginate(
+              github.rest.repos.listPullRequestsAssociatedWithCommit,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: context.sha,
+                per_page: 100,
+              },
+            )
+            const pullRequest = pullRequests.find(
+              ({ base, merge_commit_sha, merged_at }) =>
+                base.ref === "dev" &&
+                merge_commit_sha === context.sha &&
+                merged_at !== null,
+            )
+
+            if (!pullRequest) {
+              core.setFailed(
+                `No pull request merged into dev produced ${context.sha}`,
+              )
+              return
+            }
+
+            core.setOutput("pull-request", pullRequest.number)
+
+      - name: Prepare the Release PR
+        if: steps.packages.outputs.has-release == 'true'
+        uses: ./.github/actions/prepare-release-pr
+        with:
+          pull-request: ${{ steps.source.outputs.pull-request }}
+          comparison-path: ${{ steps.packages.outputs.comparison-path }}
+          github-token: ${{ github.token }}
+          codex-auth-json-b64: ${{ secrets.CODEX_AUTH_JSON_B64 }}
+          codex-auth-secret-update-token: ${{ secrets.CODEX_AUTH_SECRET_UPDATE_TOKEN }}
