@@ -236,6 +236,24 @@ export default defineConfig({
                   return `recipe-${recipeModule[1]}`
                 }
 
+                return null
+              },
+            },
+            {
+              name: "panda-runtime",
+              test(id) {
+                const normalizedId = id.replaceAll("\\", "/").split("?", 1)[0]
+
+                return (
+                  normalizedId.includes("/styled-system/") &&
+                  normalizedId.endsWith(".mjs")
+                )
+              },
+            },
+            {
+              name(id: string) {
+                const normalizedId = id.replaceAll("\\", "/").split("?", 1)[0]
+
                 const componentModule = normalizedId.match(
                   /\/src\/component\/([^/]+)\//,
                 )
