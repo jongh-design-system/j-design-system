@@ -14,9 +14,6 @@ inputs:
   codex-auth-json-b64:
     description: Base64-encoded Codex authentication
     required: true
-  codex-auth-secret-update-token:
-    description: Token used to preserve refreshed Codex authentication
-    required: true
 
 runs:
   using: composite
@@ -142,13 +139,3 @@ runs:
           --base dev \
           --title "Release package changes from PR #$PR_NUMBER" \
           --body-file "$RUNNER_TEMP/release-pr-body.md"
-
-    - name: Preserve refreshed Codex authentication
-      if: always() && steps.review.outputs.create == 'true'
-      shell: bash
-      env:
-        GH_TOKEN: ${{ inputs.codex-auth-secret-update-token }}
-      run: |
-        test -n "$GH_TOKEN"
-        test -s ~/.codex/auth.json
-        base64 < ~/.codex/auth.json | tr -d '\n' | gh secret set CODEX_AUTH_JSON_B64 --repo "$GITHUB_REPOSITORY"

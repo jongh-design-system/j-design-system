@@ -76,4 +76,3 @@ jobs:
           comparison-path: ${{ steps.packages.outputs.comparison-path }}
           github-token: ${{ github.token }}
           codex-auth-json-b64: ${{ secrets.CODEX_AUTH_JSON_B64 }}
-          codex-auth-secret-update-token: ${{ secrets.CODEX_AUTH_SECRET_UPDATE_TOKEN }}
