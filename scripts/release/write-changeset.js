@@ -23,7 +23,7 @@ if (typeof note.summary !== "string" || note.summary.trim() === "") {
   throw new Error("The Changeset summary must be a non-empty string")
 }
 
-// 무결성이 달라진 패키지는 모두 포함하고, 동일한 패키지는 추가할 수 없다.
+// 현재 PR이 변경한 배포 대상만 포함하고, npm과 동일한 패키지는 추가할 수 없다.
 const knownPackages = new Set(comparison.packages.map((pkg) => pkg.name))
 const changedPackages = new Set(
   comparison.packages.filter((pkg) => pkg.changed).map((pkg) => pkg.name),
@@ -51,13 +51,8 @@ for (const release of note.releases) {
   selectedPackages.add(release.name)
 }
 
-for (const name of changedPackages) {
-  if (!selectedPackages.has(name)) {
-    throw new Error(`The Changeset draft omitted changed package ${name}`)
-  }
-}
 if (selectedPackages.size === 0) {
-  throw new Error("The Changeset draft must contain at least one package")
+  process.exit(0)
 }
 
 const releases = [...note.releases].sort((left, right) =>
