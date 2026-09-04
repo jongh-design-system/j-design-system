@@ -1,5 +1,11 @@
 # @jongh/cli
 
+## 5.20260905.1
+
+### Patch Changes
+
+- b540e99: Fixes distributed UI recipe modules failing during import with `p is not a function` by ensuring Panda runtime helpers are initialized independently of the public entry. The CLI package is republished with the corresponding updated package artifacts. No migration is required.
+
 ## 5.20260902.1
 
 ### Major Changes
