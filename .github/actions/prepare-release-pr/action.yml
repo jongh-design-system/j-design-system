@@ -1,141 +1,64 @@
 name: Prepare Release PR
-description: Create a versioned Release PR from changed package results
+description: Create or update the Release PR from Changesets on dev
 
 inputs:
-  pull-request:
-    description: Merged feature pull request number
-    required: true
-  comparison-path:
-    description: Package comparison JSON from compare-packages
-    required: true
   github-token:
-    description: GitHub token used to read and create pull requests
-    required: true
-  codex-auth-json-b64:
-    description: Base64-encoded Codex authentication
+    description: GitHub token used to create or update the Release PR
     required: true
 
 runs:
   using: composite
   steps:
-    - name: Check for an existing Release PR
-      id: review
+    - name: Read the pending Changesets from dev
+      id: pending
       shell: bash
-      env:
-        GH_TOKEN: ${{ inputs.github-token }}
-        PR_NUMBER: ${{ inputs.pull-request }}
       run: |
-        BRANCH="release/pr-$PR_NUMBER"
-        EXISTING_PR="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH" --base dev --state all --json number --jq '.[0].number // empty')"
-
-        echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
-        if [ -n "$EXISTING_PR" ]; then
-          echo "create=false" >> "$GITHUB_OUTPUT"
+        git fetch origin dev
+        git checkout --detach origin/dev
+        if find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit | grep -q .; then
+          echo "present=true" >> "$GITHUB_OUTPUT"
         else
-          echo "create=true" >> "$GITHUB_OUTPUT"
+          echo "present=false" >> "$GITHUB_OUTPUT"
         fi
 
-    - name: Read the merged feature pull request
-      if: steps.review.outputs.create == 'true'
-      shell: bash
-      env:
-        GH_TOKEN: ${{ inputs.github-token }}
-        PR_NUMBER: ${{ inputs.pull-request }}
-      run: |
-        mkdir -p .release-work
-        gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > .release-work/pull-request.json
-        gh pr diff "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" > .release-work/pull-request.diff
-
-    - name: Install Codex
-      if: steps.review.outputs.create == 'true'
-      shell: bash
-      run: npm install --global @openai/codex@0.151.0
-
-    - name: Restore ChatGPT Codex authentication
-      if: steps.review.outputs.create == 'true'
-      shell: bash
-      env:
-        CODEX_AUTH_JSON_B64: ${{ inputs.codex-auth-json-b64 }}
-      run: |
-        test -n "$CODEX_AUTH_JSON_B64"
-        mkdir -p ~/.codex
-        printf '%s' "$CODEX_AUTH_JSON_B64" | base64 --decode > ~/.codex/auth.json
-        chmod 600 ~/.codex/auth.json
-
-    - name: Write the Changeset for the merged pull request
-      if: steps.review.outputs.create == 'true'
-      shell: bash
-      env:
-        PR_NUMBER: ${{ inputs.pull-request }}
-        COMPARISON_PATH: ${{ inputs.comparison-path }}
-      run: |
-        mkdir -p "$RUNNER_TEMP/changeset-input"
-        {
-          cat .github/changeset-prompt.md
-          printf '\n\n--- pull-request.json ---\n'
-          cat .release-work/pull-request.json
-          printf '\n\n--- package-comparison.json ---\n'
-          cat "$COMPARISON_PATH"
-          printf '\n\n--- pull-request.diff ---\n'
-          cat .release-work/pull-request.diff
-        } | (
-          cd "$RUNNER_TEMP/changeset-input"
-          codex exec \
-            --sandbox read-only \
-            --disable shell_tool \
-            --ephemeral \
-            --ignore-user-config \
-            --ignore-rules \
-            --skip-git-repo-check \
-            --output-schema "$GITHUB_WORKSPACE/.github/changeset.schema.json" \
-            --output-last-message changeset.json \
-            -
-        )
-
-        node scripts/release/write-changeset.js \
-          . \
-          "$COMPARISON_PATH" \
-          "$RUNNER_TEMP/changeset-input/changeset.json" \
-          "$PR_NUMBER"
-
     - name: Prepare and push the Release PR branch
-      if: steps.review.outputs.create == 'true'
+      if: steps.pending.outputs.present == 'true'
+      id: release
       shell: bash
       env:
-        BRANCH: ${{ steps.review.outputs.branch }}
-        PR_NUMBER: ${{ inputs.pull-request }}
+        BRANCH: release/npm
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add ".changeset/pr-$PR_NUMBER.md"
-        git commit -m "Record npm release intent from merged PR #$PR_NUMBER"
-
-        cp ".changeset/pr-$PR_NUMBER.md" "$RUNNER_TEMP/changeset-pr-$PR_NUMBER.md"
         pnpm run ci:version
         git add -A
-        git commit -m "Prepare the date-based npm release for PR #$PR_NUMBER"
+        git commit -m "Prepare npm release"
 
         REMOTE_SHA="$(git ls-remote --heads origin "refs/heads/$BRANCH" | cut -f1)"
         git push --force-with-lease="refs/heads/$BRANCH:$REMOTE_SHA" origin "HEAD:refs/heads/$BRANCH"
+        echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
-    - name: Open the Release PR
-      if: steps.review.outputs.create == 'true'
+    - name: Open or update the Release PR
+      if: steps.pending.outputs.present == 'true'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
-        BRANCH: ${{ steps.review.outputs.branch }}
-        PR_NUMBER: ${{ inputs.pull-request }}
+        BRANCH: ${{ steps.release.outputs.branch }}
       run: |
-        {
-          printf 'Publishes the package changes from PR #%s after this PR is merged into dev.\n\n' "$PR_NUMBER"
-          printf '## AI-generated Changeset\n\n```md\n'
-          cat "$RUNNER_TEMP/changeset-pr-$PR_NUMBER.md"
-          printf '```\n'
-        } > "$RUNNER_TEMP/release-pr-body.md"
+        OPEN_PR="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH" --base dev --state open --json number --jq '.[0].number // empty')"
+        if [ -n "$OPEN_PR" ]; then
+          exit 0
+        fi
+
+        CLOSED_PR="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH" --base dev --state closed --json number,mergedAt --jq '[.[] | select(.mergedAt == null)][0].number // empty')"
+        if [ -n "$CLOSED_PR" ]; then
+          gh pr reopen "$CLOSED_PR" --repo "$GITHUB_REPOSITORY"
+          exit 0
+        fi
 
         gh pr create \
           --repo "$GITHUB_REPOSITORY" \
           --head "$BRANCH" \
           --base dev \
-          --title "Release package changes from PR #$PR_NUMBER" \
-          --body-file "$RUNNER_TEMP/release-pr-body.md"
+          --title "Release npm packages" \
+          --body "Publishes the package changes recorded on dev."
