@@ -1,9 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { CircleArrowDown, EyeClosedIcon, EyeIcon } from "lucide-react"
-import { useState } from "react"
+import { type CSSProperties, useState } from "react"
 import { expect, userEvent, within } from "storybook/test"
 
 import { TextField } from "@/component/textfield"
+import {
+  Icon,
+  IconCircleArrowDownLine,
+  IconEyeClosedLine,
+  IconEyeLine,
+} from "@/icon"
+
+const iconButtonStyle = {
+  background: "none",
+  border: "none",
+  color: "inherit",
+  cursor: "pointer",
+  display: "inline-flex",
+  padding: 0,
+} satisfies CSSProperties
 
 const meta: Meta<typeof TextField> = {
   title: "Base/TextField",
@@ -92,9 +106,23 @@ export const WithTrailingButton: Story = {
         type={isPasswordVisible ? "text" : "password"}
         trailingAddon={
           isPasswordVisible ? (
-            <EyeIcon onClick={handleClick} aria-label="비밀번호 보기" />
+            <button
+              type="button"
+              aria-label="비밀번호 보기"
+              onClick={handleClick}
+              style={iconButtonStyle}
+            >
+              <Icon svg={IconEyeLine} size={24} />
+            </button>
           ) : (
-            <EyeClosedIcon onClick={handleClick} aria-label="비밀번호 숨김" />
+            <button
+              type="button"
+              aria-label="비밀번호 숨김"
+              onClick={handleClick}
+              style={iconButtonStyle}
+            >
+              <Icon svg={IconEyeClosedLine} size={24} />
+            </button>
           )
         }
         helperText="비밀번호를 입력하세요"
@@ -171,11 +199,16 @@ export const AllVariants: Story = {
       <TextField
         label="후행 버튼"
         trailingAddon={
-          <CircleArrowDown
+          <button
+            type="button"
+            aria-label="아래로 이동"
             onClick={() => {
               console.log("clicked")
             }}
-          />
+            style={iconButtonStyle}
+          >
+            <Icon svg={IconCircleArrowDownLine} size={24} />
+          </button>
         }
         helperText="후행 버튼이 있는 텍스트 필드입니다"
         id="all-trailing-button-field"

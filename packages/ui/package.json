@@ -60,7 +60,6 @@
     "axe-playwright": "^2.0.1",
     "chromatic": "^11.5.4",
     "eslint-plugin-storybook": "10.5.10",
-    "lucide-react": "^0.475.0",
     "motion": "^13.1.0",
     "playwright": "catalog:",
     "react": "18.3.1",

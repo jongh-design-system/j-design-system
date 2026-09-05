@@ -1,8 +1,10 @@
 import { createStyleContext } from "@styled-system/jsx"
 import { accordionRecipe } from "@styled-system/recipes"
-import { ChevronDown } from "lucide-react"
 import { Accordion as AccordionPrimitive } from "radix-ui"
 import { type ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+
+import IconChevronDownLine from "@/icon/generated/IconChevronDownLine"
+import { Icon } from "@/icon/Icon"
 
 const { withContext, withProvider } = createStyleContext(accordionRecipe)
 
@@ -35,7 +37,7 @@ const TriggerPrimitive = forwardRef<
     <Header>
       <AccordionPrimitive.Trigger ref={ref} {...props}>
         {children}
-        <ChevronDown aria-hidden="true" />
+        <Icon svg={IconChevronDownLine} size={16} />
       </AccordionPrimitive.Trigger>
     </Header>
   )
