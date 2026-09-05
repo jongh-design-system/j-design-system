@@ -1,0 +1,116 @@
+name: Record Changeset
+description: Record the release context from a merged pull request on dev
+
+inputs:
+  pull-request:
+    description: Merged feature pull request number
+    required: true
+  comparison-path:
+    description: Package comparison JSON from compare-packages
+    required: true
+  github-token:
+    description: GitHub token used to read the merged pull request
+    required: true
+  codex-auth-json-b64:
+    description: Base64-encoded Codex authentication
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Check for an existing Changeset
+      id: changeset
+      shell: bash
+      env:
+        PR_NUMBER: ${{ inputs.pull-request }}
+      run: |
+        git fetch origin dev
+        if git cat-file -e "origin/dev:.changeset/pr-$PR_NUMBER.md"; then
+          echo "create=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "create=true" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Read the merged pull request
+      if: steps.changeset.outputs.create == 'true'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ inputs.pull-request }}
+      run: |
+        mkdir -p .release-work
+        gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > .release-work/pull-request.json
+        gh pr diff "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" > .release-work/pull-request.diff
+
+    - name: Install Codex
+      if: steps.changeset.outputs.create == 'true'
+      shell: bash
+      run: npm install --global @openai/codex@0.151.0
+
+    - name: Restore ChatGPT Codex authentication
+      if: steps.changeset.outputs.create == 'true'
+      shell: bash
+      env:
+        CODEX_AUTH_JSON_B64: ${{ inputs.codex-auth-json-b64 }}
+      run: |
+        test -n "$CODEX_AUTH_JSON_B64"
+        mkdir -p ~/.codex
+        printf '%s' "$CODEX_AUTH_JSON_B64" | base64 --decode > ~/.codex/auth.json
+        chmod 600 ~/.codex/auth.json
+
+    - name: Write the Changeset
+      if: steps.changeset.outputs.create == 'true'
+      id: write
+      shell: bash
+      env:
+        PR_NUMBER: ${{ inputs.pull-request }}
+        COMPARISON_PATH: ${{ inputs.comparison-path }}
+      run: |
+        mkdir -p "$RUNNER_TEMP/changeset-input"
+        {
+          cat .github/changeset-prompt.md
+          printf '\n\n--- pull-request.json ---\n'
+          cat .release-work/pull-request.json
+          printf '\n\n--- package-comparison.json ---\n'
+          cat "$COMPARISON_PATH"
+          printf '\n\n--- pull-request.diff ---\n'
+          cat .release-work/pull-request.diff
+        } | (
+          cd "$RUNNER_TEMP/changeset-input"
+          codex exec \
+            --sandbox read-only \
+            --disable shell_tool \
+            --ephemeral \
+            --ignore-user-config \
+            --ignore-rules \
+            --skip-git-repo-check \
+            --output-schema "$GITHUB_WORKSPACE/.github/changeset.schema.json" \
+            --output-last-message changeset.json \
+            -
+        )
+
+        node scripts/release/write-changeset.js \
+          . \
+          "$COMPARISON_PATH" \
+          "$RUNNER_TEMP/changeset-input/changeset.json" \
+          "$PR_NUMBER"
+
+        if [ -f ".changeset/pr-$PR_NUMBER.md" ]; then
+          echo "created=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "created=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Commit the Changeset to dev
+      if: steps.write.outputs.created == 'true'
+      shell: bash
+      env:
+        PR_NUMBER: ${{ inputs.pull-request }}
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add ".changeset/pr-$PR_NUMBER.md"
+        git commit -m "Record npm release intent from merged PR #$PR_NUMBER"
+        git fetch origin dev
+        git rebase origin/dev
+        git push origin HEAD:dev
