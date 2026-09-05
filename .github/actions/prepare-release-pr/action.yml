@@ -1,5 +1,5 @@
 name: Prepare Release PR
-description: Create or update the Release PR from Changesets on dev
+description: Create a Release PR from Changesets on dev
 
 inputs:
   github-token:
@@ -25,37 +25,24 @@ runs:
       if: steps.pending.outputs.present == 'true'
       id: release
       shell: bash
-      env:
-        BRANCH: release/npm
       run: |
+        BRANCH="release/npm-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         pnpm run ci:version
         git add -A
         git commit -m "Prepare npm release"
 
-        REMOTE_SHA="$(git ls-remote --heads origin "refs/heads/$BRANCH" | cut -f1)"
-        git push --force-with-lease="refs/heads/$BRANCH:$REMOTE_SHA" origin "HEAD:refs/heads/$BRANCH"
+        git push origin "HEAD:refs/heads/$BRANCH"
         echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
-    - name: Open or update the Release PR
+    - name: Open the Release PR
       if: steps.pending.outputs.present == 'true'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
         BRANCH: ${{ steps.release.outputs.branch }}
       run: |
-        OPEN_PR="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH" --base dev --state open --json number --jq '.[0].number // empty')"
-        if [ -n "$OPEN_PR" ]; then
-          exit 0
-        fi
-
-        CLOSED_PR="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH" --base dev --state closed --json number,mergedAt --jq '[.[] | select(.mergedAt == null)][0].number // empty')"
-        if [ -n "$CLOSED_PR" ]; then
-          gh pr reopen "$CLOSED_PR" --repo "$GITHUB_REPOSITORY"
-          exit 0
-        fi
-
         gh pr create \
           --repo "$GITHUB_REPOSITORY" \
           --head "$BRANCH" \
