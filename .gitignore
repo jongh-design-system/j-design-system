@@ -3,6 +3,7 @@ dist-ssr
 **/dist/
 .turbo
 **/styled-system/
+packages/ui/src/icon/generated/
 styled-system
 styled-system-static
 panda

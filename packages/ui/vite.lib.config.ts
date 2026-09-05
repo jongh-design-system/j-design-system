@@ -251,6 +251,14 @@ export default defineConfig({
               },
             },
             {
+              name: "icon-runtime",
+              test(id) {
+                const normalizedId = id.replaceAll("\\", "/").split("?", 1)[0]
+
+                return normalizedId.includes("/src/icon/")
+              },
+            },
+            {
               name(id: string) {
                 const normalizedId = id.replaceAll("\\", "/").split("?", 1)[0]
 

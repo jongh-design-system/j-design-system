@@ -1,9 +1,11 @@
 import { css } from "@styled-system/css"
 import { createStyleContext } from "@styled-system/jsx"
 import { dialogRecipe } from "@styled-system/recipes"
-import { X } from "lucide-react"
 import { Dialog } from "radix-ui"
 import { forwardRef } from "react"
+
+import IconXLine from "@/icon/generated/IconXLine"
+import { Icon } from "@/icon/Icon"
 
 const { withContext, withRootProvider } = createStyleContext(dialogRecipe)
 
@@ -31,7 +33,7 @@ export const ContentPrimitive = forwardRef<
       {children}
       {closeIcon && (
         <CloseIcon aria-label="Close Dialog">
-          <X />
+          <Icon svg={IconXLine} size={24} />
           <span className={css({ srOnly: true })}>Close</span>
         </CloseIcon>
       )}

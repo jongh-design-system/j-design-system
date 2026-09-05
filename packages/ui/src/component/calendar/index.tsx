@@ -2,7 +2,6 @@
 
 import { cx } from "@styled-system/css"
 import { calendarRecipe } from "@styled-system/recipes"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Context, useControllableState } from "radix-ui/internal"
 import {
   type ComponentPropsWithoutRef,
@@ -11,6 +10,10 @@ import {
   useCallback,
   useMemo,
 } from "react"
+
+import IconChevronLeftLine from "@/icon/generated/IconChevronLeftLine"
+import IconChevronRightLine from "@/icon/generated/IconChevronRightLine"
+import { Icon } from "@/icon/Icon"
 
 type DateFormat = {
   year: number
@@ -354,7 +357,7 @@ export const Header = ({
         onClick={() => onMonthChange(-1)}
         aria-label="Go To Previous month"
       >
-        <ChevronLeft />
+        <Icon svg={IconChevronLeftLine} size={16} />
       </button>
       <div className={styles.title}>
         {render
@@ -367,7 +370,7 @@ export const Header = ({
         onClick={() => onMonthChange(1)}
         aria-label="Go To Next month"
       >
-        <ChevronRight />
+        <Icon svg={IconChevronRightLine} size={16} />
       </button>
     </div>
   )
