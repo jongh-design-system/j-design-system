@@ -50,12 +50,6 @@ runs:
           exit 0
         fi
 
-        CLOSED_PR="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH" --base dev --state closed --json number,mergedAt --jq '[.[] | select(.mergedAt == null)][0].number // empty')"
-        if [ -n "$CLOSED_PR" ]; then
-          gh pr reopen "$CLOSED_PR" --repo "$GITHUB_REPOSITORY"
-          exit 0
-        fi
-
         gh pr create \
           --repo "$GITHUB_REPOSITORY" \
           --head "$BRANCH" \
