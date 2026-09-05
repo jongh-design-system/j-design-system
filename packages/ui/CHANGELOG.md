@@ -1,5 +1,11 @@
 # @jongh/ui
 
+## 2.20260905.2
+
+### Minor Changes
+
+- e14077b: Adds a built-in icon system to `@jongh/ui`, including the `Icon` component and seven exported line icons with supported sizing, semantic foreground colors, and standard SVG props. Existing UI components now use these icons internally, and consumers do not need to migrate.
+
 ## 2.20260905.1
 
 ### Patch Changes
