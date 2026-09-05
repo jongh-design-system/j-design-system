@@ -5,15 +5,17 @@
   "description": "Headless UI components for React",
   "type": "module",
   "scripts": {
+    "codegen": "panda codegen",
+    "generate:icons": "node scripts/generate-icons.mjs && prettier --write src/icon/generated",
     "lint": "eslint --max-warnings 0 --no-warn-ignored --fix",
-    "prepare": "panda codegen",
+    "prepare": "pnpm codegen && pnpm generate:icons",
     "prepack": "pnpm build",
-    "test": "panda codegen && vitest run --project=storybook",
-    "test-storybook": "panda codegen && vitest run --project=storybook",
-    "storybook": "storybook dev -p 6006",
-    "build": "panda codegen && panda cssgen --splitting && vite build --config vite.lib.config.ts",
-    "build:storybook": "storybook build",
-    "check-type": "tsgo --noEmit"
+    "test": "pnpm codegen && vitest run --project=storybook",
+    "test-storybook": "pnpm codegen && vitest run --project=storybook",
+    "storybook": "pnpm codegen && storybook dev -p 6006",
+    "build": "pnpm codegen && panda cssgen --splitting && vite build --config vite.lib.config.ts",
+    "build:storybook": "pnpm codegen && storybook build",
+    "check-type": "pnpm codegen && tsgo --noEmit"
   },
   "files": [
     "dist"
@@ -34,10 +36,10 @@
     "radix-ui": "^1.1.2"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "7.59.0",
     "@chromatic-com/storybook": "5.1.1",
     "@jongh/eslint": "workspace:*",
     "@jongh/tsconfig": "workspace:*",
+    "@microsoft/api-extractor": "7.59.0",
     "@pandacss/dev": "catalog:",
     "@storybook/addon-a11y": "10.5.10",
     "@storybook/addon-docs": "10.5.10",
@@ -46,6 +48,9 @@
     "@storybook/addon-themes": "10.5.10",
     "@storybook/addon-vitest": "10.5.10",
     "@storybook/react-vite": "10.5.10",
+    "@svgr/core": "8.1.0",
+    "@svgr/plugin-jsx": "8.1.0",
+    "@svgr/plugin-svgo": "8.1.0",
     "@testing-library/react": "16.2.0",
     "@testing-library/user-event": "14.6.1",
     "@types/react": "18.3.28",
