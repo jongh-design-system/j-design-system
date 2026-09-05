@@ -29,5 +29,8 @@ jobs:
         with:
           use-cache: "false"
 
+      - name: Playwright setup
+        uses: ./.github/actions/playwright
+
       - name: Update the component registry
         uses: ./.github/actions/update-registry
